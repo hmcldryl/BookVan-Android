@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">BookVan</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">You are not logged in.</string>
+    <string name="nav_header_subtitle">Please log in to use BookVan.</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_schedule">Schedule</string>
+    <string name="menu_contact">Contact</string>
+    <string name="menu_about">About BookVan</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_register">Register</string>
+
+    <string name="register_name">Full Name</string>
+    <string name="register_email">E-mail</string>
+    <string name="register_password">Password</string>
+    <string name="register_confirm_password">Confirm Password</string>
+    <string name="registerText">Register to BookVan</string>
+    <string name="loginText">Login to BookVan</string>
+
+    <string name="title_book">Book</string>
+    <string name="title_rent">Rent</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_chat">Chat</string>
+
+    <string name="default_web_client_secret">HQ2vZK-JQK3hgE2x3ZJdNy6B</string>
+
+</resources>

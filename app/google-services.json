@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "152068433081",
+    "project_id": "bookvan-2e786",
+    "storage_bucket": "bookvan-2e786.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152068433081:android:ca442d22eafc6fa62be768",
+        "android_client_info": {
+          "package_name": "com.opustech.bookvan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152068433081-untm2juk1ikl5p3pumr4g603705oel45.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.opustech.bookvan",
+            "certificate_hash": "c9ca19236d8d4727fea1835731e7d855e3b90237"
+          }
+        },
+        {
+          "client_id": "152068433081-2fm6m2kfp4jjmuapafimj57244rbt5pm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOxTz91sA7949nQUTSxIjZIkiKDmZBBSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152068433081-2fm6m2kfp4jjmuapafimj57244rbt5pm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
