@@ -17,6 +17,8 @@ public class SplashScreen extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
+    private String admin_uid = "btLTtUYnMuWvkrJspvKqZIirLce2";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             String currentUserId = currentUser.getUid();
-            if (!currentUserId.isEmpty() && currentUserId.equals("btLTtUYnMuWvkrJspvKqZIirLce2")) {
+            if (!currentUserId.isEmpty() && currentUserId.equals(admin_uid)) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
