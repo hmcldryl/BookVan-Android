@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.ui.AppBarConfiguration;
 
 import android.app.AlertDialog;
@@ -72,14 +73,16 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    LinearLayout headerUser;
-    CircleImageView headerUserPhoto;
-    Button btnLogin, btnLoginFacebook, btnLoginGoogle;
-    TextView headerUserName, headerUserEmail;
-    NavigationView navigationView;
-    DrawerLayout drawerLayout;
+    private LinearLayout headerUser;
+    private CircleImageView headerUserPhoto;
+    private Button btnLogin, btnLoginFacebook, btnLoginGoogle;
+    private TextView headerUserName, headerUserEmail;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
 
-    int RC_SIGN_IN = 1;
+    private GoogleSignInClient googleSignInClient;
+
+    private int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,20 +131,32 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment;
                 if (item.getItemId() == R.id.navigation_book) {
-                    selectedFragment = new BookFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    if (firebaseAuth.getCurrentUser() == null) {
+                        openLoginDialog();
+                    } else {
+                        selectedFragment = new BookFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    }
                 }
                 if (item.getItemId() == R.id.navigation_rent) {
-                    selectedFragment = new RentFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    if (firebaseAuth.getCurrentUser() == null) {
+                        openLoginDialog();
+                    } else {
+                        selectedFragment = new RentFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    }
                 }
                 if (item.getItemId() == R.id.navigation_schedule) {
                     selectedFragment = new ScheduleFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
                 }
                 if (item.getItemId() == R.id.navigation_chat) {
-                    selectedFragment = new ChatFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    if (firebaseAuth.getCurrentUser() == null) {
+                        openLoginDialog();
+                    } else {
+                        selectedFragment = new ChatFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    }
                 }
                 return true;
             }
@@ -150,20 +165,16 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment;
                 if (item.getItemId() == R.id.nav_home) {
-                    selectedFragment = new HomeFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(HomeFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_schedule) {
-                    selectedFragment = new ScheduleFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(ScheduleFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_contact) {
-                    selectedFragment = new ContactFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(ContactFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_about) {
@@ -171,75 +182,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnLoginNav) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    final AlertDialog alertDialog = builder.create();
-                    if (!alertDialog.isShowing()) {
-                        final LayoutInflater inflater = getLayoutInflater();
-                        final View dialogView = inflater.inflate(R.layout.dialog_login_layout, null);
-                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        alertDialog.setCancelable(true);
-                        alertDialog.setView(dialogView);
-
-                        TextInputLayout loginEmail = dialogView.findViewById(R.id.loginEmail);
-                        TextInputLayout loginPassword = dialogView.findViewById(R.id.loginPassword);
-
-                        btnLogin = dialogView.findViewById(R.id.btnLogin);
-                        btnLoginFacebook = dialogView.findViewById(R.id.btnLoginFacebook);
-                        btnLoginGoogle = dialogView.findViewById(R.id.btnLoginGoogle);
-
-                        btnLogin.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                btnLogin.setEnabled(false);
-                                if (loginEmail.getEditText().getText().toString().isEmpty()) {
-                                    loginEmail.setError("Please enter a valid email.");
-                                    btnLogin.setEnabled(true);
-                                }
-                                if (loginPassword.getEditText().getText().toString().isEmpty()) {
-                                    loginPassword.setError("Please enter your password.");
-                                    btnLogin.setEnabled(true);
-                                } else {
-                                    final ACProgressFlower dialog = new ACProgressFlower.Builder(MainActivity.this)
-                                            .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                                            .themeColor(getResources().getColor(R.color.colorAccent))
-                                            .text("Logging in...")
-                                            .fadeColor(Color.DKGRAY).build();
-                                    dialog.show();
-                                    firebaseAuth.signInWithEmailAndPassword(
-                                            loginEmail.getEditText().getText().toString(),
-                                            loginPassword.getEditText().getText().toString())
-                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                                    if (task.isSuccessful()) {
-                                                        dialog.dismiss();
-                                                        alertDialog.dismiss();
-                                                    }
-                                                }
-                                            });
-                                }
-                            }
-                        });
-
-                        btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent signInIntent = googleSignInClient.getSignInIntent();
-                                startActivityForResult(signInIntent, RC_SIGN_IN);
-                                alertDialog.dismiss();
-                            }
-                        });
-
-                        btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(MainActivity.this, "Facebook Login", Toast.LENGTH_LONG).show();
-                                alertDialog.dismiss();
-                            }
-                        });
-
-                        alertDialog.show();
-                    }
+                    drawerLayout.close();
+                    openLoginDialog();
                 }
                 if (item.getItemId() == R.id.btnRegisterNav) {
                     Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
@@ -252,6 +196,90 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void replaceFragment(Class fragmentClass) {
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_container, fragment)
+                .commit();
+    }
+
+    public void openLoginDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        final AlertDialog alertDialog = builder.create();
+        if (!alertDialog.isShowing()) {
+            final LayoutInflater inflater = getLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.dialog_login_layout, null);
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            alertDialog.setCancelable(true);
+            alertDialog.setView(dialogView);
+
+            TextInputLayout loginEmail = dialogView.findViewById(R.id.loginEmail);
+            TextInputLayout loginPassword = dialogView.findViewById(R.id.loginPassword);
+
+            btnLogin = dialogView.findViewById(R.id.btnLogin);
+            btnLoginFacebook = dialogView.findViewById(R.id.btnLoginFacebook);
+            btnLoginGoogle = dialogView.findViewById(R.id.btnLoginGoogle);
+
+            btnLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    btnLogin.setEnabled(false);
+                    if (loginEmail.getEditText().getText().toString().isEmpty()) {
+                        loginEmail.setError("Please enter a valid email.");
+                        btnLogin.setEnabled(true);
+                    }
+                    if (loginPassword.getEditText().getText().toString().isEmpty()) {
+                        loginPassword.setError("Please enter your password.");
+                        btnLogin.setEnabled(true);
+                    } else {
+                        final ACProgressFlower dialog = new ACProgressFlower.Builder(MainActivity.this)
+                                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                .themeColor(getResources().getColor(R.color.colorAccent))
+                                .text("Logging in...")
+                                .fadeColor(Color.DKGRAY).build();
+                        dialog.show();
+                        firebaseAuth.signInWithEmailAndPassword(
+                                loginEmail.getEditText().getText().toString(),
+                                loginPassword.getEditText().getText().toString())
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            dialog.dismiss();
+                                            alertDialog.dismiss();
+                                        }
+                                    }
+                                });
+                    }
+                }
+            });
+
+            btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent signInIntent = googleSignInClient.getSignInIntent();
+                    startActivityForResult(signInIntent, RC_SIGN_IN);
+                    alertDialog.dismiss();
+                }
+            });
+
+            btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MainActivity.this, "Facebook Login", Toast.LENGTH_LONG).show();
+                    alertDialog.dismiss();
+                }
+            });
+
+            alertDialog.show();
+        }
     }
 
     private void resetUi() {
@@ -324,6 +352,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
             } catch (ApiException e) {
+                Log.d("ERROR", e.getMessage());
                 Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
@@ -409,8 +438,7 @@ public class MainActivity extends AppCompatActivity {
         headerUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment selectedFragment = new ProfileFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                replaceFragment(ProfileFragment.class);
                 drawerLayout.close();
             }
         });
