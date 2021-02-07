@@ -1,7 +1,8 @@
 package com.opustech.bookvan.model;
 
 public class Booking {
-    String customer_name,
+    String customer_uid,
+            customer_name,
             customer_email,
             booking_contact_number,
             booking_location_from,
@@ -12,16 +13,8 @@ public class Booking {
             booking_count_child,
             booking_status;
 
-    public Booking(String customer_name,
-                   String customer_email,
-                   String booking_contact_number,
-                   String booking_location_from,
-                   String booking_location_to,
-                   String booking_schedule_date,
-                   String booking_schedule_time,
-                   String booking_count_adult,
-                   String booking_count_child,
-                   String booking_status) {
+    public Booking(String customer_uid, String customer_name, String customer_email, String booking_contact_number, String booking_location_from, String booking_location_to, String booking_schedule_date, String booking_schedule_time, String booking_count_adult, String booking_count_child, String booking_status) {
+        this.customer_uid = customer_uid;
         this.customer_name = customer_name;
         this.customer_email = customer_email;
         this.booking_contact_number = booking_contact_number;
@@ -32,6 +25,14 @@ public class Booking {
         this.booking_count_adult = booking_count_adult;
         this.booking_count_child = booking_count_child;
         this.booking_status = booking_status;
+    }
+
+    public String getCustomer_uid() {
+        return customer_uid;
+    }
+
+    public void setCustomer_uid(String customer_uid) {
+        this.customer_uid = customer_uid;
     }
 
     public String getCustomer_name() {
