@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,20 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
             }
         });
 
+        holder.btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(holder.itemView.getContext(), "Booking confirmed.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.btnCancelBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(holder.itemView.getContext(), "Booking cancelled.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @NonNull
@@ -104,10 +119,13 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
                 bookingCountAdult,
                 bookingCountChild;
         CardView bookingCard;
+        Button btnCancelBooking, btnConfirmBooking;
 
         public BookingHolder(View view) {
             super(view);
             bookingCard = view.findViewById(R.id.bookingCard);
+            btnCancelBooking = view.findViewById(R.id.btnCancelBooking);
+            btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
