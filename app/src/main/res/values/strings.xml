@@ -1,6 +1,7 @@
+
 <resources>
     <string name="app_name">BookVan</string>
-    <string name="app_tagline">BookVan</string>
+    <string name="app_tagitemne">BookVan</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">You are not logged in.</string>
@@ -28,6 +29,28 @@
     <string name="title_schedule">Schedule</string>
     <string name="title_chat">Chat</string>
 
-    <string name="default_web_client_secret">HQ2vZK-JQK3hgE2x3ZJdNy6B</string>
+    <string name="title_book_admin">Bookings</string>
+    <string name="title_rent_admin">Rentals</string>
+    <string name="title_schedule_admin">Schedule</string>
+
+    <string-array name="destinations">
+        <item>North - El Nido</item>
+        <item>North - Roxas</item>
+        <item>North - San Vicente</item>
+        <item>North - Taytay</item>
+        <item>Puerto Princesa City</item>
+        <item>South - Aborlan</item>
+        <item>South - Bataraza</item>
+        <item>South - Brooke\'s Point</item>
+        <item>South - Buitemluyan</item>
+        <item>South - Narra</item>
+        <item>South - Quezon</item>
+        <item>South - Rio Tuba</item>
+        <item>South - Rizal</item>
+        <item>South - Sicud</item>
+        <item>South - Sofronio Española</item>
+    </string-array>
+
+    <string name="default_web_citement_secret">HQ2vZK-JQK3hgE2x3ZJdNy6B</string>
 
 </resources>
