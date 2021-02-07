@@ -1,5 +1,8 @@
 package com.opustech.bookvan.ui.book;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,11 +27,18 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.opustech.bookvan.MainActivity;
 import com.opustech.bookvan.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class BookFragment extends Fragment {
 
@@ -86,6 +98,8 @@ public class BookFragment extends Fragment {
         bookingLocationToACT.setThreshold(1);
 
         fetchCustomerInfo();
+        initializeDatePicker();
+        initializeTimePicker();
 
         bookingCountAdult.getEditText().setText("1");
         bookingCountChild.getEditText().setText("0");
@@ -173,8 +187,16 @@ public class BookFragment extends Fragment {
         if (email.isEmpty()) {
             Toast.makeText(getActivity(), "Error: Please try again.", Toast.LENGTH_SHORT).show();
             fetchCustomerInfo();
+            btnBook.setEnabled(true);
         }
         else {
+            final ACProgressFlower dialog = new ACProgressFlower.Builder(getActivity())
+                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                    .themeColor(getResources().getColor(R.color.colorAccent))
+                    .text("Processing...")
+                    .fadeColor(Color.DKGRAY).build();
+            dialog.show();
+
             String customer_name = bookingCustomerName.getEditText().getText().toString();
             String customer_email = email;
             String booking_contact_number = bookingContactNumber.getEditText().getText().toString();
@@ -204,11 +226,57 @@ public class BookFragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<DocumentReference> task) {
                     if (task.isSuccessful()) {
+                        dialog.dismiss();
                         btnBook.setEnabled(true);
                     }
                 }
             });
         }
+    }
+
+    private void initializeTimePicker() {
+        final Calendar calendar = Calendar.getInstance();
+        TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                calendar.set(Calendar.HOUR_OF_DAY, i);
+                calendar.set(Calendar.MINUTE, i1);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                bookingScheduleTime.getEditText().setText(simpleDateFormat.format(calendar.getTime()));
+            }
+        };
+        bookingScheduleTime.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new TimePickerDialog(getActivity(), time,
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE), true)
+                        .show();
+            }
+        });
+    }
+
+    private void initializeDatePicker() {
+        final Calendar calendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yy", Locale.ENGLISH);
+                bookingScheduleDate.getEditText().setText(simpleDateFormat.format(calendar.getTime()));
+            }
+        };
+        bookingScheduleDate.getEditText().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getActivity(), date,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
     }
 
     private String getCurrentUserId() {
