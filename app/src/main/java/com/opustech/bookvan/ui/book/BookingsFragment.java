@@ -27,12 +27,12 @@ import com.opustech.bookvan.model.Booking;
 
 public class BookingsFragment extends Fragment {
 
-    private TextView bookingStatusNone;
-    private RecyclerView bookingList;
-
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference usersReference = firebaseFirestore.collection("users");
+
+    private TextView bookingStatusNone;
+    private RecyclerView bookingList;
 
     private AdapterBookingListRV adapterBookingListRV;
 
@@ -79,7 +79,6 @@ public class BookingsFragment extends Fragment {
                         }
                     }
                 });
-
         return root;
     }
 
