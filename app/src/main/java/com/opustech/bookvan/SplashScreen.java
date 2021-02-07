@@ -42,6 +42,20 @@ public class SplashScreen extends AppCompatActivity {
                     }
                 }, 3000);
             }
+            else {
+                firebaseAuth.signOut();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        finish();
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    }
+                }, 3000);
+            }
         }
         else {
             new Handler().postDelayed(new Runnable() {
