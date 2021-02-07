@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
 
     private int RC_SIGN_IN = 1;
+    
+    private String admin_uid = "btLTtUYnMuWvkrJspvKqZIirLce2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,33 +131,28 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment;
                 if (item.getItemId() == R.id.navigation_book) {
                     if (firebaseAuth.getCurrentUser() == null) {
                         openLoginDialog();
                     } else {
-                        selectedFragment = new BookFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                        replaceFragment(BookFragment.class);
                     }
                 }
                 if (item.getItemId() == R.id.navigation_rent) {
                     if (firebaseAuth.getCurrentUser() == null) {
                         openLoginDialog();
                     } else {
-                        selectedFragment = new RentFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                        replaceFragment(RentFragment.class);
                     }
                 }
                 if (item.getItemId() == R.id.navigation_schedule) {
-                    selectedFragment = new ScheduleFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(ScheduleFragment.class);
                 }
                 if (item.getItemId() == R.id.navigation_chat) {
                     if (firebaseAuth.getCurrentUser() == null) {
                         openLoginDialog();
                     } else {
-                        selectedFragment = new ChatFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                        replaceFragment(ChatFragment.class);
                     }
                 }
                 return true;
@@ -206,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_container, fragment)
+        fragmentManager.beginTransaction().replace(R.id.drawer_nav_host_fragment, fragment)
                 .commit();
     }
 
@@ -313,12 +310,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-            if (currentUserId.equals("btLTtUYnMuWvkrJspvKqZIirLce2")) {
+            if (currentUserId.equals(admin_uid)) {
                 Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+            if (currentUserId.isEmpty()) {
+                firebaseAuth.signOut();
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(getIntent());
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         }
@@ -414,7 +418,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkAdmin() {
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         String currentUserId = currentUser.getUid();
-        if (currentUserId.equals("btLTtUYnMuWvkrJspvKqZIirLce2")) {
+        if (currentUserId.equals(admin_uid)) {
             Intent intent = new Intent(MainActivity.this, AdminActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
