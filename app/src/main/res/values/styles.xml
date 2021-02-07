@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.BookVan" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -8,7 +8,7 @@
         <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
-    <style name="Theme.BookVan.NoActionBar">
+    <style name="Theme.AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
