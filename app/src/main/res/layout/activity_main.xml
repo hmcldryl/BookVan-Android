@@ -59,7 +59,7 @@
             android:background="?android:attr/windowBackground"
             app:itemIconTint="@color/colorPrimary"
             app:itemTextAppearanceActive="@style/ToolbarSubtitleTextAppearance"
-            app:itemTextColor="#121212"
+            app:itemTextColor="@color/colorPrimaryDark"
             app:menu="@menu/bottom_nav_menu" />
 
     </RelativeLayout>
@@ -72,6 +72,6 @@
         android:fitsSystemWindows="true"
         app:itemIconTint="@color/colorPrimary"
         app:itemTextAppearance="@style/ToolbarSubtitleTextAppearance"
-        app:itemTextColor="#121212"
+        app:itemTextColor="@color/colorPrimaryDark"
         app:menu="@menu/nav_drawer_header" />
 </androidx.drawerlayout.widget.DrawerLayout>
