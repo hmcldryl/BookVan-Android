@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,18 @@ import java.util.List;
 
 public class BookFragment extends Fragment {
 
+    TextInputLayout bookingCustomerName,
+            bookingCustomerEmail,
+            bookingContactNumber,
+            bookingLocationFrom,
+            bookingLocationTo,
+            bookingScheduleDate,
+            bookingScheduleTime,
+            bookingCountAdult,
+            bookingCountChild;
+
+    ImageButton addAdultCount, addChildCount, subtractAdultCount, subtractChildCount;
+
     private BookViewModel bookViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -32,8 +45,21 @@ public class BookFragment extends Fragment {
                 new ViewModelProvider(this).get(BookViewModel.class);
         View root = inflater.inflate(R.layout.fragment_book, container, false);
 
-        TextInputLayout bookingLocationFrom = root.findViewById(R.id.bookingLocationFrom);
-        TextInputLayout bookingLocationTo = root.findViewById(R.id.bookingLocationTo);
+        bookingCustomerName = root.findViewById(R.id.bookingCustomerName);
+        bookingCustomerEmail = root.findViewById(R.id.bookingCustomerEmail);
+        bookingContactNumber = root.findViewById(R.id.bookingContactNumber);
+        bookingLocationFrom = root.findViewById(R.id.bookingLocationFrom);
+        bookingLocationTo = root.findViewById(R.id.bookingLocationTo);
+        bookingScheduleDate = root.findViewById(R.id.bookingScheduleDate);
+        bookingScheduleTime = root.findViewById(R.id.bookingScheduleTime);
+        bookingCountAdult = root.findViewById(R.id.bookingCountAdult);
+        bookingCountChild = root.findViewById(R.id.bookingCountChild);
+
+        addAdultCount = root.findViewById(R.id.btnCountAdultAdd);
+        subtractAdultCount = root.findViewById(R.id.btnCountAdultSubtract);
+        addChildCount = root.findViewById(R.id.btnCountChildAdd);
+        subtractChildCount = root.findViewById(R.id.btnCountChildSubtract);
+
         AutoCompleteTextView bookingLocationFromACT = root.findViewById(R.id.bookingLocationFromACT);
         AutoCompleteTextView bookingLocationToACT = root.findViewById(R.id.bookingLocationToACT);
 
@@ -45,6 +71,50 @@ public class BookFragment extends Fragment {
         bookingLocationToACT.setAdapter(locationArrayAdapter);
         bookingLocationToACT.setThreshold(1);
 
+        bookingCountAdult.getEditText().setText("1");
+        bookingCountChild.getEditText().setText("0");
+
+        addAdultCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(bookingCountAdult.getEditText().getText().toString()) >= 0) {
+                    int count = Integer.parseInt(bookingCountAdult.getEditText().getText().toString()) + 1;
+                    bookingCountAdult.getEditText().setText(String.valueOf(count));
+                }
+            }
+        });
+
+        addChildCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(bookingCountChild.getEditText().getText().toString()) >= 0) {
+                    int count = Integer.parseInt(bookingCountChild.getEditText().getText().toString()) + 1;
+                    bookingCountChild.getEditText().setText(String.valueOf(count));
+                }
+            }
+        });
+
+        subtractAdultCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(bookingCountAdult.getEditText().getText().toString()) > 0) {
+                    int count = Integer.parseInt(bookingCountAdult.getEditText().getText().toString()) - 1;
+                    bookingCountAdult.getEditText().setText(String.valueOf(count));
+                }
+            }
+        });
+
+        subtractChildCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(bookingCountChild.getEditText().getText().toString()) > 0) {
+                    int count = Integer.parseInt(bookingCountChild.getEditText().getText().toString()) - 1;
+                    bookingCountChild.getEditText().setText(String.valueOf(count));
+                }
+            }
+        });
+
         return root;
     }
+
 }
