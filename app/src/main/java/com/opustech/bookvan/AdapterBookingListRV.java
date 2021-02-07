@@ -59,7 +59,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
         holder.bookingCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                
             }
         });
 
