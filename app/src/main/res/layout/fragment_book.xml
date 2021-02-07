@@ -26,8 +26,6 @@
                 android:layout_marginBottom="16dp"
                 android:gravity="center"
                 android:hint="Name"
-                app:helperText="Required"
-                app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_register_fullname">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -46,8 +44,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="Contact Number"
-                app:helperText="Required"
-                app:helperTextEnabled="true"
                 app:startIconDrawable="@drawable/ic_input_contact_num">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -77,8 +73,6 @@
                     android:layout_weight="5"
                     android:hint="From"
                     android:inputType="none"
-                    app:helperText="Required"
-                    app:helperTextEnabled="true"
                     app:startIconDrawable="@drawable/ic_input_location">
 
                     <AutoCompleteTextView
@@ -99,8 +93,6 @@
                     android:layout_weight="5"
                     android:hint="To"
                     android:inputType="none"
-                    app:helperText="Required"
-                    app:helperTextEnabled="true"
                     app:startIconDrawable="@drawable/ic_input_location">
 
                     <AutoCompleteTextView
@@ -128,9 +120,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="5"
+                    android:focusable="false"
                     android:hint="Date"
-                    app:helperText="Required"
-                    app:helperTextEnabled="true"
                     app:startIconDrawable="@drawable/ic_input_calendar">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -148,9 +139,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="5"
+                    android:focusable="false"
                     android:hint="Time"
-                    app:helperText="Required"
-                    app:helperTextEnabled="true"
                     app:startIconDrawable="@drawable/ic_input_clock">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -313,27 +303,47 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bookingCheckoutBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/background_checkout"
-        android:elevation="8dp"
-        android:gravity="end"
-        android:orientation="horizontal">
+        android:elevation="8dp">
+
+        <TextView
+            android:id="@+id/textTotal"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:fontFamily="@font/lato_black"
+            android:text="Total:"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <TextView
+            android:id="@+id/checkOutTotal"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@+id/textTotal"
+            android:fontFamily="@font/lato_bold"
+            android:text="P000.00"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnConfirmBooking"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_margin="16dp"
             android:fontFamily="@font/lato_black"
             android:text="BOOK"
             android:textColor="@color/colorPrimary"
             app:backgroundTint="#FFFFFF" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
