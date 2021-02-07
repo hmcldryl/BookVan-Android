@@ -11,9 +11,10 @@ public class Booking {
             booking_schedule_time,
             booking_count_adult,
             booking_count_child,
+            booking_price,
             booking_status;
 
-    public Booking(String customer_uid, String customer_name, String customer_email, String booking_contact_number, String booking_location_from, String booking_location_to, String booking_schedule_date, String booking_schedule_time, String booking_count_adult, String booking_count_child, String booking_status) {
+    public Booking(String customer_uid, String customer_name, String customer_email, String booking_contact_number, String booking_location_from, String booking_location_to, String booking_schedule_date, String booking_schedule_time, String booking_count_adult, String booking_count_child, String booking_price, String booking_status) {
         this.customer_uid = customer_uid;
         this.customer_name = customer_name;
         this.customer_email = customer_email;
@@ -24,6 +25,7 @@ public class Booking {
         this.booking_schedule_time = booking_schedule_time;
         this.booking_count_adult = booking_count_adult;
         this.booking_count_child = booking_count_child;
+        this.booking_price = booking_price;
         this.booking_status = booking_status;
     }
 
@@ -105,6 +107,14 @@ public class Booking {
 
     public void setBooking_count_child(String booking_count_child) {
         this.booking_count_child = booking_count_child;
+    }
+
+    public String getBooking_price() {
+        return booking_price;
+    }
+
+    public void setBooking_price(String booking_price) {
+        this.booking_price = booking_price;
     }
 
     public String getBooking_status() {
