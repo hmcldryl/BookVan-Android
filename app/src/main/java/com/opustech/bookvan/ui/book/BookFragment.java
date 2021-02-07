@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,10 +31,10 @@ import java.util.HashMap;
 public class BookFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference usersReference = firebaseFirestore.collection("users");
 
-    TextInputLayout bookingCustomerName,
+    private TextInputLayout bookingCustomerName,
             bookingContactNumber,
             bookingLocationFrom,
             bookingLocationTo,
@@ -41,11 +42,13 @@ public class BookFragment extends Fragment {
             bookingScheduleTime,
             bookingCountAdult,
             bookingCountChild;
-    ImageButton addAdultCount,
+    private ImageButton addAdultCount,
             addChildCount,
             subtractAdultCount,
             subtractChildCount;
-    Button btnBook;
+    private Button btnBook;
+
+    private String email, name;
 
     private BookViewModel bookViewModel;
 
@@ -82,7 +85,7 @@ public class BookFragment extends Fragment {
         bookingLocationToACT.setAdapter(locationArrayAdapter);
         bookingLocationToACT.setThreshold(1);
 
-        inputCustomerName();
+        fetchCustomerInfo();
 
         bookingCountAdult.getEditText().setText("1");
         bookingCountChild.getEditText().setText("0");
@@ -167,33 +170,41 @@ public class BookFragment extends Fragment {
             bookingCountAdult.getEditText().setError("Must have at least 1 adult passenger.");
             btnBook.setEnabled(true);
         }
+        if (email.isEmpty()) {
+            Toast.makeText(getActivity(), "Error: Please try again.", Toast.LENGTH_SHORT).show();
+            fetchCustomerInfo();
+        }
         else {
-            FirebaseFirestore.getInstance()
-                    .collection("users")
-                    .document(getCurrentUserId())
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            String customer_name = bookingCustomerName.getEditText().getText().toString();
+            String customer_email = email;
+            String booking_contact_number = bookingContactNumber.getEditText().getText().toString();
+            String booking_location_from = bookingLocationFrom.getEditText().getText().toString();
+            String booking_location_to = bookingLocationTo.getEditText().getText().toString();
+            String booking_schedule_date = bookingScheduleDate.getEditText().getText().toString();
+            String booking_schedule_time = bookingScheduleTime.getEditText().getText().toString();
+            String booking_count_adult = bookingCountAdult.getEditText().getText().toString();
+            String booking_count_child = bookingCountChild.getEditText().getText().toString();
+
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put(getCurrentUserId(), "customer_uid");
+            hashMap.put(customer_name, "customer_name");
+            hashMap.put(customer_email, "customer_email");
+            hashMap.put(booking_contact_number, "booking_contact_number");
+            hashMap.put(booking_location_from, "booking_location_from");
+            hashMap.put(booking_location_to, "booking_location_to");
+            hashMap.put(booking_schedule_date, "booking_schedule_date");
+            hashMap.put(booking_schedule_time, "booking_schedule_time");
+            hashMap.put(booking_count_adult, "booking_count_adult");
+            hashMap.put(booking_count_child, "booking_count_child");
+            hashMap.put("pending", "booking_status");
+
+            usersReference.document("btLTtUYnMuWvkrJspvKqZIirLce2")
+                    .collection("pending_bookings")
+                    .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                public void onComplete(@NonNull Task<DocumentReference> task) {
                     if (task.isSuccessful()) {
-                        String customer_name = bookingCustomerName.getEditText().getText().toString();
-                        String customer_email = task.getResult().getString("email");
-                        String booking_contact_number = bookingContactNumber.getEditText().getText().toString();
-                        String booking_location_from = bookingLocationFrom.getEditText().getText().toString();
-                        String booking_location_to = bookingLocationTo.getEditText().getText().toString();
-                        String booking_schedule_date = bookingScheduleDate.getEditText().getText().toString();
-                        String booking_schedule_time = bookingScheduleTime.getEditText().getText().toString();
-                        String booking_count_adult = bookingCountAdult.getEditText().getText().toString();
-                        String booking_count_child = bookingCountChild.getEditText().getText().toString();
-                        uploadBooking(getCurrentUserId(),
-                                customer_name,
-                                customer_email,
-                                booking_contact_number,
-                                booking_location_from,
-                                booking_location_to,
-                                booking_schedule_date,
-                                booking_schedule_time,
-                                booking_count_adult,
-                                booking_count_child);
+                        btnBook.setEnabled(true);
                     }
                 }
             });
@@ -204,62 +215,20 @@ public class BookFragment extends Fragment {
         return firebaseAuth.getCurrentUser().getUid();
     }
 
-    private void inputCustomerName() {
-        FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(getCurrentUserId())
+    private void fetchCustomerInfo() {
+        Toast.makeText(getActivity(), "Fetching info...", Toast.LENGTH_SHORT).show();
+        firebaseFirestore.document(getCurrentUserId())
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    String name = task.getResult().getString("name");
+                    name = task.getResult().getString("name");
+                    email = task.getResult().getString("email");
                     bookingCustomerName.getEditText().setText(name);
-                    if (!bookingCustomerName.getEditText().getText().toString().isEmpty()) {
-                        bookingCustomerName.getEditText().setEnabled(false);
-                    }
+                    Toast.makeText(getActivity(), "Fetching info successful.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-    }
-
-    private void uploadBooking(String customerUid,
-                               String customerName,
-                               String customerEmail,
-                               String customerContactNumber,
-                               String bookingLocationFrom,
-                               String bookingLocationTo,
-                               String bookingScheduleDate,
-                               String bookingScheduleTime,
-                               String bookingCountAdult,
-                               String bookingCountChild) {
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put(customerUid, "customer_uid");
-        hashMap.put(customerName, "customer_name");
-        hashMap.put(customerEmail, "customer_email");
-        hashMap.put(customerContactNumber, "booking_contact_number");
-        hashMap.put(bookingLocationFrom, "booking_location_from");
-        hashMap.put(bookingLocationTo, "booking_location_to");
-        hashMap.put(bookingScheduleDate, "booking_schedule_date");
-        hashMap.put(bookingScheduleTime, "booking_schedule_time");
-        hashMap.put(bookingCountAdult, "booking_count_adult");
-        hashMap.put(bookingCountChild, "booking_count_child");
-        hashMap.put("pending", "booking_status");
-
-        FirebaseFirestore.getInstance()
-                .collection("users")
-                .document("btLTtUYnMuWvkrJspvKqZIirLce2")
-                .collection("pending_bookings")
-                .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if (task.isSuccessful()) {
-                    btnBook.setEnabled(true);
-                }
-            }
-        });
-
-
     }
 
 }
