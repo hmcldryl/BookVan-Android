@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -59,10 +60,13 @@ public class BookFragment extends Fragment {
             subtractAdultCount,
             subtractChildCount;
     private Button btnBook;
+    private TextView checkoutTotal;
 
     private String email, name;
 
     private BookViewModel bookViewModel;
+
+    private String admin_uid = "btLTtUYnMuWvkrJspvKqZIirLce2";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +90,8 @@ public class BookFragment extends Fragment {
 
         btnBook = root.findViewById(R.id.btnConfirmBooking);
 
+        checkoutTotal = root.findViewById(R.id.checkoutTotal);
+
         AutoCompleteTextView bookingLocationFromACT = root.findViewById(R.id.bookingLocationFromACT);
         AutoCompleteTextView bookingLocationToACT = root.findViewById(R.id.bookingLocationToACT);
 
@@ -103,6 +109,8 @@ public class BookFragment extends Fragment {
 
         bookingCountAdult.getEditText().setText("1");
         bookingCountChild.getEditText().setText("0");
+
+        checkoutTotal.setText("170.00");
 
         addAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,8 +196,7 @@ public class BookFragment extends Fragment {
             Toast.makeText(getActivity(), "Error: Please try again.", Toast.LENGTH_SHORT).show();
             fetchCustomerInfo();
             btnBook.setEnabled(true);
-        }
-        else {
+        } else {
             final ACProgressFlower dialog = new ACProgressFlower.Builder(getActivity())
                     .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                     .themeColor(getResources().getColor(R.color.colorAccent))
@@ -206,6 +213,7 @@ public class BookFragment extends Fragment {
             String booking_schedule_time = bookingScheduleTime.getEditText().getText().toString();
             String booking_count_adult = bookingCountAdult.getEditText().getText().toString();
             String booking_count_child = bookingCountChild.getEditText().getText().toString();
+            String booking_price = checkoutTotal.getText().toString();
 
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put(getCurrentUserId(), "customer_uid");
@@ -218,15 +226,17 @@ public class BookFragment extends Fragment {
             hashMap.put(booking_schedule_time, "booking_schedule_time");
             hashMap.put(booking_count_adult, "booking_count_adult");
             hashMap.put(booking_count_child, "booking_count_child");
+            hashMap.put(booking_price, "booking_price");
             hashMap.put("pending", "booking_status");
 
-            usersReference.document("btLTtUYnMuWvkrJspvKqZIirLce2")
+            usersReference.document(admin_uid)
                     .collection("pending_bookings")
                     .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentReference> task) {
                     if (task.isSuccessful()) {
                         dialog.dismiss();
+                        Toast.makeText(getActivity(), "Booking success!", Toast.LENGTH_SHORT).show();
                         btnBook.setEnabled(true);
                     }
                 }
@@ -285,7 +295,7 @@ public class BookFragment extends Fragment {
 
     private void fetchCustomerInfo() {
         Toast.makeText(getActivity(), "Fetching info...", Toast.LENGTH_SHORT).show();
-        firebaseFirestore.document(getCurrentUserId())
+        usersReference.document(getCurrentUserId())
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
