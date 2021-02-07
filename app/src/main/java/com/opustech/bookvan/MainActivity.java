@@ -56,6 +56,7 @@ import com.opustech.bookvan.ui.book.BookFragment;
 import com.opustech.bookvan.ui.chat.ChatFragment;
 import com.opustech.bookvan.ui.contact.ContactFragment;
 import com.opustech.bookvan.ui.home.HomeFragment;
+import com.opustech.bookvan.ui.profile.ProfileFragment;
 import com.opustech.bookvan.ui.rent.RentFragment;
 import com.opustech.bookvan.ui.schedule.ScheduleFragment;
 
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin, btnLoginFacebook, btnLoginGoogle;
     TextView headerUserName, headerUserEmail;
     NavigationView navigationView;
+    DrawerLayout drawerLayout;
 
     int RC_SIGN_IN = 1;
 
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
@@ -252,12 +254,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity, menu);
-        return true;
-    }
-
     private void resetUi() {
         finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -289,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-            if (!currentUserId.isEmpty() && currentUserId.equals("btLTtUYnMuWvkrJspvKqZIirLce2")) {
+            if (currentUserId.equals("btLTtUYnMuWvkrJspvKqZIirLce2")) {
                 Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 finish();
@@ -297,9 +293,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
-        }
-        else {
-            resetUi();
         }
     }
 
@@ -323,7 +316,6 @@ public class MainActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     dialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Google login successful.", Toast.LENGTH_LONG).show();
                                     uploadData(account);
                                 } else {
                                     dialog.dismiss();
@@ -359,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 dialog.dismiss();
+                                checkAdmin();
                                 retrieveUserData();
                             } else {
                                 dialog.dismiss();
@@ -389,6 +382,19 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void checkAdmin() {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        String currentUserId = currentUser.getUid();
+        if (currentUserId.equals("btLTtUYnMuWvkrJspvKqZIirLce2")) {
+            Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
+    }
+
     private void updateUi(String name, String email, String photo_url) {
         if (navigationView.getMenu().findItem(R.id.btnLoginNav).isVisible() && navigationView.getMenu().findItem(R.id.btnRegisterNav).isVisible() && !navigationView.getMenu().findItem(R.id.btnLogout).isVisible()) {
             navigationView.getMenu().findItem(R.id.btnLoginNav).setVisible(false);
@@ -403,7 +409,9 @@ public class MainActivity extends AppCompatActivity {
         headerUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Profile", Toast.LENGTH_LONG).show();
+                Fragment selectedFragment = new ProfileFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                drawerLayout.close();
             }
         });
     }
