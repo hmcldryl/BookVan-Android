@@ -38,7 +38,7 @@ public class BookingsFragment extends Fragment {
 
     private BookingsViewModel bookingsViewModel;
 
-    private String currentUserID;
+    private String admin_uid = "btLTtUYnMuWvkrJspvKqZIirLce2";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,11 +46,12 @@ public class BookingsFragment extends Fragment {
                 new ViewModelProvider(this).get(BookingsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bookings, container, false);
 
-        currentUserID = firebaseAuth.getCurrentUser().getUid();
+        //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
-        Query query = usersReference.document(currentUserID)
-                .collection("events")
-                .orderBy("date", Query.Direction.DESCENDING);
+        Query query = usersReference.document(admin_uid)
+                .collection("pending_bookings")
+                .orderBy("booking_schedule_date", Query.Direction.DESCENDING)
+                .orderBy("booking_schedule_time", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
@@ -64,7 +65,7 @@ public class BookingsFragment extends Fragment {
         bookingList.setLayoutManager(new LinearLayoutManager(getActivity()));
         bookingList.setAdapter(adapterBookingListRV);
 
-        usersReference.document(currentUserID).collection("events")
+        usersReference.document(admin_uid).collection("pending_bookings")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
