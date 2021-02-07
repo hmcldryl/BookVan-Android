@@ -47,6 +47,8 @@ dependencies {
     implementation 'cc.cloudist.acplibrary:library:1.2.1'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation 'com.google.firebase:firebase-firestore:22.0.2'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
+    //implementation 'com.github.ChilliBits:splash-screen:1.1.6'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
