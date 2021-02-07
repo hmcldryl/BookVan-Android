@@ -142,6 +142,18 @@
                             android:textAppearance="?attr/textAppearanceBody2"
                             android:textColor="@color/colorPrimaryDark" />
 
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_black"
+                            android:text="Total:"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="@color/colorPrimaryDark" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -222,6 +234,18 @@
                             android:fontFamily="@font/lato"
                             android:text="child_count"
                             android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="@color/colorPrimaryDark" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="P000.00"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
                             android:textColor="@color/colorPrimaryDark" />
 
                     </LinearLayout>
