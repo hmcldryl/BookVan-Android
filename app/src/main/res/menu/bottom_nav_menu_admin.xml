@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_book"
+        android:icon="@drawable/ic_menu_book"
+        android:title="@string/title_book_admin" />
+
+    <item
+        android:id="@+id/navigation_rent"
+        android:icon="@drawable/ic_menu_rent"
+        android:title="@string/title_rent_admin" />
+
+    <item
+        android:id="@+id/navigation_schedule"
+        android:icon="@drawable/ic_menu_schedule"
+        android:title="@string/title_schedule_admin" />
+
+</menu>
