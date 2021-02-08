@@ -19,7 +19,7 @@ public class ProfileFragment extends Fragment {
             ViewGroup container, Bundle savedInstanceState) {
         profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_book, container, false);
+        View root = inflater.inflate(R.layout.fragment_profile, container, false);
         return root;
     }
 }
