@@ -107,10 +107,23 @@ public class RegisterActivity extends AppCompatActivity {
                                                     public void onSuccess(DocumentReference documentReference) {
                                                         dialog.dismiss();
                                                         btnRegister.setEnabled(true);
-                                                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                        startActivity(intent);
-                                                        finish();
+                                                        firebaseAuth.signInWithEmailAndPassword(
+                                                                registerEmail.getEditText().getText().toString(),
+                                                                registerPassword.getEditText().getText().toString())
+                                                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            dialog.dismiss();
+                                                                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                            finish();
+                                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                                            startActivity(intent);
+                                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                                        }
+                                                                    }
+                                                                });
                                                     }
                                                 }).addOnFailureListener(new OnFailureListener() {
                                             @Override
