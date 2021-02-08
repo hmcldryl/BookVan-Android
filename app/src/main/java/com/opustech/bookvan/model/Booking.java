@@ -14,6 +14,9 @@ public class Booking {
             booking_price,
             booking_status;
 
+    public Booking() {
+    }
+
     public Booking(String customer_uid, String customer_name, String customer_email, String booking_contact_number, String booking_location_from, String booking_location_to, String booking_schedule_date, String booking_schedule_time, String booking_count_adult, String booking_count_child, String booking_price, String booking_status) {
         this.customer_uid = customer_uid;
         this.customer_name = customer_name;
