@@ -22,7 +22,7 @@
             android:fontFamily="@font/lato_black"
             android:text="Register"
             android:textAlignment="center"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="26sp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -33,11 +33,13 @@
             android:hint="@string/register_name"
             app:boxStrokeColor="#FFFFFF"
             app:hintTextColor="#FFFFFF"
-            app:startIconDrawable="@drawable/ic_register_fullname">
+            app:startIconDrawable="@drawable/ic_input_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,11 +51,33 @@
             android:hint="@string/register_email"
             app:boxStrokeColor="#FFFFFF"
             app:hintTextColor="#FFFFFF"
-            app:startIconDrawable="@drawable/ic_register_email">
+            app:startIconDrawable="@drawable/ic_input_email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/registerContactNumber"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/register_contact_number"
+            app:boxStrokeColor="#FFFFFF"
+            app:hintTextColor="#FFFFFF"
+            app:startIconDrawable="@drawable/ic_input_contact_num">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,11 +90,14 @@
             app:boxStrokeColor="#FFFFFF"
             app:endIconMode="password_toggle"
             app:hintTextColor="#FFFFFF"
-            app:startIconDrawable="@drawable/ic_register_password">
+            app:startIconDrawable="@drawable/ic_input_password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:inputType="textPassword"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,11 +110,14 @@
             app:boxStrokeColor="#FFFFFF"
             app:endIconMode="password_toggle"
             app:hintTextColor="#FFFFFF"
-            app:startIconDrawable="@drawable/ic_register_password">
+            app:startIconDrawable="@drawable/ic_input_password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:inputType="textPassword"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,7 +135,7 @@
             android:paddingEnd="40dp"
             android:text="@string/registerText"
             android:textAppearance="@style/ButtonTextAppearance"
-            android:textColor="#121212" />
+            android:textColor="@color/colorPrimaryDark" />
 
     </LinearLayout>
 
