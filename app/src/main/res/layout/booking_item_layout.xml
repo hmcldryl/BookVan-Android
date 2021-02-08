@@ -30,6 +30,7 @@
                     android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/customerPhoto"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_marginEnd="10dp"
@@ -256,7 +257,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="000.00"
+                                android:text=""
                                 android:textAppearance="?attr/textAppearanceHeadline6"
                                 android:textColor="@color/colorPrimaryDark" />
                         </LinearLayout>
