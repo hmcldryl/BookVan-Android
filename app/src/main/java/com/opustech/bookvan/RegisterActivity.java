@@ -25,6 +25,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -35,112 +37,139 @@ import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference usersReference;
 
-    Button btnRegister;
-    TextInputLayout registerName, registerEmail, registerPassword, registerConfirmPassword;
+    private Button btnRegister;
+    private TextInputLayout registerName, registerEmail, registerContactNumber, registerPassword, registerConfirmPassword;
+
+    private String currentUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        usersReference = firebaseFirestore.collection("users");
 
         btnRegister = findViewById(R.id.btnRegister);
 
         registerName = findViewById(R.id.registerFullName);
         registerEmail = findViewById(R.id.registerEmail);
+        registerContactNumber = findViewById(R.id.registerContactNumber);
         registerPassword = findViewById(R.id.registerPassword);
         registerConfirmPassword = findViewById(R.id.registerConfirmPassword);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnRegister.setEnabled(false);
-                final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
-                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                        .themeColor(getResources().getColor(R.color.colorAccent))
-                        .text("Processing...")
-                        .fadeColor(Color.DKGRAY).build();
-                dialog.show();
-                if (registerName.getEditText().getText().toString().isEmpty()) {
-                    dialog.dismiss();
-                    registerName.setError("Please enter your name.");
-                    btnRegister.setEnabled(true);
-                }
-                if (registerEmail.getEditText().getText().toString().isEmpty()) {
-                    dialog.dismiss();
-                    registerEmail.setError("Please enter your email.");
-                    btnRegister.setEnabled(true);
-                }
-                if (registerPassword.getEditText().getText().toString().isEmpty()) {
-                    dialog.dismiss();
-                    registerPassword.setError("Please enter your password.");
-                    btnRegister.setEnabled(true);
-                }
-                if (registerConfirmPassword.getEditText().getText().toString().isEmpty()) {
-                    dialog.dismiss();
-                    registerConfirmPassword.setError("Please confirm your password.");
-                    btnRegister.setEnabled(true);
-                }
-                if (!registerConfirmPassword.getEditText().getText().toString().equals(registerPassword.getEditText().getText().toString())) {
-                    dialog.dismiss();
-                    registerPassword.setError("Passwords does not match.");
-                    registerConfirmPassword.setError("Passwords does not match.");
-                    btnRegister.setEnabled(true);
-                }
-                else {
-                    firebaseAuth.createUserWithEmailAndPassword(registerEmail.getEditText().getText().toString().trim(), registerPassword.getEditText().getText().toString().trim())
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        HashMap<String, Object> user = new HashMap<>();
-                                        user.put("name", registerName.getEditText().getText().toString());
-                                        user.put("email", registerEmail.getEditText().getText().toString());
-                                        db.collection("users")
-                                                .add(user)
-                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                    @Override
-                                                    public void onSuccess(DocumentReference documentReference) {
-                                                        dialog.dismiss();
-                                                        btnRegister.setEnabled(true);
-                                                        firebaseAuth.signInWithEmailAndPassword(
-                                                                registerEmail.getEditText().getText().toString(),
-                                                                registerPassword.getEditText().getText().toString())
-                                                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                                    @Override
-                                                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                                                        if (task.isSuccessful()) {
-                                                                            dialog.dismiss();
-                                                                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                            finish();
-                                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                            startActivity(intent);
-                                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                        }
-                                                                    }
-                                                                });
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(RegisterActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                    }
-                                    else {
-                                        dialog.dismiss();
-                                        btnRegister.setEnabled(true);
-                                    }
-                                }
-                            });
-                }
+                onRegister();
             }
         });
+    }
+
+    private void onRegister() {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.colorAccent))
+                .text("Processing...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+
+        String name = registerName.getEditText().getText().toString();
+        String email = registerEmail.getEditText().getText().toString().trim();
+        String contact_number = registerContactNumber.getEditText().getText().toString().trim();
+        String password = registerPassword.getEditText().getText().toString().trim();
+        String confirm_password = registerConfirmPassword.getEditText().getText().toString().trim();
+
+        if (name.isEmpty()) {
+            dialog.dismiss();
+            registerName.setError("Please enter your name.");
+        }
+        else if (email.isEmpty()) {
+            dialog.dismiss();
+            registerEmail.setError("Please enter your email.");
+        }
+        else if (contact_number.isEmpty()) {
+            dialog.dismiss();
+            registerEmail.setError("Please enter your email.");
+        }
+        else if (password.isEmpty()) {
+            dialog.dismiss();
+            registerPassword.setError("Please enter your password.");
+        }
+        else if (confirm_password.isEmpty()) {
+            dialog.dismiss();
+            registerConfirmPassword.setError("Please confirm your password.");
+        }
+        else if (!confirm_password.equals(password)) {
+            dialog.dismiss();
+            registerPassword.setError("Passwords does not match.");
+            registerConfirmPassword.setError("Passwords does not match.");
+        }
+        else {
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                uploadInfo(name, email, contact_number);
+                            }
+                            else {
+                                Toast.makeText(RegisterActivity.this, "Register failed. Please try again.", Toast.LENGTH_LONG).show();
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+        }
+
+    }
+
+    private void uploadInfo(String name, String email, String contact_number) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .text("Uploading info...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+
+        currentUserID = firebaseAuth.getCurrentUser().getUid();
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("name", name);
+        hashMap.put("email", email);
+        hashMap.put("contact_number", contact_number);
+
+        usersReference.document(currentUserID)
+                .set(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        btnRegister.setVisibility(View.VISIBLE);
+                        dialog.dismiss();
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            startMainActivity();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        btnRegister.setVisibility(View.VISIBLE);
+                        dialog.dismiss();
+                        Toast.makeText(RegisterActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    private void startMainActivity() {
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
 
