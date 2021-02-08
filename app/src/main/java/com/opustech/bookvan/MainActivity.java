@@ -251,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             dialog.dismiss();
                                             alertDialog.dismiss();
+                                            retrieveUserData();
                                         }
                                     }
                                 });
