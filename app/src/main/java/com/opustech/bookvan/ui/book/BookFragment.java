@@ -91,6 +91,7 @@ public class BookFragment extends Fragment {
         btnBook = root.findViewById(R.id.btnConfirmBooking);
 
         checkoutTotal = root.findViewById(R.id.checkoutTotal);
+        checkoutTotal.setText("170.00");
 
         AutoCompleteTextView bookingLocationFromACT = root.findViewById(R.id.bookingLocationFromACT);
         AutoCompleteTextView bookingLocationToACT = root.findViewById(R.id.bookingLocationToACT);
@@ -156,7 +157,6 @@ public class BookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 inputCheck();
-                btnBook.setEnabled(false);
             }
         });
 
@@ -166,36 +166,29 @@ public class BookFragment extends Fragment {
     private void inputCheck() {
         if (bookingCustomerName.getEditText().getText().toString().isEmpty()) {
             bookingCustomerName.getEditText().setError("Please enter your name.");
-            btnBook.setEnabled(true);
         }
-        if (bookingContactNumber.getEditText().getText().toString().isEmpty()) {
+        else if (bookingContactNumber.getEditText().getText().toString().isEmpty()) {
             bookingContactNumber.getEditText().setError("Please enter a contact number.");
-            btnBook.setEnabled(true);
         }
-        if (bookingLocationFrom.getEditText().getText().toString().isEmpty()) {
+        else if (bookingLocationFrom.getEditText().getText().toString().isEmpty()) {
             bookingLocationFrom.getEditText().setError("Please enter your starting location.");
-            btnBook.setEnabled(true);
         }
-        if (bookingLocationTo.getEditText().getText().toString().isEmpty()) {
+        else if (bookingLocationTo.getEditText().getText().toString().isEmpty()) {
             bookingLocationTo.getEditText().setError("Please enter the location you wish to go.");
-            btnBook.setEnabled(true);
+
         }
-        if (bookingScheduleDate.getEditText().getText().toString().isEmpty()) {
+        else if (bookingScheduleDate.getEditText().getText().toString().isEmpty()) {
             bookingScheduleDate.getEditText().setError("Please enter desired schedule date.");
-            btnBook.setEnabled(true);
         }
-        if (bookingScheduleTime.getEditText().getText().toString().isEmpty()) {
+        else if (bookingScheduleTime.getEditText().getText().toString().isEmpty()) {
             bookingScheduleTime.getEditText().setError("Please enter desired schedule time.");
-            btnBook.setEnabled(true);
         }
-        if (Integer.parseInt(bookingCountAdult.getEditText().getText().toString()) == 0 && Integer.parseInt(bookingCountChild.getEditText().getText().toString()) == 0) {
+        else if (Integer.parseInt(bookingCountAdult.getEditText().getText().toString()) == 0 && Integer.parseInt(bookingCountChild.getEditText().getText().toString()) == 0) {
             bookingCountAdult.getEditText().setError("Must have at least 1 adult passenger.");
-            btnBook.setEnabled(true);
         }
-        if (email.isEmpty()) {
+        else if (email.isEmpty()) {
             Toast.makeText(getActivity(), "Error: Please try again.", Toast.LENGTH_SHORT).show();
             fetchCustomerInfo();
-            btnBook.setEnabled(true);
         } else {
             final ACProgressFlower dialog = new ACProgressFlower.Builder(getActivity())
                     .direction(ACProgressConstant.DIRECT_CLOCKWISE)
@@ -237,7 +230,6 @@ public class BookFragment extends Fragment {
                     if (task.isSuccessful()) {
                         dialog.dismiss();
                         Toast.makeText(getActivity(), "Booking success!", Toast.LENGTH_SHORT).show();
-                        btnBook.setEnabled(true);
                     }
                 }
             });
