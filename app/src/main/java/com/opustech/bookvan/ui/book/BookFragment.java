@@ -216,18 +216,18 @@ public class BookFragment extends Fragment {
             String booking_price = checkoutTotal.getText().toString();
 
             HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put(getCurrentUserId(), "customer_uid");
-            hashMap.put(customer_name, "customer_name");
-            hashMap.put(customer_email, "customer_email");
-            hashMap.put(booking_contact_number, "booking_contact_number");
-            hashMap.put(booking_location_from, "booking_location_from");
-            hashMap.put(booking_location_to, "booking_location_to");
-            hashMap.put(booking_schedule_date, "booking_schedule_date");
-            hashMap.put(booking_schedule_time, "booking_schedule_time");
-            hashMap.put(booking_count_adult, "booking_count_adult");
-            hashMap.put(booking_count_child, "booking_count_child");
-            hashMap.put(booking_price, "booking_price");
-            hashMap.put("pending", "booking_status");
+            hashMap.put("customer_uid", getCurrentUserId());
+            hashMap.put("customer_name", customer_name);
+            hashMap.put("customer_email", customer_email);
+            hashMap.put("booking_contact_number", booking_contact_number);
+            hashMap.put("booking_location_from", booking_location_from);
+            hashMap.put("booking_location_to", booking_location_to);
+            hashMap.put("booking_schedule_date", booking_schedule_date);
+            hashMap.put("booking_schedule_time", booking_schedule_time);
+            hashMap.put("booking_count_adult", booking_count_adult);
+            hashMap.put("booking_count_child", booking_count_child);
+            hashMap.put("booking_price", booking_price);
+            hashMap.put("booking_status", "pending");
 
             usersReference.document(admin_uid)
                     .collection("pending_bookings")
