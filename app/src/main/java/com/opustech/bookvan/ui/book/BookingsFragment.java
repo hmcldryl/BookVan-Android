@@ -49,9 +49,7 @@ public class BookingsFragment extends Fragment {
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
         Query query = usersReference.document(admin_uid)
-                .collection("pending_bookings")
-                .orderBy("booking_schedule_date", Query.Direction.DESCENDING)
-                .orderBy("booking_schedule_time", Query.Direction.DESCENDING);
+                .collection("pending_bookings").orderBy("");
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
