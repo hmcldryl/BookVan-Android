@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (firebaseAuth.getCurrentUser() == null) {
-                    ((MainActivity)getActivity()).openLoginDialog();
+                    ((MainActivity)getActivity()).displayLoginDialog();
                 }
                 else {
                     ((MainActivity)getActivity()).replaceFragment(BookFragment.class);
@@ -68,14 +68,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (firebaseAuth.getCurrentUser() == null) {
-                    ((MainActivity)getActivity()).openLoginDialog();
+                    ((MainActivity)getActivity()).displayLoginDialog();
                 }
                 else {
                     ((MainActivity)getActivity()).replaceFragment(RentFragment.class);
                 }
             }
         });
-
         return root;
     }
 }
