@@ -13,16 +13,26 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.model.Booking;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingListRV.BookingHolder> {
+
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference usersReference = firebaseFirestore.collection("users");
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -37,6 +47,19 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
+        usersReference.document(model.getCustomer_uid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String customerPhoto = task.getResult().getString("photo_url");
+                            Glide.with(holder.itemView.getContext())
+                                    .load(customerPhoto)
+                                    .into(holder.customerPhoto);
+                        }
+                    }
+                });
         String customerName = model.getCustomer_name();
         String customerEmail = model.getCustomer_email();
         String bookingContactNumber = model.getBooking_contact_number();
@@ -46,6 +69,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
         String bookingScheduleTime = model.getBooking_schedule_time();
         String bookingCountAdult = model.getBooking_count_adult();
         String bookingCountChild = model.getBooking_count_child();
+        String checkoutTotal = model.getBooking_price();
 
         holder.bookingCustomerName.setText(customerName);
         holder.bookingCustomerEmail.setText(customerEmail);
@@ -56,6 +80,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
         holder.bookingScheduleTime.setText(bookingScheduleTime);
         holder.bookingCountAdult.setText(bookingCountAdult);
         holder.bookingCountChild.setText(bookingCountChild);
+        holder.bookingPrice.setText(checkoutTotal);
 
         holder.bookingCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +93,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
             @Override
             public void onClick(View view) {
                 Toast.makeText(holder.itemView.getContext(), "Booking confirmed.", Toast.LENGTH_SHORT).show();
+                deleteBooking(position, holder.itemView.getContext());
             }
         });
 
@@ -94,12 +120,13 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
                 .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
-        getSnapshots().getSnapshot(position).getReference().delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                dialog.dismiss();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        getSnapshots().getSnapshot(position).getReference().delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        dialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 dialog.dismiss();
@@ -117,12 +144,15 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
                 bookingScheduleDate,
                 bookingScheduleTime,
                 bookingCountAdult,
-                bookingCountChild;
+                bookingCountChild,
+                bookingPrice;
         CardView bookingCard;
         Button btnCancelBooking, btnConfirmBooking;
+        CircleImageView customerPhoto;
 
         public BookingHolder(View view) {
             super(view);
+            customerPhoto = view.findViewById(R.id.customerPhoto);
             bookingCard = view.findViewById(R.id.bookingCard);
             btnCancelBooking = view.findViewById(R.id.btnCancelBooking);
             btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
@@ -135,6 +165,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
+            bookingPrice = view.findViewById(R.id.checkoutTotal);
 
         }
     }
