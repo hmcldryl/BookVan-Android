@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -53,6 +54,7 @@ import com.opustech.bookvan.ui.rent.RentFragment;
 import com.opustech.bookvan.ui.rent.RentalsFragment;
 import com.opustech.bookvan.ui.schedule.ScheduleAdminFragment;
 import com.opustech.bookvan.ui.schedule.ScheduleFragment;
+import com.opustech.bookvan.ui.van_companies.VanCompaniesFragment;
 
 import java.util.HashMap;
 
@@ -66,14 +68,11 @@ public class AdminActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    LinearLayout headerUser;
     CircleImageView headerUserPhoto;
-    Button btnLogin, btnLoginFacebook, btnLoginGoogle;
     TextView headerUserName, headerUserEmail;
     NavigationView navigationView;
     DrawerLayout drawerLayout;
 
-    int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +80,6 @@ public class AdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
-
-        GoogleSignInOptions gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,7 +102,6 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
-        headerUser = navView.findViewById(R.id.headerUser);
         headerUserPhoto = navView.findViewById(R.id.headerUserPhoto);
         headerUserName = navView.findViewById(R.id.headerUserName);
         headerUserEmail = navView.findViewById(R.id.headerUserEmail);
@@ -150,8 +140,13 @@ public class AdminActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.nav_schedule) {
-                    selectedFragment = new ScheduleAdminFragment();
+                if (item.getItemId() == R.id.nav_profile) {
+                    selectedFragment = new ProfileFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    drawerLayout.close();
+                }
+                if (item.getItemId() == R.id.nav_van_companies) {
+                    selectedFragment = new VanCompaniesFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
                     drawerLayout.close();
                 }
@@ -164,84 +159,9 @@ public class AdminActivity extends AppCompatActivity {
                     Intent intent = new Intent(AdminActivity.this, AboutActivity.class);
                     startActivity(intent);
                 }
-                if (item.getItemId() == R.id.btnLoginNav) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(AdminActivity.this);
-                    final AlertDialog alertDialog = builder.create();
-                    if (!alertDialog.isShowing()) {
-                        final LayoutInflater inflater = getLayoutInflater();
-                        final View dialogView = inflater.inflate(R.layout.dialog_login_layout, null);
-                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        alertDialog.setCancelable(true);
-                        alertDialog.setView(dialogView);
-
-                        TextInputLayout loginEmail = dialogView.findViewById(R.id.loginEmail);
-                        TextInputLayout loginPassword = dialogView.findViewById(R.id.loginPassword);
-
-                        btnLogin = dialogView.findViewById(R.id.btnLogin);
-                        btnLoginFacebook = dialogView.findViewById(R.id.btnLoginFacebook);
-                        btnLoginGoogle = dialogView.findViewById(R.id.btnLoginGoogle);
-
-                        btnLogin.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                btnLogin.setEnabled(false);
-                                if (loginEmail.getEditText().getText().toString().isEmpty()) {
-                                    loginEmail.setError("Please enter a valid email.");
-                                    btnLogin.setEnabled(true);
-                                }
-                                if (loginPassword.getEditText().getText().toString().isEmpty()) {
-                                    loginPassword.setError("Please enter your password.");
-                                    btnLogin.setEnabled(true);
-                                } else {
-                                    final ACProgressFlower dialog = new ACProgressFlower.Builder(AdminActivity.this)
-                                            .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                                            .themeColor(getResources().getColor(R.color.colorAccent))
-                                            .text("Logging in...")
-                                            .fadeColor(Color.DKGRAY).build();
-                                    dialog.show();
-                                    firebaseAuth.signInWithEmailAndPassword(
-                                            loginEmail.getEditText().getText().toString(),
-                                            loginPassword.getEditText().getText().toString())
-                                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                                    if (task.isSuccessful()) {
-                                                        dialog.dismiss();
-                                                        alertDialog.dismiss();
-                                                    }
-                                                }
-                                            });
-                                }
-                            }
-                        });
-
-                        btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent signInIntent = googleSignInClient.getSignInIntent();
-                                startActivityForResult(signInIntent, RC_SIGN_IN);
-                                alertDialog.dismiss();
-                            }
-                        });
-
-                        btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(AdminActivity.this, "Facebook Login", Toast.LENGTH_LONG).show();
-                                alertDialog.dismiss();
-                            }
-                        });
-
-                        alertDialog.show();
-                    }
-                }
-                if (item.getItemId() == R.id.btnRegisterNav) {
-                    Intent intent = new Intent(AdminActivity.this, RegisterActivity.class);
-                    startActivity(intent);
-                }
                 if (item.getItemId() == R.id.btnLogout) {
                     firebaseAuth.signOut();
-                    Intent intent = new Intent(AdminActivity.this, MainActivity.class);
+                    Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -254,39 +174,37 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             String currentUserId = currentUser.getUid();
-            if (!currentUserId.isEmpty() && currentUserId.equals("btLTtUYnMuWvkrJspvKqZIirLce2")) {
-                usersReference.document(currentUserId).addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            retrieveUserData();
-                        }
-                        if (value != null) {
-                            if (value.exists()) {
-                                String name = value.getString("name");
-                                String email = value.getString("email");
-                                String photo_url = value.getString("photo_url");
-                                updateUi(name, email, photo_url);
+            if (!currentUserId.isEmpty()) {
+                usersReference.document(currentUserId)
+                        .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                                if (error != null) {
+                                    Toast.makeText(AdminActivity.this, "Error loading user data.", Toast.LENGTH_SHORT).show();
+                                }
+                                if (value != null) {
+                                    if (value.exists()) {
+                                        String name = value.getString("name");
+                                        String email = value.getString("email");
+                                        String photo_url = value.getString("photo_url");
+                                        updateUi(name, email, photo_url);
+                                    }
+                                }
                             }
-                        }
-                    }
-                });
+                        });
             }
-            if (!currentUserId.isEmpty() && !currentUserId.equals("btLTtUYnMuWvkrJspvKqZIirLce2")) {
-                Intent intent = new Intent(AdminActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-            }
-        }
-        else {
+        } else {
             Intent intent = new Intent(AdminActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
@@ -296,43 +214,11 @@ public class AdminActivity extends AppCompatActivity {
         }
     }
 
-    private void retrieveUserData() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String currentUserId = firebaseAuth.getCurrentUser().getUid();
-        db.collection("users")
-                .document(currentUserId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String name = task.getResult().getString("name");
-                            String email = task.getResult().getString("email");
-                            String photo_url = task.getResult().getString("photo_url");
-                            updateUi(name, email, photo_url);
-                        }
-                    }
-                });
-    }
-
     private void updateUi(String name, String email, String photo_url) {
-        if (navigationView.getMenu().findItem(R.id.btnLoginNav).isVisible() && navigationView.getMenu().findItem(R.id.btnRegisterNav).isVisible() && !navigationView.getMenu().findItem(R.id.btnLogout).isVisible()) {
-            navigationView.getMenu().findItem(R.id.btnLoginNav).setVisible(false);
-            navigationView.getMenu().findItem(R.id.btnRegisterNav).setVisible(false);
-            navigationView.getMenu().findItem(R.id.btnLogout).setVisible(true);
-        }
         Glide.with(AdminActivity.this)
                 .load(photo_url)
                 .into(headerUserPhoto);
         headerUserName.setText(name);
         headerUserEmail.setText(email);
-        headerUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment selectedFragment = new ProfileFragment();
-                getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
-                drawerLayout.close();
-            }
-        });
     }
 }
