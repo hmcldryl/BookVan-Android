@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,7 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
     private CollectionReference usersReference;
 
     private Button btnRegister;
-    private TextInputLayout registerName, registerEmail, registerContactNumber, registerPassword, registerConfirmPassword;
+    private TextInputEditText inputFirstName, inputLastName, inputEmail, inputContactNumber, inputPassword, inputConfirmPassword;
+    private TextView btnLogin;
 
     private String currentUserID;
 
@@ -55,17 +57,31 @@ public class RegisterActivity extends AppCompatActivity {
         usersReference = firebaseFirestore.collection("users");
 
         btnRegister = findViewById(R.id.btnRegister);
+        btnLogin = findViewById(R.id.btnLogin);
 
-        registerName = findViewById(R.id.registerFullName);
-        registerEmail = findViewById(R.id.registerEmail);
-        registerContactNumber = findViewById(R.id.registerContactNumber);
-        registerPassword = findViewById(R.id.registerPassword);
-        registerConfirmPassword = findViewById(R.id.registerConfirmPassword);
+        inputFirstName = findViewById(R.id.inputFirstName);
+        inputLastName = findViewById(R.id.inputLastName);
+        inputEmail = findViewById(R.id.inputEmail);
+        inputContactNumber = findViewById(R.id.inputContactNumber);
+        inputPassword = findViewById(R.id.inputPassword);
+        inputConfirmPassword = findViewById(R.id.inputConfirmPassword);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRegister();
+            }
+        });
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -78,46 +94,40 @@ public class RegisterActivity extends AppCompatActivity {
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
 
-        String name = registerName.getEditText().getText().toString();
-        String email = registerEmail.getEditText().getText().toString().trim();
-        String contact_number = registerContactNumber.getEditText().getText().toString().trim();
-        String password = registerPassword.getEditText().getText().toString().trim();
-        String confirm_password = registerConfirmPassword.getEditText().getText().toString().trim();
+        String name = inputFirstName.getText().toString() + " " + inputLastName.getText().toString();
+        String email = inputEmail.getText().toString().trim();
+        String contact_number = inputContactNumber.getText().toString().trim();
+        String password = inputPassword.getText().toString().trim();
+        String confirm_password = inputConfirmPassword.getText().toString().trim();
 
         if (name.isEmpty()) {
             dialog.dismiss();
-            registerName.setError("Please enter your name.");
-        }
-        else if (email.isEmpty()) {
+            inputFirstName.setError("Please enter your first name.");
+            inputLastName.setError("Please enter your last name.");
+        } else if (email.isEmpty()) {
             dialog.dismiss();
-            registerEmail.setError("Please enter your email.");
-        }
-        else if (contact_number.isEmpty()) {
+            inputEmail.setError("Please enter your email.");
+        } else if (contact_number.isEmpty()) {
             dialog.dismiss();
-            registerEmail.setError("Please enter your email.");
-        }
-        else if (password.isEmpty()) {
+            inputContactNumber.setError("Please enter your email.");
+        } else if (password.isEmpty()) {
             dialog.dismiss();
-            registerPassword.setError("Please enter your password.");
-        }
-        else if (confirm_password.isEmpty()) {
+            inputPassword.setError("Please enter your password.");
+        } else if (confirm_password.isEmpty()) {
             dialog.dismiss();
-            registerConfirmPassword.setError("Please confirm your password.");
-        }
-        else if (!confirm_password.equals(password)) {
+            inputConfirmPassword.setError("Please confirm your password.");
+        } else if (!confirm_password.equals(password)) {
             dialog.dismiss();
-            registerPassword.setError("Passwords does not match.");
-            registerConfirmPassword.setError("Passwords does not match.");
-        }
-        else {
+            inputPassword.setError("Passwords does not match.");
+            inputConfirmPassword.setError("Passwords does not match.");
+        } else {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 uploadInfo(name, email, contact_number);
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(RegisterActivity.this, "Register failed. Please try again.", Toast.LENGTH_LONG).show();
                             }
                             dialog.dismiss();
