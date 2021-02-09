@@ -18,8 +18,8 @@
             android:layout_centerInParent="true"
             android:drawableTop="@drawable/ic_icon_status_none"
             android:fontFamily="@font/lato"
-            android:text="No bookings."
-            android:textColor="@color/colorPrimaryDark"
+            android:text="No bookings found."
+            android:textColor="@color/textColor"
             android:textSize="16sp"
             android:visibility="visible" />
 
