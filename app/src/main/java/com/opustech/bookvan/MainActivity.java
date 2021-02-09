@@ -75,16 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout headerUser;
     private CircleImageView headerUserPhoto;
-    private Button btnLogin, btnLoginFacebook, btnLoginGoogle;
     private TextView headerUserName, headerUserEmail;
-    private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
-    private GoogleSignInClient googleSignInClient;
-
-    private int RC_SIGN_IN = 1;
-
-    private String admin_uid = "btLTtUYnMuWvkrJspvKqZIirLce2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,19 +86,11 @@ public class MainActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
-        GoogleSignInOptions gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
 
@@ -132,28 +116,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.navigation_book) {
-                    if (firebaseAuth.getCurrentUser() == null) {
-                        displayLoginDialog();
-                    } else {
-                        replaceFragment(BookFragment.class);
-                    }
+
+                    replaceFragment(BookFragment.class);
+
                 }
                 if (item.getItemId() == R.id.navigation_rent) {
-                    if (firebaseAuth.getCurrentUser() == null) {
-                        displayLoginDialog();
-                    } else {
-                        replaceFragment(RentFragment.class);
-                    }
+                    replaceFragment(RentFragment.class);
+
                 }
                 if (item.getItemId() == R.id.navigation_schedule) {
                     replaceFragment(ScheduleFragment.class);
                 }
                 if (item.getItemId() == R.id.navigation_chat) {
-                    if (firebaseAuth.getCurrentUser() == null) {
-                        displayLoginDialog();
-                    } else {
-                        replaceFragment(ChatFragment.class);
-                    }
+
+                    replaceFragment(ChatFragment.class);
+
                 }
                 return true;
             }
@@ -178,19 +155,16 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, AboutActivity.class);
                     startActivity(intent);
                 }
-                if (item.getItemId() == R.id.btnLoginNav) {
-                    drawerLayout.close();
-                    displayLoginDialog();
-                }
-                if (item.getItemId() == R.id.btnRegisterNav) {
-                    Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                    startActivity(intent);
-                }
                 if (item.getItemId() == R.id.btnLogout) {
                     firebaseAuth.signOut();
-                    resetUi();
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
-                return false;
+                return true;
             }
         });
     }
@@ -207,102 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
-    public void displayLoginDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        final AlertDialog alertDialog = builder.create();
-        if (!alertDialog.isShowing()) {
-            final LayoutInflater inflater = getLayoutInflater();
-            final View dialogView = inflater.inflate(R.layout.dialog_login_layout, null);
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            alertDialog.setCancelable(true);
-            alertDialog.setView(dialogView);
-
-            TextInputLayout loginEmail = dialogView.findViewById(R.id.loginEmail);
-            TextInputLayout loginPassword = dialogView.findViewById(R.id.loginPassword);
-
-            btnLogin = dialogView.findViewById(R.id.btnLogin);
-            btnLoginFacebook = dialogView.findViewById(R.id.btnLoginFacebook);
-            btnLoginGoogle = dialogView.findViewById(R.id.btnLoginGoogle);
-
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String email = loginEmail.getEditText().getText().toString().trim();
-                    String password = loginPassword.getEditText().getText().toString().trim();
-                    if (email.isEmpty()) {
-                        loginEmail.setError("Please enter a valid email address.");
-                    }
-                    if (password.isEmpty()) {
-                        loginPassword.setError("Please enter your password.");
-                    } else {
-                        onLogin(email, password);
-                    }
-                }
-            });
-
-            btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent signInIntent = googleSignInClient.getSignInIntent();
-                    startActivityForResult(signInIntent, RC_SIGN_IN);
-                    alertDialog.dismiss();
-                }
-            });
-
-            btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(MainActivity.this, "Facebook Login", Toast.LENGTH_LONG).show();
-                    alertDialog.dismiss();
-                }
-            });
-
-            alertDialog.show();
-        }
-    }
-
-    private void onLogin(String email, String password) {
-        final ACProgressFlower dialog = new ACProgressFlower.Builder(MainActivity.this)
-                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(getResources().getColor(R.color.white))
-                .text("Signing in...")
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
-        firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                            if (firebaseUser != null) {
-                                dialog.dismiss();
-                                String currentUserId = firebaseUser.getUid();
-                                if (currentUserId.equals(admin_uid)) {
-                                    Intent intent = new Intent(MainActivity.this, AdminActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    finish();
-                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                    startActivity(intent);
-                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                }
-                                retrieveUserData();
-                                resetUi();
-                            }
-                        } else {
-                            dialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void resetUi() {
-        startActivity(getIntent());
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -315,123 +193,23 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                                 if (error != null) {
-                                    Toast.makeText(MainActivity.this, "Error while loading data.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "Error loading user data.", Toast.LENGTH_SHORT).show();
                                 }
                                 if (value != null) {
                                     if (value.exists()) {
                                         String name = value.getString("name");
                                         String email = value.getString("email");
                                         String photo_url = value.getString("photo_url");
-
                                         updateUi(name, email, photo_url);
                                     }
                                 }
                             }
                         });
             }
-            checkAdmin();
         }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-                final ACProgressFlower dialog = new ACProgressFlower.Builder(MainActivity.this)
-                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                        .themeColor(getResources().getColor(R.color.colorAccent))
-                        .text("Logging in...")
-                        .fadeColor(Color.DKGRAY).build();
-                dialog.show();
-                firebaseAuth.signInWithCredential(credential)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    dialog.dismiss();
-                                    uploadDataGoogle(account);
-                                } else {
-                                    dialog.dismiss();
-                                    Toast.makeText(MainActivity.this, "Google login failed.", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-            } catch (ApiException e) {
-                Log.d("ERROR", e.getMessage());
-                Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private void uploadDataGoogle(GoogleSignInAccount account) {
-        final ACProgressFlower dialog = new ACProgressFlower.Builder(MainActivity.this)
-                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(getResources().getColor(R.color.colorAccent))
-                .text("Processing...")
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
-        HashMap<String, Object> user = new HashMap<>();
-        user.put("name", account.getGivenName() + " " + account.getFamilyName());
-        user.put("email", account.getEmail());
-        user.put("photo_url", account.getPhotoUrl().toString());
-        if (firebaseAuth.getCurrentUser() != null) {
-            String currentUserId = firebaseAuth.getCurrentUser().getUid();
-            usersReference.document(currentUserId)
-                    .set(user)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                dialog.dismiss();
-                                checkAdmin();
-                                retrieveUserData();
-                            } else {
-                                dialog.dismiss();
-                            }
-                        }
-                    });
-        } else {
-            dialog.dismiss();
-        }
-    }
-
-    private void retrieveUserData() {
-        String currentUserId = firebaseAuth.getCurrentUser().getUid();
-        usersReference.document(currentUserId)
-                .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Toast.makeText(MainActivity.this, "Error while loading data.", Toast.LENGTH_SHORT).show();
-                        }
-                        if (value != null) {
-                            if (value.exists()) {
-                                String name = value.getString("name");
-                                String email = value.getString("email");
-                                String photo_url = value.getString("photo_url");
-
-                                updateUi(name, email, photo_url);
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void checkAdmin() {
-
-
     }
 
     private void updateUi(String name, String email, String photo_url) {
-        if (navigationView.getMenu().findItem(R.id.btnLoginNav).isVisible() && navigationView.getMenu().findItem(R.id.btnRegisterNav).isVisible() && !navigationView.getMenu().findItem(R.id.btnLogout).isVisible()) {
-            navigationView.getMenu().findItem(R.id.btnLoginNav).setVisible(false);
-            navigationView.getMenu().findItem(R.id.btnRegisterNav).setVisible(false);
-            navigationView.getMenu().findItem(R.id.btnLogout).setVisible(true);
-        }
         Glide.with(MainActivity.this)
                 .load(photo_url)
                 .into(headerUserPhoto);
