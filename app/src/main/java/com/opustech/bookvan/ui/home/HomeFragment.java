@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +41,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -55,24 +56,15 @@ public class HomeFragment extends Fragment {
         btnBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    ((MainActivity)getActivity()).displayLoginDialog();
-                }
-                else {
-                    ((MainActivity)getActivity()).replaceFragment(BookFragment.class);
-                }
+                ((MainActivity) getActivity()).replaceFragment(BookFragment.class);
+
             }
         });
 
         btnRental.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (firebaseAuth.getCurrentUser() == null) {
-                    ((MainActivity)getActivity()).displayLoginDialog();
-                }
-                else {
-                    ((MainActivity)getActivity()).replaceFragment(RentFragment.class);
-                }
+                ((MainActivity) getActivity()).replaceFragment(RentFragment.class);
             }
         });
         return root;
