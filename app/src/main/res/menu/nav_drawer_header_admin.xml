@@ -12,9 +12,13 @@
             android:icon="@drawable/ic_menu_home"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_schedule"
-            android:icon="@drawable/ic_menu_schedule"
-            android:title="@string/menu_schedule" />
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_menu_profile"
+            android:title="@string/menu_profile" />
+        <item
+            android:id="@+id/nav_van_companies"
+            android:icon="@drawable/ic_menu_profile"
+            android:title="@string/menu_van_companies" />
         <item
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_menu_contact"
@@ -30,22 +34,9 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/btnLoginNav"
-            android:icon="@drawable/ic_menu_login"
-            android:title="@string/menu_login"
-            android:visible="true" />
-
-        <item
-            android:id="@+id/btnRegisterNav"
-            android:icon="@drawable/ic_menu_register"
-            android:title="@string/menu_register"
-            android:visible="true" />
-
-        <item
             android:id="@+id/btnLogout"
             android:icon="@drawable/ic_menu_logout"
-            android:title="@string/menu_logout"
-            android:visible="false" />
+            android:title="@string/menu_logout" />
     </group>
 
 </menu>
