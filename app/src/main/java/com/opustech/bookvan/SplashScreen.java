@@ -23,11 +23,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
         if (currentUser != null) {
             String currentUserId = currentUser.getUid();
@@ -37,23 +33,22 @@ public class SplashScreen extends AppCompatActivity {
                     public void run() {
                         Intent intent = new Intent(SplashScreen.this, AdminActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        finish();
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 }, 3000);
             }
-            else {
-                firebaseAuth.signOut();
+            if (!currentUserId.isEmpty() && !currentUserId.equals(admin_uid)) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                        Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        finish();
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         startActivity(intent);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                        finish();
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     }
                 }, 3000);
@@ -63,7 +58,7 @@ public class SplashScreen extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                    Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -72,6 +67,12 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }, 3000);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
 
