@@ -1,7 +1,10 @@
 package com.opustech.bookvan;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -85,22 +90,23 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
         holder.bookingCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                final AlertDialog alertDialog = builder.create();
+                if (!alertDialog.isShowing()) {
+                    final View dialogView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.dialog_confirm_booking, null);
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    alertDialog.setCancelable(true);
+                    alertDialog.setView(dialogView);
 
-            }
-        });
+                    TextInputLayout inputTransportName = dialogView.findViewById(R.id.inputTransportName);
+                    TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
+                    TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
 
-        holder.btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(holder.itemView.getContext(), "Booking confirmed.", Toast.LENGTH_SHORT).show();
-                deleteBooking(position, holder.itemView.getContext());
-            }
-        });
+                    MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
+                    MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
 
-        holder.btnCancelBooking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(holder.itemView.getContext(), "Booking cancelled.", Toast.LENGTH_SHORT).show();
+                    alertDialog.show();
+                }
             }
         });
 
