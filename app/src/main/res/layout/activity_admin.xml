@@ -26,6 +26,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@drawable/background_toolbar"
                 android:elevation="8dp"
+                app:menu="@menu/toolbar_menu"
                 app:navigationIcon="@drawable/ic_toolbar_nav"
                 app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
                 app:subtitleTextColor="#FFFFFF"
@@ -51,16 +52,6 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/mobile_navigation_drawer" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_above="@id/bottom_nav_view"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_menu_chat_admin"
-            app:backgroundTint="@color/colorPrimary"
-            app:tint="#FFFFFF" />
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_view"
             android:layout_width="match_parent"
@@ -69,7 +60,7 @@
             android:background="?android:attr/windowBackground"
             app:itemIconTint="@color/colorPrimary"
             app:itemTextAppearanceActive="@style/ToolbarSubtitleTextAppearance"
-            app:itemTextColor="@color/colorPrimaryDark"
+            app:itemTextColor="@color/textColor"
             app:menu="@menu/bottom_nav_menu_admin" />
 
     </RelativeLayout>
@@ -82,6 +73,6 @@
         android:fitsSystemWindows="true"
         app:itemIconTint="@color/colorPrimary"
         app:itemTextAppearance="@style/ToolbarSubtitleTextAppearance"
-        app:itemTextColor="@color/colorPrimaryDark"
+        app:itemTextColor="@color/textColor"
         app:menu="@menu/nav_drawer_header" />
 </androidx.drawerlayout.widget.DrawerLayout>
