@@ -26,7 +26,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="8dp"
                     android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
@@ -49,7 +49,7 @@
                             android:fontFamily="@font/lato_bold"
                             android:text="customer_name"
                             android:textAppearance="?attr/textAppearanceHeadline6"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <TextView
                             android:id="@+id/bookingCustomerEmail"
@@ -58,14 +58,20 @@
                             android:fontFamily="@font/lato"
                             android:text="customer_email"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#1F000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -80,7 +86,7 @@
                             android:fontFamily="@font/lato"
                             android:text="Contact Number:"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -93,7 +99,7 @@
                             android:fontFamily="@font/lato"
                             android:text="From:"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -101,7 +107,7 @@
                             android:fontFamily="@font/lato"
                             android:text="To:"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -113,7 +119,7 @@
                             android:fontFamily="@font/lato"
                             android:text="Date:"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -121,7 +127,7 @@
                             android:fontFamily="@font/lato"
                             android:text="Time:"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -133,7 +139,7 @@
                             android:fontFamily="@font/lato"
                             android:text="Adult:"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -141,7 +147,35 @@
                             android:fontFamily="@font/lato"
                             android:text="Child:"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:text="Transport Name:"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@color/textColor" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:text="Driver Name:"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@color/textColor" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:text="Plate No.:"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@color/textColor" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -153,7 +187,7 @@
                             android:fontFamily="@font/lato_black"
                             android:text="Total:"
                             android:textAppearance="?attr/textAppearanceHeadline6"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                     </LinearLayout>
 
@@ -169,7 +203,7 @@
                             android:fontFamily="@font/lato"
                             android:text="contact_number"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -182,7 +216,7 @@
                             android:fontFamily="@font/lato"
                             android:text="location_from"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <TextView
                             android:id="@+id/bookingLocationTo"
@@ -191,7 +225,7 @@
                             android:fontFamily="@font/lato"
                             android:text="location_to"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -204,7 +238,7 @@
                             android:fontFamily="@font/lato"
                             android:text="schedule_date"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <TextView
                             android:id="@+id/bookingScheduleTime"
@@ -213,7 +247,7 @@
                             android:fontFamily="@font/lato"
                             android:text="schedule_time"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -226,7 +260,7 @@
                             android:fontFamily="@font/lato"
                             android:text="adult_count"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
 
                         <TextView
                             android:id="@+id/bookingCountChild"
@@ -235,7 +269,38 @@
                             android:fontFamily="@font/lato"
                             android:text="child_count"
                             android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="@color/colorPrimaryDark" />
+                            android:textColor="@color/textColor" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp" />
+
+                        <TextView
+                            android:id="@+id/bookingTransportName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:text="transport_name"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@color/textColor" />
+
+                        <TextView
+                            android:id="@+id/bookingDriverName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:text="driver_name"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@color/textColor" />
+
+                        <TextView
+                            android:id="@+id/bookingPlateNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:text="plate_number"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@color/textColor" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -251,7 +316,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text="P"
                                 android:textAppearance="?attr/textAppearanceHeadline6"
-                                android:textColor="@color/colorPrimaryDark" />
+                                android:textColor="@color/textColor" />
                             <TextView
                                 android:id="@+id/checkoutTotal"
                                 android:layout_width="match_parent"
@@ -259,7 +324,7 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:text=""
                                 android:textAppearance="?attr/textAppearanceHeadline6"
-                                android:textColor="@color/colorPrimaryDark" />
+                                android:textColor="@color/textColor" />
                         </LinearLayout>
 
 
@@ -267,33 +332,6 @@
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCancelBooking"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/lato_black"
-                    android:text="CANCEL"
-                    android:textColor="@color/colorPrimary" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnConfirmBooking"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_black"
-                    android:text="CONFIRM"
-                    android:textColor="@color/white"
-                    app:backgroundTint="@color/colorPrimary" />
             </LinearLayout>
 
         </LinearLayout>
