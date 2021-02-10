@@ -7,59 +7,32 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.opustech.bookvan.ui.book.BookFragment;
 import com.opustech.bookvan.ui.book.BookingsFragment;
-import com.opustech.bookvan.ui.chat.ChatFragment;
 import com.opustech.bookvan.ui.contact.ContactAdminFragment;
-import com.opustech.bookvan.ui.contact.ContactFragment;
 import com.opustech.bookvan.ui.home.HomeAdminFragment;
-import com.opustech.bookvan.ui.home.HomeFragment;
 import com.opustech.bookvan.ui.profile.ProfileFragment;
-import com.opustech.bookvan.ui.rent.RentFragment;
 import com.opustech.bookvan.ui.rent.RentalsFragment;
 import com.opustech.bookvan.ui.schedule.ScheduleAdminFragment;
-import com.opustech.bookvan.ui.schedule.ScheduleFragment;
-import com.opustech.bookvan.ui.van_companies.VanCompaniesFragment;
+import com.opustech.bookvan.ui.vanCompany.VanCompanyFragment;
 
-import java.util.HashMap;
-
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdminActivity extends AppCompatActivity {
@@ -146,7 +119,7 @@ public class AdminActivity extends AppCompatActivity {
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_van_companies) {
-                    selectedFragment = new VanCompaniesFragment();
+                    selectedFragment = new VanCompanyFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
                     drawerLayout.close();
                 }
