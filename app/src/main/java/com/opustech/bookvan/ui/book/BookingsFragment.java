@@ -49,7 +49,8 @@ public class BookingsFragment extends Fragment {
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
         Query query = usersReference.document(admin_uid)
-                .collection("pending_bookings").orderBy("booking_schedule_date");
+                .collection("pending_bookings")
+                .orderBy("booking_schedule_date");
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
@@ -63,7 +64,8 @@ public class BookingsFragment extends Fragment {
         bookingList.setLayoutManager(new LinearLayoutManager(getActivity()));
         bookingList.setAdapter(adapterBookingListRV);
 
-        usersReference.document(admin_uid).collection("pending_bookings")
+        usersReference.document(admin_uid)
+                .collection("pending_bookings")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
