@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_body"
-    tools:context=".ui.profile.ProfileFragment"
-    android:orientation="vertical">
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    tools:context=".ui.profile.ProfileFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -35,23 +35,72 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="16dp">
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:fontFamily="@font/lato_bold"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_height="match_parent"
-            android:text="Hello World" />
+            android:fontFamily="@font/lato_bold"
+            android:text="user_display_name"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
+
         <TextView
             android:layout_width="match_parent"
-            android:textAlignment="center"
-            android:fontFamily="@font/lato"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:layout_height="match_parent"
-            android:text="Hello World" />
+            android:fontFamily="@font/lato"
+            android:text="user_email"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/lato"
+            android:text="user_id"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/profileTab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@color/colorPrimary"
+            app:tabIndicatorColor="#99121212"
+            app:tabIndicatorHeight="6dp"
+            app:tabSelectedTextColor="@color/textColor"
+            app:tabTextAppearance="@style/TabTextAppearance"
+            app:tabTextColor="#99121212">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Active Booking"
+                android:textAlignment="center" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Booking History"
+                android:textAlignment="center" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/profileViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_body" />
+
     </LinearLayout>
 
 
