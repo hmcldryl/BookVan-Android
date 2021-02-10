@@ -15,19 +15,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookingCustomerName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                android:gravity="center"
                 android:hint="Name"
-                app:startIconDrawable="@drawable/ic_input_name">
+                app:startIconDrawable="@drawable/ic_input_name"
+                app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -35,18 +35,20 @@
                     android:layout_margin="0dp"
                     android:ellipsize="end"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textCursorDrawable="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookingContactNumber"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="Contact Number"
-                app:startIconDrawable="@drawable/ic_input_contact_num">
+                app:startIconDrawable="@drawable/ic_input_contact_num"
+                app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -54,7 +56,8 @@
                     android:ellipsize="end"
                     android:inputType="phone"
                     android:maxLength="13"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:textCursorDrawable="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,41 +71,47 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bookingLocationFrom"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="5"
                     android:hint="From"
                     android:inputType="none"
-                    app:startIconDrawable="@drawable/ic_input_location">
+                    app:endIconTint="@color/colorPrimary"
+                    app:startIconDrawable="@drawable/ic_input_location"
+                    app:startIconTint="@color/colorPrimary">
 
                     <AutoCompleteTextView
                         android:id="@+id/bookingLocationFromACT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bookingLocationTo"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="5"
                     android:hint="To"
                     android:inputType="none"
-                    app:startIconDrawable="@drawable/ic_input_location">
+                    app:endIconTint="@color/colorPrimary"
+                    app:startIconDrawable="@drawable/ic_input_location"
+                    app:startIconTint="@color/colorPrimary">
 
                     <AutoCompleteTextView
                         android:id="@+id/bookingLocationToACT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,41 +127,45 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bookingScheduleDate"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="5"
                     android:focusable="false"
                     android:hint="Date"
-                    app:startIconDrawable="@drawable/ic_input_calendar">
+                    app:startIconDrawable="@drawable/ic_input_calendar"
+                    app:startIconTint="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:inputType="date"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bookingScheduleTime"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="5"
                     android:focusable="false"
                     android:hint="Time"
-                    app:startIconDrawable="@drawable/ic_input_clock">
+                    app:startIconDrawable="@drawable/ic_input_clock"
+                    app:startIconTint="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:inputType="time"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -231,7 +244,7 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/bookingCountAdult"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -274,7 +287,7 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/bookingCountChild"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -326,14 +339,24 @@
             android:textAppearance="?attr/textAppearanceHeadline6" />
 
         <TextView
-            android:id="@+id/checkoutTotal"
-            android:layout_width="150dp"
+            android:id="@+id/pesoSign"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/textTotal"
             android:fontFamily="@font/lato_bold"
-            android:text="P000.00"
+            android:text="P"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <TextView
+            android:id="@+id/checkoutTotal"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/pesoSign"
+            android:fontFamily="@font/lato_bold"
+            android:text="000.00"
             android:textAppearance="?attr/textAppearanceHeadline6" />
 
         <com.google.android.material.button.MaterialButton
