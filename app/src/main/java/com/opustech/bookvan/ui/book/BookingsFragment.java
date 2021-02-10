@@ -38,7 +38,7 @@ public class BookingsFragment extends Fragment {
 
     private BookingsViewModel bookingsViewModel;
 
-    private String admin_uid = "btLTtUYnMuWvkrJspvKqZIirLce2";
+    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
