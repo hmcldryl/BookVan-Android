@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.opustech.bookvan.ui.book.BookingsFragment;
 import com.opustech.bookvan.ui.contact.ContactAdminFragment;
 import com.opustech.bookvan.ui.home.HomeAdminFragment;
+import com.opustech.bookvan.ui.home.HomeFragment;
 import com.opustech.bookvan.ui.profile.ProfileFragment;
 import com.opustech.bookvan.ui.rent.RentalsFragment;
 import com.opustech.bookvan.ui.schedule.ScheduleAdminFragment;
@@ -75,6 +77,18 @@ public class AdminActivity extends AppCompatActivity {
             }
         });
 
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.btnChat) {
+                    Intent intent = new Intent(AdminActivity.this, ChatActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+                return false;
+            }
+        });
+
         headerUserPhoto = navView.findViewById(R.id.headerUserPhoto);
         headerUserName = navView.findViewById(R.id.headerUserName);
         headerUserEmail = navView.findViewById(R.id.headerUserEmail);
@@ -82,23 +96,17 @@ public class AdminActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment;
                 if (item.getItemId() == R.id.navigation_book) {
-                    selectedFragment = new BookingsFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(BookingsFragment.class);
+                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.navigation_rent) {
-                    selectedFragment = new RentalsFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(RentalsFragment.class);
+                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.navigation_schedule) {
-                    selectedFragment = new ScheduleAdminFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
-                }
-                if (item.getItemId() == R.id.navigation_chat) {
-                    Intent intent = new Intent(AdminActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    replaceFragment(ScheduleAdminFragment.class);
+                    drawerLayout.close();
                 }
                 return true;
             }
@@ -107,25 +115,20 @@ public class AdminActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment;
                 if (item.getItemId() == R.id.nav_home) {
-                    selectedFragment = new HomeAdminFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(HomeAdminFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_profile) {
-                    selectedFragment = new ProfileFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(ProfileFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_van_companies) {
-                    selectedFragment = new VanCompanyFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(VanCompanyFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_contact) {
-                    selectedFragment = new ContactAdminFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.drawer_nav_host_fragment, selectedFragment).commit();
+                    replaceFragment(ContactAdminFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_about) {
@@ -144,6 +147,18 @@ public class AdminActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public void replaceFragment(Class fragmentClass) {
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.drawer_nav_host_fragment, fragment)
+                .commit();
     }
 
     @Override
@@ -171,27 +186,32 @@ public class AdminActivity extends AppCompatActivity {
                                         String name = value.getString("name");
                                         String email = value.getString("email");
                                         String photo_url = value.getString("photo_url");
-                                        updateUi(name, email, photo_url);
+
+                                        if (photo_url != null) {
+                                            Glide.with(AdminActivity.this)
+                                                    .load(photo_url)
+                                                    .into(headerUserPhoto);
+                                        }
+
+                                        if (name != null) {
+                                            headerUserName.setText(name);
+                                        }
+
+                                        if (email != null) {
+                                            headerUserEmail.setText(email);
+                                        }
                                     }
                                 }
                             }
                         });
             }
         } else {
-            Intent intent = new Intent(AdminActivity.this, MainActivity.class);
+            Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             startActivity(intent);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
-    }
-
-    private void updateUi(String name, String email, String photo_url) {
-        Glide.with(AdminActivity.this)
-                .load(photo_url)
-                .into(headerUserPhoto);
-        headerUserName.setText(name);
-        headerUserEmail.setText(email);
     }
 }
