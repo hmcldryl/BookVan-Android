@@ -35,7 +35,7 @@
 
     <style name="TabTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Subtitle">
         <item name="android:fontFamily">@font/lato</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Light">
