@@ -167,9 +167,7 @@ public class LoginActivity extends AppCompatActivity {
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 final ACProgressFlower dialog = new ACProgressFlower.Builder(LoginActivity.this)
                         .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                        .themeColor(getResources().getColor(R.color.colorAccent))
-                        .bgColor(getResources().getColor(R.color.colorPrimary))
-                        .fadeColor(getResources().getColor(R.color.colorPrimaryDark))
+                        .themeColor(getResources().getColor(R.color.white))
                         .text("Signing in...")
                         .fadeColor(Color.DKGRAY).build();
                 dialog.show();
