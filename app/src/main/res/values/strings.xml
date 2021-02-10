@@ -24,6 +24,8 @@
     <string name="input_driver_name">Van Driver</string>
     <string name="input_van_plate">Van Plate No.</string>
     <string name="input_email">E-mail</string>
+    <string name="input_chat">Message</string>
+    <string name="input_chat_helper">Enter message here</string>
     <string name="input_contact_number">Contact Number</string>
     <string name="input_password">Password</string>
     <string name="input_confirm_password">Confirm Password</string>
