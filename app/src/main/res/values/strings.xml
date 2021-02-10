@@ -59,6 +59,12 @@
         <item>South - Sofronio Española</item>
     </string-array>
 
+    <string-array name="transport_companies">
+        <item>Lexxus Shuttle</item>
+        <item>Langgam Transport</item>
+        <item>Charing Transport</item>
+    </string-array>
+
     <string name="default_web_citement_secret">HQ2vZK-JQK3hgE2x3ZJdNy6B</string>
     <!--    <string name="default_web_client_id">152068433081-untm2juk1ikl5p3pumr4g603705oel45.apps.googleusercontent.com</string>-->
 
