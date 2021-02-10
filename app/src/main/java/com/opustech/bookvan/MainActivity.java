@@ -40,40 +40,28 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.ui.book.BookFragment;
-import com.opustech.bookvan.ui.chat.ChatFragment;
 import com.opustech.bookvan.ui.contact.ContactFragment;
 import com.opustech.bookvan.ui.home.HomeFragment;
 import com.opustech.bookvan.ui.profile.ProfileFragment;
 import com.opustech.bookvan.ui.rent.RentFragment;
 import com.opustech.bookvan.ui.schedule.ScheduleFragment;
 
-import java.util.HashMap;
-
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private CollectionReference usersReference = firebaseFirestore.collection("users");
 
-    private LinearLayout headerUser;
     private CircleImageView headerUserPhoto;
     private TextView headerUserName, headerUserEmail;
     private DrawerLayout drawerLayout;
@@ -82,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -107,7 +92,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        headerUser = navView.findViewById(R.id.headerUser);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.btnChat) {
+                    Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+                return false;
+            }
+        });
+
         headerUserPhoto = navView.findViewById(R.id.headerUserPhoto);
         headerUserName = navView.findViewById(R.id.headerUserName);
         headerUserEmail = navView.findViewById(R.id.headerUserEmail);
@@ -116,21 +112,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.navigation_book) {
-
                     replaceFragment(BookFragment.class);
-
                 }
                 if (item.getItemId() == R.id.navigation_rent) {
                     replaceFragment(RentFragment.class);
-
                 }
                 if (item.getItemId() == R.id.navigation_schedule) {
                     replaceFragment(ScheduleFragment.class);
-                }
-                if (item.getItemId() == R.id.navigation_chat) {
-
-                    replaceFragment(ChatFragment.class);
-
                 }
                 return true;
             }
@@ -141,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.nav_home) {
                     replaceFragment(HomeFragment.class);
+                    drawerLayout.close();
+                }
+                if (item.getItemId() == R.id.nav_profile) {
+                    replaceFragment(ProfileFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_schedule) {
@@ -182,6 +174,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
@@ -200,27 +198,32 @@ public class MainActivity extends AppCompatActivity {
                                         String name = value.getString("name");
                                         String email = value.getString("email");
                                         String photo_url = value.getString("photo_url");
-                                        updateUi(name, email, photo_url);
+
+                                        if (photo_url != null) {
+                                            Glide.with(MainActivity.this)
+                                                    .load(photo_url)
+                                                    .into(headerUserPhoto);
+                                        }
+
+                                        if (name != null) {
+                                            headerUserName.setText(name);
+                                        }
+
+                                        if (email != null) {
+                                            headerUserEmail.setText(email);
+                                        }
                                     }
                                 }
                             }
                         });
             }
+        } else {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
-    }
-
-    private void updateUi(String name, String email, String photo_url) {
-        Glide.with(MainActivity.this)
-                .load(photo_url)
-                .into(headerUserPhoto);
-        headerUserName.setText(name);
-        headerUserEmail.setText(email);
-        headerUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(ProfileFragment.class);
-                drawerLayout.close();
-            }
-        });
     }
 }
