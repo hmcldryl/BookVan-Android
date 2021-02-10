@@ -40,11 +40,11 @@
                     android:textColor="@color/textColor" />
 
                 <TextView
-                    android:id="@+id/confirmBookingCustomerName"
+                    android:id="@+id/confirmBookingCustomerNameId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato"
-                    android:text="for customer_id (customer_name)"
+                    android:text="for customer_name (customer_id)"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="@color/textColor" />
 
@@ -133,9 +133,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:padding="16dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
