@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private int RC_SIGN_IN = 1;
 
-    private String admin_uid = "btLTtUYnMuWvkrJspvKqZIirLce2";
+    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,14 +134,15 @@ public class LoginActivity extends AppCompatActivity {
                             if (firebaseUser != null) {
                                 dialog.dismiss();
                                 String currentUserId = firebaseUser.getUid();
-                                if (currentUserId.equals(admin_uid)) {
+                                if (!currentUserId.isEmpty() && currentUserId.equals(admin_uid)) {
                                     Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     finish();
                                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                     startActivity(intent);
                                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                } else {
+                                }
+                                if (!currentUserId.isEmpty() && !currentUserId.equals(admin_uid)){
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     finish();
@@ -176,48 +178,79 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    HashMap<String, Object> user = new HashMap<>();
-                                    user.put("name", account.getGivenName() + " " + account.getFamilyName());
-                                    user.put("email", account.getEmail());
-                                    user.put("photo_url", account.getPhotoUrl().toString());
                                     if (firebaseAuth.getCurrentUser() != null) {
                                         String currentUserId = firebaseAuth.getCurrentUser().getUid();
                                         usersReference.document(currentUserId)
-                                                .set(user)
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            dialog.dismiss();
-                                                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                                            if (firebaseUser != null) {
-                                                                dialog.dismiss();
-                                                                String currentUserId = firebaseUser.getUid();
-                                                                if (currentUserId.equals(admin_uid)) {
-                                                                    Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                    finish();
-                                                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                    startActivity(intent);
-                                                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                } else {
-                                                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                    finish();
-                                                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                    startActivity(intent);
-                                                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                }
-                                                            }
+                                                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    if (!task.getResult().exists()) {
+                                                        HashMap<String, Object> user = new HashMap<>();
+                                                        user.put("name", account.getGivenName() + " " + account.getFamilyName());
+                                                        user.put("email", account.getEmail());
+                                                        user.put("photo_url", account.getPhotoUrl().toString());
+                                                        if (firebaseAuth.getCurrentUser() != null) {
+                                                            String currentUserId = firebaseAuth.getCurrentUser().getUid();
+                                                            usersReference.document(currentUserId)
+                                                                    .set(user)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()) {
+                                                                                dialog.dismiss();
+                                                                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                                                                if (firebaseUser != null) {
+                                                                                    dialog.dismiss();
+                                                                                    String currentUserId = firebaseUser.getUid();
+                                                                                    if (currentUserId.equals(admin_uid)) {
+                                                                                        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                                        finish();
+                                                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                                                        startActivity(intent);
+                                                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                                                    } else {
+                                                                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                                                        finish();
+                                                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                                                        startActivity(intent);
+                                                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                                                    }
+                                                                                }
 
+                                                                            } else {
+                                                                                dialog.dismiss();
+                                                                                Snackbar.make(btnLoginGoogle, "Google sign in failed.", Snackbar.LENGTH_SHORT).show();
+                                                                            }
+                                                                        }
+                                                                    });
                                                         } else {
                                                             dialog.dismiss();
                                                             Snackbar.make(btnLoginGoogle, "Google sign in failed.", Snackbar.LENGTH_SHORT).show();
                                                         }
                                                     }
-                                                });
-                                    } else {
-                                        dialog.dismiss();
+                                                    else {
+                                                        if (currentUserId.equals(admin_uid)) {
+                                                            Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            finish();
+                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                            startActivity(intent);
+                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                        } else {
+                                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                            finish();
+                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                            startActivity(intent);
+                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
                                     }
                                 } else {
                                     dialog.dismiss();
