@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,6 +35,7 @@ import com.opustech.bookvan.model.Booking;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -43,6 +45,8 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
 
     private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     private CollectionReference usersReference = firebaseFirestore.collection("users");
+
+    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -57,7 +61,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
-        usersReference.document(model.getCustomer_uid())
+        getSnapshots().getSnapshot(position).getReference()
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -70,6 +74,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
                         }
                     }
                 });
+        String customerId = model.getCustomer_uid();
         String customerName = model.getCustomer_name();
         String customerEmail = model.getCustomer_email();
         String bookingContactNumber = model.getBooking_contact_number();
@@ -106,13 +111,49 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
                     ArrayList<String> transportArray = new ArrayList<>(Arrays.asList(holder.itemView.getContext().getResources().getStringArray(R.array.transport_companies)));
                     ArrayAdapter<String> transportArrayAdapter = new ArrayAdapter<>(holder.itemView.getContext(), R.layout.support_simple_spinner_dropdown_item, transportArray);
 
+                    TextView bookingCustomerNameId = dialogView.findViewById(R.id.confirmBookingCustomerNameId);
                     TextInputLayout inputTransportName = dialogView.findViewById(R.id.inputTransportName);
                     AutoCompleteTextView inputTransportNameACT = dialogView.findViewById(R.id.inputTransportNameACT);
                     TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
                     TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
 
+                    String customerNameId = "for " + customerName + " (" + customerId + ")";
+                    bookingCustomerNameId.setText(customerNameId);
+
                     MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
                     MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
+
+                    inputTransportNameACT.setAdapter(transportArrayAdapter);
+                    inputTransportNameACT.setThreshold(1);
+
+                    btnCancelBooking.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+
+                    btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String transport_name = inputTransportName.getEditText().getText().toString();
+                            String driver_name = inputDriverName.getEditText().getText().toString();
+                            String plate_number = inputVanPlate.getEditText().getText().toString();
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("transport_name", transport_name);
+                            hashMap.put("driver_name", driver_name);
+                            hashMap.put("plate_number", plate_number);
+                            getSnapshots().getSnapshot(position).getReference()
+                                    .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+
+                                    }
+                                }
+                            });
+                        }
+                    });
 
                     alertDialog.show();
                 }
