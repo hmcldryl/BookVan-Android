@@ -7,19 +7,37 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.opustech.bookvan.ui.home.HomeAdminFragment"
-        android:label="@string/menu_home"
+        android:name="com.opustech.bookvan.ui.fragments.HomeAdminFragment"
+        android:label="@string/title_home"
         tools:layout="@layout/fragment_home_admin" />
 
     <fragment
-        android:id="@+id/nav_schedules"
-        android:name="com.opustech.bookvan.ui.schedule.ScheduleAdminFragment"
-        android:label="@string/menu_schedule"
-        tools:layout="@layout/fragment_schedule_admin" />
+        android:id="@+id/nav_van_companies"
+        android:name="com.opustech.bookvan.ui.fragments.VanCompanyFragment"
+        android:label="@string/title_van_companies"
+        tools:layout="@layout/fragment_van_companies" />
 
     <fragment
         android:id="@+id/nav_contact"
-        android:name="com.opustech.bookvan.ui.contact.ContactAdminFragment"
-        android:label="@string/menu_contact"
+        android:name="com.opustech.bookvan.ui.fragments.ContactAdminFragment"
+        android:label="@string/title_contact"
         tools:layout="@layout/fragment_contact_admin" />
+
+    <fragment
+        android:id="@+id/nav_bookings"
+        android:name="com.opustech.bookvan.ui.fragments.BookingsFragment"
+        android:label="@string/title_book_admin"
+        tools:layout="@layout/fragment_bookings" />
+
+    <fragment
+        android:id="@+id/nav_rentals"
+        android:name="com.opustech.bookvan.ui.fragments.RentalsFragment"
+        android:label="@string/title_rent_admin"
+        tools:layout="@layout/fragment_rentals" />
+
+    <fragment
+        android:id="@+id/nav_schedule"
+        android:name="com.opustech.bookvan.ui.fragments.ScheduleAdminFragment"
+        android:label="@string/title_schedule_admin"
+        tools:layout="@layout/fragment_schedule_admin" />
 </navigation>
