@@ -29,16 +29,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
@@ -48,11 +52,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String currentUserID;
 
+    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private String photo_url;
+    private String message;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
@@ -66,10 +75,23 @@ public class RegisterActivity extends AppCompatActivity {
         inputPassword = findViewById(R.id.inputPassword);
         inputConfirmPassword = findViewById(R.id.inputConfirmPassword);
 
+        usersReference.document(admin_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            photo_url = task.getResult().getString("photo_url");
+                            message = task.getResult().getString("welcome_message");
+                        }
+                    }
+                });
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onRegister();
+                btnRegister.setEnabled(false);
+                onRegister(v);
             }
         });
 
@@ -79,14 +101,12 @@ public class RegisterActivity extends AppCompatActivity {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
 
-    private void onRegister() {
+    private void onRegister(View v) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.colorAccent))
@@ -102,22 +122,28 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (name.isEmpty()) {
             dialog.dismiss();
+            btnRegister.setEnabled(true);
             inputFirstName.setError("Please enter your first name.");
             inputLastName.setError("Please enter your last name.");
         } else if (email.isEmpty()) {
             dialog.dismiss();
+            btnRegister.setEnabled(true);
             inputEmail.setError("Please enter your email.");
         } else if (contact_number.isEmpty()) {
             dialog.dismiss();
+            btnRegister.setEnabled(true);
             inputContactNumber.setError("Please enter your email.");
         } else if (password.isEmpty()) {
             dialog.dismiss();
+            btnRegister.setEnabled(true);
             inputPassword.setError("Please enter your password.");
         } else if (confirm_password.isEmpty()) {
             dialog.dismiss();
+            btnRegister.setEnabled(true);
             inputConfirmPassword.setError("Please confirm your password.");
         } else if (!confirm_password.equals(password)) {
             dialog.dismiss();
+            btnRegister.setEnabled(true);
             inputPassword.setError("Passwords does not match.");
             inputConfirmPassword.setError("Passwords does not match.");
         } else {
@@ -126,9 +152,9 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                uploadInfo(name, email, contact_number);
+                                uploadInfo(name, email, contact_number, v);
                             } else {
-                                Toast.makeText(RegisterActivity.this, "Register failed. Please try again.", Toast.LENGTH_LONG).show();
+                                Snackbar.make(v, "Sign up failed. Please try again.", Snackbar.LENGTH_SHORT);
                             }
                             dialog.dismiss();
                         }
@@ -137,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void uploadInfo(String name, String email, String contact_number) {
+    private void uploadInfo(String name, String email, String contact_number, View v) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -157,22 +183,43 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        btnRegister.setVisibility(View.VISIBLE);
-                        dialog.dismiss();
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         if (firebaseUser != null) {
-                            startMainActivity();
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
+                            String timestamp = simpleDateFormat.format(Calendar.getInstance().getTime());
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("name", name);
+                            hashMap.put("uid", admin_uid);
+                            hashMap.put("photo_url", photo_url);
+                            hashMap.put("message", message);
+                            hashMap.put("timestamp", timestamp);
+
+                            usersReference.document(admin_uid)
+                                    .collection("conversations")
+                                    .document(currentUserID)
+                                    .collection("chat")
+                                    .add(hashMap)
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            dialog.dismiss();
+                                            btnRegister.setEnabled(true);
+                                            startMainActivity();
+                                        }
+                                    });
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        btnRegister.setVisibility(View.VISIBLE);
                         dialog.dismiss();
-                        Toast.makeText(RegisterActivity.this, "Sign up failed. Please try again.", Toast.LENGTH_LONG).show();
+                        btnRegister.setEnabled(true);
+                        Snackbar.make(v, "Sign up failed. Please try again.", Snackbar.LENGTH_SHORT);
                     }
                 });
+
     }
 
     private void startMainActivity() {
