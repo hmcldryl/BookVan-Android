@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/lato"
-                android:text="@string/redirLoginText"
+                android:text="@string/redirRegisterText"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
         </LinearLayout>
 
