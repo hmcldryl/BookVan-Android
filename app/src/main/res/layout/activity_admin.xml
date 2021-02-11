@@ -57,9 +57,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            app:elevation="8dp"
             android:background="?android:attr/windowBackground"
             app:itemIconTint="@color/colorPrimary"
-            app:itemTextAppearanceActive="@style/ToolbarSubtitleTextAppearance"
+            app:itemTextAppearanceActive="@style/BottomNavBarTextAppearanceActive"
+            app:itemTextAppearanceInactive="@style/BottomNavBarTextAppearanceInactive"
             app:itemTextColor="@color/textColor"
             app:menu="@menu/bottom_nav_menu_admin" />
 
