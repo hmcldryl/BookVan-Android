@@ -9,7 +9,6 @@
         android:id="@+id/bookingCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
@@ -69,6 +68,7 @@
                     android:layout_gravity="center"
                     app:hintEnabled="true"
                     app:startIconDrawable="@drawable/ic_input_transport"
+                    app:endIconTint="@color/colorPrimary"
                     app:startIconTint="@color/colorPrimary">
 
                     <AutoCompleteTextView
