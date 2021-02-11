@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <RelativeLayout
+        android:id="@+id/chatReceiverItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:visibility="gone">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/receiverPhoto"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/placeholder_header_user_dp" />
+
+        <ImageView
+            android:id="@+id/chatBubbleArrowLeft"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/receiverPhoto"
+            android:src="@drawable/background_chat_bubble_arrow_left" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="100dp"
+            android:layout_toEndOf="@+id/chatBubbleArrowLeft"
+            android:background="@drawable/background_receiver_chat_message"
+            android:gravity="start"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/receiverChatMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:maxLength="255"
+                android:text="chat_message"
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/receiverChatTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:maxLines="1"
+                android:text="chat_timestamp"
+                android:textColor="#99121212"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/chatSenderItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:visibility="gone">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/senderPhoto"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/placeholder_header_user_dp" />
+
+        <ImageView
+            android:id="@+id/chatBubbleArrowRight"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/senderPhoto"
+            android:src="@drawable/background_chat_bubble_arrow_right" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_toStartOf="@+id/chatBubbleArrowRight"
+            android:background="@drawable/background_sender_chat_message"
+            android:gravity="end"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/senderChatMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:maxLength="255"
+                android:text="chat_message"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/senderChatTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:maxLines="1"
+                android:text="chat_timestamp"
+                android:textColor="#99FFFFFF"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
