@@ -4,18 +4,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
     </style>
 
     <style name="Theme.AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="BottomNavBarSubtitleTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Subtitle">
-        <item name="android:fontFamily">@font/lato</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="ToolbarTitleTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Title">
@@ -28,13 +23,23 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="BottomNavBarTextAppearanceActive" parent="android:TextAppearance.Material.Widget.Toolbar.Subtitle">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BottomNavBarTextAppearanceInactive" parent="android:TextAppearance.Material.Widget.Toolbar.Subtitle">
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="ButtonTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Subtitle">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="TabTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Subtitle">
-        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:textSize">16sp</item>
     </style>
 
