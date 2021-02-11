@@ -26,33 +26,33 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.opustech.bookvan.ui.book.BookingsFragment;
-import com.opustech.bookvan.ui.contact.ContactAdminFragment;
-import com.opustech.bookvan.ui.home.HomeAdminFragment;
-import com.opustech.bookvan.ui.home.HomeFragment;
-import com.opustech.bookvan.ui.profile.ProfileFragment;
-import com.opustech.bookvan.ui.rent.RentalsFragment;
-import com.opustech.bookvan.ui.schedule.ScheduleAdminFragment;
-import com.opustech.bookvan.ui.vanCompany.VanCompanyFragment;
+import com.opustech.bookvan.ui.fragments.BookingsFragment;
+import com.opustech.bookvan.ui.fragments.ContactAdminFragment;
+import com.opustech.bookvan.ui.fragments.HomeAdminFragment;
+import com.opustech.bookvan.ui.fragments.ProfileFragment;
+import com.opustech.bookvan.ui.fragments.RentalsFragment;
+import com.opustech.bookvan.ui.fragments.ScheduleAdminFragment;
+import com.opustech.bookvan.ui.fragments.VanCompanyFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdminActivity extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    CircleImageView headerUserPhoto;
-    TextView headerUserName, headerUserEmail;
-    NavigationView navigationView;
-    DrawerLayout drawerLayout;
-
+    private CircleImageView headerUserPhoto;
+    private TextView headerUserName, headerUserEmail;
+    private NavigationView navigationView;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+
+        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
@@ -83,7 +83,6 @@ public class AdminActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.btnChat) {
                     Intent intent = new Intent(AdminActivity.this, ChatActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
                 return false;
             }
@@ -96,15 +95,15 @@ public class AdminActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.navigation_book) {
+                if (item.getItemId() == R.id.nav_bookings) {
                     replaceFragment(BookingsFragment.class);
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.navigation_rent) {
+                if (item.getItemId() == R.id.nav_rentals) {
                     replaceFragment(RentalsFragment.class);
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.navigation_schedule) {
+                if (item.getItemId() == R.id.nav_schedule) {
                     replaceFragment(ScheduleAdminFragment.class);
                     drawerLayout.close();
                 }
@@ -140,9 +139,7 @@ public class AdminActivity extends AppCompatActivity {
                     Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     startActivity(intent);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
                 return false;
             }
@@ -186,19 +183,13 @@ public class AdminActivity extends AppCompatActivity {
                                         String name = value.getString("name");
                                         String email = value.getString("email");
                                         String photo_url = value.getString("photo_url");
+                                        headerUserEmail.setText(email);
+                                        headerUserName.setText(name);
 
-                                        if (photo_url != null) {
+                                        if (!photo_url.isEmpty()) {
                                             Glide.with(AdminActivity.this)
                                                     .load(photo_url)
                                                     .into(headerUserPhoto);
-                                        }
-
-                                        if (name != null) {
-                                            headerUserName.setText(name);
-                                        }
-
-                                        if (email != null) {
-                                            headerUserEmail.setText(email);
                                         }
                                     }
                                 }
@@ -209,9 +200,7 @@ public class AdminActivity extends AppCompatActivity {
             Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
 }
