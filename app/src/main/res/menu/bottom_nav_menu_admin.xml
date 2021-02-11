@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_book"
+        android:id="@+id/nav_bookings"
         android:icon="@drawable/ic_menu_book"
         android:title="@string/title_book_admin" />
 
     <item
-        android:id="@+id/navigation_rent"
+        android:id="@+id/nav_rentals"
         android:icon="@drawable/ic_menu_rent"
         android:title="@string/title_rent_admin" />
 
     <item
-        android:id="@+id/navigation_schedule"
+        android:id="@+id/nav_schedule"
         android:icon="@drawable/ic_menu_schedule"
         android:title="@string/title_schedule_admin" />
 
