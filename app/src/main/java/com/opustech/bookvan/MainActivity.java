@@ -2,42 +2,21 @@ package com.opustech.bookvan;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.ui.AppBarConfiguration;
 
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,20 +26,21 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.opustech.bookvan.ui.book.BookFragment;
-import com.opustech.bookvan.ui.contact.ContactFragment;
-import com.opustech.bookvan.ui.home.HomeFragment;
-import com.opustech.bookvan.ui.profile.ProfileFragment;
-import com.opustech.bookvan.ui.rent.RentFragment;
-import com.opustech.bookvan.ui.schedule.ScheduleFragment;
+import com.opustech.bookvan.ui.fragments.BookFragment;
+import com.opustech.bookvan.ui.fragments.ContactFragment;
+import com.opustech.bookvan.ui.fragments.HomeFragment;
+import com.opustech.bookvan.ui.fragments.ProfileFragment;
+import com.opustech.bookvan.ui.fragments.RentFragment;
+import com.opustech.bookvan.ui.fragments.ScheduleFragment;
+import com.opustech.bookvan.ui.fragments.VanCompanyFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference usersReference = firebaseFirestore.collection("users");
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference usersReference;
 
     private CircleImageView headerUserPhoto;
     private TextView headerUserName, headerUserEmail;
@@ -70,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        usersReference = firebaseFirestore.collection("users");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -98,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.btnChat) {
                     Intent intent = new Intent(MainActivity.this, ChatActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
                 return false;
             }
@@ -111,13 +94,13 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.navigation_book) {
+                if (item.getItemId() == R.id.nav_book) {
                     replaceFragment(BookFragment.class);
                 }
-                if (item.getItemId() == R.id.navigation_rent) {
+                if (item.getItemId() == R.id.nav_rent) {
                     replaceFragment(RentFragment.class);
                 }
-                if (item.getItemId() == R.id.navigation_schedule) {
+                if (item.getItemId() == R.id.nav_schedule) {
                     replaceFragment(ScheduleFragment.class);
                 }
                 return true;
@@ -133,6 +116,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.nav_profile) {
                     replaceFragment(ProfileFragment.class);
+                    drawerLayout.close();
+                }
+                if (item.getItemId() == R.id.nav_van_companies) {
+                    replaceFragment(VanCompanyFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_schedule) {
@@ -152,9 +139,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     startActivity(intent);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
                 return true;
             }
@@ -221,9 +206,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
 }
