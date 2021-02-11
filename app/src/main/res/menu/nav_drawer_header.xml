@@ -18,9 +18,9 @@
             android:title="@string/menu_profile" />
 
         <item
-            android:id="@+id/nav_schedule"
-            android:icon="@drawable/ic_menu_schedule"
-            android:title="@string/menu_schedule" />
+            android:id="@+id/nav_van_companies"
+            android:icon="@drawable/ic_input_transport"
+            android:title="@string/menu_van_companies" />
         <item
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_menu_contact"
