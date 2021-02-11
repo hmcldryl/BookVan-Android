@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.opustech.bookvan.ui.activeBooking.ActiveBookingFragment;
-import com.opustech.bookvan.ui.bookingHistory.BookingHistoryFragment;
+import com.opustech.bookvan.ui.fragments.ActiveBookingFragment;
+import com.opustech.bookvan.ui.fragments.BookingHistoryFragment;
 
 public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
 
