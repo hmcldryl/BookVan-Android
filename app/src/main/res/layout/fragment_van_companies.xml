@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_body"
-    tools:context=".ui.vanCompany.VanCompanyFragment">
+    tools:context=".ui.fragments.VanCompanyFragment">
 
     <TextView
         android:layout_width="match_parent"
