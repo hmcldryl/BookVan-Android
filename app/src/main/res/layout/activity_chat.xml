@@ -38,10 +38,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/inputChatBar"
+        android:layout_below="@+id/toolbarContainer">
 
         <TextView
-            android:id="@+id/bookingStatusNone"
+            android:id="@+id/chatStatusNone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -61,7 +63,9 @@
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:reverseLayout="true"
+            app:stackFromEnd="true" />
     </RelativeLayout>
 
     <RelativeLayout
