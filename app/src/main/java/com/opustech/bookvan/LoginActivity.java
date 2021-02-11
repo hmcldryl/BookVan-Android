@@ -37,7 +37,7 @@ import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
     private GoogleSignInClient googleSignInClient;
@@ -55,6 +55,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        usersReference = firebaseFirestore.collection("users");
+
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
 
@@ -63,8 +67,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginGoogle = findViewById(R.id.btnLoginGoogle);
         btnRegister = findViewById(R.id.btnRegister);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
 
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -77,12 +79,16 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnLogin.setEnabled(false);
+
                 String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
                 if (email.isEmpty()) {
+                    btnLogin.setEnabled(true);
                     inputEmail.setError("Please enter a valid email address.");
                 }
                 if (password.isEmpty()) {
+                    btnLogin.setEnabled(true);
                     inputPassword.setError("Please enter your password.");
                 } else {
                     onLogin(email, password);
@@ -93,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Facebook Login", Toast.LENGTH_LONG).show();
+                Snackbar.make(v, "This feature is not yet implemented.", Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -133,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                             if (firebaseUser != null) {
                                 dialog.dismiss();
+                                btnLogin.setEnabled(true);
                                 String currentUserId = firebaseUser.getUid();
                                 if (!currentUserId.isEmpty() && currentUserId.equals(admin_uid)) {
                                     Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
@@ -153,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         } else {
                             dialog.dismiss();
+                            btnLogin.setEnabled(true);
                             Snackbar.make(btnLogin, "Sign in failed. Please try again.", Snackbar.LENGTH_SHORT).show();
                         }
                     }
