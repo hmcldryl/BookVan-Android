@@ -33,7 +33,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingHistoryListRV.BookingHolder> {
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
@@ -52,13 +51,13 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
         String customerId = model.getUid();
         String customerName = model.getName();
         String bookingContactNumber = model.getContact_number();
+        String bookingReferenceNumber = model.getReference_number();
         String bookingLocationFrom = model.getLocation_from();
         String bookingLocationTo = model.getLocation_to();
         String bookingScheduleDate = model.getSchedule_date();
@@ -85,6 +84,7 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
 
         holder.bookingCustomerName.setText(customerName);
         holder.bookingContactNumber.setText(bookingContactNumber);
+        holder.bookingReferenceNumber.setText(bookingReferenceNumber);
         holder.bookingLocationFrom.setText(bookingLocationFrom);
         holder.bookingLocationTo.setText(bookingLocationTo);
         holder.bookingScheduleDate.setText(bookingScheduleDate);
@@ -128,6 +128,7 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
         TextView bookingCustomerName,
                 bookingCustomerEmail,
                 bookingContactNumber,
+                bookingReferenceNumber,
                 bookingLocationFrom,
                 bookingLocationTo,
                 bookingScheduleDate,
@@ -148,6 +149,7 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
+            bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
             bookingLocationFrom = view.findViewById(R.id.bookingLocationFrom);
             bookingLocationTo = view.findViewById(R.id.bookingLocationTo);
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
