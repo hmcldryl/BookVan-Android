@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="#FFFFFF">
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardElevation="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -189,6 +190,14 @@
                             android:textAppearance="?attr/textAppearanceHeadline6"
                             android:textColor="@color/textColor" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_black"
+                            android:text="Ref. No.:"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="@color/textColor" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -308,15 +317,17 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
-                                android:text="P"
+                                android:text="₱"
                                 android:textAppearance="?attr/textAppearanceHeadline6"
                                 android:textColor="@color/textColor" />
+
                             <TextView
                                 android:id="@+id/checkoutTotal"
                                 android:layout_width="match_parent"
@@ -327,6 +338,16 @@
                                 android:textColor="@color/textColor" />
                         </LinearLayout>
 
+                        <TextView
+                            android:id="@+id/bookingReferenceNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato_bold"
+                            android:maxLines="1"
+                            android:text="reference_number"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="@color/textColor" />
 
                     </LinearLayout>
 

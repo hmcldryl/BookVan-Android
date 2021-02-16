@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.model.ChatMessage;
+import com.opustech.bookvan.ui.adapters.AdapterMessageChatCustomerRV;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference conversationsReference;
 
     private TextView chatStatusNone;
     private RecyclerView chatMessageList;
@@ -45,10 +46,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private AdapterMessageChatCustomerRV adapterMessageChatCustomerRV;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-    private String name;
-    private String photo_url;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +53,16 @@ public class ChatActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
+        conversationsReference = firebaseFirestore.collection("conversations");
 
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setTitle("");
+        toolbar.setTitle("Chat with BookVan Tech Support");
+        toolbar.setSubtitle("Tell us your comments, suggestions, and concerns.");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,32 +71,30 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        name = getIntent().getStringExtra("name");
-        photo_url = getIntent().getStringExtra("photo_url");
-
         inputChat = findViewById(R.id.inputChat);
         btnSendChat = findViewById(R.id.btnSendChat);
 
-        Query query = usersReference.document(admin_uid)
-                .collection("conversations")
-                .document(currentUserId)
-                .collection("chat");
+        Query query = conversationsReference.document(currentUserId)
+                .collection("chat")
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<ChatMessage> options = new FirestoreRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
                 .build();
 
         adapterMessageChatCustomerRV = new AdapterMessageChatCustomerRV(options);
+        LinearLayoutManager manager = new LinearLayoutManager(ChatActivity.this);
+        manager.setReverseLayout(true);
 
         chatStatusNone = findViewById(R.id.chatStatusNone);
         chatMessageList = findViewById(R.id.chatMessageList);
         chatMessageList.setHasFixedSize(true);
-        chatMessageList.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        chatMessageList.setLayoutManager(manager);
         chatMessageList.setAdapter(adapterMessageChatCustomerRV);
 
-        usersReference.document(currentUserId)
+        conversationsReference.document(currentUserId)
                 .collection("chat")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         int size = value.size();
@@ -118,31 +114,53 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 btnSendChat.setEnabled(false);
                 String message = inputChat.getEditText().getText().toString();
+                inputChat.getEditText().setText("");
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
                 String timestamp = simpleDateFormat.format(Calendar.getInstance().getTime());
                 if (!message.isEmpty()) {
                     HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("name", name);
                     hashMap.put("uid", currentUserId);
-                    hashMap.put("photo_url", photo_url);
                     hashMap.put("message", message);
                     hashMap.put("timestamp", timestamp);
-                    usersReference.document(admin_uid)
-                            .collection("conversations")
-                            .document(currentUserId)
+                    conversationsReference.document(currentUserId)
                             .collection("chat")
                             .add(hashMap)
                             .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if (task.isSuccessful()) {
-                                        btnSendChat.setEnabled(true);
+                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("timestamp", timestamp);
+                                        conversationsReference.document(currentUserId)
+                                                .set(hashMap)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            btnSendChat.setEnabled(true);
+                                                        }
+                                                    }
+                                                });
                                     }
                                 }
                             });
                 }
+                else {
+                    btnSendChat.setEnabled(true);
+                }
             }
         });
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapterMessageChatCustomerRV.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapterMessageChatCustomerRV.stopListening();
     }
 }

@@ -7,43 +7,43 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.opustech.bookvan.ui.fragments.HomeFragment"
+        android:name="com.opustech.bookvan.ui.fragments.user.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.opustech.bookvan.ui.fragments.ProfileFragment"
+        android:name="com.opustech.bookvan.ui.fragments.user.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/nav_van_companies"
-        android:name="com.opustech.bookvan.ui.fragments.VanCompanyFragment"
+        android:name="com.opustech.bookvan.ui.fragments.user.VanCompanyFragment"
         android:label="@string/title_van_companies"
         tools:layout="@layout/fragment_van_companies" />
 
     <fragment
         android:id="@+id/nav_contact"
-        android:name="com.opustech.bookvan.ui.fragments.ContactFragment"
+        android:name="com.opustech.bookvan.ui.fragments.user.ContactFragment"
         android:label="@string/title_contact"
         tools:layout="@layout/fragment_contact" />
 
     <fragment
         android:id="@+id/nav_book"
-        android:name="com.opustech.bookvan.ui.fragments.BookFragment"
+        android:name="com.opustech.bookvan.ui.fragments.user.BookFragment"
         android:label="@string/title_book"
         tools:layout="@layout/fragment_book" />
 
     <fragment
         android:id="@+id/nav_rent"
-        android:name="com.opustech.bookvan.ui.fragments.RentFragment"
+        android:name="com.opustech.bookvan.ui.fragments.user.RentFragment"
         android:label="@string/title_rent"
         tools:layout="@layout/fragment_rent" />
 
     <fragment
         android:id="@+id/nav_schedule"
-        android:name="com.opustech.bookvan.ui.fragments.ScheduleFragment"
+        android:name="com.opustech.bookvan.ui.fragments.user.ScheduleFragment"
         android:label="@string/title_schedule"
         tools:layout="@layout/fragment_schedule" />
 </navigation>

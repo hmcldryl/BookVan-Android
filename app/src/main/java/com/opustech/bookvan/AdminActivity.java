@@ -26,13 +26,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.opustech.bookvan.ui.fragments.BookingsFragment;
-import com.opustech.bookvan.ui.fragments.ContactAdminFragment;
-import com.opustech.bookvan.ui.fragments.HomeAdminFragment;
-import com.opustech.bookvan.ui.fragments.ProfileFragment;
-import com.opustech.bookvan.ui.fragments.RentalsFragment;
-import com.opustech.bookvan.ui.fragments.ScheduleAdminFragment;
-import com.opustech.bookvan.ui.fragments.VanCompanyFragment;
+import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
+import com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment;
+import com.opustech.bookvan.ui.fragments.admin.HomeAdminFragment;
+import com.opustech.bookvan.ui.fragments.user.profile.ProfileFragment;
+import com.opustech.bookvan.ui.fragments.admin.RentalsFragment;
+import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
+import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -81,7 +81,7 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.btnChat) {
-                    Intent intent = new Intent(AdminActivity.this, ChatActivity.class);
+                    Intent intent = new Intent(AdminActivity.this, MessageAdminActivity.class);
                     startActivity(intent);
                 }
                 return false;

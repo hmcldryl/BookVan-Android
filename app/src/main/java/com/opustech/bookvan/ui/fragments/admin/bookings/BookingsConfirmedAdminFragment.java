@@ -1,4 +1,4 @@
-package com.opustech.bookvan.ui.fragments;
+package com.opustech.bookvan.ui.fragments.admin.bookings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,44 +20,48 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.AdapterBookingListRV;
+import com.opustech.bookvan.ui.adapters.AdapterBookingHistoryListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
-public class BookingsFragment extends Fragment {
+public class BookingsConfirmedAdminFragment extends Fragment {
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference usersReference = firebaseFirestore.collection("users");
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference usersReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
-    private AdapterBookingListRV adapterBookingListRV;
+    private AdapterBookingHistoryListRV adapterBookingHistoryListRV;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_bookings, container, false);
+        View root = inflater.inflate(R.layout.fragment_bookings_confirmed, container, false);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        usersReference = firebaseFirestore.collection("users");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
         Query query = usersReference.document(admin_uid)
                 .collection("pending_bookings")
-                .orderBy("booking_schedule_date");
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingListRV = new AdapterBookingListRV(options);
+        adapterBookingHistoryListRV = new AdapterBookingHistoryListRV(options);
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
         bookingList.setHasFixedSize(true);
         bookingList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bookingList.setAdapter(adapterBookingListRV);
+        bookingList.setAdapter(adapterBookingHistoryListRV);
 
         usersReference.document(admin_uid)
                 .collection("pending_bookings")
@@ -81,12 +85,12 @@ public class BookingsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapterBookingListRV.startListening();
+        adapterBookingHistoryListRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterBookingListRV.stopListening();
+        adapterBookingHistoryListRV.stopListening();
     }
 }

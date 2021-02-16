@@ -1,4 +1,4 @@
-package com.opustech.bookvan.ui.fragments;
+package com.opustech.bookvan.ui.fragments.admin;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,12 +10,11 @@ import androidx.fragment.app.Fragment;
 
 import com.opustech.bookvan.R;
 
-public class BookingHistoryFragment extends Fragment {
+public class RentalsFormFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-
-        View root = inflater.inflate(R.layout.fragment_booking_history, container, false);
+        View root = inflater.inflate(R.layout.fragment_rentals, container, false);
 
 
 

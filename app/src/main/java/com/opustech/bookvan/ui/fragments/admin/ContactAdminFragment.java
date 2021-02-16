@@ -1,4 +1,4 @@
-package com.opustech.bookvan.ui.fragments;
+package com.opustech.bookvan.ui.fragments.admin;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -26,13 +26,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.opustech.bookvan.ui.fragments.BookFragment;
-import com.opustech.bookvan.ui.fragments.ContactFragment;
-import com.opustech.bookvan.ui.fragments.HomeFragment;
-import com.opustech.bookvan.ui.fragments.ProfileFragment;
-import com.opustech.bookvan.ui.fragments.RentFragment;
-import com.opustech.bookvan.ui.fragments.ScheduleFragment;
-import com.opustech.bookvan.ui.fragments.VanCompanyFragment;
+import com.opustech.bookvan.ui.fragments.user.BookFragment;
+import com.opustech.bookvan.ui.fragments.user.ContactFragment;
+import com.opustech.bookvan.ui.fragments.user.HomeFragment;
+import com.opustech.bookvan.ui.fragments.user.profile.ProfileFragment;
+import com.opustech.bookvan.ui.fragments.user.RentFragment;
+import com.opustech.bookvan.ui.fragments.user.ScheduleFragment;
+import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView headerUserName, headerUserEmail;
     private DrawerLayout drawerLayout;
 
+    private String name = "";
+    private String email = "";
+    private String photo_url = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+
+        String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.btnChat) {
                     Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                    intent.putExtra("name", name);
+                    intent.putExtra("photo_url", photo_url);
+                    intent.putExtra("email", email);
                     startActivity(intent);
                 }
                 return false;
@@ -180,9 +189,9 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 if (value != null) {
                                     if (value.exists()) {
-                                        String name = value.getString("name");
-                                        String email = value.getString("email");
-                                        String photo_url = value.getString("photo_url");
+                                        name = value.getString("name");
+                                        email = value.getString("email");
+                                        photo_url = value.getString("photo_url");
 
                                         if (photo_url != null) {
                                             Glide.with(MainActivity.this)

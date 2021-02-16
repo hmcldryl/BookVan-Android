@@ -17,10 +17,14 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <ImageView
+            <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                android:id="@+id/carousel"
                 android:layout_width="175dp"
                 android:layout_height="175dp"
-                android:background="#80121212" />
+                app:autoPlay="true"
+                app:carouselType="SHOWCASE"
+                app:showCaption="false"
+                app:showNavigationButtons="false" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,25 +36,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:fontFamily="@font/lato_bold"
                     android:maxLines="1"
-                    android:text="van_name"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                    android:text="van_model"
+                    android:textColor="@color/textColor"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:fontFamily="@font/lato"
                     android:maxLines="1"
-                    android:text="van_name"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="van_name"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+                    android:text="owner"
+                    android:textColor="@color/textColor"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 

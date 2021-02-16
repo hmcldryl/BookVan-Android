@@ -1,4 +1,4 @@
-package com.opustech.bookvan.ui.fragments;
+package com.opustech.bookvan.ui.fragments.user;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -12,11 +12,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,9 +29,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,12 +46,14 @@ import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
+import se.simbio.encryption.Encryption;
+import third.part.android.util.Base64;
 
 public class BookFragment extends Fragment {
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference usersReference = firebaseFirestore.collection("users");
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference usersReference;
 
     private TextInputLayout bookingCustomerName,
             bookingContactNumber,
@@ -61,14 +70,17 @@ public class BookFragment extends Fragment {
     private Button btnBook;
     private TextView checkoutTotal;
 
-    private String email, name;
-
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         View root = inflater.inflate(R.layout.fragment_book, container, false);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        usersReference = firebaseFirestore.collection("users");
+
+        String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
         bookingCustomerName = root.findViewById(R.id.bookingCustomerName);
         bookingContactNumber = root.findViewById(R.id.bookingContactNumber);
@@ -100,20 +112,17 @@ public class BookFragment extends Fragment {
         bookingLocationToACT.setAdapter(locationArrayAdapter);
         bookingLocationToACT.setThreshold(1);
 
-        fetchCustomerInfo(root);
         initializeDatePicker();
         initializeTimePicker();
 
         bookingCountAdult.getEditText().setText("1");
         bookingCountChild.getEditText().setText("0");
 
-        int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
-        int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-
         addAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (count_adult >= 0 && count_adult < 10) {
+                int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
+                if (count_adult >= 0) {
                     int count = count_adult + 1;
                     bookingCountAdult.getEditText().setText(String.valueOf(count));
                 }
@@ -123,7 +132,8 @@ public class BookFragment extends Fragment {
         addChildCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (count_child >= 0 && count_child < 10) {
+                int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
+                if (count_child >= 0) {
                     int count = count_child + 1;
                     bookingCountChild.getEditText().setText(String.valueOf(count));
                 }
@@ -133,6 +143,7 @@ public class BookFragment extends Fragment {
         subtractAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
                 if (count_adult > 0) {
                     int count = count_adult - 1;
                     bookingCountAdult.getEditText().setText(String.valueOf(count));
@@ -143,6 +154,7 @@ public class BookFragment extends Fragment {
         subtractChildCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
                 if (count_child > 0) {
                     int count = count_child - 1;
                     bookingCountChild.getEditText().setText(String.valueOf(count));
@@ -153,17 +165,17 @@ public class BookFragment extends Fragment {
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputCheck(view);
+                btnBook.setEnabled(false);
+                inputCheck(view, currentUserId);
             }
         });
 
         return root;
     }
 
-    private void inputCheck(View v) {
-        String customer_uid = getCurrentUserId();
-        String customer_name = bookingCustomerName.getEditText().getText().toString();
-        String customer_email = email;
+    private void inputCheck(View view, String current_uid) {
+        String uid = current_uid;
+        String name = bookingCustomerName.getEditText().getText().toString();
         String contact_number = bookingContactNumber.getEditText().getText().toString();
         String location_from = bookingLocationFrom.getEditText().getText().toString();
         String location_to = bookingLocationTo.getEditText().getText().toString();
@@ -171,34 +183,37 @@ public class BookFragment extends Fragment {
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
         int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
         int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-        String booking_price = bookingScheduleDate.getEditText().getText().toString();
+        String amount = bookingScheduleDate.getEditText().getText().toString();
 
-        int price = Integer.parseInt(bookingScheduleDate.getEditText().getText().toString());
+        int price = Integer.parseInt(amount);
 
-        if (customer_name.isEmpty()) {
+        if (name.isEmpty()) {
             bookingCustomerName.getEditText().setError("Please enter your name.");
+            btnBook.setEnabled(true);
         }
         else if (contact_number.isEmpty()) {
             bookingContactNumber.getEditText().setError("Please enter a contact number.");
+            btnBook.setEnabled(true);
         }
         else if (location_from.isEmpty()) {
             bookingLocationFrom.getEditText().setError("Please enter your starting location.");
+            btnBook.setEnabled(true);
         }
         else if (location_to.isEmpty()) {
             bookingLocationTo.getEditText().setError("Please enter the location you wish to go.");
-
+            btnBook.setEnabled(true);
         }
         else if (schedule_date.isEmpty()) {
             bookingScheduleDate.getEditText().setError("Please enter desired schedule date.");
+            btnBook.setEnabled(true);
         }
         else if (schedule_time.isEmpty()) {
             bookingScheduleTime.getEditText().setError("Please enter desired schedule time.");
+            btnBook.setEnabled(true);
         }
         else if (count_adult == 0 && count_child == 0) {
             bookingCountAdult.getEditText().setError("Must have at least 1 adult passenger.");
-        }
-        else if (email.isEmpty()) {
-            Toast.makeText(getActivity(), "Error: Please try again.", Toast.LENGTH_SHORT).show();
+            btnBook.setEnabled(true);
         } else {
             final ACProgressFlower dialog = new ACProgressFlower.Builder(getActivity())
                     .direction(ACProgressConstant.DIRECT_CLOCKWISE)
@@ -207,28 +222,32 @@ public class BookFragment extends Fragment {
                     .fadeColor(Color.DKGRAY).build();
             dialog.show();
 
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
+            String timestamp = simpleDateFormat.format(Calendar.getInstance().getTime());
+
             HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("customer_uid", customer_uid);
-            hashMap.put("customer_name", customer_name);
-            hashMap.put("customer_email", customer_email);
-            hashMap.put("booking_contact_number", contact_number);
-            hashMap.put("booking_location_from", location_from);
-            hashMap.put("booking_location_to", location_to);
-            hashMap.put("booking_schedule_date", schedule_date);
-            hashMap.put("booking_schedule_time", schedule_time);
-            hashMap.put("booking_count_adult", count_adult);
-            hashMap.put("booking_count_child", count_child);
-            hashMap.put("booking_price", booking_price);
-            hashMap.put("booking_status", "pending");
+            hashMap.put("uid", uid);
+            hashMap.put("name", name);
+            hashMap.put("contact_number", contact_number);
+            hashMap.put("location_from", location_from);
+            hashMap.put("location_to", location_to);
+            hashMap.put("schedule_date", schedule_date);
+            hashMap.put("schedule_time", schedule_time);
+            hashMap.put("count_adult", count_adult);
+            hashMap.put("count_child", count_child);
+            hashMap.put("price", price);
+            hashMap.put("timestamp", timestamp);
+            hashMap.put("status", "pending");
 
             usersReference.document(admin_uid)
-                    .collection("pending_bookings")
+                    .collection("bookings")
                     .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentReference> task) {
                     if (task.isSuccessful()) {
                         dialog.dismiss();
-                        Snackbar.make(v, "Booking success!", Snackbar.LENGTH_SHORT);
+                        Snackbar.make(view, "Booking success!", Snackbar.LENGTH_SHORT);
+                        btnBook.setEnabled(true);
                     }
                 }
             });
@@ -279,26 +298,4 @@ public class BookFragment extends Fragment {
             }
         });
     }
-
-    private String getCurrentUserId() {
-        return firebaseAuth.getCurrentUser().getUid();
-    }
-
-    private void fetchCustomerInfo(View v) {
-        Toast.makeText(getActivity(), "Fetching info...", Toast.LENGTH_SHORT).show();
-        usersReference.document(getCurrentUserId())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    name = task.getResult().getString("name");
-                    email = task.getResult().getString("email");
-                    bookingCustomerName.getEditText().setText(name);
-                    Snackbar.make(v, "Fetching info successful.", Snackbar.LENGTH_SHORT);
-                    Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
 }

@@ -8,39 +8,24 @@
     android:fitsSystemWindows="true"
     tools:context=".ChatAdminActivity">
 
-    <RelativeLayout
-        android:id="@+id/toolbarContainer"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/background_toolbar"
-            android:elevation="8dp"
-            app:navigationIcon="@drawable/ic_btn_back"
-            app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
-            app:subtitleTextColor="#FFFFFF"
-            app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
-            app:titleTextColor="#FFFFFF" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:elevation="8dp"
-            android:padding="8dp"
-            android:src="@drawable/bookvan_logo_full" />
-    </RelativeLayout>
+        android:background="@drawable/background_toolbar"
+        android:elevation="8dp"
+        app:navigationIcon="@drawable/ic_btn_back"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
+        app:subtitleTextColor="#FFFFFF"
+        app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+        app:titleTextColor="#FFFFFF" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/inputChatBar"
-        android:layout_below="@+id/toolbarContainer">
+        android:layout_below="@+id/toolbar">
 
         <TextView
             android:id="@+id/chatStatusNone"
@@ -60,12 +45,7 @@
             android:id="@+id/chatMessageList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="10dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp"
-            android:visibility="gone"
-            app:reverseLayout="true"
-            app:stackFromEnd="true" />
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout

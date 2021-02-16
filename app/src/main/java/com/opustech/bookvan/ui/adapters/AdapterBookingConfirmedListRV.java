@@ -1,8 +1,7 @@
-package com.opustech.bookvan;
+package com.opustech.bookvan.ui.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -26,11 +25,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
 import java.util.ArrayList;
@@ -41,10 +41,11 @@ import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingListRV.BookingHolder> {
+public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingConfirmedListRV.BookingHolder> {
 
-    private FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    private CollectionReference usersReference = firebaseFirestore.collection("users");
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference usersReference;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
@@ -55,18 +56,35 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
      * @param options
      */
 
-    public AdapterBookingListRV(@NonNull FirestoreRecyclerOptions<Booking> options) {
+    public AdapterBookingConfirmedListRV(@NonNull FirestoreRecyclerOptions<Booking> options) {
         super(options);
     }
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
-        getSnapshots().getSnapshot(position).getReference()
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        usersReference = firebaseFirestore.collection("users");
+
+        String customerId = model.getUid();
+        String customerName = model.getName();
+        String bookingContactNumber = model.getContact_number();
+        String bookingLocationFrom = model.getLocation_from();
+        String bookingLocationTo = model.getLocation_to();
+        String bookingScheduleDate = model.getSchedule_date();
+        String bookingScheduleTime = model.getSchedule_time();
+        String bookingCountAdult = model.getCount_adult();
+        String bookingCountChild = model.getCount_child();
+        String checkoutTotal = model.getPrice();
+
+        usersReference.document(customerId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
+                            String customerEmail = task.getResult().getString("email");
+                            holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             Glide.with(holder.itemView.getContext())
                                     .load(customerPhoto)
@@ -74,20 +92,8 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
                         }
                     }
                 });
-        String customerId = model.getCustomer_uid();
-        String customerName = model.getCustomer_name();
-        String customerEmail = model.getCustomer_email();
-        String bookingContactNumber = model.getBooking_contact_number();
-        String bookingLocationFrom = model.getBooking_location_from();
-        String bookingLocationTo = model.getBooking_location_to();
-        String bookingScheduleDate = model.getBooking_schedule_date();
-        String bookingScheduleTime = model.getBooking_schedule_time();
-        String bookingCountAdult = model.getBooking_count_adult();
-        String bookingCountChild = model.getBooking_count_child();
-        String checkoutTotal = model.getBooking_price();
 
         holder.bookingCustomerName.setText(customerName);
-        holder.bookingCustomerEmail.setText(customerEmail);
         holder.bookingContactNumber.setText(bookingContactNumber);
         holder.bookingLocationFrom.setText(bookingLocationFrom);
         holder.bookingLocationTo.setText(bookingLocationTo);
@@ -104,7 +110,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
                 final AlertDialog alertDialog = builder.create();
                 if (!alertDialog.isShowing()) {
                     final View dialogView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.dialog_confirm_booking, null);
-                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     alertDialog.setCancelable(true);
                     alertDialog.setView(dialogView);
 
@@ -148,13 +154,12 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-
+                                        alertDialog.dismiss();
                                     }
                                 }
                             });
                         }
                     });
-
                     alertDialog.show();
                 }
             }
@@ -165,7 +170,7 @@ public class AdapterBookingListRV extends FirestoreRecyclerAdapter<Booking, Adap
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_history_item_layout, parent, false);
         return new BookingHolder(view);
     }
 

@@ -1,13 +1,10 @@
-package com.opustech.bookvan;
+package com.opustech.bookvan.ui.adapters;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,20 +12,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.ChatMessage;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterMessageChatCustomerRV extends FirestoreRecyclerAdapter<ChatMessage, AdapterMessageChatCustomerRV.ChatMessageHolder> {
 
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference usersReference;
+
+    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -43,31 +48,63 @@ public class AdapterMessageChatCustomerRV extends FirestoreRecyclerAdapter<ChatM
 
     @Override
     protected void onBindViewHolder(@NonNull ChatMessageHolder holder, int position, @NonNull ChatMessage model) {
-        String currentUserId = firebaseAuth.getCurrentUser().getUid();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        usersReference = firebaseFirestore.collection("users");
 
-        String name = model.getName();
-        String photo_url = model.getPhoto_url();
         String message = model.getMessage();
         String timestamp = model.getTimestamp();
         String uid = model.getUid();
 
-        if (uid.equals(currentUserId)) {
-            holder.sender.setVisibility(View.VISIBLE);
-            Glide.with(holder.itemView.getContext())
-                    .load(photo_url)
-                    .into(holder.senderPhoto);
+        if (!uid.equals(admin_uid)) {
+            holder.receiver.setVisibility(View.GONE);
             holder.senderChatMessage.setText(message);
-            holder.senderChatTimestamp.setText(timestamp);
-        }
-        else {
-            holder.receiver.setVisibility(View.VISIBLE);
-            Glide.with(holder.itemView.getContext())
-                    .load(photo_url)
-                    .into(holder.receiverPhoto);
+        } else {
+            holder.sender.setVisibility(View.GONE);
             holder.receiverChatMessage.setText(message);
-            holder.receiverChatTimestamp.setText(timestamp);
         }
 
+        usersReference.document(uid)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    String photo_url = task.getResult().getString("photo_url");
+                    if (!uid.equals(admin_uid)) {
+                        Glide.with(holder.itemView.getContext())
+                                .load(photo_url)
+                                .into(holder.senderPhoto);
+                    } else {
+                        Glide.with(holder.itemView.getContext())
+                                .load(photo_url)
+                                .into(holder.receiverPhoto);
+                    }
+                }
+            }
+        });
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
+        String minDate = simpleDateFormat.format(Calendar.getInstance().getTime());
+
+        Date dateMin = null;
+        Date dateSelect = null;
+
+        try {
+            dateMin = simpleDateFormat.parse(minDate);
+            dateSelect = simpleDateFormat.parse(timestamp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (dateSelect.compareTo(dateMin) >= 0) {
+            SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+            timestamp = format.format(timestamp);
+
+            if (!uid.equals(admin_uid)) {
+                holder.senderChatTimestamp.setText(timestamp);
+            } else {
+                holder.receiverChatTimestamp.setText(timestamp);
+            }
+        }
     }
 
     @NonNull
@@ -75,28 +112,6 @@ public class AdapterMessageChatCustomerRV extends FirestoreRecyclerAdapter<ChatM
     public ChatMessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_message_item_layout, parent, false);
         return new ChatMessageHolder(view);
-    }
-
-    public void deleteBooking(int position, Context context) {
-        final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
-                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(context.getResources().getColor(R.color.white))
-                .text("Processing...")
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
-        getSnapshots().getSnapshot(position).getReference().delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        dialog.dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                dialog.dismiss();
-                Toast.makeText(context, "Delete booking failed.", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     class ChatMessageHolder extends RecyclerView.ViewHolder {
@@ -110,12 +125,10 @@ public class AdapterMessageChatCustomerRV extends FirestoreRecyclerAdapter<ChatM
             receiverPhoto = view.findViewById(R.id.receiverPhoto);
             receiverChatMessage = view.findViewById(R.id.receiverChatMessage);
             receiverChatTimestamp = view.findViewById(R.id.receiverChatTimestamp);
-
             sender = view.findViewById(R.id.chatSenderItem);
             senderPhoto = view.findViewById(R.id.senderPhoto);
             senderChatMessage = view.findViewById(R.id.senderChatMessage);
             senderChatTimestamp = view.findViewById(R.id.senderChatTimestamp);
-
         }
     }
 

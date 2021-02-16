@@ -1,130 +1,140 @@
 package com.opustech.bookvan.model;
 
 public class Booking {
-    String customer_uid,
-            customer_name,
-            customer_email,
-            booking_contact_number,
-            booking_location_from,
-            booking_location_to,
-            booking_schedule_date,
-            booking_schedule_time,
-            booking_count_adult,
-            booking_count_child,
-            booking_price,
-            booking_status;
+    String reference_number,
+            uid,
+            name,
+            contact_number,
+            location_from,
+            location_to,
+            schedule_date,
+            schedule_time,
+            count_adult,
+            count_child,
+            price,
+            timestamp,
+            status;
 
     public Booking() {
     }
 
-    public Booking(String customer_uid, String customer_name, String customer_email, String booking_contact_number, String booking_location_from, String booking_location_to, String booking_schedule_date, String booking_schedule_time, String booking_count_adult, String booking_count_child, String booking_price, String booking_status) {
-        this.customer_uid = customer_uid;
-        this.customer_name = customer_name;
-        this.customer_email = customer_email;
-        this.booking_contact_number = booking_contact_number;
-        this.booking_location_from = booking_location_from;
-        this.booking_location_to = booking_location_to;
-        this.booking_schedule_date = booking_schedule_date;
-        this.booking_schedule_time = booking_schedule_time;
-        this.booking_count_adult = booking_count_adult;
-        this.booking_count_child = booking_count_child;
-        this.booking_price = booking_price;
-        this.booking_status = booking_status;
+    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String count_adult, String count_child, String price, String timestamp, String status) {
+        this.reference_number = reference_number;
+        this.uid = uid;
+        this.name = name;
+        this.contact_number = contact_number;
+        this.location_from = location_from;
+        this.location_to = location_to;
+        this.schedule_date = schedule_date;
+        this.schedule_time = schedule_time;
+        this.count_adult = count_adult;
+        this.count_child = count_child;
+        this.price = price;
+        this.timestamp = timestamp;
+        this.status = status;
     }
 
-    public String getCustomer_uid() {
-        return customer_uid;
+    public String getReference_number() {
+        return reference_number;
     }
 
-    public void setCustomer_uid(String customer_uid) {
-        this.customer_uid = customer_uid;
+    public void setReference_number(String reference_number) {
+        this.reference_number = reference_number;
     }
 
-    public String getCustomer_name() {
-        return customer_name;
+    public String getUid() {
+        return uid;
     }
 
-    public void setCustomer_name(String customer_name) {
-        this.customer_name = customer_name;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getCustomer_email() {
-        return customer_email;
+    public String getName() {
+        return name;
     }
 
-    public void setCustomer_email(String customer_email) {
-        this.customer_email = customer_email;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getBooking_contact_number() {
-        return booking_contact_number;
+    public String getContact_number() {
+        return contact_number;
     }
 
-    public void setBooking_contact_number(String booking_contact_number) {
-        this.booking_contact_number = booking_contact_number;
+    public void setContact_number(String contact_number) {
+        this.contact_number = contact_number;
     }
 
-    public String getBooking_location_from() {
-        return booking_location_from;
+    public String getLocation_from() {
+        return location_from;
     }
 
-    public void setBooking_location_from(String booking_location_from) {
-        this.booking_location_from = booking_location_from;
+    public void setLocation_from(String location_from) {
+        this.location_from = location_from;
     }
 
-    public String getBooking_location_to() {
-        return booking_location_to;
+    public String getLocation_to() {
+        return location_to;
     }
 
-    public void setBooking_location_to(String booking_location_to) {
-        this.booking_location_to = booking_location_to;
+    public void setLocation_to(String location_to) {
+        this.location_to = location_to;
     }
 
-    public String getBooking_schedule_date() {
-        return booking_schedule_date;
+    public String getSchedule_date() {
+        return schedule_date;
     }
 
-    public void setBooking_schedule_date(String booking_schedule_date) {
-        this.booking_schedule_date = booking_schedule_date;
+    public void setSchedule_date(String schedule_date) {
+        this.schedule_date = schedule_date;
     }
 
-    public String getBooking_schedule_time() {
-        return booking_schedule_time;
+    public String getSchedule_time() {
+        return schedule_time;
     }
 
-    public void setBooking_schedule_time(String booking_schedule_time) {
-        this.booking_schedule_time = booking_schedule_time;
+    public void setSchedule_time(String schedule_time) {
+        this.schedule_time = schedule_time;
     }
 
-    public String getBooking_count_adult() {
-        return booking_count_adult;
+    public String getCount_adult() {
+        return count_adult;
     }
 
-    public void setBooking_count_adult(String booking_count_adult) {
-        this.booking_count_adult = booking_count_adult;
+    public void setCount_adult(String count_adult) {
+        this.count_adult = count_adult;
     }
 
-    public String getBooking_count_child() {
-        return booking_count_child;
+    public String getCount_child() {
+        return count_child;
     }
 
-    public void setBooking_count_child(String booking_count_child) {
-        this.booking_count_child = booking_count_child;
+    public void setCount_child(String count_child) {
+        this.count_child = count_child;
     }
 
-    public String getBooking_price() {
-        return booking_price;
+    public String getPrice() {
+        return price;
     }
 
-    public void setBooking_price(String booking_price) {
-        this.booking_price = booking_price;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
-    public String getBooking_status() {
-        return booking_status;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setBooking_status(String booking_status) {
-        this.booking_status = booking_status;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -1,15 +1,15 @@
-package com.opustech.bookvan;
+package com.opustech.bookvan.ui.adapters;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.opustech.bookvan.ui.fragments.ActiveBookingFragment;
-import com.opustech.bookvan.ui.fragments.BookingHistoryFragment;
+import com.opustech.bookvan.ui.fragments.admin.RentalsFormFragment;
+import com.opustech.bookvan.ui.fragments.admin.RentalsListingFragment;
 
-public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
+public class RentalsViewPagerAdapter extends FragmentPagerAdapter {
 
-    public ProfileViewPagerAdapter(FragmentManager fm) {
+    public RentalsViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -18,11 +18,11 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment = null;
         if (position == 0)
         {
-            fragment = new ActiveBookingFragment();
+            fragment = new RentalsFormFragment();
         }
         else if (position == 1)
         {
-            fragment = new BookingHistoryFragment();
+            fragment = new RentalsListingFragment();
         }
         return fragment;
     }
@@ -37,11 +37,11 @@ public class ProfileViewPagerAdapter extends FragmentPagerAdapter {
         String title = null;
         if (position == 0)
         {
-            title = "Active Booking";
+            title = "Add Van for Rental";
         }
         else if (position == 1)
         {
-            title = "Booking History";
+            title = "Van Listings for Rental";
         }
         return title;
     }

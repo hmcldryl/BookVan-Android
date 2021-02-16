@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".ui.fragments.BookFragment">
+    android:background="@drawable/background_body"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.user.BookFragment">
 
     <ScrollView
         android:id="@+id/bookingForm"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bookingCheckoutBar">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,7 +157,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="5"
-                    android:focusable="false"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:hint="Date"
                     app:startIconDrawable="@drawable/ic_input_calendar"
                     app:startIconTint="@color/colorPrimary">
@@ -165,6 +167,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:focusable="false"
                         android:inputType="date"
                         android:maxLines="1"
                         android:textCursorDrawable="@null" />
@@ -178,7 +181,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="5"
-                    android:focusable="false"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:hint="Time"
                     app:startIconDrawable="@drawable/ic_input_clock"
                     app:startIconTint="@color/colorPrimary">
@@ -187,6 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:focusable="false"
                         android:inputType="time"
                         android:maxLines="1"
                         android:textCursorDrawable="@null" />
@@ -341,63 +346,61 @@
 
             </LinearLayout>
 
+            <RelativeLayout
+                android:id="@+id/bookingCheckoutBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_checkout"
+                android:elevation="8dp">
+
+                <TextView
+                    android:id="@+id/textTotal"
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/lato_black"
+                    android:text="Total:"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/pesoSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toEndOf="@+id/textTotal"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="P"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/checkoutTotal"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/pesoSign"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="000.00"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="#FFFFFF" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnConfirmBooking"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/lato_black"
+                    android:text="BOOK"
+                    android:textColor="@color/colorPrimary"
+                    app:backgroundTint="#FFFFFF" />
+            </RelativeLayout>
+
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/bookingCheckoutBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/background_checkout"
-        android:elevation="8dp">
-
-        <TextView
-            android:id="@+id/textTotal"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/lato_black"
-            android:text="Total:"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="#FFFFFF" />
-
-        <TextView
-            android:id="@+id/pesoSign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/textTotal"
-            android:fontFamily="@font/lato_bold"
-            android:text="P"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="#FFFFFF" />
-
-        <TextView
-            android:id="@+id/checkoutTotal"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/pesoSign"
-            android:fontFamily="@font/lato_bold"
-            android:text="000.00"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="#FFFFFF" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnConfirmBooking"
-            style="@style/Widget.MaterialComponents.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
-            android:fontFamily="@font/lato_black"
-            android:text="BOOK"
-            android:textColor="@color/colorPrimary"
-            app:backgroundTint="#FFFFFF" />
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>
