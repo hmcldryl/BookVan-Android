@@ -67,6 +67,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         String customerId = model.getUid();
         String customerName = model.getName();
         String bookingContactNumber = model.getContact_number();
+        String bookingReferenceNumber = model.getReference_number();
         String bookingLocationFrom = model.getLocation_from();
         String bookingLocationTo = model.getLocation_to();
         String bookingScheduleDate = model.getSchedule_date();
@@ -93,6 +94,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
 
         holder.bookingCustomerName.setText(customerName);
         holder.bookingContactNumber.setText(bookingContactNumber);
+        holder.bookingReferenceNumber.setText(bookingReferenceNumber);
         holder.bookingLocationFrom.setText(bookingLocationFrom);
         holder.bookingLocationTo.setText(bookingLocationTo);
         holder.bookingScheduleDate.setText(bookingScheduleDate);
@@ -100,7 +102,6 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingCountAdult.setText(bookingCountAdult);
         holder.bookingCountChild.setText(bookingCountChild);
         holder.bookingPrice.setText(checkoutTotal);
-
     }
 
     @NonNull
@@ -114,6 +115,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         TextView bookingCustomerName,
                 bookingCustomerEmail,
                 bookingContactNumber,
+                bookingReferenceNumber,
                 bookingLocationFrom,
                 bookingLocationTo,
                 bookingScheduleDate,
@@ -129,6 +131,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
+            bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
             bookingLocationFrom = view.findViewById(R.id.bookingLocationFrom);
             bookingLocationTo = view.findViewById(R.id.bookingLocationTo);
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
