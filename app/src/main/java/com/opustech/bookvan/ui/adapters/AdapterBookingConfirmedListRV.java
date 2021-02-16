@@ -43,7 +43,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingConfirmedListRV.BookingHolder> {
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
@@ -62,13 +61,13 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
         String customerId = model.getUid();
         String customerName = model.getName();
         String bookingContactNumber = model.getContact_number();
+        String bookingReferenceNumber = model.getReference_number();
         String bookingLocationFrom = model.getLocation_from();
         String bookingLocationTo = model.getLocation_to();
         String bookingScheduleDate = model.getSchedule_date();
@@ -95,6 +94,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
 
         holder.bookingCustomerName.setText(customerName);
         holder.bookingContactNumber.setText(bookingContactNumber);
+        holder.bookingReferenceNumber.setText(bookingReferenceNumber);
         holder.bookingLocationFrom.setText(bookingLocationFrom);
         holder.bookingLocationTo.setText(bookingLocationTo);
         holder.bookingScheduleDate.setText(bookingScheduleDate);
@@ -102,75 +102,12 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
         holder.bookingCountAdult.setText(bookingCountAdult);
         holder.bookingCountChild.setText(bookingCountChild);
         holder.bookingPrice.setText(checkoutTotal);
-
-        holder.bookingCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
-                final AlertDialog alertDialog = builder.create();
-                if (!alertDialog.isShowing()) {
-                    final View dialogView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.dialog_confirm_booking, null);
-                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    alertDialog.setCancelable(true);
-                    alertDialog.setView(dialogView);
-
-                    ArrayList<String> transportArray = new ArrayList<>(Arrays.asList(holder.itemView.getContext().getResources().getStringArray(R.array.transport_companies)));
-                    ArrayAdapter<String> transportArrayAdapter = new ArrayAdapter<>(holder.itemView.getContext(), R.layout.support_simple_spinner_dropdown_item, transportArray);
-
-                    TextView bookingCustomerNameId = dialogView.findViewById(R.id.confirmBookingCustomerNameId);
-                    TextInputLayout inputTransportName = dialogView.findViewById(R.id.inputTransportName);
-                    AutoCompleteTextView inputTransportNameACT = dialogView.findViewById(R.id.inputTransportNameACT);
-                    TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
-                    TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
-
-                    String customerNameId = "for " + customerName + " (" + customerId + ")";
-                    bookingCustomerNameId.setText(customerNameId);
-
-                    MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
-                    MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
-
-                    inputTransportNameACT.setAdapter(transportArrayAdapter);
-                    inputTransportNameACT.setThreshold(1);
-
-                    btnCancelBooking.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    });
-
-                    btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String transport_name = inputTransportName.getEditText().getText().toString();
-                            String driver_name = inputDriverName.getEditText().getText().toString();
-                            String plate_number = inputVanPlate.getEditText().getText().toString();
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("transport_name", transport_name);
-                            hashMap.put("driver_name", driver_name);
-                            hashMap.put("plate_number", plate_number);
-                            getSnapshots().getSnapshot(position).getReference()
-                                    .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        alertDialog.dismiss();
-                                    }
-                                }
-                            });
-                        }
-                    });
-                    alertDialog.show();
-                }
-            }
-        });
-
     }
 
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_history_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_confirmed_item_layout, parent, false);
         return new BookingHolder(view);
     }
 
@@ -200,6 +137,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
         TextView bookingCustomerName,
                 bookingCustomerEmail,
                 bookingContactNumber,
+                bookingReferenceNumber,
                 bookingLocationFrom,
                 bookingLocationTo,
                 bookingScheduleDate,
@@ -220,6 +158,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
+            bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
             bookingLocationFrom = view.findViewById(R.id.bookingLocationFrom);
             bookingLocationTo = view.findViewById(R.id.bookingLocationTo);
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
