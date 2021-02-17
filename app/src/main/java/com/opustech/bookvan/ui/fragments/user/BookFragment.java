@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -68,7 +69,7 @@ public class BookFragment extends Fragment {
             subtractAdultCount,
             subtractChildCount;
     private Button btnBook;
-    private TextView checkoutTotal;
+    private TextView priceTotal;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
@@ -98,8 +99,8 @@ public class BookFragment extends Fragment {
 
         btnBook = root.findViewById(R.id.btnConfirmBooking);
 
-        checkoutTotal = root.findViewById(R.id.checkoutTotal);
-        checkoutTotal.setText("170.00");
+        priceTotal = root.findViewById(R.id.price);
+        priceTotal.setText("170.00");
 
         AutoCompleteTextView bookingLocationFromACT = root.findViewById(R.id.bookingLocationFromACT);
         AutoCompleteTextView bookingLocationToACT = root.findViewById(R.id.bookingLocationToACT);
@@ -183,9 +184,7 @@ public class BookFragment extends Fragment {
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
         int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
         int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-        String amount = bookingScheduleDate.getEditText().getText().toString();
-
-        int price = Integer.parseInt(amount);
+        int price = Integer.parseInt(bookingScheduleDate.getEditText().getText().toString());
 
         if (name.isEmpty()) {
             bookingCustomerName.getEditText().setError("Please enter your name.");
@@ -222,9 +221,6 @@ public class BookFragment extends Fragment {
                     .fadeColor(Color.DKGRAY).build();
             dialog.show();
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
-            String timestamp = simpleDateFormat.format(Calendar.getInstance().getTime());
-
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("uid", uid);
             hashMap.put("name", name);
@@ -236,7 +232,7 @@ public class BookFragment extends Fragment {
             hashMap.put("count_adult", count_adult);
             hashMap.put("count_child", count_child);
             hashMap.put("price", price);
-            hashMap.put("timestamp", timestamp);
+            hashMap.put("timestamp", Timestamp.now());
             hashMap.put("status", "pending");
 
             usersReference.document(admin_uid)
@@ -270,7 +266,7 @@ public class BookFragment extends Fragment {
             public void onClick(View view) {
                 new TimePickerDialog(getActivity(), time,
                         calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), true)
+                        calendar.get(Calendar.MINUTE), false)
                         .show();
             }
         });
