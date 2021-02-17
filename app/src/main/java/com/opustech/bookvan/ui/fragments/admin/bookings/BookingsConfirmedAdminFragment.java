@@ -48,7 +48,8 @@ public class BookingsConfirmedAdminFragment extends Fragment {
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
         Query query = usersReference.document(admin_uid)
-                .collection("pending_bookings")
+                .collection("bookings")
+                .whereEqualTo("status", "confirmed")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
@@ -59,12 +60,14 @@ public class BookingsConfirmedAdminFragment extends Fragment {
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
+
         bookingList.setHasFixedSize(true);
         bookingList.setLayoutManager(new LinearLayoutManager(getActivity()));
         bookingList.setAdapter(adapterBookingHistoryListRV);
 
         usersReference.document(admin_uid)
-                .collection("pending_bookings")
+                .collection("bookings")
+                .whereEqualTo("status", "confirmed")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
