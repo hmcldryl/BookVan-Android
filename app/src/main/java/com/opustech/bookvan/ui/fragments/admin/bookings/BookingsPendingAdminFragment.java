@@ -60,6 +60,7 @@ public class BookingsPendingAdminFragment extends Fragment {
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
+
         bookingList.setHasFixedSize(true);
         bookingList.setLayoutManager(new LinearLayoutManager(getActivity()));
         bookingList.setAdapter(adapterBookingHistoryListRV);
