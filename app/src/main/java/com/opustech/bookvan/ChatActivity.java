@@ -16,6 +16,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -76,7 +77,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Query query = conversationsReference.document(currentUserId)
                 .collection("chat")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<ChatMessage> options = new FirestoreRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
@@ -84,7 +85,7 @@ public class ChatActivity extends AppCompatActivity {
 
         adapterMessageChatCustomerRV = new AdapterMessageChatCustomerRV(options);
         LinearLayoutManager manager = new LinearLayoutManager(ChatActivity.this);
-        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
 
         chatStatusNone = findViewById(R.id.chatStatusNone);
         chatMessageList = findViewById(R.id.chatMessageList);
@@ -115,13 +116,11 @@ public class ChatActivity extends AppCompatActivity {
                 btnSendChat.setEnabled(false);
                 String message = inputChat.getEditText().getText().toString();
                 inputChat.getEditText().setText("");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
-                String timestamp = simpleDateFormat.format(Calendar.getInstance().getTime());
                 if (!message.isEmpty()) {
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("uid", currentUserId);
                     hashMap.put("message", message);
-                    hashMap.put("timestamp", timestamp);
+                    hashMap.put("timestamp", Timestamp.now());
                     conversationsReference.document(currentUserId)
                             .collection("chat")
                             .add(hashMap)
@@ -130,13 +129,14 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if (task.isSuccessful()) {
                                         HashMap<String, Object> hashMap = new HashMap<>();
-                                        hashMap.put("timestamp", timestamp);
+                                        hashMap.put("timestamp", Timestamp.now());
                                         conversationsReference.document(currentUserId)
                                                 .set(hashMap)
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
+                                                            chatMessageList.smoothScrollToPosition(adapterMessageChatCustomerRV.getItemCount() - 1);
                                                             btnSendChat.setEnabled(true);
                                                         }
                                                     }
