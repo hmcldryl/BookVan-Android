@@ -1,5 +1,7 @@
 package com.opustech.bookvan.model;
 
+import com.google.firebase.Timestamp;
+
 public class Booking {
     String reference_number,
             uid,
@@ -9,16 +11,15 @@ public class Booking {
             location_to,
             schedule_date,
             schedule_time,
-            count_adult,
-            count_child,
-            price,
-            timestamp,
             status;
+    int count_adult, count_child;
+    float price;
+    Timestamp timestamp;
 
     public Booking() {
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String count_adult, String count_child, String price, String timestamp, String status) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String status, int count_adult, int count_child, float price, Timestamp timestamp) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
@@ -27,11 +28,11 @@ public class Booking {
         this.location_to = location_to;
         this.schedule_date = schedule_date;
         this.schedule_time = schedule_time;
+        this.status = status;
         this.count_adult = count_adult;
         this.count_child = count_child;
         this.price = price;
         this.timestamp = timestamp;
-        this.status = status;
     }
 
     public String getReference_number() {
@@ -98,43 +99,43 @@ public class Booking {
         this.schedule_time = schedule_time;
     }
 
-    public String getCount_adult() {
-        return count_adult;
-    }
-
-    public void setCount_adult(String count_adult) {
-        this.count_adult = count_adult;
-    }
-
-    public String getCount_child() {
-        return count_child;
-    }
-
-    public void setCount_child(String count_child) {
-        this.count_child = count_child;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getCount_adult() {
+        return count_adult;
+    }
+
+    public void setCount_adult(int count_adult) {
+        this.count_adult = count_adult;
+    }
+
+    public int getCount_child() {
+        return count_child;
+    }
+
+    public void setCount_child(int count_child) {
+        this.count_child = count_child;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }
