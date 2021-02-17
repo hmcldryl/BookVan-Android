@@ -61,7 +61,7 @@ public class ChatAdminActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        String uid = getIntent().getStringExtra("name");
+        String uid = getIntent().getStringExtra("uid");
 
         toolbar.setTitle("Chat with " + getIntent().getStringExtra("name"));
         toolbar.setSubtitle("Email: " + getIntent().getStringExtra("email") + ", Contact No.:" + getIntent().getStringExtra("contact_number"));
