@@ -30,7 +30,7 @@ import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.HomeAdminFragment;
 import com.opustech.bookvan.ui.fragments.user.profile.ProfileFragment;
-import com.opustech.bookvan.ui.fragments.admin.RentalsFragment;
+import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
 import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
 
