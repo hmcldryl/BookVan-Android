@@ -126,8 +126,6 @@ public class ProfileActiveBookingFragment extends Fragment {
                         }
                     }
                 });
-
-
         return root;
     }
 
