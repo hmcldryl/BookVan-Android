@@ -165,7 +165,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
-            bookingPrice = view.findViewById(R.id.checkoutTotal);
+            bookingPrice = view.findViewById(R.id.price);
         }
     }
 }
