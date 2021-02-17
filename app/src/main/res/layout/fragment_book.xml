@@ -16,342 +16,345 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="12">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <LinearLayout
-                    android:layout_width="75dp"
-                    android:layout_height="2dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="5"
-                    android:background="#1F000000" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="@font/lato_bold"
-                    android:text="Booking Form"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:textColor="@color/textColor" />
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="12">
 
-                <LinearLayout
-                    android:layout_width="75dp"
-                    android:layout_height="2dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="5"
-                    android:background="#1F000000" />
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="75dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="5"
+                        android:background="#1F000000" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/bookingCustomerName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="Name"
-                app:startIconDrawable="@drawable/ic_input_name"
-                app:startIconTint="@color/colorPrimary">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Booking Form"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                        android:textColor="@color/textColor" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
-                    android:ellipsize="end"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textCursorDrawable="@null" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/bookingContactNumber"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="Contact Number"
-                app:startIconDrawable="@drawable/ic_input_contact_num"
-                app:startIconTint="@color/colorPrimary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:inputType="phone"
-                    android:maxLength="13"
-                    android:maxLines="1"
-                    android:textCursorDrawable="@null" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/bookingLocationFrom"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="From"
-                android:inputType="none"
-                app:endIconTint="@color/colorPrimary"
-                app:startIconDrawable="@drawable/ic_input_location"
-                app:startIconTint="@color/colorPrimary">
-
-                <AutoCompleteTextView
-                    android:id="@+id/bookingLocationFromACT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:singleLine="true"
-                    android:textCursorDrawable="@null" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/bookingLocationTo"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:hint="To"
-                android:inputType="none"
-                app:endIconTint="@color/colorPrimary"
-                app:startIconDrawable="@drawable/ic_input_location"
-                app:startIconTint="@color/colorPrimary">
-
-                <AutoCompleteTextView
-                    android:id="@+id/bookingLocationToACT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:singleLine="true"
-                    android:textCursorDrawable="@null" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                    <LinearLayout
+                        android:layout_width="75dp"
+                        android:layout_height="2dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="5"
+                        android:background="#1F000000" />
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/bookingScheduleDate"
+                    android:id="@+id/bookingCustomerName"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="5"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:hint="Date"
-                    app:startIconDrawable="@drawable/ic_input_calendar"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Name"
+                    app:startIconDrawable="@drawable/ic_input_name"
                     app:startIconTint="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="0dp"
                         android:ellipsize="end"
-                        android:focusable="false"
-                        android:inputType="date"
+                        android:inputType="text"
                         android:maxLines="1"
                         android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/bookingScheduleTime"
+                    android:id="@+id/bookingContactNumber"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="5"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:hint="Time"
-                    app:startIconDrawable="@drawable/ic_input_clock"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Contact Number"
+                    app:startIconDrawable="@drawable/ic_input_contact_num"
                     app:startIconTint="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:focusable="false"
-                        android:inputType="time"
+                        android:inputType="phone"
+                        android:maxLength="13"
                         android:maxLines="1"
                         android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:orientation="vertical"
-                    android:weightSum="10">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="5"
-                        android:gravity="end|center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato"
-                            android:text="Adult:"
-                            android:textColor="#99242323"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="5"
-                        android:gravity="end|center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato"
-                            android:text="Child:"
-                            android:textColor="#99242323"
-                            android:textSize="18sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bookingLocationFrom"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
-                    android:orientation="vertical"
+                    android:layout_marginBottom="8dp"
+                    android:hint="From"
+                    android:inputType="none"
+                    app:endIconTint="@color/colorPrimary"
+                    app:startIconDrawable="@drawable/ic_input_location"
+                    app:startIconTint="@color/colorPrimary">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/bookingLocationFromACT"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@null" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bookingLocationTo"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="To"
+                    android:inputType="none"
+                    app:endIconTint="@color/colorPrimary"
+                    app:startIconDrawable="@drawable/ic_input_location"
+                    app:startIconTint="@color/colorPrimary">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/bookingLocationToACT"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@null" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
                     android:weightSum="10">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/bookingScheduleDate"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
                         android:layout_weight="5"
-                        android:gravity="start"
-                        android:orientation="horizontal">
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:hint="Date"
+                        app:startIconDrawable="@drawable/ic_input_calendar"
+                        app:startIconTint="@color/colorPrimary">
 
-                        <ImageButton
-                            android:id="@+id/btnCountAdultSubtract"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="4dp"
-                            android:background="@drawable/ic_input_minus" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/bookingCountAdult"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                            android:layout_width="50dp"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp">
+                            android:ellipsize="end"
+                            android:focusable="false"
+                            android:inputType="date"
+                            android:maxLines="1"
+                            android:textCursorDrawable="@null" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:inputType="number"
-                                android:maxLines="1" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <ImageButton
-                            android:id="@+id/btnCountAdultAdd"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="4dp"
-                            android:background="@drawable/ic_input_add" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/bookingScheduleTime"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_weight="5"
-                        android:gravity="start"
-                        android:orientation="horizontal">
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:hint="Time"
+                        app:startIconDrawable="@drawable/ic_input_clock"
+                        app:startIconTint="@color/colorPrimary">
 
-                        <ImageButton
-                            android:id="@+id/btnCountChildSubtract"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="4dp"
-                            android:background="@drawable/ic_input_minus" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/bookingCountChild"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                            android:layout_width="50dp"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="4dp">
+                            android:ellipsize="end"
+                            android:focusable="false"
+                            android:inputType="time"
+                            android:maxLines="1"
+                            android:textCursorDrawable="@null" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:inputType="number"
-                                android:maxLines="1" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <ImageButton
-                            android:id="@+id/btnCountChildAdd"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="4dp"
-                            android:background="@drawable/ic_input_add" />
-
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:orientation="vertical"
+                        android:weightSum="10">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="5"
+                            android:gravity="end|center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato"
+                                android:text="Adult:"
+                                android:textColor="#99242323"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="5"
+                            android:gravity="end|center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato"
+                                android:text="Child:"
+                                android:textColor="#99242323"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:orientation="vertical"
+                        android:weightSum="10">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:id="@+id/btnCountAdultSubtract"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="4dp"
+                                android:background="@drawable/ic_input_minus" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bookingCountAdult"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginEnd="4dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:inputType="number"
+                                    android:maxLines="1" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/btnCountAdultAdd"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="4dp"
+                                android:background="@drawable/ic_input_add" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="5"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:id="@+id/btnCountChildSubtract"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="4dp"
+                                android:background="@drawable/ic_input_minus" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bookingCountChild"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginEnd="4dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:inputType="number"
+                                    android:maxLines="1" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/btnCountChildAdd"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="4dp"
+                                android:background="@drawable/ic_input_add" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/bookingCheckoutBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_checkout"
-                android:elevation="8dp">
+                android:background="@drawable/background_checkout">
 
                 <TextView
                     android:id="@+id/textTotal"
@@ -377,7 +380,7 @@
                     android:textColor="#FFFFFF" />
 
                 <TextView
-                    android:id="@+id/checkoutTotal"
+                    android:id="@+id/price"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -399,7 +402,6 @@
                     android:textColor="@color/colorPrimary"
                     app:backgroundTint="#FFFFFF" />
             </RelativeLayout>
-
         </LinearLayout>
     </ScrollView>
 
