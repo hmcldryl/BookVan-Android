@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/nav_rentals"
-        android:name="com.opustech.bookvan.ui.fragments.admin.RentalsFragment"
+        android:name="com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment"
         android:label="@string/title_rent_admin"
         tools:layout="@layout/fragment_rentals" />
 
