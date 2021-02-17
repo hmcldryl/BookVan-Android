@@ -14,12 +14,15 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.ChatMessage;
 
+import java.sql.Time;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,9 +54,9 @@ public class AdapterMessageChatCustomerRV extends FirestoreRecyclerAdapter<ChatM
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
-        String message = model.getMessage();
-        String timestamp = model.getTimestamp();
         String uid = model.getUid();
+        String message = model.getMessage();
+        Timestamp timestamp = model.getTimestamp();
 
         if (!uid.equals(admin_uid)) {
             holder.receiver.setVisibility(View.GONE);
@@ -69,40 +72,42 @@ public class AdapterMessageChatCustomerRV extends FirestoreRecyclerAdapter<ChatM
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     String photo_url = task.getResult().getString("photo_url");
-                    if (!uid.equals(admin_uid)) {
-                        Glide.with(holder.itemView.getContext())
-                                .load(photo_url)
-                                .into(holder.senderPhoto);
-                    } else {
-                        Glide.with(holder.itemView.getContext())
-                                .load(photo_url)
-                                .into(holder.receiverPhoto);
+                    if (photo_url != null) {
+                        if (!photo_url.isEmpty()) {
+                            if (!uid.equals(admin_uid)) {
+                                Glide.with(holder.itemView.getContext())
+                                        .load(photo_url)
+                                        .into(holder.senderPhoto);
+                            }
+                            else {
+                                Glide.with(holder.itemView.getContext())
+                                        .load(photo_url)
+                                        .into(holder.receiverPhoto);
+                            }
+                        }
                     }
                 }
             }
         });
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
-        String minDate = simpleDateFormat.format(Calendar.getInstance().getTime());
-
-        Date dateMin = null;
-        Date dateSelect = null;
-
-        try {
-            dateMin = simpleDateFormat.parse(minDate);
-            dateSelect = simpleDateFormat.parse(timestamp);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        Date dateMin = Timestamp.now().toDate();
+        Date dateSelect = timestamp.toDate();
         if (dateSelect.compareTo(dateMin) >= 0) {
-            SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-            timestamp = format.format(timestamp);
-
+            DateFormat outputFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+            String outputText = outputFormat.format(timestamp.toDate());
             if (!uid.equals(admin_uid)) {
-                holder.senderChatTimestamp.setText(timestamp);
+                holder.senderChatTimestamp.setText(outputText);
             } else {
-                holder.receiverChatTimestamp.setText(timestamp);
+                holder.receiverChatTimestamp.setText(outputText);
+            }
+        }
+        else {
+            DateFormat outputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
+            String outputText = outputFormat.format(timestamp.toDate());
+            if (!uid.equals(admin_uid)) {
+                holder.senderChatTimestamp.setText(outputText);
+            } else {
+                holder.receiverChatTimestamp.setText(outputText);
             }
         }
     }
