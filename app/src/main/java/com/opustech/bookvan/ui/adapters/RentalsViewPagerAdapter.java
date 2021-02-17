@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.opustech.bookvan.ui.fragments.admin.RentalsFormFragment;
-import com.opustech.bookvan.ui.fragments.admin.RentalsListingFragment;
+import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFormFragment;
+import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsListingFragment;
 
 public class RentalsViewPagerAdapter extends FragmentPagerAdapter {
 
