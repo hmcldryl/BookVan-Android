@@ -1,7 +1,5 @@
 package com.opustech.bookvan.model;
 
-import com.google.firebase.Timestamp;
-
 public class Booking {
     String reference_number,
             uid,
@@ -11,15 +9,15 @@ public class Booking {
             location_to,
             schedule_date,
             schedule_time,
-            status;
+            status,
+            timestamp;
     int count_adult, count_child;
     float price;
-    Timestamp timestamp;
 
     public Booking() {
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String status, int count_adult, int count_child, float price, Timestamp timestamp) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String status, String timestamp, int count_adult, int count_child, float price) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
@@ -29,10 +27,10 @@ public class Booking {
         this.schedule_date = schedule_date;
         this.schedule_time = schedule_time;
         this.status = status;
+        this.timestamp = timestamp;
         this.count_adult = count_adult;
         this.count_child = count_child;
         this.price = price;
-        this.timestamp = timestamp;
     }
 
     public String getReference_number() {
@@ -107,6 +105,14 @@ public class Booking {
         this.status = status;
     }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public int getCount_adult() {
         return count_adult;
     }
@@ -129,13 +135,5 @@ public class Booking {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
     }
 }
