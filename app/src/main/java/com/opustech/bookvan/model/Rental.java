@@ -1,21 +1,21 @@
 package com.opustech.bookvan.model;
 
-import com.google.firebase.Timestamp;
-
 public class Rental {
-    String owner, van_description;
+    String owner, van_description, timestamp;
     String[] photo_url;
     int capacity;
     float price;
-    Timestamp timestamp;
 
-    public Rental(String owner, String van_description, String[] photo_url, int capacity, float price, Timestamp timestamp) {
+    public Rental(String owner, String van_description, String timestamp, String[] photo_url, int capacity, float price) {
         this.owner = owner;
         this.van_description = van_description;
+        this.timestamp = timestamp;
         this.photo_url = photo_url;
         this.capacity = capacity;
         this.price = price;
-        this.timestamp = timestamp;
+    }
+
+    public Rental() {
     }
 
     public String getOwner() {
@@ -32,6 +32,14 @@ public class Rental {
 
     public void setVan_description(String van_description) {
         this.van_description = van_description;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String[] getPhoto_url() {
@@ -56,13 +64,5 @@ public class Rental {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
     }
 }
