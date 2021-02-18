@@ -184,7 +184,7 @@ public class BookFragment extends Fragment {
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
         int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
         int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-        int price = Integer.parseInt(bookingScheduleDate.getEditText().getText().toString());
+        float price = Float.parseFloat(bookingScheduleDate.getEditText().getText().toString());
 
         if (name.isEmpty()) {
             bookingCustomerName.getEditText().setError("Please enter your name.");
@@ -221,6 +221,9 @@ public class BookFragment extends Fragment {
                     .fadeColor(Color.DKGRAY).build();
             dialog.show();
 
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String timestamp = format.format(Calendar.getInstance().getTime());
+
             HashMap<String, Object> hashMap = new HashMap<>();
             hashMap.put("uid", uid);
             hashMap.put("name", name);
@@ -232,7 +235,7 @@ public class BookFragment extends Fragment {
             hashMap.put("count_adult", count_adult);
             hashMap.put("count_child", count_child);
             hashMap.put("price", price);
-            hashMap.put("timestamp", Timestamp.now());
+            hashMap.put("timestamp", timestamp);
             hashMap.put("status", "pending");
 
             usersReference.document(admin_uid)
