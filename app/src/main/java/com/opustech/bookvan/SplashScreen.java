@@ -17,7 +17,7 @@ public class SplashScreen extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-    private String admin_uid = "btLTtUYnMuWvkrJspvKqZIirLce2";
+    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
