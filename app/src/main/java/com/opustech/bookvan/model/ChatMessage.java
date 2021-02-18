@@ -3,24 +3,15 @@ package com.opustech.bookvan.model;
 import com.google.firebase.Timestamp;
 
 public class ChatMessage {
-    String message, uid;
-    Timestamp timestamp;
+    String uid, message, timestamp;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(String message, String uid, Timestamp timestamp) {
-        this.message = message;
+    public ChatMessage(String uid, String message, String timestamp) {
         this.uid = uid;
-        this.timestamp = timestamp;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
         this.message = message;
+        this.timestamp = timestamp;
     }
 
     public String getUid() {
@@ -31,11 +22,19 @@ public class ChatMessage {
         this.uid = uid;
     }
 
-    public Timestamp getTimestamp() {
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }
