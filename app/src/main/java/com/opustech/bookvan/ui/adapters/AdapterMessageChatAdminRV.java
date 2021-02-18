@@ -14,12 +14,16 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.ChatMessage;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -51,9 +55,9 @@ public class AdapterMessageChatAdminRV extends FirestoreRecyclerAdapter<ChatMess
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
+        String uid = model.getUid();
         String message = model.getMessage();
         String timestamp = model.getTimestamp();
-        String uid = model.getUid();
 
         if (uid.equals(admin_uid)) {
             holder.receiver.setVisibility(View.GONE);
@@ -82,28 +86,16 @@ public class AdapterMessageChatAdminRV extends FirestoreRecyclerAdapter<ChatMess
             }
         });
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
-        String minDate = simpleDateFormat.format(Calendar.getInstance().getTime());
-
-        Date dateMin = null;
-        Date dateSelect = null;
-
         try {
-            dateMin = simpleDateFormat.parse(minDate);
-            dateSelect = simpleDateFormat.parse(timestamp);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
+            if (uid.equals(admin_uid)) {
+                holder.senderChatTimestamp.setText(outputText);
+            } else {
+                holder.receiverChatTimestamp.setText(outputText);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-
-        if (dateSelect.compareTo(dateMin) >= 0) {
-            SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-            timestamp = format.format(timestamp);
-
-            if (uid.equals(admin_uid)) {
-                holder.senderChatTimestamp.setText(timestamp);
-            } else {
-                holder.receiverChatTimestamp.setText(timestamp);
-            }
         }
     }
 
