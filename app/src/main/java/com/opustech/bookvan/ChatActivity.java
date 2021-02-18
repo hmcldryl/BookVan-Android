@@ -117,10 +117,12 @@ public class ChatActivity extends AppCompatActivity {
                 String message = inputChat.getEditText().getText().toString();
                 inputChat.getEditText().setText("");
                 if (!message.isEmpty()) {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                    String timestamp = format.format(Calendar.getInstance().getTime());
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("uid", currentUserId);
                     hashMap.put("message", message);
-                    hashMap.put("timestamp", Timestamp.now());
+                    hashMap.put("timestamp", timestamp);
                     conversationsReference.document(currentUserId)
                             .collection("chat")
                             .add(hashMap)
@@ -129,7 +131,7 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if (task.isSuccessful()) {
                                         HashMap<String, Object> hashMap = new HashMap<>();
-                                        hashMap.put("timestamp", Timestamp.now());
+                                        hashMap.put("timestamp", timestamp);
                                         conversationsReference.document(currentUserId)
                                                 .set(hashMap)
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
