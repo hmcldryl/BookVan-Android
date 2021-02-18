@@ -115,8 +115,8 @@ public class ChatAdminActivity extends AppCompatActivity {
                 btnSendChat.setEnabled(false);
                 String message = inputChat.getEditText().getText().toString();
                 inputChat.getEditText().setText("");
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
-                String timestamp = simpleDateFormat.format(Calendar.getInstance().getTime());
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                String timestamp = format.format(Calendar.getInstance().getTime());
                 if (!message.isEmpty()) {
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("uid", admin_uid);
