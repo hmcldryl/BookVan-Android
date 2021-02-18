@@ -17,17 +17,6 @@
             android:layout_height="125dp"
             android:src="@drawable/bookvan_logo_icon" />
 
-        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:indeterminate="true"
-            android:layout_centerInParent="true"
-            app:mpb_progressStyle="circular"
-            app:mpb_progressBackgroundTint="@color/colorPrimary"
-            app:mpb_indeterminateTint="@color/colorPrimary"
-            app:mpb_progressTint="@color/colorPrimary"
-            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
-
     </RelativeLayout>
 
 </RelativeLayout>
