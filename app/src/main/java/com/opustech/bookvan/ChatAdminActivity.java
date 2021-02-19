@@ -46,7 +46,6 @@ public class ChatAdminActivity extends AppCompatActivity {
     private AdapterMessageChatAdminRV adapterMessageChatAdminRV;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-    private String uid = getIntent().getStringExtra("uid");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,14 +56,13 @@ public class ChatAdminActivity extends AppCompatActivity {
         usersReference = firebaseFirestore.collection("users");
         conversationsReference = firebaseFirestore.collection("conversations");
 
+        String uid = getIntent().getStringExtra("uid");
+        String name = getIntent().getStringExtra("name");
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        String uid = getIntent().getStringExtra("uid");
-
-        toolbar.setTitle("Chat with " + getIntent().getStringExtra("name"));
-        toolbar.setSubtitle("Email: " + getIntent().getStringExtra("email") + ", Contact No.:" + getIntent().getStringExtra("contact_number"));
+        getSupportActionBar().setTitle("Chat with " + name);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,18 +76,20 @@ public class ChatAdminActivity extends AppCompatActivity {
 
         Query query = conversationsReference.document(uid)
                 .collection("chat")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<ChatMessage> options = new FirestoreRecyclerOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
                 .build();
 
         adapterMessageChatAdminRV = new AdapterMessageChatAdminRV(options);
+        LinearLayoutManager manager = new LinearLayoutManager(ChatAdminActivity.this);
+        manager.setStackFromEnd(true);
 
         chatStatusNone = findViewById(R.id.chatStatusNone);
         chatMessageList = findViewById(R.id.chatMessageList);
         chatMessageList.setHasFixedSize(true);
-        chatMessageList.setLayoutManager(new LinearLayoutManager(ChatAdminActivity.this));
+        chatMessageList.setLayoutManager(manager);
         chatMessageList.setAdapter(adapterMessageChatAdminRV);
 
         conversationsReference.document(uid)
@@ -115,9 +115,9 @@ public class ChatAdminActivity extends AppCompatActivity {
                 btnSendChat.setEnabled(false);
                 String message = inputChat.getEditText().getText().toString();
                 inputChat.getEditText().setText("");
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                String timestamp = format.format(Calendar.getInstance().getTime());
                 if (!message.isEmpty()) {
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                    String timestamp = format.format(Calendar.getInstance().getTime());
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("uid", admin_uid);
                     hashMap.put("message", message);
@@ -130,6 +130,7 @@ public class ChatAdminActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if (task.isSuccessful()) {
                                         HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("uid", uid);
                                         hashMap.put("timestamp", timestamp);
                                         conversationsReference.document(uid)
                                                 .set(hashMap)
@@ -137,6 +138,7 @@ public class ChatAdminActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
+                                                            chatMessageList.smoothScrollToPosition(adapterMessageChatAdminRV.getItemCount() - 1);
                                                             btnSendChat.setEnabled(true);
                                                         }
                                                     }
