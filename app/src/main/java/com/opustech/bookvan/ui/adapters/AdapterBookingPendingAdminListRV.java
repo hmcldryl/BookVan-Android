@@ -81,9 +81,13 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                             String customerEmail = task.getResult().getString("email");
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
-                            Glide.with(holder.itemView.getContext())
-                                    .load(customerPhoto)
-                                    .into(holder.customerPhoto);
+                            if (customerPhoto != null) {
+                                if (!customerPhoto.isEmpty()) {
+                                    Glide.with(holder.itemView.getContext())
+                                            .load(customerPhoto)
+                                            .into(holder.customerPhoto);
+                                }
+                            }
                         }
                     }
                 });
