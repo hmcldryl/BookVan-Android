@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,7 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.opustech.bookvan.ui.fragments.user.BookFragment;
 import com.opustech.bookvan.ui.fragments.user.ContactFragment;
 import com.opustech.bookvan.ui.fragments.user.HomeFragment;
-import com.opustech.bookvan.ui.fragments.user.profile.ProfileFragment;
+import com.opustech.bookvan.ui.fragments.user.booking.BookingFragment;
 import com.opustech.bookvan.ui.fragments.user.RentFragment;
 import com.opustech.bookvan.ui.fragments.user.ScheduleFragment;
 import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private CircleImageView headerUserPhoto;
     private TextView headerUserName, headerUserEmail;
+    private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
     private String name = "";
@@ -65,11 +65,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
-
-        toolbar.setTitle("");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,9 +85,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.btnChat) {
                     Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-                    intent.putExtra("name", name);
-                    intent.putExtra("photo_url", photo_url);
-                    intent.putExtra("email", email);
                     startActivity(intent);
                 }
                 return false;
@@ -123,8 +118,12 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(HomeFragment.class);
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.nav_profile) {
-                    replaceFragment(ProfileFragment.class);
+                if (item.getItemId() == R.id.btnProfile) {
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getItemId() == R.id.nav_booking) {
+                    replaceFragment(BookingFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_van_companies) {
@@ -184,9 +183,6 @@ public class MainActivity extends AppCompatActivity {
                         .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                if (error != null) {
-                                    Toast.makeText(MainActivity.this, "Error loading user data.", Toast.LENGTH_SHORT).show();
-                                }
                                 if (value != null) {
                                     if (value.exists()) {
                                         name = value.getString("name");
@@ -194,16 +190,18 @@ public class MainActivity extends AppCompatActivity {
                                         photo_url = value.getString("photo_url");
 
                                         if (photo_url != null) {
-                                            Glide.with(MainActivity.this)
-                                                    .load(photo_url)
-                                                    .into(headerUserPhoto);
+                                            if (!photo_url.isEmpty()) {
+                                                Glide.with(MainActivity.this)
+                                                        .load(photo_url)
+                                                        .into(headerUserPhoto);
+                                            }
                                         }
 
-                                        if (name != null) {
+                                        if (!name.isEmpty()) {
                                             headerUserName.setText(name);
                                         }
 
-                                        if (email != null) {
+                                        if (!email.isEmpty()) {
                                             headerUserEmail.setText(email);
                                         }
                                     }
