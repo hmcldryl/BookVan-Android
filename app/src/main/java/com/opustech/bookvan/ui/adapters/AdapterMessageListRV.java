@@ -27,6 +27,8 @@ import com.opustech.bookvan.ChatAdminActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.ChatConversation;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,79 +65,71 @@ public class AdapterMessageListRV extends FirestoreRecyclerAdapter<ChatConversat
 
         String uid = model.getUid();
 
-        usersReference.document(uid)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    String name = task.getResult().getString("name");
-                    String photo_url = task.getResult().getString("photo_url");
-                    String email = task.getResult().getString("email");
-                    String contact_number = task.getResult().getString("contact_number");
+        if (uid != null) {
+            usersReference.document(uid)
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        String name = task.getResult().getString("name");
+                        String photo_url = task.getResult().getString("photo_url");
+                        String email = task.getResult().getString("email");
+                        String contact_number = task.getResult().getString("contact_number");
 
-                    holder.customerName.setText(name);
-                    Glide.with(holder.itemView.getContext())
-                            .load(photo_url)
-                            .into(holder.customerPhoto);
-                    holder.customerEmail.setText(email);
-                    holder.customerContactNumber.setText(contact_number);
-
-                    holder.customerConversation.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(view.getContext(), ChatAdminActivity.class);
-                            intent.putExtra("uid", uid);
-                            intent.putExtra("name", name);
-                            intent.putExtra("email", email);
-                            intent.putExtra("contact_number", contact_number);
-                            view.getContext().startActivity(intent);
-                        }
-                    });
-
-                    Query query = conversationsReference.document(uid)
-                            .collection("chat")
-                            .orderBy("timestamp", Query.Direction.DESCENDING)
-                            .limit(1);
-                    query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                            if (value != null) {
-                                List<DocumentSnapshot> documentSnapshotList = value.getDocuments();
-                                if (documentSnapshotList.size() != 0) {
-                                    String message = documentSnapshotList.get(0).getString("message");
-                                    String timestamp = documentSnapshotList.get(0).getString("timestamp");
-
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
-                                    String minDate = simpleDateFormat.format(Calendar.getInstance().getTime());
-
-                                    Date dateMin = null;
-                                    Date dateSelect = null;
-
-                                    try {
-                                        dateMin = simpleDateFormat.parse(minDate);
-                                        dateSelect = simpleDateFormat.parse(timestamp);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    if (dateSelect.compareTo(dateMin) >= 0) {
-                                        SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-                                        timestamp = format.format(timestamp);
-                                        holder.customerLastMessageTimestamp.setText(timestamp);
-                                    }
-
-                                    holder.customerLastMessage.setText(message);
-                                    holder.lastMessage.setVisibility(View.VISIBLE);
-                                } else {
-                                    holder.lastMessage.setVisibility(View.GONE);
-                                }
+                        holder.customerName.setText(name);
+                        if (photo_url != null) {
+                            if (!photo_url.isEmpty()) {
+                                Glide.with(holder.itemView.getContext())
+                                        .load(photo_url)
+                                        .into(holder.customerPhoto);
                             }
                         }
-                    });
+                        holder.customerEmail.setText(email);
+                        holder.customerContactNumber.setText(contact_number);
+                        holder.customerConversation.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(view.getContext(), ChatAdminActivity.class);
+                                intent.putExtra("uid", uid);
+                                intent.putExtra("name", name);
+                                intent.putExtra("email", email);
+                                intent.putExtra("contact_number", contact_number);
+                                view.getContext().startActivity(intent);
+                            }
+                        });
 
+                        Query query = conversationsReference.document(uid)
+                                .collection("chat")
+                                .orderBy("timestamp", Query.Direction.DESCENDING)
+                                .limit(1);
+                        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                if (value != null) {
+                                    List<DocumentSnapshot> documentSnapshotList = value.getDocuments();
+                                    if (documentSnapshotList.size() != 0) {
+                                        String message = documentSnapshotList.get(0).getString("message");
+                                        String timestamp = documentSnapshotList.get(0).getString("timestamp");
+                                        try {
+                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                                            String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
+                                            holder.customerLastMessage.setText(message);
+                                            holder.customerLastMessageTimestamp.setText(outputText);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                        holder.lastMessage.setVisibility(View.VISIBLE);
+                                    } else {
+                                        holder.lastMessage.setVisibility(View.GONE);
+                                    }
+                                }
+                            }
+                        });
+
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @NonNull
@@ -161,7 +155,6 @@ public class AdapterMessageListRV extends FirestoreRecyclerAdapter<ChatConversat
             lastMessage = view.findViewById(R.id.lastMessage);
             customerLastMessage = view.findViewById(R.id.customerLastMessage);
             customerLastMessageTimestamp = view.findViewById(R.id.customerLastMessageTimestamp);
-
         }
     }
 
