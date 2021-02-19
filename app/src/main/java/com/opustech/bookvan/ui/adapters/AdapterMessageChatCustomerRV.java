@@ -61,10 +61,10 @@ public class AdapterMessageChatCustomerRV extends FirestoreRecyclerAdapter<ChatM
         String timestamp = model.getTimestamp();
 
         if (!uid.equals(admin_uid)) {
-            holder.receiver.setVisibility(View.GONE);
+            holder.sender.setVisibility(View.VISIBLE);
             holder.senderChatMessage.setText(message);
         } else {
-            holder.sender.setVisibility(View.GONE);
+            holder.receiver.setVisibility(View.VISIBLE);
             holder.receiverChatMessage.setText(message);
         }
 
