@@ -375,7 +375,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_toEndOf="@+id/textTotal"
                     android:fontFamily="@font/lato_bold"
-                    android:text="P"
+                    android:text="@string/peso_sign"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="#FFFFFF" />
 
