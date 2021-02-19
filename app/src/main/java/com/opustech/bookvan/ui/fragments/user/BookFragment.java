@@ -184,7 +184,7 @@ public class BookFragment extends Fragment {
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
         int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
         int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-        float price = Float.parseFloat(bookingScheduleDate.getEditText().getText().toString());
+        float price = Float.parseFloat(priceTotal.getText().toString());
 
         if (name.isEmpty()) {
             bookingCustomerName.getEditText().setError("Please enter your name.");
@@ -283,7 +283,7 @@ public class BookFragment extends Fragment {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yy", Locale.ENGLISH);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 bookingScheduleDate.getEditText().setText(simpleDateFormat.format(calendar.getTime()));
             }
         };
