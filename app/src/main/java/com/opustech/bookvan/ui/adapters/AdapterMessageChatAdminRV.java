@@ -60,10 +60,10 @@ public class AdapterMessageChatAdminRV extends FirestoreRecyclerAdapter<ChatMess
         String timestamp = model.getTimestamp();
 
         if (uid.equals(admin_uid)) {
-            holder.receiver.setVisibility(View.GONE);
+            holder.sender.setVisibility(View.VISIBLE);
             holder.senderChatMessage.setText(message);
         } else {
-            holder.sender.setVisibility(View.GONE);
+            holder.receiver.setVisibility(View.VISIBLE);
             holder.receiverChatMessage.setText(message);
         }
 
@@ -73,14 +73,18 @@ public class AdapterMessageChatAdminRV extends FirestoreRecyclerAdapter<ChatMess
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     String photo_url = task.getResult().getString("photo_url");
-                    if (uid.equals(admin_uid)) {
-                        Glide.with(holder.itemView.getContext())
-                                .load(photo_url)
-                                .into(holder.senderPhoto);
-                    } else {
-                        Glide.with(holder.itemView.getContext())
-                                .load(photo_url)
-                                .into(holder.receiverPhoto);
+                    if (photo_url != null) {
+                        if (!photo_url.isEmpty()) {
+                            if (uid.equals(admin_uid)) {
+                                Glide.with(holder.itemView.getContext())
+                                        .load(photo_url)
+                                        .into(holder.senderPhoto);
+                            } else {
+                                Glide.with(holder.itemView.getContext())
+                                        .load(photo_url)
+                                        .into(holder.receiverPhoto);
+                            }
+                        }
                     }
                 }
             }
