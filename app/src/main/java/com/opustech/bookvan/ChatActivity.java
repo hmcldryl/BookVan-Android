@@ -60,10 +60,9 @@ public class ChatActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        toolbar.setTitle("Chat with BookVan Tech Support");
-        toolbar.setSubtitle("Tell us your comments, suggestions, and concerns.");
+        getSupportActionBar().setTitle("Chat with BookVan Tech Support");
+        getSupportActionBar().setSubtitle("For comments, suggestions, and concerns.");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +130,7 @@ public class ChatActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if (task.isSuccessful()) {
                                         HashMap<String, Object> hashMap = new HashMap<>();
+                                        hashMap.put("uid", currentUserId);
                                         hashMap.put("timestamp", timestamp);
                                         conversationsReference.document(currentUserId)
                                                 .set(hashMap)
