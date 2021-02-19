@@ -6,6 +6,8 @@
     <string name="nav_header_subtitle">Please sign in to use BookVan.</string>
     <string name="nav_header_desc">Navigation header</string>
 
+    <string name="peso_sign">₱</string>
+
     <string name="input_fname">First Name</string>
     <string name="input_lname">Last Name</string>
     <string name="input_transport_name">Transport Name</string>
@@ -25,11 +27,13 @@
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
     <string name="title_book">Book</string>
+    <string name="title_booking">Booking</string>
     <string name="title_rent">Rent</string>
     <string name="title_schedule">Schedule</string>
     <string name="title_contact">Contact</string>
     <string name="title_van_companies">Van Companies</string>
     <string name="title_chat">Chat</string>
+    <string name="title_edit">Edit</string>
     <string name="title_book_admin">Bookings</string>
     <string name="title_rent_admin">Rentals</string>
     <string name="title_schedule_admin">Schedule</string>
