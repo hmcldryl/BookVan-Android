@@ -55,7 +55,8 @@ public class MessageAdminActivity extends AppCompatActivity {
             }
         });
 
-        Query query = conversationsReference.orderBy("timestamp", Query.Direction.DESCENDING);
+        Query query = conversationsReference
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<ChatConversation> options = new FirestoreRecyclerOptions.Builder<ChatConversation>()
                 .setQuery(query, ChatConversation.class)
@@ -67,6 +68,7 @@ public class MessageAdminActivity extends AppCompatActivity {
 
         chatStatusNone = findViewById(R.id.chatStatusNone);
         chatMessageList = findViewById(R.id.chatMessageList);
+
         chatMessageList.setHasFixedSize(true);
         chatMessageList.setLayoutManager(manager);
         chatMessageList.addItemDecoration(dividerItemDecoration);
@@ -75,14 +77,15 @@ public class MessageAdminActivity extends AppCompatActivity {
         conversationsReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        int size = value.size();
-
-                        if (size > 0) {
-                            chatMessageList.setVisibility(View.VISIBLE);
-                            chatStatusNone.setVisibility(View.GONE);
-                        } else {
-                            chatStatusNone.setVisibility(View.VISIBLE);
-                            chatMessageList.setVisibility(View.GONE);
+                        if (value != null) {
+                            int size = value.size();
+                                if (size > 0) {
+                                    chatMessageList.setVisibility(View.VISIBLE);
+                                    chatStatusNone.setVisibility(View.GONE);
+                                } else {
+                                    chatStatusNone.setVisibility(View.VISIBLE);
+                                    chatMessageList.setVisibility(View.GONE);
+                                }
                         }
                     }
                 });
