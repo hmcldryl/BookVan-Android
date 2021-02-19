@@ -20,7 +20,7 @@
             android:background="@drawable/background_toolbar"
             android:elevation="8dp"
             app:menu="@menu/toolbar_menu_profile"
-            app:navigationIcon="@drawable/ic_toolbar_nav"
+            app:navigationIcon="@drawable/ic_btn_back"
             app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
             app:subtitleTextColor="#FFFFFF"
             app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
