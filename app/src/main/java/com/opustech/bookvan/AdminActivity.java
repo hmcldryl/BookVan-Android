@@ -120,10 +120,6 @@ public class AdminActivity extends AppCompatActivity {
                     replaceFragment(HomeAdminFragment.class);
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.nav_profile) {
-                    replaceFragment(BookingFragment.class);
-                    drawerLayout.close();
-                }
                 if (item.getItemId() == R.id.nav_van_companies) {
                     replaceFragment(VanCompanyFragment.class);
                     drawerLayout.close();
