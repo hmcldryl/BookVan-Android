@@ -3,6 +3,7 @@ package com.opustech.bookvan;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -45,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
+    private CollectionReference conversationsReference;
 
     private Button btnRegister;
     private TextInputEditText inputFirstName, inputLastName, inputEmail, inputContactNumber, inputPassword, inputConfirmPassword;
@@ -52,9 +55,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String currentUserID;
 
+    // BookVan ADMIN UID
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-    private String photo_url;
-    private String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        conversationsReference = firebaseFirestore.collection("conversations");
 
         btnRegister = findViewById(R.id.btnRegister);
         btnLogin = findViewById(R.id.btnLogin);
@@ -74,18 +77,6 @@ public class RegisterActivity extends AppCompatActivity {
         inputContactNumber = findViewById(R.id.inputContactNumber);
         inputPassword = findViewById(R.id.inputPassword);
         inputConfirmPassword = findViewById(R.id.inputConfirmPassword);
-
-        usersReference.document(admin_uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            photo_url = task.getResult().getString("photo_url");
-                            message = task.getResult().getString("welcome_message");
-                        }
-                    }
-                });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    // CHECK INPUTS & REGISTER NEW USER
     private void onRegister(View v) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
@@ -120,6 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
         String password = inputPassword.getText().toString().trim();
         String confirm_password = inputConfirmPassword.getText().toString().trim();
 
+        // CHECK INPUTS
         if (name.isEmpty()) {
             dialog.dismiss();
             btnRegister.setEnabled(true);
@@ -147,23 +140,33 @@ public class RegisterActivity extends AppCompatActivity {
             inputPassword.setError("Passwords does not match.");
             inputConfirmPassword.setError("Passwords does not match.");
         } else {
+            // REGISTER NEW USER
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                uploadInfo(name, email, contact_number, v);
+                                uploadInfo(name, email, contact_number);
                             } else {
-                                Snackbar.make(v, "Sign up failed. Please try again.", Snackbar.LENGTH_SHORT);
+                                new MaterialAlertDialogBuilder(RegisterActivity.this)
+                                        .setTitle("Sign up failed. Please check your internet connection and try again later.")
+                                        .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.dismiss();
+                                                startMainActivity();
+                                            }
+                                        })
+                                        .show();
                             }
                             dialog.dismiss();
                         }
                     });
         }
-
     }
 
-    private void uploadInfo(String name, String email, String contact_number, View v) {
+    //UPLOAD USER INFO
+    private void uploadInfo(String name, String email, String contact_number) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -173,11 +176,11 @@ public class RegisterActivity extends AppCompatActivity {
 
         currentUserID = firebaseAuth.getCurrentUser().getUid();
 
+        // UPLOAD USER INFO TO SERVER
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("name", name);
         hashMap.put("email", email);
         hashMap.put("contact_number", contact_number);
-
         usersReference.document(currentUserID)
                 .set(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -185,27 +188,57 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         if (firebaseUser != null) {
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.ENGLISH);
-                            String timestamp = simpleDateFormat.format(Calendar.getInstance().getTime());
-
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("name", name);
-                            hashMap.put("uid", admin_uid);
-                            hashMap.put("photo_url", photo_url);
-                            hashMap.put("message", message);
-                            hashMap.put("timestamp", timestamp);
-
+                            // GET BookVan WELCOME MESSAGE
                             usersReference.document(admin_uid)
-                                    .collection("conversations")
-                                    .document(currentUserID)
-                                    .collection("chat")
-                                    .add(hashMap)
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            dialog.dismiss();
-                                            btnRegister.setEnabled(true);
-                                            startMainActivity();
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                // SEND WELCOME MESSAGE TO NEW USER
+                                                String message = task.getResult().getString("welcome_message");
+                                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                                                String timestamp = format.format(Calendar.getInstance().getTime());
+                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                hashMap.put("uid", admin_uid);
+                                                hashMap.put("message", message);
+                                                hashMap.put("timestamp", timestamp);
+                                                conversationsReference.document(currentUserID)
+                                                        .collection("chat")
+                                                        .add(hashMap)
+                                                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    // UPDATE UID AND TIMESTAMP OF USER CONVERSATION
+                                                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                                                    hashMap.put("uid", currentUserID);
+                                                                    hashMap.put("timestamp", timestamp);
+                                                                    conversationsReference.document(currentUserID)
+                                                                            .set(hashMap)
+                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    if (task.isSuccessful()) {
+                                                                                        dialog.dismiss();
+                                                                                        btnRegister.setEnabled(true);
+                                                                                        new MaterialAlertDialogBuilder(RegisterActivity.this)
+                                                                                                .setTitle("You have signed up successfully to BookVan.")
+                                                                                                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                                                                                                    @Override
+                                                                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                                                                        dialogInterface.dismiss();
+                                                                                                        startMainActivity();
+                                                                                                    }
+                                                                                                })
+                                                                                                .show();
+                                                                                    }
+                                                                                }
+                                                                            });
+                                                                }
+                                                            }
+                                                        });
+                                            }
                                         }
                                     });
                         }
@@ -216,12 +249,21 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         dialog.dismiss();
                         btnRegister.setEnabled(true);
-                        Snackbar.make(v, "Sign up failed. Please try again.", Snackbar.LENGTH_SHORT);
+                        new MaterialAlertDialogBuilder(RegisterActivity.this)
+                                .setTitle("Sign up failed. Please check your internet connection and try again later.")
+                                .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                })
+                                .show();
                     }
                 });
 
     }
 
+    // REDIRECT USER TO HOME ACTIVITY
     private void startMainActivity() {
         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
