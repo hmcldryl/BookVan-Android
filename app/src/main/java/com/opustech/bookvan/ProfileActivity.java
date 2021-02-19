@@ -65,6 +65,13 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         profilePhoto = findViewById(R.id.profilePhoto);
         profileName = findViewById(R.id.profileName);
         profileEmail = findViewById(R.id.profileEmail);
