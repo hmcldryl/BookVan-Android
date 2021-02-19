@@ -91,9 +91,9 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingLocationTo.setText(location_to);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingCountAdult.setText(count_adult);
-        holder.bookingCountChild.setText(count_child);
-        holder.bookingPrice.setText((int) price);
+        holder.bookingCountAdult.setText(String.valueOf(count_adult));
+        holder.bookingCountChild.setText(String.valueOf(count_child));
+        holder.bookingPrice.setText(String.valueOf(price));
 
     }
 
