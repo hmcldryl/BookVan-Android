@@ -1,10 +1,11 @@
 package com.opustech.bookvan.model;
 
 public class ChatConversation {
-    String uid;
+    String uid, timestamp;
 
-    public ChatConversation(String uid) {
+    public ChatConversation(String uid, String timestamp) {
         this.uid = uid;
+        this.timestamp = timestamp;
     }
 
     public ChatConversation() {
@@ -16,5 +17,13 @@ public class ChatConversation {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }
