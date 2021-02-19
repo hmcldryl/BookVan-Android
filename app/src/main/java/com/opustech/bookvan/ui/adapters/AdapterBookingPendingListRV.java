@@ -98,9 +98,31 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingLocationTo.setText(location_to);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingCountAdult.setText(count_adult);
-        holder.bookingCountChild.setText(count_child);
-        holder.bookingPrice.setText((int) price);
+        holder.bookingPrice.setText(String.valueOf(price));
+
+        if (count_adult > 1) {
+            String outputAdult = count_adult + " adults.";
+            holder.bookingCountAdult.setText(outputAdult);
+        }
+        else if (count_adult == 1) {
+            String outputAdult = count_adult + " adult.";
+            holder.bookingCountAdult.setText(outputAdult);
+        }
+        else {
+            holder.bookingCountAdult.setVisibility(View.GONE);
+        }
+
+        if (count_child > 1) {
+            String outputChild = count_child + " children.";
+            holder.bookingCountChild.setText(outputChild);
+        }
+        else if (count_child == 1) {
+            String outputChild = count_child + " child.";
+            holder.bookingCountChild.setText(outputChild);
+        }
+        else {
+            holder.bookingCountChild.setVisibility(View.GONE);
+        }
     }
 
     @NonNull
