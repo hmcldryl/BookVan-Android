@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,7 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.HomeAdminFragment;
-import com.opustech.bookvan.ui.fragments.user.profile.ProfileFragment;
+import com.opustech.bookvan.ui.fragments.user.booking.BookingFragment;
 import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
 import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
@@ -46,6 +45,10 @@ public class AdminActivity extends AppCompatActivity {
     private TextView headerUserName, headerUserEmail;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+
+    private String name = "";
+    private String email = "";
+    private String photo_url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,6 @@ public class AdminActivity extends AppCompatActivity {
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
 
-        toolbar.setTitle("");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +121,7 @@ public class AdminActivity extends AppCompatActivity {
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_profile) {
-                    replaceFragment(ProfileFragment.class);
+                    replaceFragment(BookingFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_van_companies) {
@@ -175,21 +177,26 @@ public class AdminActivity extends AppCompatActivity {
                         .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                if (error != null) {
-                                    Toast.makeText(AdminActivity.this, "Error loading user data.", Toast.LENGTH_SHORT).show();
-                                }
                                 if (value != null) {
                                     if (value.exists()) {
-                                        String name = value.getString("name");
-                                        String email = value.getString("email");
-                                        String photo_url = value.getString("photo_url");
-                                        headerUserEmail.setText(email);
-                                        headerUserName.setText(name);
+                                        name = value.getString("name");
+                                        email = value.getString("email");
+                                        photo_url = value.getString("photo_url");
 
-                                        if (!photo_url.isEmpty()) {
-                                            Glide.with(AdminActivity.this)
-                                                    .load(photo_url)
-                                                    .into(headerUserPhoto);
+                                        if (photo_url != null) {
+                                            if (!photo_url.isEmpty()) {
+                                                Glide.with(AdminActivity.this)
+                                                        .load(photo_url)
+                                                        .into(headerUserPhoto);
+                                            }
+                                        }
+
+                                        if (!name.isEmpty()) {
+                                            headerUserName.setText(name);
+                                        }
+
+                                        if (!email.isEmpty()) {
+                                            headerUserEmail.setText(email);
                                         }
                                     }
                                 }
