@@ -4,16 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingStart="8dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="8dp">
+    android:padding="8dp">
 
     <RelativeLayout
         android:id="@+id/chatReceiverItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/receiverPhoto"
@@ -69,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/senderPhoto"
