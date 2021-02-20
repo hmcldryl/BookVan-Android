@@ -9,41 +9,21 @@
     tools:context=".ui.fragments.admin.bookings.BookingsFragment">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/bookingsTab"
+        style="@style/Widget.MaterialComponents.TabLayout"
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/colorPrimary"
-        app:tabIndicatorColor="#FFFFFF"
-        app:tabMode="scrollable"
-        app:tabIndicatorHeight="6dp"
-        app:tabSelectedTextColor="#FFFFFF"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/textColor"
         app:tabTextAppearance="@style/TabTextAppearance"
-        app:tabTextColor="#99FFFFFF">
+        app:tabTextColor="#99121212"/>
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirmed Booking"
-            android:textAlignment="center" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pending Booking"
-            android:textAlignment="center" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Booking History"
-            android:textAlignment="center" />
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/bookingsViewPager"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:background="@drawable/background_body" />
 
 </LinearLayout>
