@@ -10,19 +10,17 @@
 
         <com.google.android.material.tabs.TabLayout
             style="@style/Widget.MaterialComponents.TabLayout"
-            android:id="@+id/profileTab"
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabIndicatorHeight="3dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/textColor"
             app:tabTextAppearance="@style/TabTextAppearance"
-            app:tabTextColor="#99121212">
-
-        </com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="#99121212"/>
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/profileViewPager"
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
