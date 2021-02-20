@@ -8,34 +8,21 @@
     tools:context=".ui.fragments.admin.rentals.RentalsFragment">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/rentalsTab"
+        style="@style/Widget.MaterialComponents.TabLayout"
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabBackground="@color/colorPrimary"
-        app:tabIndicatorColor="#FFFFFF"
-        app:tabIndicatorHeight="6dp"
-        app:tabSelectedTextColor="#FFFFFF"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/textColor"
         app:tabTextAppearance="@style/TabTextAppearance"
-        app:tabTextColor="#99FFFFFF">
+        app:tabTextColor="#99121212"/>
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Van for Rental"
-            android:textAlignment="center" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Van Listings for Rental"
-            android:textAlignment="center" />
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/rentalsViewPager"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="horizontal"
         android:background="@drawable/background_body" />
 
 </LinearLayout>
