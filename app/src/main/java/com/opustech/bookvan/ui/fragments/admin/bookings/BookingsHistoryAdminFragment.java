@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,12 +58,15 @@ public class BookingsHistoryAdminFragment extends Fragment {
                 .build();
 
         adapterBookingHistoryListRV = new AdapterBookingHistoryListRV(options);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
 
         bookingList.setHasFixedSize(true);
-        bookingList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        bookingList.setLayoutManager(manager);
+        bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingHistoryListRV);
 
         usersReference.document(admin_uid)
@@ -71,14 +75,15 @@ public class BookingsHistoryAdminFragment extends Fragment {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        int size = value.size();
-
-                        if (size > 0) {
-                            bookingList.setVisibility(View.VISIBLE);
-                            bookingStatusNone.setVisibility(View.GONE);
-                        } else {
-                            bookingStatusNone.setVisibility(View.VISIBLE);
-                            bookingList.setVisibility(View.GONE);
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                bookingList.setVisibility(View.VISIBLE);
+                                bookingStatusNone.setVisibility(View.GONE);
+                            } else {
+                                bookingStatusNone.setVisibility(View.VISIBLE);
+                                bookingList.setVisibility(View.GONE);
+                            }
                         }
                     }
                 });
