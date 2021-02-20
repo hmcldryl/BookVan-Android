@@ -51,7 +51,6 @@ public class BookingFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
-    private StorageReference storageReference;
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
@@ -67,12 +66,11 @@ public class BookingFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
-        storageReference = FirebaseStorage.getInstance().getReference();
 
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
-        viewPager = root.findViewById(R.id.profileViewPager);
-        tabLayout = root.findViewById(R.id.profileTab);
+        viewPager = root.findViewById(R.id.viewPager);
+        tabLayout = root.findViewById(R.id.tabLayout);
 
         profilePagerAdapter = new ProfilePagerAdapter(getActivity());
         viewPager.setAdapter(profilePagerAdapter);
@@ -97,9 +95,6 @@ public class BookingFragment extends Fragment {
     }
 
     private void updateActiveListTabBadge(TabLayout.Tab tab, String uid) {
-        BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-        badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-        badgeDrawable.setMaxCharacterCount(2);
         usersReference.document(admin_uid)
                 .collection("bookings")
                 .whereEqualTo("uid", uid)
