@@ -174,6 +174,11 @@ public class BookFragment extends Fragment {
         return root;
     }
 
+    private void generateRefNum() {
+        // BV-000
+
+    }
+
     private void inputCheck(View view, String current_uid) {
         String uid = current_uid;
         String name = bookingCustomerName.getEditText().getText().toString();
