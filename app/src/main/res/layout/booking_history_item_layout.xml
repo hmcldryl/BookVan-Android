@@ -49,7 +49,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_bold"
                             android:text="customer_name"
-                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textSize="16sp"
                             android:textColor="@color/textColor" />
 
                         <LinearLayout
@@ -66,7 +66,7 @@
                                 android:fontFamily="@font/lato"
                                 android:maxLines="1"
                                 android:text="customer_email"
-                                android:textAppearance="?attr/textAppearanceBody2"
+                                android:textSize="14sp"
                                 android:textColor="@color/textColor" />
 
                             <TextView
@@ -78,7 +78,7 @@
                                 android:fontFamily="@font/lato"
                                 android:maxLines="1"
                                 android:text="contact_number"
-                                android:textAppearance="?attr/textAppearanceBody2"
+                                android:textSize="14sp"
                                 android:textColor="@color/textColor" />
                         </LinearLayout>
 
@@ -108,7 +108,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="From:"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -116,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="To:"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <Space
@@ -128,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Date:"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -136,7 +136,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Time:"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <Space
@@ -148,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Adult:"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -156,7 +156,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Child:"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
 
@@ -169,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
                             android:text="Price:"
-                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textSize="16sp"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -177,7 +177,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
                             android:text="Ref. No.:"
-                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textSize="16sp"
                             android:textColor="@color/textColor" />
 
                     </LinearLayout>
@@ -195,7 +195,7 @@
                             android:fontFamily="@font/lato"
                             android:maxLines="1"
                             android:text="location_from"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -206,7 +206,7 @@
                             android:fontFamily="@font/lato"
                             android:maxLines="1"
                             android:text="location_to"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <Space
@@ -221,7 +221,7 @@
                             android:fontFamily="@font/lato"
                             android:maxLines="1"
                             android:text="schedule_date"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -232,7 +232,7 @@
                             android:fontFamily="@font/lato"
                             android:maxLines="1"
                             android:text="schedule_time"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <Space
@@ -247,7 +247,7 @@
                             android:fontFamily="@font/lato"
                             android:maxLines="1"
                             android:text="adult_count"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <TextView
@@ -258,7 +258,7 @@
                             android:fontFamily="@font/lato"
                             android:maxLines="1"
                             android:text="child_count"
-                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textSize="14sp"
                             android:textColor="@color/textColor" />
 
                         <Space
@@ -275,7 +275,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/peso_sign"
-                                android:textAppearance="?attr/textAppearanceHeadline6"
+                                android:textSize="16sp"
                                 android:textColor="@color/textColor" />
 
                             <TextView
@@ -284,7 +284,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:text=""
-                                android:textAppearance="?attr/textAppearanceHeadline6"
+                                android:textSize="16sp"
                                 android:textColor="@color/textColor" />
                         </LinearLayout>
 
@@ -296,7 +296,7 @@
                             android:fontFamily="@font/lato_bold"
                             android:maxLines="1"
                             android:text="reference_number"
-                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textSize="16sp"
                             android:textColor="@color/textColor" />
 
 
