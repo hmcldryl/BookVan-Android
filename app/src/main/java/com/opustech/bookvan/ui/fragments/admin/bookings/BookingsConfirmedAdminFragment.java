@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.opustech.bookvan.ui.adapters.AdapterBookingConfirmedListRV;
 import com.opustech.bookvan.ui.adapters.AdapterBookingHistoryListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
@@ -33,7 +35,7 @@ public class BookingsConfirmedAdminFragment extends Fragment {
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
-    private AdapterBookingHistoryListRV adapterBookingHistoryListRV;
+    private AdapterBookingConfirmedListRV adapterBookingConfirmedListRV;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
@@ -50,20 +52,23 @@ public class BookingsConfirmedAdminFragment extends Fragment {
         Query query = usersReference.document(admin_uid)
                 .collection("bookings")
                 .whereEqualTo("status", "confirmed")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingHistoryListRV = new AdapterBookingHistoryListRV(options);
+        adapterBookingConfirmedListRV = new AdapterBookingConfirmedListRV(options);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
 
         bookingList.setHasFixedSize(true);
-        bookingList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        bookingList.setAdapter(adapterBookingHistoryListRV);
+        bookingList.setLayoutManager(manager);
+        bookingList.addItemDecoration(dividerItemDecoration);
+        bookingList.setAdapter(adapterBookingConfirmedListRV);
 
         usersReference.document(admin_uid)
                 .collection("bookings")
@@ -71,14 +76,15 @@ public class BookingsConfirmedAdminFragment extends Fragment {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        int size = value.size();
-
-                        if (size > 0) {
-                            bookingList.setVisibility(View.VISIBLE);
-                            bookingStatusNone.setVisibility(View.GONE);
-                        } else {
-                            bookingStatusNone.setVisibility(View.VISIBLE);
-                            bookingList.setVisibility(View.GONE);
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                bookingList.setVisibility(View.VISIBLE);
+                                bookingStatusNone.setVisibility(View.GONE);
+                            } else {
+                                bookingStatusNone.setVisibility(View.VISIBLE);
+                                bookingList.setVisibility(View.GONE);
+                            }
                         }
                     }
                 });
@@ -88,12 +94,12 @@ public class BookingsConfirmedAdminFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapterBookingHistoryListRV.startListening();
+        adapterBookingConfirmedListRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterBookingHistoryListRV.stopListening();
+        adapterBookingConfirmedListRV.stopListening();
     }
 }
