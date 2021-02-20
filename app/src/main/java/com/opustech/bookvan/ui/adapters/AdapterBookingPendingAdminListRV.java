@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -103,7 +103,31 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         holder.bookingCountChild.setText(String.valueOf(count_child));
         holder.bookingPrice.setText(String.valueOf(price));
 
-        holder.bookingCard.setOnClickListener(new View.OnClickListener() {
+        if (count_adult > 1) {
+            String outputAdult = count_adult + " adults.";
+            holder.bookingCountAdult.setText(outputAdult);
+        }
+        else if (count_adult == 1) {
+            String outputAdult = count_adult + " adult.";
+            holder.bookingCountAdult.setText(outputAdult);
+        }
+        else {
+            holder.bookingCountAdult.setVisibility(View.GONE);
+        }
+
+        if (count_child > 1) {
+            String outputChild = count_child + " children.";
+            holder.bookingCountChild.setText(outputChild);
+        }
+        else if (count_child == 1) {
+            String outputChild = count_child + " child.";
+            holder.bookingCountChild.setText(outputChild);
+        }
+        else {
+            holder.bookingCountChild.setVisibility(View.GONE);
+        }
+
+        holder.pendingItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
@@ -179,8 +203,9 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                                 hashMap.put("driver_name", driver_name);
                                 hashMap.put("plate_number", plate_number);
                                 hashMap.put("status", "confirmed");
-                                getSnapshots().getSnapshot(position).getReference()
-                                        .set(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                getSnapshots().getSnapshot(position)
+                                        .getReference()
+                                        .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
@@ -211,7 +236,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_pending_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_admin_pending_item_layout, parent, false);
         return new BookingHolder(view);
     }
 
@@ -227,14 +252,14 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                 bookingCountAdult,
                 bookingCountChild,
                 bookingPrice;
-        CardView bookingCard;
+        LinearLayout pendingItem;
         Button btnCancelBooking, btnConfirmBooking;
         CircleImageView customerPhoto;
 
         public BookingHolder(View view) {
             super(view);
             customerPhoto = view.findViewById(R.id.customerPhoto);
-            bookingCard = view.findViewById(R.id.bookingCard);
+            pendingItem = view.findViewById(R.id.pendingItem);
             btnCancelBooking = view.findViewById(R.id.btnCancelBooking);
             btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
