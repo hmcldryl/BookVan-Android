@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pendingItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,8 +29,8 @@
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/lato_bold"
                     android:text="Ref. No.:"
-                    android:textSize="16sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/bookingReferenceNumber"
@@ -40,8 +41,8 @@
                     android:fontFamily="@font/lato_bold"
                     android:maxLines="1"
                     android:text="reference_number"
-                    android:textSize="16sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -49,7 +50,7 @@
                 android:layout_height="2dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="#1F000000" />
+                android:background="#1FFFFFFF" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -76,38 +77,30 @@
                         android:fontFamily="@font/lato_bold"
                         android:maxLines="1"
                         android:text="customer_name"
-                        android:textSize="16sp"
-                        android:textColor="@color/textColor" />
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/bookingCustomerEmail"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="customer_email"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/bookingCustomerEmail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:maxLines="1"
-                            android:text="customer_email"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
-
-                        <TextView
-                            android:id="@+id/bookingContactNumber"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:maxLines="1"
-                            android:text="contact_number"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/bookingContactNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="contact_number"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
 
@@ -142,16 +135,16 @@
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/lato_bold"
                     android:text="location_from"
-                    android:textSize="14sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato"
                     android:text="-to-"
-                    android:textSize="14sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/bookingLocationTo"
@@ -160,8 +153,8 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/lato_bold"
                     android:text="location_to"
-                    android:textSize="14sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -181,8 +174,8 @@
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/lato"
                     android:text="schedule_date"
-                    android:textSize="14sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/bookingScheduleTime"
@@ -191,8 +184,8 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/lato"
                     android:text="schedule_time"
-                    android:textSize="14sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -212,8 +205,8 @@
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/lato"
                     android:text="adult_count"
-                    android:textSize="14sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/bookingCountChild"
@@ -222,8 +215,8 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/lato"
                     android:text="child_count"
-                    android:textSize="14sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -242,8 +235,8 @@
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/lato_bold"
                     android:text="Price:"
-                    android:textSize="16sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -251,8 +244,8 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/lato_bold"
                     android:text="@string/peso_sign"
-                    android:textSize="16sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/price"
@@ -260,8 +253,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     android:text=""
-                    android:textSize="16sp"
-                    android:textColor="@color/textColor" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </LinearLayout>
