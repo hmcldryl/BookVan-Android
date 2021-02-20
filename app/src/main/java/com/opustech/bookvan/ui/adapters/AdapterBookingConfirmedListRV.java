@@ -1,14 +1,10 @@
 package com.opustech.bookvan.ui.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,18 +20,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -85,9 +74,11 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                             String customerEmail = task.getResult().getString("email");
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
-                            Glide.with(holder.itemView.getContext())
-                                    .load(customerPhoto)
-                                    .into(holder.customerPhoto);
+                            if (customerPhoto != null) {
+                                Glide.with(holder.itemView.getContext())
+                                        .load(customerPhoto)
+                                        .into(holder.customerPhoto);
+                            }
                         }
                     }
                 });
