@@ -5,11 +5,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.opustech.bookvan.ui.fragments.user.booking.BookingsFragment;
+import com.opustech.bookvan.ui.fragments.user.booking.ActiveBookingFragment;
 import com.opustech.bookvan.ui.fragments.user.booking.BookingHistoryFragment;
 
 public class ProfilePagerAdapter extends FragmentStateAdapter {
-
 
     public ProfilePagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -22,7 +21,7 @@ public class ProfilePagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new BookingHistoryFragment();
             default:
-                return new BookingsFragment();
+                return new ActiveBookingFragment();
         }
     }
 
