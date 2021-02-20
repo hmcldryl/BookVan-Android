@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:weightSum="20"
     android:orientation="vertical"
-    tools:context=".ui.fragments.user.booking.BookingsFragment">
+    tools:context=".ui.fragments.user.booking.ActiveBookingFragment">
 
     <RelativeLayout
         android:layout_weight="10"
