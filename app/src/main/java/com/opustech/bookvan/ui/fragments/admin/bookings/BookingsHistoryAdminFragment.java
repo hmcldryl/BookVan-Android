@@ -21,7 +21,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.ui.adapters.AdapterBookingHistoryListRV;
+import com.opustech.bookvan.ui.adapters.admin.AdapterBookingHistoryAdminListRV;
+import com.opustech.bookvan.ui.adapters.user.AdapterBookingHistoryListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
@@ -34,7 +35,7 @@ public class BookingsHistoryAdminFragment extends Fragment {
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
-    private AdapterBookingHistoryListRV adapterBookingHistoryListRV;
+    private AdapterBookingHistoryAdminListRV adapterBookingHistoryAdminListRV;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
@@ -57,7 +58,7 @@ public class BookingsHistoryAdminFragment extends Fragment {
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingHistoryListRV = new AdapterBookingHistoryListRV(options);
+        adapterBookingHistoryAdminListRV = new AdapterBookingHistoryAdminListRV(options);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
@@ -67,7 +68,7 @@ public class BookingsHistoryAdminFragment extends Fragment {
         bookingList.setHasFixedSize(true);
         bookingList.setLayoutManager(manager);
         bookingList.addItemDecoration(dividerItemDecoration);
-        bookingList.setAdapter(adapterBookingHistoryListRV);
+        bookingList.setAdapter(adapterBookingHistoryAdminListRV);
 
         usersReference.document(admin_uid)
                 .collection("bookings")
@@ -93,12 +94,12 @@ public class BookingsHistoryAdminFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapterBookingHistoryListRV.startListening();
+        adapterBookingHistoryAdminListRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterBookingHistoryListRV.stopListening();
+        adapterBookingHistoryAdminListRV.stopListening();
     }
 }
