@@ -21,11 +21,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.MessageAdminActivity;
-import com.opustech.bookvan.ui.adapters.AdapterBookingHistoryListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.adapters.AdapterBookingPendingAdminListRV;
+import com.opustech.bookvan.ui.adapters.admin.AdapterBookingPendingAdminListRV;
 
 public class BookingsPendingAdminFragment extends Fragment {
 
