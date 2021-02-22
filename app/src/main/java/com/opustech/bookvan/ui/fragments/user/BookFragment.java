@@ -2,6 +2,7 @@ package com.opustech.bookvan.ui.fragments.user;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
@@ -167,20 +169,30 @@ public class BookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 btnBook.setEnabled(false);
-                inputCheck(view, currentUserId);
+                inputCheck(currentUserId);
             }
         });
 
         return root;
     }
 
-    private void generateRefNum() {
-        // BV-000
-
+    private void generateRefNum(String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child, float price) {
+        usersReference.document(admin_uid)
+                .collection("bookings")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int num = task.getResult().getDocuments().size() + 1;
+                            String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
+                            addNewBooking(reference_number, uid, name, contact_number, location_from, location_to, schedule_date, schedule_time, count_adult, count_child, price);
+                        }
+                    }
+                });
     }
 
-    private void inputCheck(View view, String current_uid) {
-        String uid = current_uid;
+    private void inputCheck(String uid) {
         String name = bookingCustomerName.getEditText().getText().toString();
         String contact_number = bookingContactNumber.getEditText().getText().toString();
         String location_from = bookingLocationFrom.getEditText().getText().toString();
@@ -194,68 +206,77 @@ public class BookFragment extends Fragment {
         if (name.isEmpty()) {
             bookingCustomerName.getEditText().setError("Please enter your name.");
             btnBook.setEnabled(true);
-        }
-        else if (contact_number.isEmpty()) {
+        } else if (contact_number.isEmpty()) {
             bookingContactNumber.getEditText().setError("Please enter a contact number.");
             btnBook.setEnabled(true);
-        }
-        else if (location_from.isEmpty()) {
+        } else if (location_from.isEmpty()) {
             bookingLocationFrom.getEditText().setError("Please enter your starting location.");
             btnBook.setEnabled(true);
-        }
-        else if (location_to.isEmpty()) {
+        } else if (location_to.isEmpty()) {
             bookingLocationTo.getEditText().setError("Please enter the location you wish to go.");
             btnBook.setEnabled(true);
-        }
-        else if (schedule_date.isEmpty()) {
+        } else if (schedule_date.isEmpty()) {
             bookingScheduleDate.getEditText().setError("Please enter desired schedule date.");
             btnBook.setEnabled(true);
-        }
-        else if (schedule_time.isEmpty()) {
+        } else if (schedule_time.isEmpty()) {
             bookingScheduleTime.getEditText().setError("Please enter desired schedule time.");
             btnBook.setEnabled(true);
-        }
-        else if (count_adult == 0 && count_child == 0) {
+        } else if (count_adult == 0 && count_child == 0) {
             bookingCountAdult.getEditText().setError("Must have at least 1 adult passenger.");
             btnBook.setEnabled(true);
         } else {
-            final ACProgressFlower dialog = new ACProgressFlower.Builder(getActivity())
-                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                    .themeColor(getResources().getColor(R.color.colorAccent))
-                    .text("Processing...")
-                    .fadeColor(Color.DKGRAY).build();
-            dialog.show();
-
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-            String timestamp = format.format(Calendar.getInstance().getTime());
-
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("uid", uid);
-            hashMap.put("name", name);
-            hashMap.put("contact_number", contact_number);
-            hashMap.put("location_from", location_from);
-            hashMap.put("location_to", location_to);
-            hashMap.put("schedule_date", schedule_date);
-            hashMap.put("schedule_time", schedule_time);
-            hashMap.put("count_adult", count_adult);
-            hashMap.put("count_child", count_child);
-            hashMap.put("price", price);
-            hashMap.put("timestamp", timestamp);
-            hashMap.put("status", "pending");
-
-            usersReference.document(admin_uid)
-                    .collection("bookings")
-                    .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentReference> task) {
-                    if (task.isSuccessful()) {
-                        dialog.dismiss();
-                        Snackbar.make(view, "Booking success!", Snackbar.LENGTH_SHORT);
-                        btnBook.setEnabled(true);
-                    }
-                }
-            });
+            generateRefNum(uid, name, contact_number, location_from, location_to, schedule_date, schedule_time, count_adult, count_child, price);
         }
+    }
+
+    private String generateTimestamp() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
+    }
+
+    private void addNewBooking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child, float price) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(getActivity())
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.colorAccent))
+                .text("Processing...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("reference_number", reference_number);
+        hashMap.put("uid", uid);
+        hashMap.put("name", name);
+        hashMap.put("contact_number", contact_number);
+        hashMap.put("location_from", location_from);
+        hashMap.put("location_to", location_to);
+        hashMap.put("schedule_date", schedule_date);
+        hashMap.put("schedule_time", schedule_time);
+        hashMap.put("count_adult", count_adult);
+        hashMap.put("count_child", count_child);
+        hashMap.put("price", price);
+        hashMap.put("timestamp", generateTimestamp());
+        hashMap.put("status", "pending");
+
+        usersReference.document(admin_uid)
+                .collection("bookings")
+                .add(hashMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()) {
+                    dialog.dismiss();
+                    btnBook.setEnabled(true);
+                    new MaterialAlertDialogBuilder(getActivity())
+                            .setTitle("Booking success!")
+                            .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
     }
 
     private void initializeTimePicker() {
