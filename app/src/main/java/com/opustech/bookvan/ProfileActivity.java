@@ -185,6 +185,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                                         .load(imageUrl)
                                                                         .into(profilePhoto);
                                                                 Toast.makeText(ProfileActivity.this, "Image upload success.", Toast.LENGTH_SHORT).show();
+                                                                dialog.dismiss();
                                                             }
                                                         }
                                                     });
