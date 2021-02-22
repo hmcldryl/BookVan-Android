@@ -40,15 +40,12 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
+    private CollectionReference partnersReference;
 
-    private CircleImageView headerUserPhoto;
-    private TextView headerUserName, headerUserEmail;
+    private CircleImageView headerUserPhoto, companyPhoto;
+    private TextView headerUserName, headerUserEmail, companyName, companyEmail, companyContactNumber, companyAddress;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
-    private String name = "";
-    private String email = "";
-    private String photo_url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +55,14 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        partnersReference = firebaseFirestore.collection("partners");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        View navView = navigationView.inflateHeaderView(R.layout.nav_header_transport_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -92,6 +90,11 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
         headerUserPhoto = navView.findViewById(R.id.headerUserPhoto);
         headerUserName = navView.findViewById(R.id.headerUserName);
         headerUserEmail = navView.findViewById(R.id.headerUserEmail);
+        companyPhoto = navView.findViewById(R.id.companyPhoto);
+        companyName = navView.findViewById(R.id.companyName);
+        companyEmail = navView.findViewById(R.id.companyEmail);
+        companyContactNumber = navView.findViewById(R.id.companyContactNumber);
+        companyAddress = navView.findViewById(R.id.companyAddress);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -127,42 +130,71 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
         return true;
     }
 
+    private void updateUiCompanyInfo() {
+        Intent intent = getIntent();
+        String uid = intent.getStringExtra("uid");
+        partnersReference.document(uid)
+                .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            if (value.exists()) {
+                                String name = value.getString("name");
+                                String email = value.getString("email");
+                                String contact_number = value.getString("contact_number");
+                                String address = value.getString("address");
+                                String photo_url = value.getString("photo_url");
+
+                                if (photo_url != null) {
+                                    if (!photo_url.isEmpty()) {
+                                        Glide.with(TransportCompanyAdminActivity.this)
+                                                .load(photo_url)
+                                                .into(companyPhoto);
+                                    }
+                                }
+                                companyName.setText(name);
+                                companyEmail.setText(email);
+                                companyContactNumber.setText(contact_number);
+                                companyAddress.setText(address);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void updateUiAdminInfo() {
+        usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            if (value.exists()) {
+                                String name = value.getString("name");
+                                String email = value.getString("email");
+                                String photo_url = value.getString("photo_url");
+
+                                if (photo_url != null) {
+                                    if (!photo_url.isEmpty()) {
+                                        Glide.with(TransportCompanyAdminActivity.this)
+                                                .load(photo_url)
+                                                .into(headerUserPhoto);
+                                    }
+                                }
+                                headerUserName.setText(name);
+                                headerUserEmail.setText(email);
+                            }
+                        }
+                    }
+                });
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            String currentUserId = currentUser.getUid();
-            if (!currentUserId.isEmpty()) {
-                usersReference.document(currentUserId)
-                        .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                if (value != null) {
-                                    if (value.exists()) {
-                                        name = value.getString("name");
-                                        email = value.getString("email");
-                                        photo_url = value.getString("photo_url");
+        if (firebaseAuth.getCurrentUser() != null) {
+            if (!firebaseAuth.getCurrentUser().getUid().isEmpty()) {
+                updateUiCompanyInfo();
 
-                                        if (photo_url != null) {
-                                            if (!photo_url.isEmpty()) {
-                                                Glide.with(TransportCompanyAdminActivity.this)
-                                                        .load(photo_url)
-                                                        .into(headerUserPhoto);
-                                            }
-                                        }
-
-                                        if (!name.isEmpty()) {
-                                            headerUserName.setText(name);
-                                        }
-
-                                        if (!email.isEmpty()) {
-                                            headerUserEmail.setText(email);
-                                        }
-                                    }
-                                }
-                            }
-                        });
             }
         } else {
             Intent intent = new Intent(TransportCompanyAdminActivity.this, LoginActivity.class);
