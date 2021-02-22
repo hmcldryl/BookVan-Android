@@ -16,7 +16,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -26,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.model.ChatMessage;
-import com.opustech.bookvan.ui.adapters.AdapterMessageChatCustomerRV;
+import com.opustech.bookvan.ui.adapters.user.AdapterMessageChatRV;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     private TextInputLayout inputChat;
     private ImageButton btnSendChat;
 
-    private AdapterMessageChatCustomerRV adapterMessageChatCustomerRV;
+    private AdapterMessageChatRV adapterMessageChatRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
                 .setQuery(query, ChatMessage.class)
                 .build();
 
-        adapterMessageChatCustomerRV = new AdapterMessageChatCustomerRV(options);
+        adapterMessageChatRV = new AdapterMessageChatRV(options);
         LinearLayoutManager manager = new LinearLayoutManager(ChatActivity.this);
         manager.setStackFromEnd(true);
 
@@ -90,7 +89,7 @@ public class ChatActivity extends AppCompatActivity {
         chatMessageList = findViewById(R.id.chatMessageList);
         chatMessageList.setHasFixedSize(true);
         chatMessageList.setLayoutManager(manager);
-        chatMessageList.setAdapter(adapterMessageChatCustomerRV);
+        chatMessageList.setAdapter(adapterMessageChatRV);
 
         conversationsReference.document(currentUserId)
                 .collection("chat")
@@ -138,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            chatMessageList.smoothScrollToPosition(adapterMessageChatCustomerRV.getItemCount() - 1);
+                                                            chatMessageList.smoothScrollToPosition(adapterMessageChatRV.getItemCount() - 1);
                                                             btnSendChat.setEnabled(true);
                                                         }
                                                     }
@@ -157,12 +156,12 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        adapterMessageChatCustomerRV.startListening();
+        adapterMessageChatRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterMessageChatCustomerRV.stopListening();
+        adapterMessageChatRV.stopListening();
     }
 }
