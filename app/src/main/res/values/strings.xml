@@ -11,6 +11,7 @@
     <string name="input_fname">First Name</string>
     <string name="input_lname">Last Name</string>
     <string name="input_transport_name">Transport Name</string>
+    <string name="input_account_type">Account Type</string>
     <string name="input_driver_name">Van Driver</string>
     <string name="input_van_plate">Van Plate No.</string>
     <string name="input_email">E-mail</string>
@@ -19,10 +20,12 @@
     <string name="input_contact_number">Contact Number</string>
     <string name="input_password">Password</string>
     <string name="input_confirm_password">Confirm Password</string>
-    <string name="registerText">Sign Up</string>
-    <string name="loginText">Sign In</string>
+    <string name="registerText">Sign Up to BookVan</string>
+    <string name="loginText">Sign In to BookVan</string>
     <string name="redirLoginText"><u>Sign in here.</u></string>
     <string name="redirRegisterText"><u>Sign up here.</u></string>
+
+    <string name="transport_login_text">BookVan for Partners</string>
 
     <string name="title_home">Home</string>
     <string name="title_profile">Profile</string>
@@ -61,6 +64,11 @@
         <item>Lexxus Shuttle</item>
         <item>Langgam Transport</item>
         <item>Charing Transport</item>
+    </string-array>
+
+    <string-array name="account_type">
+        <item>Administrator</item>
+        <item>Staff</item>
     </string-array>
 
     <string name="default_web_citement_secret">HQ2vZK-JQK3hgE2x3ZJdNy6B</string>
