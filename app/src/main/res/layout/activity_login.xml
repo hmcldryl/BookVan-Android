@@ -9,27 +9,33 @@
     android:weightSum="10"
     tools:context=".LoginActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="3.5"
         android:elevation="8dp"
-        android:gravity="bottom"
-        android:orientation="vertical">
+        android:gravity="bottom">
+
+        <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:showNavigationButtons="false" />
 
         <ImageView
-            android:layout_width="300dp"
-            android:layout_height="100dp"
+            android:layout_width="250dp"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
+            android:layout_margin="16dp"
             android:src="@drawable/bookvan_logo_full" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="6.5"
         android:background="#FFFFFF"
         android:orientation="vertical">
 
@@ -54,10 +60,10 @@
                     android:id="@+id/inputEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
                     android:ellipsize="end"
                     android:fontFamily="@font/lato"
                     android:inputType="textEmailAddress"
+                    android:maxLines="1"
                     android:textColor="@color/textColor"
                     android:textCursorDrawable="@null" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -78,10 +84,10 @@
                     android:id="@+id/inputPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:fontFamily="@font/lato"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:ellipsize="end"
                     android:textColor="@color/textColor"
                     android:textCursorDrawable="@null" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -140,7 +146,6 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_input_facebook"
             android:fontFamily="@font/lato"
             android:text="SIGN IN WITH FACEBOOK"
             app:icon="@drawable/ic_input_facebook" />
@@ -151,10 +156,19 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_input_facebook"
             android:fontFamily="@font/lato"
             android:text="SIGN IN WITH GOOGLE"
             app:icon="@drawable/ic_input_google" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLoginTransport"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/lato"
+            android:text="@string/transport_login_text"
+            app:icon="@drawable/ic_input_transport" />
 
         <LinearLayout
             android:layout_width="300dp"
@@ -181,7 +195,6 @@
                 android:text="@string/redirRegisterText"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
         </LinearLayout>
-
 
     </LinearLayout>
 </LinearLayout>
