@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_chat"
     android:fitsSystemWindows="true"
-    tools:context=".ChatAdminActivity">
+    tools:context=".admin.ChatAdminActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
