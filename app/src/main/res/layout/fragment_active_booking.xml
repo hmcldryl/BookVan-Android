@@ -8,44 +8,125 @@
     android:orientation="vertical"
     tools:context=".ui.fragments.user.booking.ActiveBookingFragment">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_weight="10"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
-        <TextView
-            android:id="@+id/confirmedBookingStatusNone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/lato"
-            android:text="No confirmed bookings yet."
-            android:textColor="@color/textColor"
-            android:textSize="16sp"
-            android:visibility="visible" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/confirmedBookingList"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="12">
 
-    <RelativeLayout
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="5"
+                android:background="#1F000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="Confirmed"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textColor="@color/textColor" />
+
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="5"
+                android:background="#1F000000" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/confirmedBookingStatusNone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/lato"
+                android:text="No confirmed bookings (yet)."
+                android:textColor="@color/textColor"
+                android:textSize="16sp"
+                android:visibility="visible" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/confirmedBookingList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_weight="10"
         android:elevation="8dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:background="@drawable/background_booking_pending"
         android:layout_height="0dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="12">
+
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="5"
+                android:background="#1F000000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/lato_bold"
+                android:text="Pending"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:textColor="@color/textColor" />
+
+            <LinearLayout
+                android:layout_width="75dp"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_weight="5"
+                android:background="#1F000000" />
+        </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/pendingBookingStatusNone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:fontFamily="@font/lato"
-            android:text="No pending bookings yet."
-            android:textColor="#FFFFFF"
+            android:text="No pending bookings (yet)."
+            android:textColor="@color/textColor"
             android:textSize="16sp"
             android:visibility="visible" />
 
@@ -54,6 +135,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
+
     </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>
