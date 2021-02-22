@@ -9,6 +9,9 @@ public class Booking {
             location_to,
             schedule_date,
             schedule_time,
+            transport_name,
+            driver_name,
+            plate_number,
             status,
             timestamp;
     int count_adult, count_child;
@@ -17,7 +20,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String status, String timestamp, int count_adult, int count_child, float price) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String transport_name, String driver_name, String plate_number, String status, String timestamp, int count_adult, int count_child, float price) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
@@ -26,6 +29,9 @@ public class Booking {
         this.location_to = location_to;
         this.schedule_date = schedule_date;
         this.schedule_time = schedule_time;
+        this.transport_name = transport_name;
+        this.driver_name = driver_name;
+        this.plate_number = plate_number;
         this.status = status;
         this.timestamp = timestamp;
         this.count_adult = count_adult;
@@ -95,6 +101,30 @@ public class Booking {
 
     public void setSchedule_time(String schedule_time) {
         this.schedule_time = schedule_time;
+    }
+
+    public String getTransport_name() {
+        return transport_name;
+    }
+
+    public void setTransport_name(String transport_name) {
+        this.transport_name = transport_name;
+    }
+
+    public String getDriver_name() {
+        return driver_name;
+    }
+
+    public void setDriver_name(String driver_name) {
+        this.driver_name = driver_name;
+    }
+
+    public String getPlate_number() {
+        return plate_number;
+    }
+
+    public void setPlate_number(String plate_number) {
+        this.plate_number = plate_number;
     }
 
     public String getStatus() {
