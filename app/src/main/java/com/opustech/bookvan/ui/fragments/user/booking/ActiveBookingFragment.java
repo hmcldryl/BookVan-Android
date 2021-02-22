@@ -21,10 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.ui.adapters.AdapterBookingHistoryListRV;
+import com.opustech.bookvan.ui.adapters.user.AdapterBookingHistoryListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.adapters.AdapterBookingPendingListRV;
+import com.opustech.bookvan.ui.adapters.user.AdapterBookingPendingListRV;
 
 public class ActiveBookingFragment extends Fragment {
 
@@ -75,8 +75,6 @@ public class ActiveBookingFragment extends Fragment {
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
-
         confirmedBookingStatusNone = root.findViewById(R.id.confirmedBookingStatusNone);
         pendingBookingStatusNone = root.findViewById(R.id.pendingBookingStatusNone);
 
@@ -85,12 +83,10 @@ public class ActiveBookingFragment extends Fragment {
 
         confirmedBookingList.setHasFixedSize(true);
         confirmedBookingList.setLayoutManager(manager);
-        confirmedBookingList.addItemDecoration(dividerItemDecoration);
         confirmedBookingList.setAdapter(adapterConfirmedBookingListRV);
 
         pendingBookingList.setHasFixedSize(true);
         pendingBookingList.setLayoutManager(manager);
-        pendingBookingList.addItemDecoration(dividerItemDecoration);
         pendingBookingList.setAdapter(adapterBookingPendingListRV);
 
         usersReference.document(admin_uid)
@@ -100,14 +96,15 @@ public class ActiveBookingFragment extends Fragment {
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        int size = value.size();
-
-                        if (size > 0) {
-                            confirmedBookingList.setVisibility(View.VISIBLE);
-                            confirmedBookingStatusNone.setVisibility(View.GONE);
-                        } else {
-                            confirmedBookingStatusNone.setVisibility(View.VISIBLE);
-                            confirmedBookingList.setVisibility(View.GONE);
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                confirmedBookingList.setVisibility(View.VISIBLE);
+                                confirmedBookingStatusNone.setVisibility(View.GONE);
+                            } else {
+                                confirmedBookingStatusNone.setVisibility(View.VISIBLE);
+                                confirmedBookingList.setVisibility(View.GONE);
+                            }
                         }
                     }
                 });
@@ -119,14 +116,15 @@ public class ActiveBookingFragment extends Fragment {
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        int size = value.size();
-
-                        if (size > 0) {
-                            pendingBookingList.setVisibility(View.VISIBLE);
-                            pendingBookingStatusNone.setVisibility(View.GONE);
-                        } else {
-                            pendingBookingStatusNone.setVisibility(View.VISIBLE);
-                            pendingBookingList.setVisibility(View.GONE);
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                pendingBookingList.setVisibility(View.VISIBLE);
+                                pendingBookingStatusNone.setVisibility(View.GONE);
+                            } else {
+                                pendingBookingStatusNone.setVisibility(View.VISIBLE);
+                                pendingBookingList.setVisibility(View.GONE);
+                            }
                         }
                     }
                 });
