@@ -30,6 +30,40 @@
                     android:layout_marginBottom="8dp"
                     android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Ref. No.:"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/bookingReferenceNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_bold"
+                        android:maxLines="1"
+                        android:text="reference_number"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#1F000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/customerPhoto"
                         android:layout_width="40dp"
@@ -49,8 +83,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_bold"
                             android:text="customer_name"
-                            android:textSize="16sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/bookingCustomerEmail"
@@ -58,8 +92,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="customer_email"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -86,8 +120,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Contact Number:"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -99,16 +133,16 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="From:"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="To:"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -119,16 +153,16 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Date:"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Time:"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -139,16 +173,16 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Adult:"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="Child:"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -187,16 +221,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
                             android:text="Total:"
-                            android:textSize="16sp"
-                            android:textColor="@color/textColor" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_black"
-                            android:text="Ref. No.:"
-                            android:textSize="16sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -211,8 +237,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="contact_number"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -224,8 +250,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="location_from"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/bookingLocationTo"
@@ -233,8 +259,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="location_to"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -246,8 +272,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="schedule_date"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/bookingScheduleTime"
@@ -255,8 +281,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="schedule_time"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -268,8 +294,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="adult_count"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/bookingCountChild"
@@ -277,8 +303,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text="child_count"
-                            android:textSize="14sp"
-                            android:textColor="@color/textColor" />
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
 
                         <Space
                             android:layout_width="match_parent"
@@ -325,8 +351,8 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:text="@string/peso_sign"
-                                android:textSize="16sp"
-                                android:textColor="@color/textColor" />
+                                android:textColor="@color/textColor"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/price"
@@ -334,20 +360,9 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:text=""
-                                android:textSize="16sp"
-                                android:textColor="@color/textColor" />
+                                android:textColor="@color/textColor"
+                                android:textSize="16sp" />
                         </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/bookingReferenceNumber"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato_bold"
-                            android:maxLines="1"
-                            android:text="reference_number"
-                            android:textSize="16sp"
-                            android:textColor="@color/textColor" />
 
                     </LinearLayout>
 
