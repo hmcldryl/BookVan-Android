@@ -4,9 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,16 +22,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.opustech.bookvan.admin.AdminActivity;
+import com.opustech.bookvan.transport.TransportLoginActivity;
 
 import java.util.HashMap;
-
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -43,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient googleSignInClient;
 
     private TextInputEditText inputEmail, inputPassword;
-    private MaterialButton btnLogin, btnLoginFacebook, btnLoginGoogle;
+    private MaterialButton btnLogin, btnLoginFacebook, btnLoginGoogle, btnLoginTransport;
     private TextView btnRegister;
 
     private int RC_SIGN_IN = 1;
@@ -66,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginFacebook = findViewById(R.id.btnLoginFacebook);
         btnLoginGoogle = findViewById(R.id.btnLoginGoogle);
         btnRegister = findViewById(R.id.btnRegister);
-
+        btnLoginTransport = findViewById(R.id.btnLoginTransport);
 
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -79,20 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnLogin.setEnabled(false);
-
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
-                if (email.isEmpty()) {
-                    btnLogin.setEnabled(true);
-                    inputEmail.setError("Please enter a valid email address.");
-                }
-                if (password.isEmpty()) {
-                    btnLogin.setEnabled(true);
-                    inputPassword.setError("Please enter your password.");
-                } else {
-                    onLogin(email, password);
-                }
+                disableInput();
+                inputCheck();
             }
         });
 
@@ -106,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableInput();
                 Intent signInIntent = googleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -117,51 +102,62 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        });
+
+        btnLoginTransport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, TransportLoginActivity.class);
+                startActivity(intent);
             }
         });
     }
 
+    private void inputCheck() {
+        String email = inputEmail.getText().toString().trim();
+        String password = inputPassword.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            enableInput();
+            inputEmail.setError("Please enter a valid email address.");
+        }
+        if (password.isEmpty()) {
+            enableInput();
+            inputPassword.setError("Please enter your password.");
+        } else {
+            onLogin(email, password);
+        }
+    }
+
+    private void disableInput() {
+        btnLogin.setEnabled(false);
+        btnRegister.setEnabled(false);
+        btnLoginTransport.setEnabled(false);
+        btnLoginGoogle.setEnabled(false);
+        btnLoginFacebook.setEnabled(false);
+        inputEmail.setEnabled(false);
+        inputPassword.setEnabled(false);
+    }
+
+    private void enableInput() {
+        btnLogin.setEnabled(true);
+        btnRegister.setEnabled(true);
+        btnLoginTransport.setEnabled(true);
+        btnLoginGoogle.setEnabled(true);
+        btnLoginFacebook.setEnabled(true);
+        inputEmail.setEnabled(true);
+        inputPassword.setEnabled(true);
+    }
+
     private void onLogin(String email, String password) {
-        final ACProgressFlower dialog = new ACProgressFlower.Builder(LoginActivity.this)
-                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(getResources().getColor(R.color.white))
-                .text("Signing in...")
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                            if (firebaseUser != null) {
-                                dialog.dismiss();
-                                btnLogin.setEnabled(true);
-                                String currentUserId = firebaseUser.getUid();
-                                if (!currentUserId.isEmpty() && currentUserId.equals(admin_uid)) {
-                                    Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    finish();
-                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                    startActivity(intent);
-                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                }
-                                if (!currentUserId.isEmpty() && !currentUserId.equals(admin_uid)){
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    finish();
-                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                    startActivity(intent);
-                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                }
-                            }
-                        } else {
-                            dialog.dismiss();
-                            btnLogin.setEnabled(true);
-                            Snackbar.make(btnLogin, "Sign in failed. Please try again.", Snackbar.LENGTH_SHORT).show();
+                            checkUserSession();
                         }
                     }
                 });
@@ -175,103 +171,74 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-                final ACProgressFlower dialog = new ACProgressFlower.Builder(LoginActivity.this)
-                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                        .themeColor(getResources().getColor(R.color.white))
-                        .text("Signing in...")
-                        .fadeColor(Color.DKGRAY).build();
-                dialog.show();
                 firebaseAuth.signInWithCredential(credential)
                         .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     if (firebaseAuth.getCurrentUser() != null) {
-                                        String currentUserId = firebaseAuth.getCurrentUser().getUid();
-                                        usersReference.document(currentUserId)
+                                        usersReference.document(firebaseAuth.getCurrentUser().getUid())
                                                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                             @Override
                                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                 if (task.isSuccessful()) {
                                                     if (!task.getResult().exists()) {
-                                                        HashMap<String, Object> user = new HashMap<>();
-                                                        user.put("name", account.getGivenName() + " " + account.getFamilyName());
-                                                        user.put("email", account.getEmail());
-                                                        user.put("photo_url", account.getPhotoUrl().toString());
                                                         if (firebaseAuth.getCurrentUser() != null) {
-                                                            String currentUserId = firebaseAuth.getCurrentUser().getUid();
-                                                            usersReference.document(currentUserId)
-                                                                    .set(user)
+                                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                                            hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
+                                                            hashMap.put("email", account.getEmail());
+                                                            hashMap.put("photo_url", account.getPhotoUrl());
+                                                            usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                    .set(hashMap)
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()) {
-                                                                                dialog.dismiss();
-                                                                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                                                                                if (firebaseUser != null) {
-                                                                                    dialog.dismiss();
-                                                                                    String currentUserId = firebaseUser.getUid();
-                                                                                    if (currentUserId.equals(admin_uid)) {
-                                                                                        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-                                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                                        finish();
-                                                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                                        startActivity(intent);
-                                                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                                    } else {
-                                                                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                                        finish();
-                                                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                                        startActivity(intent);
-                                                                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                                                    }
-                                                                                }
-
-                                                                            } else {
-                                                                                dialog.dismiss();
-                                                                                Snackbar.make(btnLoginGoogle, "Google sign in failed.", Snackbar.LENGTH_SHORT).show();
+                                                                                checkUserSession();
                                                                             }
                                                                         }
                                                                     });
-                                                        } else {
-                                                            dialog.dismiss();
-                                                            Snackbar.make(btnLoginGoogle, "Google sign in failed.", Snackbar.LENGTH_SHORT).show();
                                                         }
                                                     }
                                                     else {
-                                                        if (currentUserId.equals(admin_uid)) {
-                                                            Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                            finish();
-                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                            startActivity(intent);
-                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                        } else {
-                                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                            finish();
-                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                            startActivity(intent);
-                                                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                                                        }
+                                                        checkUserSession();
                                                     }
                                                 }
                                             }
                                         });
                                     }
-                                } else {
-                                    dialog.dismiss();
-                                    Snackbar.make(btnLoginGoogle, "Google sign in failed.", Snackbar.LENGTH_SHORT).show();
                                 }
                             }
                         });
             } catch (ApiException e) {
-                Log.d("ERROR", e.getMessage());
-                Snackbar.make(btnLoginGoogle, "Google sign in failed.", Snackbar.LENGTH_SHORT).show();
+                Toast.makeText(this, "Google sign in failed.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    private void checkUserSession() {
+        if (firebaseAuth.getCurrentUser() != null) {
+            if (firebaseAuth.getCurrentUser().getUid().equals(admin_uid)) {
+                startAdminActivity();
+            }
+            else {
+                startUserActivity();
+            }
+        }
+    }
+
+    private void startAdminActivity() {
+        Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        finish();
+        startActivity(intent);
+    }
+
+    private void startUserActivity() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        finish();
+        startActivity(intent);
+    }
 
 }
