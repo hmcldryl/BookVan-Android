@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.badge.BadgeDrawable;
@@ -22,8 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.ui.adapters.BookingsAdminPagerAdapter;
-import com.opustech.bookvan.ui.adapters.RentalsPagerAdapter;
+import com.opustech.bookvan.ui.adapters.admin.BookingsAdminPagerAdapter;
 
 public class BookingsFragment extends Fragment {
 
