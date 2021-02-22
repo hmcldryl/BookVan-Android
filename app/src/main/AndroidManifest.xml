@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme"
         tools:replace="android:theme">
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".transport.TransportCompanyAdminActivity"></activity>
+        <activity android:name=".transport.TransportLoginActivity" />
+        <activity android:name=".ProfileActivity" />
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait">
@@ -31,7 +33,7 @@
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AdminActivity"
+            android:name=".admin.AdminActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
@@ -40,10 +42,10 @@
             android:name=".ChatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChatAdminActivity"
+            android:name=".admin.ChatAdminActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MessageAdminActivity"
+            android:name=".admin.MessageAdminActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AboutActivity"
