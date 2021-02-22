@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:id="@+id/main_items"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="@string/title_home" />
+        <item
+            android:id="@+id/btnProfile"
+            android:icon="@drawable/ic_menu_profile"
+            android:title="@string/title_profile" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_menu_about"
+            android:title="@string/title_about" />
+    </group>
+
+    <group
+        android:id="@+id/actionButtons"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/btnLogout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="Sign Out" />
+    </group>
+
+</menu>
