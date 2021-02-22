@@ -22,7 +22,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.adapters.AdapterBookingHistoryListRV;
+import com.opustech.bookvan.ui.adapters.user.AdapterBookingHistoryListRV;
 
 public class BookingHistoryFragment extends Fragment {
 
