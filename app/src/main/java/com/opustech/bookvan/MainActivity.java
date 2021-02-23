@@ -146,8 +146,8 @@ public class MainActivity extends AppCompatActivity {
                     firebaseAuth.signOut();
                     Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    finish();
                     startActivity(intent);
+                    finish();
                 }
                 return true;
             }
@@ -196,14 +196,8 @@ public class MainActivity extends AppCompatActivity {
                                                         .into(headerUserPhoto);
                                             }
                                         }
-
-                                        if (!name.isEmpty()) {
-                                            headerUserName.setText(name);
-                                        }
-
-                                        if (!email.isEmpty()) {
-                                            headerUserEmail.setText(email);
-                                        }
+                                        headerUserName.setText(name);
+                                        headerUserEmail.setText(email);
                                     }
                                 }
                             }
@@ -212,8 +206,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            finish();
             startActivity(intent);
+            finish();
         }
     }
 }
