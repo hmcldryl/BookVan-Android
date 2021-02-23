@@ -130,10 +130,13 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
         return true;
     }
 
-    private void updateUiCompanyInfo() {
+    private String getCompanyUid() {
         Intent intent = getIntent();
-        String uid = intent.getStringExtra("uid");
-        partnersReference.document(uid)
+        return intent.getStringExtra("uid");
+    }
+
+    private void updateUiCompanyInfo() {
+        partnersReference.document(getCompanyUid())
                 .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -194,7 +197,7 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
         if (firebaseAuth.getCurrentUser() != null) {
             if (!firebaseAuth.getCurrentUser().getUid().isEmpty()) {
                 updateUiCompanyInfo();
-
+                updateUiAdminInfo();
             }
         } else {
             Intent intent = new Intent(TransportCompanyAdminActivity.this, LoginActivity.class);
