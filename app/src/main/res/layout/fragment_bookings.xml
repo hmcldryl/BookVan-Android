@@ -4,26 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/background_body"
+    android:orientation="vertical"
     tools:context=".ui.fragments.admin.bookings.BookingsFragment">
 
     <com.google.android.material.tabs.TabLayout
-        style="@style/Widget.MaterialComponents.TabLayout"
         android:id="@+id/tabLayout"
+        style="@style/Widget.MaterialComponents.TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabIndicatorHeight="3dp"
-        app:tabMode="fixed"
+        app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/textColor"
         app:tabTextAppearance="@style/TabTextAppearance"
-        app:tabTextColor="#99121212"/>
+        app:tabTextColor="#99121212" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="@drawable/background_body" />
+        android:background="@drawable/background_body"
+        android:orientation="horizontal" />
 
 </LinearLayout>
