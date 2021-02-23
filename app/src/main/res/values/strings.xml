@@ -28,6 +28,7 @@
     <string name="transport_login_text">BookVan for Partners</string>
 
     <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
     <string name="title_profile">Profile</string>
     <string name="title_book">Book</string>
     <string name="title_booking">Booking</string>
