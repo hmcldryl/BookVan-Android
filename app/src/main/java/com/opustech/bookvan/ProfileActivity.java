@@ -119,18 +119,9 @@ public class ProfileActivity extends AppCompatActivity {
                                                         .into(profilePhoto);
                                             }
                                         }
-
-                                        if (!name.isEmpty()) {
-                                            profileName.setText(name);
-                                        }
-
-                                        if (!email.isEmpty()) {
-                                            profileEmail.setText(email);
-                                        }
-
-                                        if (!contact_number.isEmpty()) {
-                                            profileContactNumber.setText(contact_number);
-                                        }
+                                        profileName.setText(name);
+                                        profileEmail.setText(email);
+                                        profileContactNumber.setText(contact_number);
                                     }
                                 }
                             }
@@ -150,57 +141,65 @@ public class ProfileActivity extends AppCompatActivity {
                     .start(ProfileActivity.this);
         }
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            final ACProgressFlower dialog = new ACProgressFlower.Builder(ProfileActivity.this)
-                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                    .themeColor(getResources().getColor(R.color.white))
-                    .text("Uploading...")
-                    .fadeColor(Color.DKGRAY).build();
-            dialog.show();
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                String currentUserId = firebaseAuth.getCurrentUser().getUid();
-                String imageFilename = "IMG_" + currentUserId + ".jpg";
-                Uri resultUri = result.getUri();
-                FirebaseStorage.getInstance().getReference().child("images")
-                        .child(imageFilename)
-                        .putFile(resultUri)
-                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    Task<Uri> result = task.getResult().getMetadata().getReference().getDownloadUrl();
-                                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                        @Override
-                                        public void onSuccess(Uri uri) {
-                                            String imageUrl = uri.toString();
-                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                            hashMap.put("photo_url", imageUrl);
-                                            usersReference.document(currentUserId)
-                                                    .update(hashMap)
-                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                Glide.with(ProfileActivity.this)
-                                                                        .load(imageUrl)
-                                                                        .into(profilePhoto);
-                                                                Toast.makeText(ProfileActivity.this, "Image upload success.", Toast.LENGTH_SHORT).show();
-                                                                dialog.dismiss();
-                                                            }
-                                                        }
-                                                    });
-                                        }
-                                    });
-                                } else {
-                                    Toast.makeText(ProfileActivity.this, "Image upload failed. Please try again.", Toast.LENGTH_SHORT).show();
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
+                uploadImage(result);
             } else {
                 Toast.makeText(ProfileActivity.this, "Image cannot be cropped. Please try again.", Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
             }
         }
+    }
+
+    private void uploadImage(CropImage.ActivityResult result) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(ProfileActivity.this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .text("Uploading...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+        String imageFilename = "IMG_" + firebaseAuth.getCurrentUser().getUid() + ".jpg";
+        Uri resultUri = result.getUri();
+        FirebaseStorage.getInstance().getReference().child("images")
+                .child(imageFilename)
+                .putFile(resultUri)
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Task<Uri> result = task.getResult().getMetadata().getReference().getDownloadUrl();
+                            result.addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    if (task.isSuccessful()) {
+                                        updatePhotoUrl(dialog, task.getResult());
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Image upload failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    }
+                });
+    }
+
+    private void updatePhotoUrl(ACProgressFlower dialog, Uri uri) {
+        String imageUrl = uri.toString();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("photo_url", imageUrl);
+        usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                .update(hashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            dialog.dismiss();
+                            Glide.with(ProfileActivity.this)
+                                    .load(imageUrl)
+                                    .into(profilePhoto);
+                            Toast.makeText(ProfileActivity.this, "Image upload success.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
