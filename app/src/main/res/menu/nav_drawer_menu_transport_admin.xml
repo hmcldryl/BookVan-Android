@@ -8,9 +8,9 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_home"
-            android:title="@string/title_home" />
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_menu_dashboard"
+            android:title="@string/title_dashboard" />
         <item
             android:id="@+id/btnProfile"
             android:icon="@drawable/ic_menu_profile"
