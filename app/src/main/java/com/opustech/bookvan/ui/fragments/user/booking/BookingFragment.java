@@ -27,7 +27,7 @@ public class BookingFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, bookingsReference;
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
@@ -43,6 +43,7 @@ public class BookingFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
@@ -72,9 +73,7 @@ public class BookingFragment extends Fragment {
     }
 
     private void updateActiveListTabBadge(TabLayout.Tab tab, String uid) {
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("uid", uid)
+        bookingsReference.whereEqualTo("uid", uid)
                 .whereEqualTo("status", "pending")
                 .whereEqualTo("status", "confirmed")
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
@@ -95,9 +94,7 @@ public class BookingFragment extends Fragment {
     }
 
     private void updateHistoryListTabBadge(TabLayout.Tab tab, String uid) {
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("uid", uid)
+        bookingsReference.whereEqualTo("uid", uid)
                 .whereEqualTo("status", "done")
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
