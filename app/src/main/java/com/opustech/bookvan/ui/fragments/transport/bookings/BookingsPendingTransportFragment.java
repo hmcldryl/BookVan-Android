@@ -35,7 +35,7 @@ public class BookingsPendingTransportFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
@@ -51,6 +51,7 @@ public class BookingsPendingTransportFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
@@ -61,9 +62,7 @@ public class BookingsPendingTransportFragment extends Fragment {
     }
 
     private void updateUi() {
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("status", "pending")
+        bookingsReference.whereEqualTo("status", "pending")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -82,9 +81,8 @@ public class BookingsPendingTransportFragment extends Fragment {
     }
 
     private void populateList(View root) {
-        Query query = usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("status", "pending")
+        Query query = bookingsReference.whereEqualTo("status", "pending")
+                .whereEqualTo("status", "cancelled")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
