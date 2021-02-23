@@ -30,7 +30,7 @@ import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment;
-import com.opustech.bookvan.ui.fragments.admin.HomeAdminFragment;
+import com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
 import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
@@ -119,7 +119,7 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.nav_home) {
-                    replaceFragment(HomeAdminFragment.class);
+                    replaceFragment(DashboardAdminFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_van_companies) {
