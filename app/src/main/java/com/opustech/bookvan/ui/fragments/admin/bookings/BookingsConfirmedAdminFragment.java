@@ -29,7 +29,7 @@ public class BookingsConfirmedAdminFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
@@ -45,13 +45,12 @@ public class BookingsConfirmedAdminFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
-        Query query = usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("status", "confirmed")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+        Query query = bookingsReference.whereEqualTo("status", "confirmed")
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
@@ -69,9 +68,7 @@ public class BookingsConfirmedAdminFragment extends Fragment {
         bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingConfirmedAdminListRV);
 
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("status", "confirmed")
+        bookingsReference.whereEqualTo("status", "confirmed")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
