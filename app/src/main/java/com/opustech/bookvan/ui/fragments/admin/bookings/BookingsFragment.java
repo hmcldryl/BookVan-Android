@@ -1,5 +1,6 @@
 package com.opustech.bookvan.ui.fragments.admin.bookings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,8 @@ public class BookingsFragment extends Fragment {
     private ViewPager2 viewPager;
 
     private BookingsAdminPagerAdapter bookingsAdminPagerAdapter;
+
+    private Context context;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
@@ -75,6 +78,12 @@ public class BookingsFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
     private void updateConfirmedListTabBadge(TabLayout.Tab tab) {
         usersReference.document(admin_uid)
                 .collection("bookings")
@@ -84,8 +93,8 @@ public class BookingsFragment extends Fragment {
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
                             BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
                             badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
@@ -109,8 +118,8 @@ public class BookingsFragment extends Fragment {
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
                             BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
                             badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
@@ -134,8 +143,8 @@ public class BookingsFragment extends Fragment {
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
                             BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
                             badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
