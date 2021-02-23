@@ -17,11 +17,33 @@
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="85dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorPrimaryDark"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:src="@drawable/bookvan_logo_full" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lato_bold"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="Ride-Sharing, Van Transport and Rentals"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="32sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -87,19 +109,51 @@
                     android:src="@drawable/ic_home_partner" />
             </androidx.cardview.widget.CardView>
 
-
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/lato_bold"
-            android:text="Follow the latest posts from our page!"
+            android:text="Follow the latest updates\nfrom our Facebook page!"
             android:textAlignment="center"
+            android:textColor="@color/textColor"
             android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="www.facebook.com/BookVan"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="Visit our website at:"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/lato_bold"
+            android:text="www.BookVan.ph"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="24sp" />
 
     </LinearLayout>
 
