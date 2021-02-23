@@ -25,13 +25,18 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.admin.AdminActivity;
 import com.opustech.bookvan.admin.MessageAdminActivity;
+import com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment;
+import com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
 import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment;
+import com.opustech.bookvan.ui.fragments.transport.DashboardTransportAdminFragment;
+import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,7 +48,7 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
     private CollectionReference partnersReference;
 
     private CircleImageView headerUserPhoto, companyPhoto;
-    private TextView headerUserName, headerUserEmail, companyName, companyEmail, companyContactNumber, companyAddress;
+    private TextView headerUserName, headerUserEmail, headerUserAccountType, companyName, companyEmail, companyContactNumber, companyAddress;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
@@ -76,20 +81,10 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
             }
         });
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.btnChat) {
-                    Intent intent = new Intent(TransportCompanyAdminActivity.this, MessageAdminActivity.class);
-                    startActivity(intent);
-                }
-                return false;
-            }
-        });
-
         headerUserPhoto = navView.findViewById(R.id.headerUserPhoto);
         headerUserName = navView.findViewById(R.id.headerUserName);
         headerUserEmail = navView.findViewById(R.id.headerUserEmail);
+        headerUserAccountType = navView.findViewById(R.id.headerUserAccountType);
         companyPhoto = navView.findViewById(R.id.companyPhoto);
         companyName = navView.findViewById(R.id.companyName);
         companyEmail = navView.findViewById(R.id.companyEmail);
@@ -110,6 +105,28 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.nav_dashboard) {
+                    replaceFragment(DashboardTransportAdminFragment.class);
+                    drawerLayout.close();
+                }
+                if (item.getItemId() == R.id.nav_about) {
+                    Intent intent = new Intent(TransportCompanyAdminActivity.this, AboutActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getItemId() == R.id.btnLogout) {
+                    firebaseAuth.signOut();
+                    Intent intent = new Intent(TransportCompanyAdminActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                return false;
+            }
+        });
     }
 
     public void replaceFragment(Class fragmentClass) {
@@ -122,12 +139,6 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.drawer_nav_host_fragment, fragment)
                 .commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
     }
 
     private String getCompanyUid() {
@@ -174,6 +185,7 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
                             if (value.exists()) {
                                 String name = value.getString("name");
                                 String email = value.getString("email");
+                                String account_type = value.getString("account_type");
                                 String photo_url = value.getString("photo_url");
 
                                 if (photo_url != null) {
@@ -185,6 +197,7 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
                                 }
                                 headerUserName.setText(name);
                                 headerUserEmail.setText(email);
+                                headerUserAccountType.setText(account_type);
                             }
                         }
                     }
