@@ -101,8 +101,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                finish();
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -158,6 +158,10 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             checkUserSession();
+                        }
+                        else {
+                            enableInput();
+                            Toast.makeText(LoginActivity.this, "Sign in failed. Please check your sign in info and try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -230,15 +234,15 @@ public class LoginActivity extends AppCompatActivity {
     private void startAdminActivity() {
         Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        finish();
         startActivity(intent);
+        finish();
     }
 
     private void startUserActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        finish();
         startActivity(intent);
+        finish();
     }
 
 }
