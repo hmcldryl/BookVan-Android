@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -48,6 +49,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ((MainActivity) getActivity()).replaceFragment(RentFragment.class);
+            }
+        });
+
+        btnPartner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "btnPartner is pressed.", Toast.LENGTH_SHORT).show();
             }
         });
         return root;
