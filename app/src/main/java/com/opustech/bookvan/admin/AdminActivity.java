@@ -33,7 +33,7 @@ import com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
-import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
+import com.opustech.bookvan.ui.fragments.user.PartnersFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -123,7 +123,7 @@ public class AdminActivity extends AppCompatActivity {
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_van_companies) {
-                    replaceFragment(VanCompanyFragment.class);
+                    replaceFragment(PartnersFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_contact) {
