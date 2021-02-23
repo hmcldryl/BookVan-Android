@@ -46,8 +46,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
-    private CollectionReference conversationsReference;
+    private CollectionReference usersReference, conversationsReference;
+    private DocumentReference systemReference;
 
     private Button btnRegister;
     private TextInputEditText inputFirstName, inputLastName, inputEmail, inputContactNumber, inputPassword, inputConfirmPassword;
@@ -67,6 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         conversationsReference = firebaseFirestore.collection("conversations");
+        systemReference = firebaseFirestore.collection("system").document("data");
 
         btnRegister = findViewById(R.id.btnRegister);
         btnLogin = findViewById(R.id.btnLogin);
@@ -167,6 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             uploadInfo(dialog, name, email, contact_number);
                         } else {
+                            dialog.dismiss();
                             enableInput();
                             Toast.makeText(RegisterActivity.this, "Sign up failed. Please check your internet connection and try again later.", Toast.LENGTH_LONG).show();
                         }
@@ -192,18 +194,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 sendWelcomeMessage(dialog);
                             }
                         }
-                        else {
-                            dialog.dismiss();
-                            enableInput();
-                            Toast.makeText(RegisterActivity.this, "Sign up failed. Please check your internet connection and try again later.", Toast.LENGTH_SHORT).show();
-                        }
                     }
                 });
     }
 
     private void sendWelcomeMessage(ACProgressFlower dialog) {
-        usersReference.document(admin_uid)
-                .get()
+        systemReference.get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
