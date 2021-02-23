@@ -28,8 +28,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
+import com.opustech.bookvan.transport.TransportLoginActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +44,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingPendingAdminListRV.BookingHolder> {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, partnersReference;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
@@ -61,6 +63,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        partnersReference = firebaseFirestore.collection("partners");
 
         String uid = model.getUid();
         String name = model.getName();
@@ -140,23 +143,32 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                     alertDialog.setCancelable(true);
                     alertDialog.setView(dialogView);
 
-                    ArrayList<String> transportArray = new ArrayList<>(Arrays.asList(holder.itemView.getContext().getResources().getStringArray(R.array.transport_companies)));
-                    ArrayAdapter<String> transportArrayAdapter = new ArrayAdapter<>(holder.itemView.getContext(), R.layout.support_simple_spinner_dropdown_item, transportArray);
-
                     TextView bookingCustomerNameId = dialogView.findViewById(R.id.confirmBookingCustomerNameId);
                     TextInputLayout inputTransportName = dialogView.findViewById(R.id.inputTransportName);
                     AutoCompleteTextView inputTransportNameACT = dialogView.findViewById(R.id.inputTransportNameACT);
                     TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
                     TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
+                    MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
+                    MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
 
                     String customerNameId = "for " + name + " (" + reference_number + ")";
                     bookingCustomerNameId.setText(customerNameId);
 
-                    MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
-                    MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
-
-                    inputTransportNameACT.setAdapter(transportArrayAdapter);
-                    inputTransportNameACT.setThreshold(1);
+                    ArrayList<String> transportArray = new ArrayList<>();
+                    partnersReference.get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                            transportArray.add(i, task.getResult().getDocuments().get(i).getString("name"));
+                                        }
+                                        ArrayAdapter<String> transportArrayAdapter = new ArrayAdapter<>(holder.itemView.getContext(), R.layout.support_simple_spinner_dropdown_item, transportArray);
+                                        inputTransportNameACT.setAdapter(transportArrayAdapter);
+                                        inputTransportNameACT.setThreshold(1);
+                                    }
+                                }
+                            });
 
                     btnCancelBooking.setOnClickListener(new View.OnClickListener() {
                         @Override
