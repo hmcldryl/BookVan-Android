@@ -33,7 +33,7 @@ public class BookingsFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, partnersReference;
+    private CollectionReference usersReference, partnersReference, bookingsReference;
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
@@ -52,6 +52,7 @@ public class BookingsFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
@@ -102,9 +103,7 @@ public class BookingsFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            usersReference.document(admin_uid)
-                                    .collection("bookings")
-                                    .whereEqualTo("transport_company", task.getResult().getString("name"))
+                            bookingsReference.whereEqualTo("transport_company", task.getResult().getString("name"))
                                     .whereEqualTo("status", "confirmed")
                                     .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                                         @Override
@@ -131,9 +130,7 @@ public class BookingsFragment extends Fragment {
     }
 
     private void updatePendingListTabBadge(TabLayout.Tab tab) {
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("status", "pending")
+        bookingsReference.whereEqualTo("status", "pending")
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -162,10 +159,9 @@ public class BookingsFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            usersReference.document(admin_uid)
-                                    .collection("bookings")
-                                    .whereEqualTo("transport_company", task.getResult().getString("name"))
+                            bookingsReference.whereEqualTo("transport_company", task.getResult().getString("name"))
                                     .whereEqualTo("status", "done")
+                                    .whereEqualTo("status", "cancelled")
                                     .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
