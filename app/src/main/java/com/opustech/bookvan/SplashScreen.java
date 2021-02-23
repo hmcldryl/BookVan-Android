@@ -73,33 +73,36 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            if (task.getResult().getString("account_type").equals("administrator")) {
-                                partnersReference.whereEqualTo("name", task.getResult().getString("transport_company"))
-                                        .limit(1)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    String uid = task.getResult().getDocuments().get(0).getString("uid");
-                                                    startTransportAdminActivity(uid);
+                            String account_type = task.getResult().getString("account_type");
+                            if (account_type != null) {
+                                if (account_type.equals("administrator")) {
+                                    partnersReference.whereEqualTo("name", task.getResult().getString("transport_company"))
+                                            .limit(1)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        String uid = task.getResult().getDocuments().get(0).getString("uid");
+                                                        startTransportAdminActivity(uid);
+                                                    }
                                                 }
-                                            }
-                                        });
-                            }
-                            else if (task.getResult().getString("account_type").equals("staff")) {
-                                partnersReference.whereEqualTo("name", task.getResult().getString("transport_company"))
-                                        .limit(1)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    String uid = task.getResult().getDocuments().get(0).getString("uid");
-                                                    startTransportUserActivity(uid);
+                                            });
+                                }
+                                else if (account_type.equals("staff")) {
+                                    partnersReference.whereEqualTo("name", task.getResult().getString("transport_company"))
+                                            .limit(1)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        String uid = task.getResult().getDocuments().get(0).getString("uid");
+                                                        startTransportUserActivity(uid);
+                                                    }
                                                 }
-                                            }
-                                        });
+                                            });
+                                }
                             }
                             else {
                                 startMainActivity();
@@ -139,7 +142,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void startTransportUserActivity(String uid) {
-        Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+        Intent intent = new Intent(SplashScreen.this, TransportCompanyAdminActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("uid", uid);
         startActivity(intent);
