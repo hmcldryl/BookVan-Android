@@ -13,9 +13,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme">
-        <activity android:name=".transport.TransportCompanyAdminActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".transport.TransportLoginActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".ProfileActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".transport.TransportProfileActivity"></activity>
+        <activity
+            android:name=".transport.TransportCompanyAdminActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".transport.TransportLoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ProfileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait">
