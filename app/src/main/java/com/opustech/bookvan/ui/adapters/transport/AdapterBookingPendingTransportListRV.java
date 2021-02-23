@@ -14,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,9 +44,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingPendingTransportListRV.BookingHolder> {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, partnersReference;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private String uid;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -54,14 +56,16 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
      * @param options
      */
 
-    public AdapterBookingPendingTransportListRV(@NonNull FirestoreRecyclerOptions<Booking> options) {
+    public AdapterBookingPendingTransportListRV(@NonNull FirestoreRecyclerOptions<Booking> options, String uid) {
         super(options);
+        this.uid = uid;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        partnersReference = firebaseFirestore.collection("partners");
 
         String uid = model.getUid();
         String name = model.getName();
@@ -163,7 +167,6 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                         @Override
                         public void onClick(View v) {
                             alertDialog.dismiss();
-                            v.getContext().get
                             new MaterialAlertDialogBuilder(holder.itemView.getContext())
                                     .setTitle("Cancel this booking?")
                                     .setMessage("Note that this action will also delete the booking from your system.")
@@ -187,11 +190,10 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                     btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            btnConfirmBooking.setEnabled(false);
+                            v.setEnabled(false);
                             String transport_name = inputTransportName.getEditText().getText().toString();
                             String driver_name = inputDriverName.getEditText().getText().toString();
                             String plate_number = inputVanPlate.getEditText().getText().toString();
-
                             if (transport_name.isEmpty()) {
                                 inputTransportName.getEditText().setError("Please select a transport company.");
                                 btnConfirmBooking.setEnabled(true);
@@ -202,35 +204,44 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                                 inputVanPlate.getEditText().setError("Please enter the van plate number.");
                                 btnConfirmBooking.setEnabled(true);
                             } else {
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("transport_name", transport_name);
-                                hashMap.put("driver_name", driver_name);
-                                hashMap.put("plate_number", plate_number);
-                                hashMap.put("status", "confirmed");
-                                getSnapshots().getSnapshot(position)
-                                        .getReference()
-                                        .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            btnConfirmBooking.setEnabled(true);
-                                            alertDialog.dismiss();
-                                            new MaterialAlertDialogBuilder(holder.itemView.getContext())
-                                                    .setTitle("Successfully confirmed this booking.")
-                                                    .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                                            dialogInterface.dismiss();
-                                                        }
-                                                    })
-                                                    .show();
-                                        }
-                                    }
-                                });
+                                getCompanyName(alertDialog, v, driver_name, plate_number, position);
                             }
                         }
                     });
                     alertDialog.show();
+                }
+            }
+        });
+    }
+
+    private void getCompanyName(AlertDialog alertDialog, View view, String driver_name, String plate_number, int position) {
+        partnersReference.document(uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            updateBookingInfo(alertDialog, view, task.getResult().getString("name"), driver_name, plate_number, position);
+                        }
+                    }
+                });
+    }
+
+    private void updateBookingInfo(AlertDialog alertDialog, View view, String transport_name, String driver_name, String plate_number, int position) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("transport_name", transport_name);
+        hashMap.put("driver_name", driver_name);
+        hashMap.put("plate_number", plate_number);
+        hashMap.put("status", "confirmed");
+        getSnapshots().getSnapshot(position)
+                .getReference()
+                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    view.setEnabled(true);
+                    alertDialog.dismiss();
+                    Toast.makeText(view.getContext(), "Successfully confirmed this booking.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
