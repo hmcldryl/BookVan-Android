@@ -29,7 +29,7 @@ public class BookingsPendingAdminFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
@@ -45,12 +45,11 @@ public class BookingsPendingAdminFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        bookingsReference = firebaseFirestore.collection("users");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
-        Query query = usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("status", "pending")
+        Query query = bookingsReference.whereEqualTo("status", "pending")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
@@ -69,9 +68,7 @@ public class BookingsPendingAdminFragment extends Fragment {
         bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingPendingAdminListRV);
 
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("status", "pending")
+        bookingsReference.whereEqualTo("status", "pending")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
