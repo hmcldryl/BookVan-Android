@@ -91,7 +91,7 @@ public class BookingsPendingTransportFragment extends Fragment {
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingPendingTransportListRV = new AdapterBookingPendingTransportListRV(options);
+        adapterBookingPendingTransportListRV = new AdapterBookingPendingTransportListRV(options, getCompanyUid());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
@@ -102,6 +102,11 @@ public class BookingsPendingTransportFragment extends Fragment {
         bookingList.setLayoutManager(manager);
         bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingPendingTransportListRV);
+    }
+
+    private String getCompanyUid() {
+        Intent intent = getActivity().getIntent();
+        return intent.getStringExtra("uid");
     }
 
     @Override
