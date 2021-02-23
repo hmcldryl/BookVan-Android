@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_dashboard_admin" />
 
     <fragment
-        android:id="@+id/nav_van_companies"
-        android:name="com.opustech.bookvan.ui.fragments.user.VanCompanyFragment"
-        android:label="@string/title_van_companies"
-        tools:layout="@layout/fragment_van_companies" />
+        android:id="@+id/nav_partners"
+        android:name="com.opustech.bookvan.ui.fragments.user.PartnersFragment"
+        android:label="@string/title_partners"
+        tools:layout="@layout/fragment_partners" />
 
     <fragment
         android:id="@+id/nav_contact"
