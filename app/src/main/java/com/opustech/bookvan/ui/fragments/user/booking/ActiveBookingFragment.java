@@ -30,7 +30,7 @@ public class ActiveBookingFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, bookingsReference;
 
     private TextView confirmedBookingStatusNone, pendingBookingStatusNone;
     private RecyclerView confirmedBookingList, pendingBookingList;
@@ -47,18 +47,15 @@ public class ActiveBookingFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
-        Query confirmedBookingQuery = usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("uid", currentUserId)
+        Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "confirmed")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
-        Query pendingBookingQuery = usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("uid", currentUserId)
+        Query pendingBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "pending")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
@@ -73,7 +70,8 @@ public class ActiveBookingFragment extends Fragment {
         adapterConfirmedBookingListRV = new AdapterBookingHistoryListRV(confirmedBookingOptions);
         adapterBookingPendingListRV = new AdapterBookingPendingListRV(pendingBookingOptions);
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager confirmedBookingManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager pendingBookingManager = new LinearLayoutManager(getActivity());
 
         confirmedBookingStatusNone = root.findViewById(R.id.confirmedBookingStatusNone);
         pendingBookingStatusNone = root.findViewById(R.id.pendingBookingStatusNone);
@@ -82,16 +80,14 @@ public class ActiveBookingFragment extends Fragment {
         pendingBookingList = root.findViewById(R.id.pendingBookingList);
 
         confirmedBookingList.setHasFixedSize(true);
-        confirmedBookingList.setLayoutManager(manager);
+        confirmedBookingList.setLayoutManager(confirmedBookingManager);
         confirmedBookingList.setAdapter(adapterConfirmedBookingListRV);
 
         pendingBookingList.setHasFixedSize(true);
-        pendingBookingList.setLayoutManager(manager);
+        pendingBookingList.setLayoutManager(pendingBookingManager);
         pendingBookingList.setAdapter(adapterBookingPendingListRV);
 
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("uid", currentUserId)
+        bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "confirmed")
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
@@ -109,9 +105,7 @@ public class ActiveBookingFragment extends Fragment {
                     }
                 });
 
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("uid", currentUserId)
+        bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "pending")
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
