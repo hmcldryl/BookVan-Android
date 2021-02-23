@@ -83,13 +83,17 @@ public class BookingsFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+                            badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
-                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
+                            }
+                            else if (size == 0) {
+                                badgeDrawable.setVisible(false);
                             }
                         }
                     }
@@ -104,13 +108,17 @@ public class BookingsFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+                            badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
-                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
+                            }
+                            else if (size == 0) {
+                                badgeDrawable.setVisible(false);
                             }
                         }
                     }
@@ -125,13 +133,17 @@ public class BookingsFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+                            badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
-                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
+                            }
+                            else if (size == 0) {
+                                badgeDrawable.setVisible(false);
                             }
                         }
                     }
