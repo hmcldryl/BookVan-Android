@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.opustech.bookvan.ui.fragments.admin.HomeAdminFragment"
+        android:name="com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home_admin" />
+        tools:layout="@layout/fragment_dashboard_admin" />
 
     <fragment
         android:id="@+id/nav_van_companies"
