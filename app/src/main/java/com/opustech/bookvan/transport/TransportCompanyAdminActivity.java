@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -28,15 +26,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.admin.AdminActivity;
-import com.opustech.bookvan.admin.MessageAdminActivity;
-import com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment;
-import com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
-import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment;
 import com.opustech.bookvan.ui.fragments.transport.DashboardTransportAdminFragment;
-import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
