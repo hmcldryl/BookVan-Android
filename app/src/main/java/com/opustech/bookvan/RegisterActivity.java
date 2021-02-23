@@ -81,8 +81,8 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnRegister.setEnabled(false);
-                onRegister(v);
+                disableInput();
+                inputCheck();
             }
         });
 
@@ -91,21 +91,34 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                finish();
                 startActivity(intent);
+                finish();
             }
         });
     }
 
-    // CHECK INPUTS & REGISTER NEW USER
-    private void onRegister(View v) {
-        final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
-                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(getResources().getColor(R.color.colorAccent))
-                .text("Processing...")
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
+    private void enableInput() {
+        btnRegister.setEnabled(true);
+        inputFirstName.setEnabled(true);
+        inputLastName.setEnabled(true);
+        inputEmail.setEnabled(true);
+        inputContactNumber.setEnabled(true);
+        inputPassword.setEnabled(true);
+        inputConfirmPassword.setEnabled(true);
+    }
 
+    private void disableInput() {
+        btnRegister.setEnabled(false);
+        inputFirstName.setEnabled(false);
+        inputLastName.setEnabled(false);
+        inputEmail.setEnabled(false);
+        inputContactNumber.setEnabled(false);
+        inputPassword.setEnabled(false);
+        inputConfirmPassword.setEnabled(false);
+    }
+
+    // CHECK INPUTS & REGISTER NEW USER
+    private void inputCheck() {
         String name = inputFirstName.getText().toString() + " " + inputLastName.getText().toString();
         String email = inputEmail.getText().toString().trim();
         String contact_number = inputContactNumber.getText().toString().trim();
@@ -114,68 +127,55 @@ public class RegisterActivity extends AppCompatActivity {
 
         // CHECK INPUTS
         if (name.isEmpty()) {
-            dialog.dismiss();
-            btnRegister.setEnabled(true);
+            enableInput();
             inputFirstName.setError("Please enter your first name.");
             inputLastName.setError("Please enter your last name.");
         } else if (email.isEmpty()) {
-            dialog.dismiss();
-            btnRegister.setEnabled(true);
+            enableInput();
             inputEmail.setError("Please enter your email.");
         } else if (contact_number.isEmpty()) {
-            dialog.dismiss();
-            btnRegister.setEnabled(true);
+            enableInput();
             inputContactNumber.setError("Please enter your email.");
         } else if (password.isEmpty()) {
-            dialog.dismiss();
-            btnRegister.setEnabled(true);
+            enableInput();
             inputPassword.setError("Please enter your password.");
         } else if (confirm_password.isEmpty()) {
-            dialog.dismiss();
-            btnRegister.setEnabled(true);
+            enableInput();
             inputConfirmPassword.setError("Please confirm your password.");
         } else if (!confirm_password.equals(password)) {
-            dialog.dismiss();
-            btnRegister.setEnabled(true);
+            enableInput();
             inputPassword.setError("Passwords does not match.");
             inputConfirmPassword.setError("Passwords does not match.");
         } else {
             // REGISTER NEW USER
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                uploadInfo(name, email, contact_number);
-                            } else {
-                                new MaterialAlertDialogBuilder(RegisterActivity.this)
-                                        .setTitle("Sign up failed. Please check your internet connection and try again later.")
-                                        .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                dialogInterface.dismiss();
-                                                startMainActivity();
-                                            }
-                                        })
-                                        .show();
-                            }
-                            dialog.dismiss();
-                        }
-                    });
+            onRegister(name, contact_number, email, password);
         }
     }
 
-    //UPLOAD USER INFO
-    private void uploadInfo(String name, String email, String contact_number) {
+    private void onRegister(String name, String contact_number, String email, String password) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(RegisterActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(getResources().getColor(R.color.white))
-                .text("Uploading info...")
+                .themeColor(getResources().getColor(R.color.colorAccent))
+                .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
 
-        currentUserID = firebaseAuth.getCurrentUser().getUid();
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            uploadInfo(dialog, name, email, contact_number);
+                        } else {
+                            enableInput();
+                            Toast.makeText(RegisterActivity.this, "Sign up failed. Please check your internet connection and try again later.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
 
+    private void uploadInfo(ACProgressFlower dialog, String name, String email, String contact_number) {
+        currentUserID = firebaseAuth.getCurrentUser().getUid();
         // UPLOAD USER INFO TO SERVER
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("name", name);
@@ -183,58 +183,60 @@ public class RegisterActivity extends AppCompatActivity {
         hashMap.put("contact_number", contact_number);
         usersReference.document(currentUserID)
                 .set(hashMap)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                        if (firebaseUser != null) {
-                            // GET BookVan WELCOME MESSAGE
-                            usersReference.document(admin_uid)
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            if (firebaseAuth.getCurrentUser() != null) {
+                                // GET BookVan WELCOME MESSAGE
+                                sendWelcomeMessage(dialog);
+                            }
+                        }
+                        else {
+                            dialog.dismiss();
+                            enableInput();
+                            Toast.makeText(RegisterActivity.this, "Sign up failed. Please check your internet connection and try again later.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void sendWelcomeMessage(ACProgressFlower dialog) {
+        usersReference.document(admin_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            // SEND WELCOME MESSAGE TO NEW USER
+                            String message = task.getResult().getString("welcome_message");
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                            String timestamp = format.format(Calendar.getInstance().getTime());
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("uid", admin_uid);
+                            hashMap.put("message", message);
+                            hashMap.put("timestamp", timestamp);
+                            conversationsReference.document(firebaseAuth.getCurrentUser().getUid())
+                                    .collection("chat")
+                                    .add(hashMap)
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
                                             if (task.isSuccessful()) {
-                                                // SEND WELCOME MESSAGE TO NEW USER
-                                                String message = task.getResult().getString("welcome_message");
-                                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                                                String timestamp = format.format(Calendar.getInstance().getTime());
+                                                // UPDATE UID AND TIMESTAMP OF USER CONVERSATION
                                                 HashMap<String, Object> hashMap = new HashMap<>();
-                                                hashMap.put("uid", admin_uid);
-                                                hashMap.put("message", message);
+                                                hashMap.put("uid", firebaseAuth.getCurrentUser().getUid());
                                                 hashMap.put("timestamp", timestamp);
-                                                conversationsReference.document(currentUserID)
-                                                        .collection("chat")
-                                                        .add(hashMap)
-                                                        .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                conversationsReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                        .set(hashMap)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
-                                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                            public void onComplete(@NonNull Task<Void> task) {
                                                                 if (task.isSuccessful()) {
-                                                                    // UPDATE UID AND TIMESTAMP OF USER CONVERSATION
-                                                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                                                    hashMap.put("uid", currentUserID);
-                                                                    hashMap.put("timestamp", timestamp);
-                                                                    conversationsReference.document(currentUserID)
-                                                                            .set(hashMap)
-                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                    if (task.isSuccessful()) {
-                                                                                        dialog.dismiss();
-                                                                                        btnRegister.setEnabled(true);
-                                                                                        new MaterialAlertDialogBuilder(RegisterActivity.this)
-                                                                                                .setTitle("You have signed up successfully to BookVan.")
-                                                                                                .setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-                                                                                                    @Override
-                                                                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                                                                        dialogInterface.dismiss();
-                                                                                                        startMainActivity();
-                                                                                                    }
-                                                                                                })
-                                                                                                .show();
-                                                                                    }
-                                                                                }
-                                                                            });
+                                                                    dialog.dismiss();
+                                                                    btnRegister.setEnabled(true);
+                                                                    Toast.makeText(RegisterActivity.this, "You have signed up successfully to BookVan.", Toast.LENGTH_SHORT).show();
+                                                                    startMainActivity();
                                                                 }
                                                             }
                                                         });
@@ -243,24 +245,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     });
                         }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        dialog.dismiss();
-                        btnRegister.setEnabled(true);
-                        new MaterialAlertDialogBuilder(RegisterActivity.this)
-                                .setTitle("Sign up failed. Please check your internet connection and try again later.")
-                                .setPositiveButton("Dismiss", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
-                                .show();
-                    }
                 });
-
     }
 
     // REDIRECT USER TO HOME ACTIVITY
@@ -270,6 +255,4 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
 }
