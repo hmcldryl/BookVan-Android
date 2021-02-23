@@ -63,7 +63,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        getSupportActionBar().setTitle("Your Profile");
 
         profilePhoto = findViewById(R.id.profilePhoto);
         profileName = findViewById(R.id.profileName);
