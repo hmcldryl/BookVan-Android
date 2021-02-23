@@ -34,7 +34,7 @@ public class BookingsHistoryTransportFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, partnersReference;
+    private CollectionReference usersReference, partnersReference, bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
@@ -51,6 +51,7 @@ public class BookingsHistoryTransportFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
@@ -70,9 +71,7 @@ public class BookingsHistoryTransportFragment extends Fragment {
     }
 
     private void updateUi(String name) {
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("transport_company", name)
+        bookingsReference.whereEqualTo("transport_name", name)
                 .whereEqualTo("status", "done")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
