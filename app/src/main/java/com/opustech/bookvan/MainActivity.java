@@ -31,7 +31,7 @@ import com.opustech.bookvan.ui.fragments.user.HomeFragment;
 import com.opustech.bookvan.ui.fragments.user.booking.BookingFragment;
 import com.opustech.bookvan.ui.fragments.user.RentFragment;
 import com.opustech.bookvan.ui.fragments.user.ScheduleFragment;
-import com.opustech.bookvan.ui.fragments.user.VanCompanyFragment;
+import com.opustech.bookvan.ui.fragments.user.PartnersFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(BookingFragment.class);
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.nav_van_companies) {
-                    replaceFragment(VanCompanyFragment.class);
+                if (item.getItemId() == R.id.nav_partners) {
+                    replaceFragment(PartnersFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_schedule) {
