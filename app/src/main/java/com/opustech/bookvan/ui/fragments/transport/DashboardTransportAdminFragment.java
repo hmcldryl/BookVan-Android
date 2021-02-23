@@ -22,8 +22,7 @@ public class DashboardTransportAdminFragment extends Fragment {
             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dashboard_transport_admin, container, false);
 
-        ImageCarousel imageCarousel = root.findViewById(R.id.carousel);
-        List<CarouselItem> list = new ArrayList<>();
+
 
         return root;
     }
