@@ -12,7 +12,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="5"
         android:elevation="8dp"
         android:gravity="bottom">
 
@@ -35,7 +35,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="5"
         android:background="#FFFFFF"
         android:orientation="vertical">
 
@@ -45,52 +45,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:orientation="vertical">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputTransportName"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:endIconTint="@color/colorPrimary"
-                app:hintEnabled="true"
-                app:startIconDrawable="@drawable/ic_input_transport"
-                app:startIconTint="@color/colorPrimary">
-
-                <AutoCompleteTextView
-                    android:id="@+id/inputTransportNameACT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato"
-                    android:hint="@string/input_transport_name"
-                    android:inputType="text"
-                    android:singleLine="true"
-                    android:textColor="@color/textColor"
-                    android:textCursorDrawable="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputAccountType"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:endIconTint="@color/colorPrimary"
-                app:hintEnabled="true"
-                app:startIconDrawable="@drawable/ic_menu_profile"
-                app:startIconTint="@color/colorPrimary">
-
-                <AutoCompleteTextView
-                    android:id="@+id/inputAccountTypeACT"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato"
-                    android:hint="@string/input_account_type"
-                    android:inputType="none"
-                    android:singleLine="true"
-                    android:textColor="@color/textColor"
-                    android:textCursorDrawable="@null" />
-            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputEmail"
