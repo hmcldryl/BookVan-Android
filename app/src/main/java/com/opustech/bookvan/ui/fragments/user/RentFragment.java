@@ -20,47 +20,47 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.transport.AdapterRentalsAdminListRV;
+import com.opustech.bookvan.adapters.user.AdapterBookingHistoryListRV;
 import com.opustech.bookvan.model.Rental;
 
 public class RentFragment extends Fragment {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference rentalsReference;
 
     private TextView rentStatusNone;
     private RecyclerView rentList;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
+    private AdapterRentalsAdminListRV adapterRentalsAdminListRV;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_rent, container, false);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
+        rentalsReference = firebaseFirestore.collection("rentals");
 
-        Query query = usersReference.document(admin_uid)
-                .collection("rent")
-                .orderBy("price", Query.Direction.ASCENDING);
+        Query query = rentalsReference.orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Rental> options = new FirestoreRecyclerOptions.Builder<Rental>()
                 .setQuery(query, Rental.class)
                 .build();
 
-        //adapterHistoryBookingListRV = new AdapterBookingHistoryListRV(options);
+        adapterRentalsAdminListRV = new AdapterRentalsAdminListRV(options);
 
-        LinearLayoutManager rentListManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
 
         rentStatusNone = root.findViewById(R.id.rentStatusNone);
         rentList = root.findViewById(R.id.rentList);
 
         rentList.setHasFixedSize(true);
-        rentList.setLayoutManager(rentListManager);
-        //rentList.setAdapter(adapterHistoryBookingListRV);
+        rentList.setLayoutManager(manager);
+        rentList.setAdapter(adapterRentalsAdminListRV);
 
-        usersReference.document(admin_uid)
-                .collection("rent")
-                .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+        rentalsReference.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         int size = value.size();
@@ -76,5 +76,17 @@ public class RentFragment extends Fragment {
                 });
 
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapterRentalsAdminListRV.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapterRentalsAdminListRV.stopListening();
     }
 }
