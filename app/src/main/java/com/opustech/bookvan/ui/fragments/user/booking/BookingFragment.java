@@ -20,7 +20,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.ui.adapters.user.ProfilePagerAdapter;
+import com.opustech.bookvan.adapters.user.ProfilePagerAdapter;
 import com.opustech.bookvan.R;
 
 public class BookingFragment extends Fragment {
