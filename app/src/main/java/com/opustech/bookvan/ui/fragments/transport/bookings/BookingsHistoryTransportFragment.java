@@ -27,8 +27,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.adapters.admin.AdapterBookingHistoryAdminListRV;
-import com.opustech.bookvan.ui.adapters.transport.AdapterBookingHistoryTransportListRV;
+import com.opustech.bookvan.adapters.transport.AdapterBookingHistoryTransportListRV;
 
 public class BookingsHistoryTransportFragment extends Fragment {
 
@@ -50,8 +49,8 @@ public class BookingsHistoryTransportFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
-        partnersReference = firebaseFirestore.collection("partners");
         bookingsReference = firebaseFirestore.collection("bookings");
+        partnersReference = firebaseFirestore.collection("partners");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
@@ -61,8 +60,9 @@ public class BookingsHistoryTransportFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            populateList(root, task.getResult().getString("name"));
-                            updateUi(task.getResult().getString("name"));
+                            String transport_name = task.getResult().getString("name");
+                            populateList(root, transport_name);
+                            updateUi(transport_name);
                         }
                     }
                 });
@@ -70,9 +70,10 @@ public class BookingsHistoryTransportFragment extends Fragment {
         return root;
     }
 
-    private void updateUi(String name) {
-        bookingsReference.whereEqualTo("transport_name", name)
+    private void updateUi(String transport_name) {
+        bookingsReference.whereEqualTo("transport_name", transport_name)
                 .whereEqualTo("status", "done")
+                .whereEqualTo("status", "cancelled")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -90,18 +91,17 @@ public class BookingsHistoryTransportFragment extends Fragment {
                 });
     }
 
-    private void populateList(View root, String name) {
-        Query query = usersReference.document(admin_uid)
-                .collection("bookings")
-                .whereEqualTo("transport_company", name)
+    private void populateList(View root, String transport_name) {
+        Query query = bookingsReference.whereEqualTo("transport_name", transport_name)
                 .whereEqualTo("status", "done")
+                .whereEqualTo("status", "cancelled")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingHistoryTransportListRV = new AdapterBookingHistoryTransportListRV(options);
+        adapterBookingHistoryTransportListRV = new AdapterBookingHistoryTransportListRV(options, getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
