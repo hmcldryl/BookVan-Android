@@ -23,7 +23,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.adapters.admin.AdapterBookingPendingAdminListRV;
+import com.opustech.bookvan.adapters.admin.AdapterBookingPendingAdminListRV;
 
 public class BookingsPendingAdminFragment extends Fragment {
 
@@ -56,7 +56,7 @@ public class BookingsPendingAdminFragment extends Fragment {
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingPendingAdminListRV = new AdapterBookingPendingAdminListRV(options);
+        adapterBookingPendingAdminListRV = new AdapterBookingPendingAdminListRV(options, getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
