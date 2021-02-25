@@ -7,7 +7,7 @@
     android:background="#FFFFFF"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".admin.MessageAdminActivity">
+    tools:context=".ui.admin.MessageAdminActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
