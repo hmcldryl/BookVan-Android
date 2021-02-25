@@ -61,7 +61,7 @@ public class ScanBookingFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_schedule, container, false);
+        View root = inflater.inflate(R.layout.fragment_scan_booking, container, false);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
