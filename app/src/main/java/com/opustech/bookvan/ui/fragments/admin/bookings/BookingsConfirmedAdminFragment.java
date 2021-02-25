@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.ui.adapters.admin.AdapterBookingConfirmedAdminListRV;
+import com.opustech.bookvan.adapters.admin.AdapterBookingConfirmedAdminListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
