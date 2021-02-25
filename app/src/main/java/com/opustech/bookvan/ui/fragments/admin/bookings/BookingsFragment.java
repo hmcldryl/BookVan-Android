@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.ui.adapters.admin.BookingsAdminPagerAdapter;
+import com.opustech.bookvan.adapters.admin.BookingsAdminPagerAdapter;
 
 public class BookingsFragment extends Fragment {
 
