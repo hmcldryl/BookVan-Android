@@ -8,6 +8,7 @@
     android:padding="8dp">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -18,7 +19,7 @@
             android:padding="8dp">
 
             <org.imaginativeworld.whynotimagecarousel.ImageCarousel
-                android:id="@+id/carousel"
+                android:id="@+id/rentalsImageCarousel"
                 android:layout_width="175dp"
                 android:layout_height="175dp"
                 app:autoPlay="true"
@@ -26,13 +27,14 @@
                 app:showCaption="false"
                 app:showNavigationButtons="false" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="8dp">
 
                 <TextView
+                    android:id="@+id/rentalsVanModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -40,19 +42,79 @@
                     android:maxLines="1"
                     android:text="van_model"
                     android:textColor="@color/textColor"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/rentalsVanOwner"
                     android:layout_width="match_parent"
+                    android:layout_below="@+id/rentalsVanModel"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:fontFamily="@font/lato"
                     android:maxLines="1"
                     android:text="owner"
                     android:textColor="@color/textColor"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
-            </LinearLayout>
+                <Space
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/rentalsVanOwner"
+                    android:layout_height="8dp"/>
+
+                <TextView
+                    android:id="@+id/rentalsVanDescription"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/divider"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:layout_above="@+id/divider1"
+                    android:fontFamily="@font/lato"
+                    android:text="description"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
+
+                <Space
+                    android:id="@+id/divider1"
+                    android:layout_width="match_parent"
+                    android:layout_above="@+id/total"
+                    android:layout_height="8dp"/>
+
+                <LinearLayout
+                    android:id="@+id/total"
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_bold"
+                        android:maxLines="1"
+                        android:text="Total:"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="match_parent"/>
+
+                    <TextView
+                        android:id="@+id/rentalsPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_bold"
+                        android:maxLines="1"
+                        android:text="0000.00"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
