@@ -27,15 +27,13 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.adapters.admin.AdapterBookingPendingAdminListRV;
-import com.opustech.bookvan.ui.adapters.transport.AdapterBookingHistoryTransportListRV;
-import com.opustech.bookvan.ui.adapters.transport.AdapterBookingPendingTransportListRV;
+import com.opustech.bookvan.adapters.transport.AdapterBookingPendingTransportListRV;
 
 public class BookingsPendingTransportFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, bookingsReference;
+    private CollectionReference usersReference, bookingsReference, partnersReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
@@ -52,17 +50,29 @@ public class BookingsPendingTransportFragment extends Fragment {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         bookingsReference = firebaseFirestore.collection("bookings");
+        partnersReference = firebaseFirestore.collection("partners");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
-        populateList(root);
-        updateUi();
+        partnersReference.document(getCompanyUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String transport_name = task.getResult().getString("name");
+                            populateList(root, transport_name);
+                            updateUi(transport_name);
+                        }
+                    }
+                });
 
         return root;
     }
 
-    private void updateUi() {
-        bookingsReference.whereEqualTo("status", "pending")
+    private void updateUi(String transport_name) {
+        bookingsReference.whereEqualTo("transport_name", transport_name)
+                .whereEqualTo("status", "pending")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -80,16 +90,16 @@ public class BookingsPendingTransportFragment extends Fragment {
                 });
     }
 
-    private void populateList(View root) {
-        Query query = bookingsReference.whereEqualTo("status", "pending")
-                .whereEqualTo("status", "cancelled")
+    private void populateList(View root, String transport_name) {
+        Query query = bookingsReference.whereEqualTo("transport_name", transport_name)
+                .whereEqualTo("status", "pending")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingPendingTransportListRV = new AdapterBookingPendingTransportListRV(options, getCompanyUid());
+        adapterBookingPendingTransportListRV = new AdapterBookingPendingTransportListRV(options, getCompanyUid(), getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
