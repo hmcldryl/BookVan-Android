@@ -1,20 +1,25 @@
 package com.opustech.bookvan.model;
 
+import java.util.List;
+
 public class TransportCompany {
-    String uid, name, description, email, contact_number, address, photo_url, banner_url;
+    String uid, name, description, address, email, website, photo_url, banner_url;
+    List<String> telephone_number, cellphone_number;
 
     public TransportCompany() {
     }
 
-    public TransportCompany(String uid, String name, String description, String email, String contact_number, String address, String photo_url, String banner_url) {
+    public TransportCompany(String uid, String name, String description, String address, String email, String website, String photo_url, String banner_url, List<String> telephone_number, List<String> cellphone_number) {
         this.uid = uid;
         this.name = name;
         this.description = description;
-        this.email = email;
-        this.contact_number = contact_number;
         this.address = address;
+        this.email = email;
+        this.website = website;
         this.photo_url = photo_url;
         this.banner_url = banner_url;
+        this.telephone_number = telephone_number;
+        this.cellphone_number = cellphone_number;
     }
 
     public String getUid() {
@@ -41,6 +46,14 @@ public class TransportCompany {
         this.description = description;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -49,20 +62,12 @@ public class TransportCompany {
         this.email = email;
     }
 
-    public String getContact_number() {
-        return contact_number;
+    public String getWebsite() {
+        return website;
     }
 
-    public void setContact_number(String contact_number) {
-        this.contact_number = contact_number;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     public String getPhoto_url() {
@@ -79,5 +84,21 @@ public class TransportCompany {
 
     public void setBanner_url(String banner_url) {
         this.banner_url = banner_url;
+    }
+
+    public List<String> getTelephone_number() {
+        return telephone_number;
+    }
+
+    public void setTelephone_number(List<String> telephone_number) {
+        this.telephone_number = telephone_number;
+    }
+
+    public List<String> getCellphone_number() {
+        return cellphone_number;
+    }
+
+    public void setCellphone_number(List<String> cellphone_number) {
+        this.cellphone_number = cellphone_number;
     }
 }
