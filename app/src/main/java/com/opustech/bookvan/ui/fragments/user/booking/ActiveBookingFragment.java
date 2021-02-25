@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,10 +20,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.ui.adapters.user.AdapterBookingHistoryListRV;
+import com.opustech.bookvan.adapters.user.AdapterBookingHistoryListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.adapters.user.AdapterBookingPendingListRV;
+import com.opustech.bookvan.adapters.user.AdapterBookingPendingListRV;
 
 public class ActiveBookingFragment extends Fragment {
 
