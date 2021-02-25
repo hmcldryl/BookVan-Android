@@ -17,10 +17,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.model.TransportCompany;
-import com.opustech.bookvan.ui.adapters.admin.AdapterBookingConfirmedAdminListRV;
-import com.opustech.bookvan.ui.adapters.transport.AdapterTransportPartnerListRV;
+import com.opustech.bookvan.adapters.transport.AdapterTransportPartnerListRV;
 
 public class PartnersFragment extends Fragment {
 
