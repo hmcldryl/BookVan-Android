@@ -1,25 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp">
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/bookingCard"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:layout_margin="8dp"
-        app:cardBackgroundColor="#FFFFFF"
-        app:cardElevation="8dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -194,10 +185,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_black"
-                            android:text="Total:"
-                            android:textColor="@color/textColor"
-                            android:textSize="16sp" />
+                            android:fontFamily="@font/lato"
+                            android:text="Transport Name:"
+                            android:textSize="16sp"
+                            android:textColor="@color/textColor" />
 
                     </LinearLayout>
 
@@ -285,28 +276,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="16dp" />
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/bookingTransportName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_bold"
-                                android:text="@string/peso_sign"
-                                android:textColor="@color/textColor"
-                                android:textSize="16sp" />
-
-                            <TextView
-                                android:id="@+id/price"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato_bold"
-                                android:text=""
-                                android:textColor="@color/textColor"
-                                android:textSize="16sp" />
-                        </LinearLayout>
+                            android:fontFamily="@font/lato"
+                            android:text="transport_name"
+                            android:textSize="16sp"
+                            android:textColor="@color/textColor" />
 
                     </LinearLayout>
 
@@ -315,7 +292,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
