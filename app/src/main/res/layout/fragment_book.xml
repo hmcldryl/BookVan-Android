@@ -61,7 +61,6 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:hint="Name"
                 app:startIconDrawable="@drawable/ic_input_name"
                 app:startIconTint="@color/colorPrimary">
@@ -77,12 +76,15 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookingContactNumber"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:hint="Contact Number"
                 app:startIconDrawable="@drawable/ic_input_contact_num"
                 app:startIconTint="@color/colorPrimary">
@@ -97,6 +99,10 @@
                     android:textCursorDrawable="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputVanTransport"
@@ -121,12 +127,15 @@
                     android:textCursorDrawable="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookingLocationFrom"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:hint="From"
                 android:inputType="none"
                 app:endIconTint="@color/colorPrimary"
@@ -143,12 +152,15 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/bookingLocationTo"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:hint="To"
                 android:inputType="none"
                 app:endIconTint="@color/colorPrimary"
@@ -165,10 +177,13 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 android:weightSum="10">
@@ -222,6 +237,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -367,58 +386,5 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/bookingCheckoutBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_checkout">
-
-            <TextView
-                android:id="@+id/textTotal"
-                android:layout_width="75dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:fontFamily="@font/lato_black"
-                android:text="Total:"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="#FFFFFF" />
-
-            <TextView
-                android:id="@+id/pesoSign"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@+id/textTotal"
-                android:fontFamily="@font/lato_bold"
-                android:text="@string/peso_sign"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="#FFFFFF" />
-
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/pesoSign"
-                android:fontFamily="@font/lato_bold"
-                android:text="000"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="#FFFFFF" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnConfirmBooking"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="16dp"
-                android:fontFamily="@font/lato_black"
-                android:text="BOOK"
-                android:textColor="@color/colorPrimary"
-                app:backgroundTint="#FFFFFF" />
-        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
