@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,9 +14,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.admin.AdminActivity;
-import com.opustech.bookvan.transport.TransportCompanyAdminActivity;
-import com.opustech.bookvan.transport.TransportLoginActivity;
+import com.opustech.bookvan.ui.admin.AdminActivity;
+import com.opustech.bookvan.ui.transport.TransportCompanyAdminActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -46,8 +43,7 @@ public class SplashScreen extends AppCompatActivity {
                         startAdminActivity();
                     }
                 }, 1500);
-            }
-            else {
+            } else {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -55,8 +51,7 @@ public class SplashScreen extends AppCompatActivity {
                     }
                 }, 1500);
             }
-        }
-        else {
+        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -76,7 +71,7 @@ public class SplashScreen extends AppCompatActivity {
                             String account_type = task.getResult().getString("account_type");
                             if (account_type != null) {
                                 if (account_type.equals("administrator")) {
-                                    partnersReference.whereEqualTo("name", task.getResult().getString("transport_company"))
+                                    partnersReference.whereEqualTo("uid", task.getResult().getString("transport_company"))
                                             .limit(1)
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -88,9 +83,8 @@ public class SplashScreen extends AppCompatActivity {
                                                     }
                                                 }
                                             });
-                                }
-                                else if (account_type.equals("staff")) {
-                                    partnersReference.whereEqualTo("name", task.getResult().getString("transport_company"))
+                                } else if (account_type.equals("staff")) {
+                                    partnersReference.whereEqualTo("uid", task.getResult().getString("transport_company"))
                                             .limit(1)
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -103,8 +97,7 @@ public class SplashScreen extends AppCompatActivity {
                                                 }
                                             });
                                 }
-                            }
-                            else {
+                            } else {
                                 startMainActivity();
                             }
                         }
