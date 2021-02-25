@@ -61,9 +61,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:maxLines="1"
                     android:fontFamily="@font/lato"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1"
                     android:textColor="@color/textColor"
                     android:textCursorDrawable="@null" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -159,16 +159,6 @@
             android:fontFamily="@font/lato"
             android:text="SIGN IN WITH GOOGLE"
             app:icon="@drawable/ic_input_google" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLoginTransport"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/lato"
-            android:text="@string/transport_login_text"
-            app:icon="@drawable/ic_input_transport" />
 
         <LinearLayout
             android:layout_width="300dp"
