@@ -2,7 +2,6 @@ package com.opustech.bookvan.ui.fragments.user;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,34 +12,23 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.transport.TransportLoginActivity;
 
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,8 +38,6 @@ import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
-import se.simbio.encryption.Encryption;
-import third.part.android.util.Base64;
 
 public class BookFragment extends Fragment {
 
@@ -74,7 +60,6 @@ public class BookFragment extends Fragment {
             subtractChildCount;
     private Button btnBook;
     private AutoCompleteTextView inputVanTransportACT, bookingLocationFromACT, bookingLocationToACT;
-    private TextView priceTotal;
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
@@ -109,9 +94,6 @@ public class BookFragment extends Fragment {
         subtractChildCount = root.findViewById(R.id.btnCountChildSubtract);
 
         btnBook = root.findViewById(R.id.btnConfirmBooking);
-
-        priceTotal = root.findViewById(R.id.price);
-        priceTotal.setText("170.00");
 
         populateVanTransportList();
         populateLocationList();
@@ -176,7 +158,7 @@ public class BookFragment extends Fragment {
         return root;
     }
 
-    private void generateRefNum(String uid, String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child, float price) {
+    private void generateRefNum(String uid, String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(getActivity())
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.colorAccent))
@@ -193,7 +175,7 @@ public class BookFragment extends Fragment {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
                             String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
-                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child, price);
+                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
                         }
                     }
                 });
@@ -233,7 +215,6 @@ public class BookFragment extends Fragment {
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
         int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
         int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-        float price = Float.parseFloat(priceTotal.getText().toString());
 
         if (name.isEmpty()) {
             enableInput();
@@ -260,7 +241,7 @@ public class BookFragment extends Fragment {
             enableInput();
             bookingCountAdult.getEditText().setError("Must have at least 1 adult passenger.");
         } else {
-            generateRefNum(uid, name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child, price);
+            generateRefNum(uid, name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
         }
     }
 
@@ -269,7 +250,7 @@ public class BookFragment extends Fragment {
         return format.format(Calendar.getInstance().getTime());
     }
 
-    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child, float price) {
+    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("reference_number", reference_number);
         hashMap.put("uid", uid);
@@ -282,7 +263,6 @@ public class BookFragment extends Fragment {
         hashMap.put("schedule_time", schedule_time);
         hashMap.put("count_adult", count_adult);
         hashMap.put("count_child", count_child);
-        hashMap.put("price", price);
         hashMap.put("timestamp", generateTimestamp());
         hashMap.put("status", "pending");
 
