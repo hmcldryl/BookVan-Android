@@ -26,8 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.ui.adapters.admin.BookingsAdminPagerAdapter;
-import com.opustech.bookvan.ui.adapters.transport.BookingsTransportPagerAdapter;
+import com.opustech.bookvan.adapters.transport.BookingsTransportPagerAdapter;
 
 public class BookingsFragment extends Fragment {
 
@@ -103,7 +102,7 @@ public class BookingsFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            bookingsReference.whereEqualTo("transport_company", task.getResult().getString("name"))
+                            bookingsReference.whereEqualTo("transport_name", task.getResult().getString("name"))
                                     .whereEqualTo("status", "confirmed")
                                     .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                                         @Override
@@ -130,23 +129,33 @@ public class BookingsFragment extends Fragment {
     }
 
     private void updatePendingListTabBadge(TabLayout.Tab tab) {
-        bookingsReference.whereEqualTo("status", "pending")
-                .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+        partnersReference.document(getCompanyUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (value != null) {
-                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
-                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
-                            badgeDrawable.setMaxCharacterCount(2);
-                            int size = value.size();
-                            if (size > 0) {
-                                badgeDrawable.setNumber(size);
-                                badgeDrawable.setVisible(true);
-                            }
-                            else if (size == 0) {
-                                badgeDrawable.setVisible(false);
-                            }
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            bookingsReference.whereEqualTo("transport_name", task.getResult().getString("name"))
+                                    .whereEqualTo("status", "pending")
+                                    .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            if (value != null) {
+                                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
+                                                badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
+                                                badgeDrawable.setMaxCharacterCount(2);
+                                                int size = value.size();
+                                                if (size > 0) {
+                                                    badgeDrawable.setNumber(size);
+                                                    badgeDrawable.setVisible(true);
+                                                }
+                                                else if (size == 0) {
+                                                    badgeDrawable.setVisible(false);
+                                                }
+                                            }
+                                        }
+                                    });
                         }
                     }
                 });
@@ -159,7 +168,7 @@ public class BookingsFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            bookingsReference.whereEqualTo("transport_company", task.getResult().getString("name"))
+                            bookingsReference.whereEqualTo("transport_name", task.getResult().getString("name"))
                                     .whereEqualTo("status", "done")
                                     .whereEqualTo("status", "cancelled")
                                     .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
