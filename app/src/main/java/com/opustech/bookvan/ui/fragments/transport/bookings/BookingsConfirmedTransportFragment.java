@@ -27,9 +27,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.adapters.admin.AdapterBookingConfirmedAdminListRV;
-import com.opustech.bookvan.ui.adapters.transport.AdapterBookingConfirmedTransportListRV;
-import com.opustech.bookvan.ui.adapters.transport.AdapterBookingHistoryTransportListRV;
+import com.opustech.bookvan.adapters.transport.AdapterBookingConfirmedTransportListRV;
 
 public class BookingsConfirmedTransportFragment extends Fragment {
 
@@ -51,8 +49,8 @@ public class BookingsConfirmedTransportFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
-        partnersReference = firebaseFirestore.collection("partners");
         bookingsReference = firebaseFirestore.collection("bookings");
+        partnersReference = firebaseFirestore.collection("partners");
 
         //currentUserID = firebaseAuth.getCurrentUser().getUid();
 
@@ -62,8 +60,9 @@ public class BookingsConfirmedTransportFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            populateList(root, task.getResult().getString("name"));
-                            updateUi(task.getResult().getString("name"));
+                            String transport_name = task.getResult().getString("name");
+                            populateList(root, transport_name);
+                            updateUi(transport_name);
                         }
                     }
                 });
@@ -71,8 +70,8 @@ public class BookingsConfirmedTransportFragment extends Fragment {
         return root;
     }
 
-    private void updateUi(String name) {
-        bookingsReference.whereEqualTo("transport_company", name)
+    private void updateUi(String transport_name) {
+        bookingsReference.whereEqualTo("transport_name", transport_name)
                 .whereEqualTo("status", "confirmed")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -91,8 +90,8 @@ public class BookingsConfirmedTransportFragment extends Fragment {
                 });
     }
 
-    private void populateList(View root, String name) {
-        Query query = bookingsReference.whereEqualTo("transport_name", name)
+    private void populateList(View root, String transport_name) {
+        Query query = bookingsReference.whereEqualTo("transport_name", transport_name)
                 .whereEqualTo("status", "confirmed")
                 .orderBy("timestamp", Query.Direction.DESCENDING);
 
