@@ -8,13 +8,13 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_home"
-            android:title="@string/title_home" />
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_menu_dashboard"
+            android:title="@string/title_dashboard" />
         <item
-            android:id="@+id/nav_van_companies"
+            android:id="@+id/nav_partners"
             android:icon="@drawable/ic_input_transport"
-            android:title="@string/title_van_companies" />
+            android:title="@string/title_partners" />
         <item
             android:id="@+id/nav_contact"
             android:icon="@drawable/ic_menu_contact"
