@@ -111,50 +111,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="Follow the latest updates\nfrom our Facebook page!"
-            android:textAlignment="center"
-            android:textColor="@color/textColor"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="www.facebook.com/BookVan"
-            android:textAlignment="center"
-            android:textColor="@color/textColor"
-            android:textSize="24sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="Visit our website at:"
-            android:textAlignment="center"
-            android:textColor="@color/textColor"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/lato_bold"
-            android:text="www.BookVan.ph"
-            android:textAlignment="center"
-            android:textColor="@color/textColor"
-            android:textSize="24sp" />
-
     </LinearLayout>
 
 </ScrollView>
