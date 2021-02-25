@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.ui.adapters.user.RentalsPagerAdapter;
+import com.opustech.bookvan.adapters.user.RentalsPagerAdapter;
 
 public class RentalsFragment extends Fragment {
 
