@@ -6,6 +6,6 @@
         android:id="@+id/btnEdit"
         app:showAsAction="always"
         android:icon="@drawable/ic_btn_edit"
-        android:title="@string/title_edit" />
+        android:title="@string/label_edit" />
 
 </menu>
