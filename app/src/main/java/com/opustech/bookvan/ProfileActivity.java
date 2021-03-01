@@ -5,19 +5,27 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -27,8 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
@@ -52,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
     private String contact_number = "";
     private String photo_url = "";
 
+    private FloatingActionButton btnEdit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +81,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Your Profile");
 
+        btnEdit = findViewById(R.id.btnEdit);
         profilePhoto = findViewById(R.id.profilePhoto);
         profileName = findViewById(R.id.profileName);
         profileEmail = findViewById(R.id.profileEmail);
         profileContactNumber = findViewById(R.id.profileContactNumber);
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startUpdateInfoDialog();
+            }
+        });
 
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +103,74 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivityForResult(intent, PICK_IMAGE);
             }
         });
+    }
+
+    private void startUpdateInfoDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+        final AlertDialog alertDialog = builder.create();
+        if (!alertDialog.isShowing()) {
+            final View dialogView = LayoutInflater.from(ProfileActivity.this).inflate(R.layout.dialog_edit_profile, null);
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            alertDialog.setCancelable(true);
+            alertDialog.setView(dialogView);
+
+            TextInputLayout inputName = dialogView.findViewById(R.id.inputName);
+            TextInputLayout inputContactNumber = dialogView.findViewById(R.id.inputContactNumber);
+
+            MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+            btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btnConfirm.setEnabled(false);
+                    inputName.setEnabled(false);
+                    inputContactNumber.setEnabled(false);
+                    final ACProgressFlower dialog = new ACProgressFlower.Builder(ProfileActivity.this)
+                            .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                            .themeColor(getResources().getColor(R.color.white))
+                            .text("Updating...")
+                            .fadeColor(Color.DKGRAY).build();
+                    dialog.show();
+
+                    if (inputName.getEditText().getText().toString().isEmpty()) {
+                        btnConfirm.setEnabled(true);
+                        inputName.setEnabled(true);
+                        inputContactNumber.setEnabled(true);
+                        dialog.dismiss();
+                        inputName.setError("Please enter your name.");
+                    }
+                    else if (inputContactNumber.getEditText().getText().toString().isEmpty()) {
+                        btnConfirm.setEnabled(true);
+                        inputName.setEnabled(true);
+                        inputContactNumber.setEnabled(true);
+                        dialog.dismiss();
+                        inputName.setError("Please enter your contact number.");
+                    }
+                    else {
+                        String name = inputName.getEditText().getText().toString();
+                        String contact_number = inputContactNumber.getEditText().getText().toString();
+
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("name", name);
+                        hashMap.put("contact_number", contact_number);
+
+                        usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                .update(hashMap)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        dialog.dismiss();
+                                        alertDialog.dismiss();
+                                        Toast.makeText(ProfileActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+
+                }
+            });
+
+            alertDialog.show();
+        }
     }
 
     @Override
@@ -136,22 +220,11 @@ public class ProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri imageUri = data.getData();
-            CropImage.activity(imageUri)
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1, 1)
-                    .start(ProfileActivity.this);
-        }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                uploadImage(result);
-            } else {
-                Toast.makeText(ProfileActivity.this, "Image cannot be cropped. Please try again.", Toast.LENGTH_SHORT).show();
-            }
+            uploadImage(imageUri);
         }
     }
 
-    private void uploadImage(CropImage.ActivityResult result) {
+    private void uploadImage(Uri resultUri) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(ProfileActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -159,7 +232,6 @@ public class ProfileActivity extends AppCompatActivity {
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         String imageFilename = "IMG_" + firebaseAuth.getCurrentUser().getUid() + ".jpg";
-        Uri resultUri = result.getUri();
         FirebaseStorage.getInstance().getReference().child("images")
                 .child(imageFilename)
                 .putFile(resultUri)
