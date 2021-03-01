@@ -1,9 +1,13 @@
 package com.opustech.bookvan.adapters.user;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,12 +17,17 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import java.util.HashMap;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingPendingListRV.BookingHolder> {
@@ -26,7 +35,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -35,8 +44,9 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
      * @param options
      */
 
-    public AdapterBookingPendingListRV(@NonNull FirestoreRecyclerOptions<Booking> options) {
+    public AdapterBookingPendingListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context) {
         super(options);
+        this.context = context;
     }
 
     @Override
@@ -54,7 +64,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
-        float price = model.getPrice();
+        String transport_name = model.getTransport_name();
 
         usersReference.document(uid)
                 .get()
@@ -66,13 +76,14 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(holder.itemView.getContext())
+                                Glide.with(context)
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }
                         }
                     }
                 });
+
         holder.bookingCustomerName.setText(name);
         holder.bookingContactNumber.setText(contact_number);
         holder.bookingReferenceNumber.setText(reference_number);
@@ -80,7 +91,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingLocationTo.setText(location_to);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingPrice.setText(String.valueOf(price));
+        holder.bookingTransportName.setText(transport_name);
 
         if (count_adult > 1) {
             String outputAdult = count_adult + " adults.";
@@ -107,6 +118,39 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         }
     }
 
+    public void cancelBooking(int position) {
+        new MaterialAlertDialogBuilder(context)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
+                                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                .themeColor(context.getResources().getColor(R.color.white))
+                                .text("Processing...")
+                                .fadeColor(Color.DKGRAY).build();
+                        dialog.show();
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("status", "cancelled");
+                        getSnapshots().getSnapshot(position)
+                                .getReference()
+                                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    dialogInterface.dismiss();
+                                    dialog.dismiss();
+                                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dialogInterface.dismiss();
+                                    dialog.dismiss();
+                                    Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }).show();
+    }
+
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -125,7 +169,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                 bookingScheduleTime,
                 bookingCountAdult,
                 bookingCountChild,
-                bookingPrice;
+                bookingTransportName;
         CircleImageView customerPhoto;
 
         public BookingHolder(View view) {
@@ -141,8 +185,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
-            bookingPrice = view.findViewById(R.id.price);
-
+            bookingTransportName = view.findViewById(R.id.bookingTransportName);
         }
     }
 
