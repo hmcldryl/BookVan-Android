@@ -1,11 +1,19 @@
 package com.opustech.bookvan.adapters.admin;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,20 +23,31 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import java.util.HashMap;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
+import se.simbio.encryption.Encryption;
 
 public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingConfirmedAdminListRV.BookingHolder> {
 
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private Context context;
+
+    private static String OT_SALT = "TEST";
+    private static String OT_KEY = "TEST";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -37,8 +56,9 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
      * @param options
      */
 
-    public AdapterBookingConfirmedAdminListRV(@NonNull FirestoreRecyclerOptions<Booking> options) {
+    public AdapterBookingConfirmedAdminListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context) {
         super(options);
+        this.context = context;
     }
 
     @Override
@@ -56,6 +76,9 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
+        String transport_name = model.getTransport_name();
+        String driver_name = model.getDriver_name();
+        String plate_number = model.getPlate_number();
         float price = model.getPrice();
 
         usersReference.document(uid)
@@ -68,7 +91,7 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(holder.itemView.getContext())
+                                Glide.with(context)
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }
@@ -83,9 +106,90 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         holder.bookingLocationTo.setText(location_to);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingCountAdult.setText(String.valueOf(count_adult));
-        holder.bookingCountChild.setText(String.valueOf(count_child));
+        holder.bookingTransportName.setText(transport_name);
+        holder.bookingDriverName.setText(driver_name);
+        holder.bookingPlateNumber.setText(plate_number);
+
+        if (count_adult >= 1) {
+            holder.bookingCountAdult.setText(String.valueOf(count_adult));
+        } else {
+            holder.bookingCountAdult.setVisibility(View.GONE);
+            holder.labelCountAdult.setVisibility(View.GONE);
+        }
+
+        if (count_child >= 1) {
+            holder.bookingCountChild.setText(String.valueOf(count_child));
+        } else {
+            holder.bookingCountChild.setVisibility(View.GONE);
+            holder.labelCountChild.setVisibility(View.GONE);
+        }
+
         holder.bookingPrice.setText(String.valueOf(price));
+
+        holder.item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                final AlertDialog alertDialog = builder.create();
+                if (!alertDialog.isShowing()) {
+                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_booking_confirmed_item_layout, null);
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    alertDialog.setCancelable(true);
+                    alertDialog.setView(dialogView);
+
+                    ImageView qrPlaceholder = dialogView.findViewById(R.id.qrPlaceholder);
+
+                    String inputValue = encryptString(reference_number);
+
+                    QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, 300);
+                    qrgEncoder.setColorBlack(context.getResources().getColor(R.color.colorPrimary));
+                    qrgEncoder.setColorWhite(context.getResources().getColor(R.color.white));
+                    Bitmap bitmap = qrgEncoder.getBitmap();
+                    qrPlaceholder.setImageBitmap(bitmap);
+
+                    alertDialog.show();
+                }
+            }
+        });
+    }
+
+    public void cancelBooking(int position) {
+        new MaterialAlertDialogBuilder(context)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
+                                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                .themeColor(context.getResources().getColor(R.color.white))
+                                .text("Processing...")
+                                .fadeColor(Color.DKGRAY).build();
+                        dialog.show();
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("status", "cancelled");
+                        getSnapshots().getSnapshot(position)
+                                .getReference()
+                                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    dialogInterface.dismiss();
+                                    dialog.dismiss();
+                                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dialogInterface.dismiss();
+                                    dialog.dismiss();
+                                    Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                }).show();
+    }
+
+    private String encryptString(String data) {
+        byte[] iv = new byte[16];
+        Encryption encryption = Encryption.getDefault(OT_KEY, OT_SALT, iv);
+        return encryption.encryptOrNull(data);
     }
 
     @NonNull
@@ -109,17 +213,16 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
                 bookingTransportName,
                 bookingDriverName,
                 bookingPlateNumber,
-                bookingPrice;
+                bookingPrice,
+                labelCountAdult,
+                labelCountChild;
         LinearLayout item;
-        Button btnCancelBooking, btnConfirmBooking;
         CircleImageView customerPhoto;
 
         public BookingHolder(View view) {
             super(view);
             item = view.findViewById(R.id.item);
             customerPhoto = view.findViewById(R.id.customerPhoto);
-            btnCancelBooking = view.findViewById(R.id.btnCancelBooking);
-            btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
@@ -129,7 +232,9 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
+            labelCountAdult = view.findViewById(R.id.labelCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
+            labelCountChild = view.findViewById(R.id.labelCountChild);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
             bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
