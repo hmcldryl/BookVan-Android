@@ -79,7 +79,8 @@ public class SplashScreen extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         String uid = task.getResult().getDocuments().get(0).getString("uid");
-                                                        startTransportAdminActivity(uid);
+                                                        String transport_name = task.getResult().getDocuments().get(0).getString("transport_name");
+                                                        startTransportAdminActivity(uid, transport_name);
                                                     }
                                                 }
                                             });
@@ -92,7 +93,8 @@ public class SplashScreen extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         String uid = task.getResult().getDocuments().get(0).getString("uid");
-                                                        startTransportUserActivity(uid);
+                                                        String transport_name = task.getResult().getDocuments().get(0).getString("transport_name");
+                                                        startTransportUserActivity(uid, transport_name);
                                                     }
                                                 }
                                             });
@@ -126,18 +128,20 @@ public class SplashScreen extends AppCompatActivity {
         finish();
     }
 
-    private void startTransportAdminActivity(String uid) {
+    private void startTransportAdminActivity(String uid, String transport_name) {
         Intent intent = new Intent(SplashScreen.this, TransportCompanyAdminActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("uid", uid);
+        intent.putExtra("transport_name", transport_name);
         startActivity(intent);
         finish();
     }
 
-    private void startTransportUserActivity(String uid) {
+    private void startTransportUserActivity(String uid, String transport_name) {
         Intent intent = new Intent(SplashScreen.this, TransportCompanyAdminActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("uid", uid);
+        intent.putExtra("transport_name", transport_name);
         startActivity(intent);
         finish();
     }
