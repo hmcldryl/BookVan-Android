@@ -113,7 +113,7 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
                     intent.putExtra("uid", getCompanyUid());
                     startActivity(intent);
                 }
-                if (item.getItemId() == R.id.nav_about) {
+                if (item.getItemId() == R.id.btnAbout) {
                     Intent intent = new Intent(TransportCompanyAdminActivity.this, AboutActivity.class);
                     startActivity(intent);
                 }
