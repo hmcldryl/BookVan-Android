@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,28 +27,59 @@ import com.opustech.bookvan.adapters.admin.AdapterBookingPendingAdminListRV;
 
 public class BookingsPendingAdminFragment extends Fragment {
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, bookingsReference;
+    private CollectionReference bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
     private AdapterBookingPendingAdminListRV adapterBookingPendingAdminListRV;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_bookings_pending, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
-        bookingsReference = firebaseFirestore.collection("users");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
-        //currentUserID = firebaseAuth.getCurrentUser().getUid();
+        populateUi(root);
+        updateUi();
 
+        return root;
+    }
+
+    private void updateUi() {
+        bookingsReference.whereEqualTo("status", "pending")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                bookingList.setVisibility(View.VISIBLE);
+                                bookingStatusNone.setVisibility(View.GONE);
+                            } else {
+                                bookingStatusNone.setVisibility(View.VISIBLE);
+                                bookingList.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                adapterBookingPendingAdminListRV.cancelBooking(viewHolder.getAdapterPosition());
+            }
+        }).attachToRecyclerView(bookingList);
+    }
+
+    private void populateUi(View root) {
         Query query = bookingsReference.whereEqualTo("status", "pending")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
@@ -67,24 +98,6 @@ public class BookingsPendingAdminFragment extends Fragment {
         bookingList.setLayoutManager(manager);
         bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingPendingAdminListRV);
-
-        bookingsReference.whereEqualTo("status", "pending")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (value != null) {
-                            int size = value.size();
-                            if (size > 0) {
-                                bookingList.setVisibility(View.VISIBLE);
-                                bookingStatusNone.setVisibility(View.GONE);
-                            } else {
-                                bookingStatusNone.setVisibility(View.VISIBLE);
-                                bookingList.setVisibility(View.GONE);
-                            }
-                        }
-                    }
-                });
-        return root;
     }
 
     @Override
