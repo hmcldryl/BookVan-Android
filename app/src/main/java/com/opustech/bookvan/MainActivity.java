@@ -26,7 +26,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.opustech.bookvan.ui.fragments.user.BookFragment;
-import com.opustech.bookvan.ui.fragments.user.ContactFragment;
 import com.opustech.bookvan.ui.fragments.user.HomeFragment;
 import com.opustech.bookvan.ui.fragments.user.booking.BookingFragment;
 import com.opustech.bookvan.ui.fragments.user.RentFragment;
@@ -58,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
-
-        String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -134,11 +131,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(ScheduleFragment.class);
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.nav_contact) {
-                    replaceFragment(ContactFragment.class);
-                    drawerLayout.close();
-                }
-                if (item.getItemId() == R.id.nav_about) {
+                if (item.getItemId() == R.id.btnAbout) {
                     Intent intent = new Intent(MainActivity.this, AboutActivity.class);
                     startActivity(intent);
                 }
