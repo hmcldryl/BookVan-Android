@@ -10,19 +10,18 @@
         <item
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_menu_dashboard"
-            android:title="@string/title_dashboard" />
+            android:title="@string/label_dashboard" />
+
         <item
             android:id="@+id/nav_partners"
             android:icon="@drawable/ic_input_transport"
-            android:title="@string/title_partners" />
+            android:title="@string/label_partners" />
+
         <item
-            android:id="@+id/nav_contact"
+            android:id="@+id/btnContact"
             android:icon="@drawable/ic_menu_contact"
-            android:title="@string/title_contact" />
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_menu_about"
-            android:title="@string/title_about" />
+            android:title="@string/label_contact" />
+
     </group>
 
     <group
@@ -30,9 +29,15 @@
         android:checkableBehavior="single">
 
         <item
+            android:id="@+id/btnAbout"
+            android:icon="@drawable/ic_menu_about"
+            android:title="@string/label_about" />
+
+        <item
             android:id="@+id/btnLogout"
             android:icon="@drawable/ic_menu_logout"
             android:title="Sign Out" />
+
     </group>
 
 </menu>
