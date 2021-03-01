@@ -1,6 +1,7 @@
 package com.opustech.bookvan.adapters.user;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -38,6 +39,8 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
+    private Context context;
+
     private static String OT_SALT = "TEST";
     private static String OT_KEY = "TEST";
 
@@ -48,8 +51,9 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
      * @param options
      */
 
-    public AdapterBookingConfirmedListRV(@NonNull FirestoreRecyclerOptions<Booking> options) {
+    public AdapterBookingConfirmedListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context) {
         super(options);
+        this.context = context;
     }
 
     @Override
@@ -82,7 +86,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(holder.itemView.getContext())
+                                Glide.with(context)
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }
@@ -97,20 +101,33 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
         holder.bookingLocationTo.setText(location_to);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingCountAdult.setText(String.valueOf(count_adult));
-        holder.bookingCountChild.setText(String.valueOf(count_child));
         holder.bookingTransportName.setText(transport_name);
         holder.bookingDriverName.setText(driver_name);
         holder.bookingPlateNumber.setText(plate_number);
+
+        if (count_adult >= 1) {
+            holder.bookingCountAdult.setText(String.valueOf(count_adult));
+        } else {
+            holder.bookingCountAdult.setVisibility(View.GONE);
+            holder.labelCountAdult.setVisibility(View.GONE);
+        }
+
+        if (count_child >= 1) {
+            holder.bookingCountChild.setText(String.valueOf(count_child));
+        } else {
+            holder.bookingCountChild.setVisibility(View.GONE);
+            holder.labelCountChild.setVisibility(View.GONE);
+        }
+
         holder.bookingPrice.setText(String.valueOf(price));
 
         holder.bookingCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 final AlertDialog alertDialog = builder.create();
                 if (!alertDialog.isShowing()) {
-                    final View dialogView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.dialog_booking_confirmed_item_layout, null);
+                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_booking_confirmed_item_layout, null);
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     alertDialog.setCancelable(true);
                     alertDialog.setView(dialogView);
@@ -120,8 +137,8 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                     String inputValue = encryptString(reference_number);
 
                     QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, 300);
-                    qrgEncoder.setColorBlack(holder.itemView.getContext().getResources().getColor(R.color.colorPrimary));
-                    qrgEncoder.setColorWhite(holder.itemView.getContext().getResources().getColor(R.color.white));
+                    qrgEncoder.setColorBlack(context.getResources().getColor(R.color.colorPrimary));
+                    qrgEncoder.setColorWhite(context.getResources().getColor(R.color.white));
                     Bitmap bitmap = qrgEncoder.getBitmap();
                     qrPlaceholder.setImageBitmap(bitmap);
 
@@ -134,8 +151,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
     private String encryptString(String data) {
         byte[] iv = new byte[16];
         Encryption encryption = Encryption.getDefault(OT_KEY, OT_SALT, iv);
-        String result = encryption.encryptOrNull(data);
-        return result;
+        return encryption.encryptOrNull(data);
     }
 
     @NonNull
@@ -159,17 +175,16 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                 bookingTransportName,
                 bookingDriverName,
                 bookingPlateNumber,
-                bookingPrice;
+                bookingPrice,
+                labelCountAdult,
+                labelCountChild;
         MaterialCardView bookingCard;
-        Button btnCancelBooking, btnConfirmBooking;
         CircleImageView customerPhoto;
 
         public BookingHolder(View view) {
             super(view);
             customerPhoto = view.findViewById(R.id.customerPhoto);
             bookingCard = view.findViewById(R.id.bookingCard);
-            btnCancelBooking = view.findViewById(R.id.btnCancelBooking);
-            btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
@@ -179,7 +194,9 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
+            labelCountAdult = view.findViewById(R.id.labelCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
+            labelCountChild = view.findViewById(R.id.labelCountChild);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
             bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
