@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/timePila"
+            android:layout_column="1"
+            android:layout_weight="2"
+            android:ellipsize="end"
+            android:fontFamily="@font/lato"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:text="time_pila"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/timeAlis"
+            android:layout_column="2"
+            android:layout_weight="2"
+            android:ellipsize="end"
+            android:fontFamily="@font/lato"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:text="time_alis"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/vanCompany"
+            android:layout_column="3"
+            android:layout_weight="6"
+            android:ellipsize="end"
+            android:fontFamily="@font/lato"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:text="company_name"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
+    </TableRow>
+
+</TableLayout>
