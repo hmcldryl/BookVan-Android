@@ -28,7 +28,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/lato_bold"
+                    android:maxLines="1"
                     android:text="Ref. No.:"
                     android:textColor="@color/textColor"
                     android:textSize="16sp" />
@@ -41,7 +43,7 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/lato_bold"
                     android:maxLines="1"
-                    android:text="reference_number"
+                    android:text=""
                     android:textColor="@color/textColor"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -75,8 +77,10 @@
                         android:id="@+id/bookingCustomerName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato_bold"
-                        android:text="customer_name"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
@@ -84,8 +88,10 @@
                         android:id="@+id/bookingCustomerEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="customer_email"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -112,7 +118,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="Contact Number:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
@@ -122,10 +130,11 @@
                         android:layout_height="6dp" />
 
                     <TextView
-
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="From:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
@@ -133,7 +142,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="To:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
@@ -145,7 +156,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="Date:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
@@ -153,7 +166,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="Time:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
@@ -165,7 +180,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="Adult:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
@@ -173,7 +190,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="Child:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
@@ -185,26 +204,32 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="Transport Name:"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textColor="@color/textColor" />
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="Driver Name:"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textColor="@color/textColor" />
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
+                        android:maxLines="1"
                         android:text="Plate No.:"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textColor="@color/textColor" />
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
 
                     <Space
                         android:layout_width="match_parent"
@@ -213,7 +238,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato_black"
+                        android:maxLines="1"
                         android:text="Total:"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -229,8 +256,10 @@
                         android:id="@+id/bookingContactNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="contact_number"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -242,8 +271,10 @@
                         android:id="@+id/bookingLocationFrom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="location_from"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -251,8 +282,10 @@
                         android:id="@+id/bookingLocationTo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="location_to"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -264,8 +297,10 @@
                         android:id="@+id/bookingScheduleDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="schedule_date"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -273,8 +308,10 @@
                         android:id="@+id/bookingScheduleTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="schedule_time"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -286,8 +323,10 @@
                         android:id="@+id/bookingCountAdult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="adult_count"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -295,8 +334,10 @@
                         android:id="@+id/bookingCountChild"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="child_count"
+                        android:maxLines="1"
+                        android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -308,28 +349,34 @@
                         android:id="@+id/bookingTransportName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="transport_name"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textColor="@color/textColor" />
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/bookingDriverName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="driver_name"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textColor="@color/textColor" />
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/bookingPlateNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:text="plate_number"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        android:textColor="@color/textColor" />
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
 
                     <Space
                         android:layout_width="match_parent"
@@ -343,7 +390,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
                             android:fontFamily="@font/lato_bold"
+                            android:maxLines="1"
                             android:text="@string/peso_sign"
                             android:textColor="@color/textColor"
                             android:textSize="16sp" />
@@ -352,18 +401,16 @@
                             android:id="@+id/price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
                             android:fontFamily="@font/lato_bold"
+                            android:maxLines="1"
                             android:text=""
                             android:textColor="@color/textColor"
                             android:textSize="16sp" />
                     </LinearLayout>
 
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>
