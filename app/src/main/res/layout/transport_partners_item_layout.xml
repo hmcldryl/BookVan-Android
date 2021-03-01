@@ -27,7 +27,8 @@
                     android:id="@+id/companyBanner"
                     android:layout_width="match_parent"
                     android:layout_height="125dp"
-                    android:background="#99121212" />
+                    android:background="#99121212"
+                    android:scaleType="centerCrop" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/companyPhoto"
@@ -51,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     android:maxLines="2"
-                    android:text="company_display_name"
+                    android:text=""
                     android:textAlignment="center"
                     android:textColor="@color/textColor"
                     android:textSize="16sp" />
@@ -61,7 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato"
-                    android:text="company_description"
+                    android:text=""
                     android:textAlignment="center"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
