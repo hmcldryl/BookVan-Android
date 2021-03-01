@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/background_toolbar"
-    android:gravity="bottom"
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingTop="50dp"
@@ -57,7 +56,6 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_marginEnd="4dp"
-            android:contentDescription="@string/nav_header_desc"
             android:src="@drawable/placeholder_header_user_dp" />
 
         <LinearLayout
