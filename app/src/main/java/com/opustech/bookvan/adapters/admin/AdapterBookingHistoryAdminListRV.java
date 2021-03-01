@@ -1,5 +1,6 @@
 package com.opustech.bookvan.adapters.admin;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
 
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
+    private Context context;
+
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -37,8 +40,9 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
      * @param options
      */
 
-    public AdapterBookingHistoryAdminListRV(@NonNull FirestoreRecyclerOptions<Booking> options) {
+    public AdapterBookingHistoryAdminListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context) {
         super(options);
+        this.context = context;
     }
 
     @Override
@@ -71,7 +75,7 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(holder.itemView.getContext())
+                                Glide.with(context)
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }
@@ -86,11 +90,24 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
         holder.bookingLocationTo.setText(location_to);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingCountAdult.setText(String.valueOf(count_adult));
-        holder.bookingCountChild.setText(String.valueOf(count_child));
         holder.bookingTransportName.setText(transport_name);
         holder.bookingDriverName.setText(driver_name);
         holder.bookingPlateNumber.setText(plate_number);
+
+        if (count_adult >= 1) {
+            holder.bookingCountAdult.setText(String.valueOf(count_adult));
+        } else {
+            holder.bookingCountAdult.setVisibility(View.GONE);
+            holder.labelCountAdult.setVisibility(View.GONE);
+        }
+
+        if (count_child >= 1) {
+            holder.bookingCountChild.setText(String.valueOf(count_child));
+        } else {
+            holder.bookingCountChild.setVisibility(View.GONE);
+            holder.labelCountChild.setVisibility(View.GONE);
+        }
+
         holder.bookingPrice.setText(String.valueOf(price));
     }
 
@@ -115,17 +132,16 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
                 bookingTransportName,
                 bookingDriverName,
                 bookingPlateNumber,
-                bookingPrice;
+                bookingPrice,
+                labelCountAdult,
+                labelCountChild;
         LinearLayout item;
-        Button btnCancelBooking, btnConfirmBooking;
         CircleImageView customerPhoto;
 
         public BookingHolder(View view) {
             super(view);
             item = view.findViewById(R.id.item);
             customerPhoto = view.findViewById(R.id.customerPhoto);
-            btnCancelBooking = view.findViewById(R.id.btnCancelBooking);
-            btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
@@ -135,7 +151,9 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
+            labelCountAdult = view.findViewById(R.id.labelCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
+            labelCountChild = view.findViewById(R.id.labelCountChild);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
             bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
