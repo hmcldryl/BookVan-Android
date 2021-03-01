@@ -11,32 +11,21 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.user.RentalsPagerAdapter;
+import com.opustech.bookvan.adapters.admin.RentalsPagerAdapter;
 
 public class RentalsFragment extends Fragment {
-
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
 
     private RentalsPagerAdapter rentalsPagerAdapter;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_rentals, container, false);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
 
         viewPager = root.findViewById(R.id.viewPager);
         tabLayout = root.findViewById(R.id.tabLayout);
