@@ -15,11 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -31,41 +27,24 @@ import com.opustech.bookvan.adapters.transport.AdapterBookingHistoryTransportLis
 
 public class BookingsHistoryTransportFragment extends Fragment {
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, partnersReference, bookingsReference;
+    private CollectionReference partnersReference, bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
     private AdapterBookingHistoryTransportListRV adapterBookingHistoryTransportListRV;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_bookings_history_transport, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
         bookingsReference = firebaseFirestore.collection("bookings");
         partnersReference = firebaseFirestore.collection("partners");
 
-        //currentUserID = firebaseAuth.getCurrentUser().getUid();
-
-        partnersReference.document(getCompanyUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String transport_name = task.getResult().getString("name");
-                            populateList(root, transport_name);
-                            updateUi(transport_name);
-                        }
-                    }
-                });
+        populateList(root, getTransportName());
+        updateUi(getTransportName());
 
         return root;
     }
@@ -95,7 +74,7 @@ public class BookingsHistoryTransportFragment extends Fragment {
         Query query = bookingsReference.whereEqualTo("transport_name", transport_name)
                 .whereEqualTo("status", "done")
                 .whereEqualTo("status", "cancelled")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
@@ -114,9 +93,9 @@ public class BookingsHistoryTransportFragment extends Fragment {
         bookingList.setAdapter(adapterBookingHistoryTransportListRV);
     }
 
-    private String getCompanyUid() {
+    private String getTransportName() {
         Intent intent = getActivity().getIntent();
-        return intent.getStringExtra("uid");
+        return intent.getStringExtra("transport_name");
     }
 
     @Override
