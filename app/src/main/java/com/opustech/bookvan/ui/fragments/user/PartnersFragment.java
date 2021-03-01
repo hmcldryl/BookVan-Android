@@ -44,7 +44,7 @@ public class PartnersFragment extends Fragment {
                 .setQuery(query, TransportCompany.class)
                 .build();
 
-        adapterTransportPartnerListRV = new AdapterTransportPartnerListRV(options);
+        adapterTransportPartnerListRV = new AdapterTransportPartnerListRV(options, getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
