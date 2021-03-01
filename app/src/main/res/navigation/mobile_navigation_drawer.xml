@@ -39,5 +39,5 @@
         android:id="@+id/nav_schedule"
         android:name="com.opustech.bookvan.ui.fragments.user.ScheduleFragment"
         android:label="@string/label_schedule"
-        tools:layout="@layout/fragment_schedule" />
+        tools:layout="@layout/fragment_schedule_user" />
 </navigation>
