@@ -27,9 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
+import com.opustech.bookvan.MainActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
-import com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
@@ -126,11 +126,11 @@ public class AdminActivity extends AppCompatActivity {
                     replaceFragment(PartnersFragment.class);
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.nav_contact) {
-                    replaceFragment(ContactAdminFragment.class);
-                    drawerLayout.close();
+                if (item.getItemId() == R.id.btnContact) {
+                    Intent intent = new Intent(AdminActivity.this, AboutActivity.class);
+                    startActivity(intent);
                 }
-                if (item.getItemId() == R.id.nav_about) {
+                if (item.getItemId() == R.id.btnAbout) {
                     Intent intent = new Intent(AdminActivity.this, AboutActivity.class);
                     startActivity(intent);
                 }
@@ -138,8 +138,8 @@ public class AdminActivity extends AppCompatActivity {
                     firebaseAuth.signOut();
                     Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    finish();
                     startActivity(intent);
+                    finish();
                 }
                 return false;
             }
@@ -204,8 +204,8 @@ public class AdminActivity extends AppCompatActivity {
         } else {
             Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            finish();
             startActivity(intent);
+            finish();
         }
     }
 }
