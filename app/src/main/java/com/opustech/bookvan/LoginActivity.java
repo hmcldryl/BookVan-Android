@@ -3,9 +3,12 @@ package com.opustech.bookvan;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,17 +23,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.ui.admin.AdminActivity;
 import com.opustech.bookvan.ui.transport.TransportCompanyAdminActivity;
 
+import org.imaginativeworld.whynotimagecarousel.CarouselItem;
+import org.imaginativeworld.whynotimagecarousel.ImageCarousel;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -40,11 +50,13 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
+    private DocumentReference systemReference;
     private GoogleSignInClient googleSignInClient;
 
-    private TextInputEditText inputEmail, inputPassword;
+    private TextInputLayout inputEmail, inputPassword;
     private MaterialButton btnLogin, btnLoginFacebook, btnLoginGoogle;
-    private TextView btnRegister;
+    private TextView btnRegister, btnForgotPassword;
+    private ImageCarousel imageCarousel;
 
     private int RC_SIGN_IN = 1;
 
@@ -58,14 +70,21 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        systemReference = firebaseFirestore.collection("system").document("data");
 
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
+
+        imageCarousel = findViewById(R.id.carousel);
+
+        btnForgotPassword = findViewById(R.id.btnForgotPassword);
 
         btnLogin = findViewById(R.id.btnLogin);
         btnLoginFacebook = findViewById(R.id.btnLoginFacebook);
         btnLoginGoogle = findViewById(R.id.btnLoginGoogle);
         btnRegister = findViewById(R.id.btnRegister);
+
+        updateUi();
 
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -104,20 +123,76 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
-                finish();
+            }
+        });
+
+        btnForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                final AlertDialog alertDialog = builder.create();
+                if (!alertDialog.isShowing()) {
+                    final LayoutInflater inflater = getLayoutInflater();
+                    final View dialogView = inflater.inflate(R.layout.dialog_forgot_password, null);
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    alertDialog.setCancelable(true);
+                    alertDialog.setView(dialogView);
+
+                    TextInputLayout inputEmail = dialogView.findViewById(R.id.inputEmail);
+                    MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+                    btnConfirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String email = inputEmail.getEditText().getText().toString();
+                            firebaseAuth.sendPasswordResetEmail(email)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                alertDialog.dismiss();
+                                                Toast.makeText(LoginActivity.this, "An email has been sent to " + email + " with details regarding your request to reset your password.", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                        }
+                    });
+                    alertDialog.show();
+                }
             }
         });
     }
 
+    private void updateUi() {
+        systemReference.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<String> photo_url = (List<String>) task.getResult().get("login_image_carousel_urls");
+                            if (photo_url != null) {
+                                List<CarouselItem> data = new ArrayList<>();
+                                for (int i = 0; i < photo_url.size(); i++) {
+                                    data.add(new CarouselItem(photo_url.get(i)));
+                                }
+                                imageCarousel.addData(data);
+                            }
+                            else {
+                                imageCarousel.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                });
+    }
+
     private void inputCheck() {
-        String email = inputEmail.getText().toString().trim();
-        String password = inputPassword.getText().toString().trim();
+        String email = inputEmail.getEditText().getText().toString().trim();
+        String password = inputPassword.getEditText().getText().toString().trim();
 
         if (email.isEmpty()) {
             enableInput();
             inputEmail.setError("Please enter a valid email address.");
-        }
-        if (password.isEmpty()) {
+        } else if (password.isEmpty()) {
             enableInput();
             inputPassword.setError("Please enter your password.");
         } else {
@@ -168,7 +243,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN && data != null) {
             final ACProgressFlower dialog = new ACProgressFlower.Builder(LoginActivity.this)
                     .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                     .themeColor(getResources().getColor(R.color.white))
@@ -184,35 +259,33 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    if (firebaseAuth.getCurrentUser() != null) {
-                                        usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            if (!task.getResult().exists()) {
-                                                                HashMap<String, Object> hashMap = new HashMap<>();
-                                                                hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
-                                                                hashMap.put("email", account.getEmail());
-                                                                hashMap.put("photo_url", account.getPhotoUrl());
-                                                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                        .set(hashMap)
-                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                if (task.isSuccessful()) {
-                                                                                    checkUserSession(dialog);
-                                                                                }
+                                    usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (!task.getResult().exists()) {
+                                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                                            hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
+                                                            hashMap.put("email", account.getEmail());
+                                                            hashMap.put("photo_url", account.getPhotoUrl());
+                                                            usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                    .set(hashMap)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()) {
+                                                                                checkUserSession(dialog);
                                                                             }
-                                                                        });
-                                                            } else {
-                                                                checkUserSession(dialog);
-                                                            }
+                                                                        }
+                                                                    });
+                                                        } else {
+                                                            checkUserSession(dialog);
                                                         }
                                                     }
-                                                });
-                                    }
+                                                }
+                                            });
                                 }
                             }
                         });
