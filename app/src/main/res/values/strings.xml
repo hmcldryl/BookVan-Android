@@ -1,10 +1,9 @@
 <resources>
-    <string name="app_name">BookVan</string>
+    <string name="app_name"><b>BookVan</b></string>
+    <string name="app_version">v1.2.29b</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">You are not signed in.</string>
-    <string name="nav_header_subtitle">Please sign in to use BookVan.</string>
-    <string name="nav_header_desc">Navigation header</string>
 
     <string name="peso_sign">₱</string>
 
@@ -20,56 +19,70 @@
     <string name="input_contact_number">Contact Number</string>
     <string name="input_password">Password</string>
     <string name="input_confirm_password">Confirm Password</string>
-    <string name="registerText">Sign Up to BookVan</string>
-    <string name="loginText">Sign In to BookVan</string>
-    <string name="redirLoginText"><u>Sign in here.</u></string>
-    <string name="redirRegisterText"><u>Sign up here.</u></string>
 
-    <string name="transport_login_text">BookVan for Partners</string>
+    <string name="button_label_register">Sign Up to BookVan</string>
+    <string name="button_label_login">Sign In to BookVan</string>
+    <string name="login_text"><u>Sign in here.</u></string>
+    <string name="register_text"><u>Sign up here.</u></string>
+    <string name="forgotPasswordText"><u>Forgot password?</u></string>
 
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_profile">Profile</string>
-    <string name="title_book">Book</string>
-    <string name="title_booking">Booking</string>
-    <string name="title_rent">Rent</string>
-    <string name="title_schedule">Schedule</string>
-    <string name="title_contact">Contact</string>
-    <string name="title_partners">Our Partners</string>
-    <string name="title_chat">Chat</string>
-    <string name="title_edit">Edit</string>
-    <string name="title_book_admin">Bookings</string>
-    <string name="title_rent_admin">Rentals</string>
-    <string name="title_schedule_admin">Schedule</string>
-    <string name="title_about">About</string>
+    <string name="label_home">Home</string>
+    <string name="label_dashboard">Dashboard</string>
+    <string name="label_profile">Profile</string>
+    <string name="label_book">Book</string>
+    <string name="label_booking">Booking</string>
+    <string name="label_rent">Rent</string>
+    <string name="label_schedule">Schedule</string>
+    <string name="label_contact">Contact</string>
+    <string name="label_partners">Our Partners</string>
+    <string name="label_about">About</string>
+    <string name="label_chat">Chat</string>
+    <string name="label_edit">Edit</string>
+    <string name="label_book_admin">Bookings</string>
+    <string name="label_rent_admin">Rentals</string>
+    <string name="label_scan_admin">Scan</string>
+    <string name="label_schedule_admin">Schedule</string>
 
     <string-array name="destinations">
-        <item>North - El Nido</item>
-        <item>North - Roxas</item>
-        <item>North - San Vicente</item>
-        <item>North - Taytay</item>
+        <item>Abongan (Taytay)</item>
+        <item>Aborlan</item>
+        <item>Abo-Abo (Narra)</item>
+        <item>Bacungan</item>
+        <item>Bataraza</item>
+        <item>Bato-Bato (Narra)</item>
+        <item>Brooke\'s Point</item>
+        <item>Bucana (PPS)</item>
+        <item>Dumaran</item>
+        <item>El Nido</item>
+        <item>Inagawan</item>
+        <item>Iraan (Quezon)</item>
+        <item>Isaub (Sofronio Española)</item>
+        <item>Iwahig</item>
+        <item>Labog (Sofronio Española)</item>
+        <item>Langogan</item>
+        <item>Luzviminda</item>
+        <item>Magara (Roxas)</item>
+        <item>Malatgao (Narra)</item>
+        <item>Manalo</item>
+        <item>Manlag (El Nido)</item>
+        <item>Narra</item>
+        <item>Panitian (Sofronio Española)</item>
+        <item>Plaridel (Aborlan)</item>
+        <item>Port Barton</item>
         <item>Puerto Princesa City</item>
-        <item>South - Aborlan</item>
-        <item>South - Bataraza</item>
-        <item>South - Brooke\'s Point</item>
-        <item>South - Buitemluyan</item>
-        <item>South - Narra</item>
-        <item>South - Quezon</item>
-        <item>South - Rio Tuba</item>
-        <item>South - Rizal</item>
-        <item>South - Sicud</item>
-        <item>South - Sofronio Española</item>
-    </string-array>
-
-    <string-array name="transport_companies">
-        <item>Lexxus Shuttle</item>
-        <item>Langgam Transport</item>
-        <item>Charing Transport</item>
-    </string-array>
-
-    <string-array name="account_type">
-        <item>Administrator</item>
-        <item>Staff</item>
+        <item>Punang (Sofronio Española)</item>
+        <item>Quezon</item>
+        <item>Rio Tuba</item>
+        <item>Rizal</item>
+        <item>Roxas</item>
+        <item>San Vicente</item>
+        <item>Sandoval</item>
+        <item>Sibaltan (El Nido)</item>
+        <item>Sicud</item>
+        <item>Tacras (Narra)</item>
+        <item>Tagbarungis</item>
+        <item>Tamlang (Brooke\'s Point)</item>
+        <item>Taytay</item>
     </string-array>
 
     <string name="default_web_citement_secret">HQ2vZK-JQK3hgE2x3ZJdNy6B</string>
