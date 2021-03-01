@@ -2,42 +2,36 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    android:id="@+id/mobile_navigation_drawer_admin"
+    app:startDestination="@+id/nav_dashboard">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_dashboard"
         android:name="com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment"
-        android:label="@string/title_home"
+        android:label="@string/label_dashboard"
         tools:layout="@layout/fragment_dashboard_admin" />
 
     <fragment
         android:id="@+id/nav_partners"
         android:name="com.opustech.bookvan.ui.fragments.user.PartnersFragment"
-        android:label="@string/title_partners"
+        android:label="@string/label_partners"
         tools:layout="@layout/fragment_partners" />
-
-    <fragment
-        android:id="@+id/nav_contact"
-        android:name="com.opustech.bookvan.ui.fragments.admin.ContactAdminFragment"
-        android:label="@string/title_contact"
-        tools:layout="@layout/fragment_contact_admin" />
 
     <fragment
         android:id="@+id/nav_bookings"
         android:name="com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment"
-        android:label="@string/title_book_admin"
+        android:label="@string/label_book_admin"
         tools:layout="@layout/fragment_bookings" />
 
     <fragment
         android:id="@+id/nav_rentals"
         android:name="com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment"
-        android:label="@string/title_rent_admin"
+        android:label="@string/label_rent_admin"
         tools:layout="@layout/fragment_rentals" />
 
     <fragment
         android:id="@+id/nav_schedule"
         android:name="com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment"
-        android:label="@string/title_schedule_admin"
+        android:label="@string/label_schedule_admin"
         tools:layout="@layout/fragment_schedule_admin" />
 </navigation>
