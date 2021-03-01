@@ -37,8 +37,9 @@ public class AdapterTransportPartnerListRV extends FirestoreRecyclerAdapter<Tran
      * @param options
      */
 
-    public AdapterTransportPartnerListRV(@NonNull FirestoreRecyclerOptions<TransportCompany> options) {
+    public AdapterTransportPartnerListRV(@NonNull FirestoreRecyclerOptions<TransportCompany> options, Context context) {
         super(options);
+        this.context = context;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class AdapterTransportPartnerListRV extends FirestoreRecyclerAdapter<Tran
 
         if (photo_url != null) {
             if (!photo_url.isEmpty()) {
-                Glide.with(holder.itemView.getContext())
+                Glide.with(context)
                         .load(photo_url)
                         .into(holder.companyPhoto);
             }
@@ -59,7 +60,7 @@ public class AdapterTransportPartnerListRV extends FirestoreRecyclerAdapter<Tran
 
         if (banner_url != null) {
             if (!banner_url.isEmpty()) {
-                Glide.with(holder.itemView.getContext())
+                Glide.with(context)
                         .load(banner_url)
                         .into(holder.companyBanner);
             }
