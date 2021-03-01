@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -49,13 +50,10 @@ public class RegisterActivity extends AppCompatActivity {
     private CollectionReference usersReference, conversationsReference;
     private DocumentReference systemReference;
 
-    private Button btnRegister;
-    private TextInputEditText inputFirstName, inputLastName, inputEmail, inputContactNumber, inputPassword, inputConfirmPassword;
+    private TextInputLayout inputFirstName, inputLastName, inputEmail, inputContactNumber, inputPassword, inputConfirmPassword;
+    private MaterialButton btnRegister;
     private TextView btnLogin;
 
-    private String currentUserID;
-
-    // BookVan ADMIN UID
     private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     @Override
@@ -118,15 +116,13 @@ public class RegisterActivity extends AppCompatActivity {
         inputConfirmPassword.setEnabled(false);
     }
 
-    // CHECK INPUTS & REGISTER NEW USER
     private void inputCheck() {
-        String name = inputFirstName.getText().toString() + " " + inputLastName.getText().toString();
-        String email = inputEmail.getText().toString().trim();
-        String contact_number = inputContactNumber.getText().toString().trim();
-        String password = inputPassword.getText().toString().trim();
-        String confirm_password = inputConfirmPassword.getText().toString().trim();
+        String name = inputFirstName.getEditText().getText().toString() + " " + inputLastName.getEditText().getText().toString();
+        String email = inputEmail.getEditText().getText().toString().trim();
+        String contact_number = inputContactNumber.getEditText().getText().toString().trim();
+        String password = inputPassword.getEditText().getText().toString().trim();
+        String confirm_password = inputConfirmPassword.getEditText().getText().toString().trim();
 
-        // CHECK INPUTS
         if (name.isEmpty()) {
             enableInput();
             inputFirstName.setError("Please enter your first name.");
@@ -170,27 +166,25 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             dialog.dismiss();
                             enableInput();
-                            Toast.makeText(RegisterActivity.this, "Sign up failed. Please check your internet connection and try again later.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, "Sign up failed. " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
     private void uploadInfo(ACProgressFlower dialog, String name, String email, String contact_number) {
-        currentUserID = firebaseAuth.getCurrentUser().getUid();
         // UPLOAD USER INFO TO SERVER
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("name", name);
         hashMap.put("email", email);
         hashMap.put("contact_number", contact_number);
-        usersReference.document(currentUserID)
+        usersReference.document(firebaseAuth.getCurrentUser().getUid())
                 .set(hashMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             if (firebaseAuth.getCurrentUser() != null) {
-                                // GET BookVan WELCOME MESSAGE
                                 sendWelcomeMessage(dialog);
                             }
                         }
@@ -219,7 +213,6 @@ public class RegisterActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
                                             if (task.isSuccessful()) {
-                                                // UPDATE UID AND TIMESTAMP OF USER CONVERSATION
                                                 HashMap<String, Object> hashMap = new HashMap<>();
                                                 hashMap.put("uid", firebaseAuth.getCurrentUser().getUid());
                                                 hashMap.put("timestamp", timestamp);
@@ -244,7 +237,6 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    // REDIRECT USER TO HOME ACTIVITY
     private void startMainActivity() {
         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
