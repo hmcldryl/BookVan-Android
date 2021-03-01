@@ -1,5 +1,6 @@
 package com.opustech.bookvan.ui.fragments.admin.rentals;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.transport.AdapterRentalsAdminListRV;
-import com.opustech.bookvan.adapters.user.AdapterBookingPendingListRV;
-import com.opustech.bookvan.model.Booking;
+import com.opustech.bookvan.adapters.admin.AdapterRentalsAdminListRV;
 import com.opustech.bookvan.model.Rental;
 
 public class RentalsListingFragment extends Fragment {
@@ -34,6 +33,8 @@ public class RentalsListingFragment extends Fragment {
 
     private TextView rentalsStatusNone;
     private RecyclerView rentalsList;
+
+    private Context context;
 
     private AdapterRentalsAdminListRV adapterRentalsAdminListRV;
 
@@ -51,9 +52,9 @@ public class RentalsListingFragment extends Fragment {
                 .setQuery(query, Rental.class)
                 .build();
 
-        adapterRentalsAdminListRV = new AdapterRentalsAdminListRV(options);
+        adapterRentalsAdminListRV = new AdapterRentalsAdminListRV(options, context);
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager manager = new LinearLayoutManager(context);
 
         rentalsStatusNone = root.findViewById(R.id.rentalsStatusNone);
         rentalsList = root.findViewById(R.id.rentalsList);
@@ -79,6 +80,12 @@ public class RentalsListingFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 
     @Override
