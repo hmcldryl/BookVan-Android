@@ -20,7 +20,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.ChatConversation;
-import com.opustech.bookvan.adapters.admin.AdapterMessageListRV;
+import com.opustech.bookvan.adapters.chat.AdapterMessageListRV;
 
 public class MessageAdminActivity extends AppCompatActivity {
 
