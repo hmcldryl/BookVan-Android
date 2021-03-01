@@ -4,16 +4,16 @@
     <item
         android:id="@+id/nav_bookings"
         android:icon="@drawable/ic_menu_book"
-        android:title="@string/title_book_admin" />
+        android:title="@string/label_book_admin" />
 
     <item
         android:id="@+id/nav_rentals"
         android:icon="@drawable/ic_menu_rent"
-        android:title="@string/title_rent_admin" />
+        android:title="@string/label_rent_admin" />
 
     <item
         android:id="@+id/nav_schedule"
         android:icon="@drawable/ic_menu_schedule"
-        android:title="@string/title_schedule_admin" />
+        android:title="@string/label_schedule_admin" />
 
 </menu>
