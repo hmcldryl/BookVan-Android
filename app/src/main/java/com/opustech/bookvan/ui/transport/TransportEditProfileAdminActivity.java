@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -30,11 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
-import com.opustech.bookvan.ChatActivity;
-import com.opustech.bookvan.MainActivity;
 import com.opustech.bookvan.R;
-import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,6 +56,7 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
     private ImageView companyBanner;
     private ImageButton btnAddTelephoneNumber, btnAddCellphoneNumber;
     private ChipGroup telephoneNumberCG, cellphoneNumberCG;
+    private FloatingActionButton btnSave;
 
     final static int PICK_COMPANY_PHOTO = 1;
     final static int PICK_COMPANY_BANNER = 2;
@@ -70,26 +67,30 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_transport_edit_profile_admin);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        partnersReference = firebaseFirestore.collection("users");
+        partnersReference = firebaseFirestore.collection("partners");
+
+        initializeUi();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        getSupportActionBar().setTitle("Edit Profile");
+        getSupportActionBar().setTitle("Edit Company Profile");
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.btnSave) {
-                    disableInput();
-                    inputCheck();
-                }
-                return false;
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
-        initializeUi();
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                disableInput();
+                inputCheck();
+            }
+        });
 
         companyPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +102,7 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
             }
         });
 
-        companyPhoto.setOnClickListener(new View.OnClickListener() {
+        companyBanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -119,7 +120,6 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
                     String tag = companyTelephoneNumber.getEditText().getText().toString();
                     chip.setChipBackgroundColorResource(R.color.colorPrimary);
                     chip.setCloseIconVisible(true);
-                    chip.setChecked(true);
                     chip.setText(tag);
                     chip.setOnCloseIconClickListener(new View.OnClickListener() {
                         @Override
@@ -132,12 +132,27 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
                 }
             }
         });
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu_profile_edit, menu);
-        return true;
+        btnAddCellphoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!companyCellphoneNumber.getEditText().getText().toString().isEmpty()) {
+                    final Chip chip = new Chip(TransportEditProfileAdminActivity.this);
+                    String tag = companyCellphoneNumber.getEditText().getText().toString();
+                    chip.setChipBackgroundColorResource(R.color.colorPrimary);
+                    chip.setCloseIconVisible(true);
+                    chip.setText(tag);
+                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            cellphoneNumberCG.removeView(chip);
+                        }
+                    });
+                    cellphoneNumberCG.addView(chip);
+                    companyCellphoneNumber.getEditText().getText().clear();
+                }
+            }
+        });
     }
 
     private ArrayList<String> telephoneNumbers() {
@@ -179,8 +194,7 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
         } else if (email.isEmpty()) {
             enableInput();
             companyEmail.setError("Please enter an email.");
-        }
-        else {
+        } else {
             updateInfo(name, description, address, email, website, telephone_number, cellphone_number);
         }
 
@@ -193,6 +207,28 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
                 .text("Uploading...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("name", name);
+        hashMap.put("description", description);
+        hashMap.put("address", address);
+        hashMap.put("email", email);
+        hashMap.put("website", website);
+        hashMap.put("telephone_number", telephone_number);
+        hashMap.put("cellphone_number", cellphone_number);
+
+        partnersReference.document(getIntent().getStringExtra("uid"))
+                .update(hashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(TransportEditProfileAdminActivity.this, "Company profile updated successfully.", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                            finish();
+                        }
+                    }
+                });
     }
 
     private void enableInput() {
@@ -220,6 +256,7 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
     }
 
     private void initializeUi() {
+        btnSave = findViewById(R.id.btnSave);
         companyPhoto = findViewById(R.id.companyPhoto);
         companyBanner = findViewById(R.id.companyBanner);
         companyName = findViewById(R.id.inputCompanyName);
@@ -272,56 +309,62 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
         if (banner_url != null) {
             if (!banner_url.isEmpty()) {
                 Glide.with(this)
-                        .load(photo_url)
+                        .load(banner_url)
                         .into(companyBanner);
             }
         }
 
-        if (website != null || !website.isEmpty()) {
+        if (companyName.getEditText().getText().toString().isEmpty()) {
+            companyName.getEditText().setText(name);
+        }
+        if (companyDescription.getEditText().getText().toString().isEmpty()) {
+            companyDescription.getEditText().setText(description);
+        }
+        if (companyAddress.getEditText().getText().toString().isEmpty()) {
+            companyAddress.getEditText().setText(address);
+        }
+        if (companyEmail.getEditText().getText().toString().isEmpty()) {
+            companyEmail.getEditText().setText(email);
+        }
+        if (companyWebsite.getEditText().getText().toString().isEmpty()) {
             companyWebsite.getEditText().setText(website);
         }
-        else {
-            companyWebsite.setVisibility(View.GONE);
-        }
 
-        companyName.getEditText().setText(name);
-        companyDescription.getEditText().setText(description);
-        companyAddress.getEditText().setText(address);
-        companyEmail.getEditText().setText(email);
-
-        if (telephone_number.size() > 0) {
-            for (int i = 0; i < telephone_number.size() - 1; i++) {
-                final Chip chip = new Chip(TransportEditProfileAdminActivity.this);
-                String tag = telephone_number.get(i);
-                chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                chip.setCloseIconVisible(true);
-                chip.setChecked(true);
-                chip.setText(tag);
-                chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        telephoneNumberCG.removeView(chip);
-                    }
-                });
-                telephoneNumberCG.addView(chip);
+        if (telephoneNumberCG.getChildCount() == 0) {
+            if (telephone_number.size() > 0) {
+                for (int i = 0; i < telephone_number.size(); i++) {
+                    final Chip chip = new Chip(TransportEditProfileAdminActivity.this);
+                    String tag = telephone_number.get(i);
+                    chip.setChipBackgroundColorResource(R.color.colorPrimary);
+                    chip.setCloseIconVisible(true);
+                    chip.setText(tag);
+                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            telephoneNumberCG.removeView(chip);
+                        }
+                    });
+                    telephoneNumberCG.addView(chip);
+                }
             }
         }
 
-        if (cellphone_number.size() > 0) {
-            for (int i = 0; i < cellphone_number.size() - 1; i++) {
-                final Chip chip = new Chip(TransportEditProfileAdminActivity.this);
-                String tag = cellphone_number.get(i);
-                chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                chip.setCloseIconVisible(true);
-                chip.setChecked(true);
-                chip.setText(tag);
-                chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        cellphoneNumberCG.removeView(chip);
-                    }
-                });
-                cellphoneNumberCG.addView(chip);
+        if (cellphoneNumberCG.getChildCount() == 0) {
+            if (cellphone_number.size() > 0) {
+                for (int i = 0; i < cellphone_number.size(); i++) {
+                    final Chip chip = new Chip(TransportEditProfileAdminActivity.this);
+                    String tag = cellphone_number.get(i);
+                    chip.setChipBackgroundColorResource(R.color.colorPrimary);
+                    chip.setCloseIconVisible(true);
+                    chip.setText(tag);
+                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            cellphoneNumberCG.removeView(chip);
+                        }
+                    });
+                    cellphoneNumberCG.addView(chip);
+                }
             }
         }
     }
@@ -331,34 +374,15 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_COMPANY_PHOTO && resultCode == RESULT_OK && data != null) {
             Uri imageUri = data.getData();
-            CropImage.activity(imageUri)
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1, 1)
-                    .start(TransportEditProfileAdminActivity.this);
+            uploadCompanyPhoto(imageUri);
         }
         if (requestCode == PICK_COMPANY_BANNER && resultCode == RESULT_OK && data != null) {
             Uri imageUri = data.getData();
-            CropImage.activity(imageUri)
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(16, 9)
-                    .start(TransportEditProfileAdminActivity.this);
-        }
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                if (requestCode == PICK_COMPANY_PHOTO) {
-                    uploadCompanyPhoto(result);
-                }
-                if (requestCode == PICK_COMPANY_BANNER) {
-                    uploadCompanyBanner(result);
-                }
-            } else {
-                Toast.makeText(TransportEditProfileAdminActivity.this, "Image cannot be cropped. Please try again.", Toast.LENGTH_SHORT).show();
-            }
+            uploadCompanyBanner(imageUri);
         }
     }
 
-    private void uploadCompanyPhoto(CropImage.ActivityResult result) {
+    private void uploadCompanyPhoto(Uri resultUri) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(TransportEditProfileAdminActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -366,7 +390,6 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         String imageFilename = "IMG_" + getIntent().getStringExtra("uid") + "_COMPANY_PHOTO" + ".jpg";
-        Uri resultUri = result.getUri();
         FirebaseStorage.getInstance().getReference().child("images")
                 .child(imageFilename)
                 .putFile(resultUri)
@@ -391,7 +414,7 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
                 });
     }
 
-    private void uploadCompanyBanner(CropImage.ActivityResult result) {
+    private void uploadCompanyBanner(Uri resultUri) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(TransportEditProfileAdminActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -399,7 +422,6 @@ public class TransportEditProfileAdminActivity extends AppCompatActivity {
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         String imageFilename = "IMG_" + getIntent().getStringExtra("uid") + "_COMPANY_BANNER" + ".jpg";
-        Uri resultUri = result.getUri();
         FirebaseStorage.getInstance().getReference().child("images")
                 .child(imageFilename)
                 .putFile(resultUri)
