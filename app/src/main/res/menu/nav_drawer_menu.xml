@@ -10,35 +10,33 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_home"
-            android:title="@string/title_home" />
+            android:title="@string/label_home" />
 
         <item
             android:id="@+id/btnProfile"
             android:icon="@drawable/ic_menu_profile"
-            android:title="@string/title_profile" />
+            android:title="@string/label_profile" />
 
         <item
             android:id="@+id/nav_booking"
             android:icon="@drawable/ic_menu_booking"
-            android:title="@string/title_booking" />
+            android:title="@string/label_booking" />
 
         <item
             android:id="@+id/nav_partners"
             android:icon="@drawable/ic_input_transport"
-            android:title="@string/title_partners" />
-        <item
-            android:id="@+id/nav_contact"
-            android:icon="@drawable/ic_menu_contact"
-            android:title="@string/title_contact" />
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/ic_menu_about"
-            android:title="@string/title_about" />
+            android:title="@string/label_partners" />
+
     </group>
 
     <group
         android:id="@+id/actionButtons"
         android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/btnAbout"
+            android:icon="@drawable/ic_menu_about"
+            android:title="@string/label_about" />
 
         <item
             android:id="@+id/btnLogout"
