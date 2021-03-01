@@ -19,12 +19,12 @@ public class BookingsTransportPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
+            default:
+                return new BookingsConfirmedTransportFragment();
             case 1:
                 return new BookingsPendingTransportFragment();
             case 2:
                 return new BookingsHistoryTransportFragment();
-            default:
-                return new BookingsConfirmedTransportFragment();
         }
     }
 
