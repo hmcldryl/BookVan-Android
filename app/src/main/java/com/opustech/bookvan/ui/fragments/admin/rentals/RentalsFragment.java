@@ -49,10 +49,10 @@ public class RentalsFragment extends Fragment {
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position) {
                     case 0:
-                        tab.setText("Rental Form");
+                        tab.setText("Van Listings");
                         break;
                     case 1:
-                        tab.setText("Van Listings");
+                        tab.setText("Rental Form");
                         break;
                 }
             }
