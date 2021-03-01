@@ -35,8 +35,6 @@ public class BookingHistoryFragment extends Fragment {
 
     private AdapterBookingHistoryListRV adapterHistoryBookingListRV;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_bookings_history, container, false);
@@ -48,25 +46,13 @@ public class BookingHistoryFragment extends Fragment {
 
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
-        Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "done")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+        populateList(root, currentUserId);
+        updateUi(currentUserId);
 
-        FirestoreRecyclerOptions<Booking> historyBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
-                .setQuery(confirmedBookingQuery, Booking.class)
-                .build();
+        return root;
+    }
 
-        adapterHistoryBookingListRV = new AdapterBookingHistoryListRV(historyBookingOptions);
-
-        LinearLayoutManager historyBookingListManager = new LinearLayoutManager(getActivity());
-
-        bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
-        bookingList = root.findViewById(R.id.bookingList);
-
-        bookingList.setHasFixedSize(true);
-        bookingList.setLayoutManager(historyBookingListManager);
-        bookingList.setAdapter(adapterHistoryBookingListRV);
-
+    private void updateUi(String currentUserId) {
         bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "done")
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
@@ -83,7 +69,40 @@ public class BookingHistoryFragment extends Fragment {
                         }
                     }
                 });
+    }
 
-        return root;
+    private void populateList(View root, String currentUserId) {
+        Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
+                .whereEqualTo("status", "done")
+                .whereEqualTo("status", "cancelled")
+                .orderBy("timestamp", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<Booking> historyBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
+                .setQuery(confirmedBookingQuery, Booking.class)
+                .build();
+
+        adapterHistoryBookingListRV = new AdapterBookingHistoryListRV(historyBookingOptions);
+
+        LinearLayoutManager historyBookingListManager = new LinearLayoutManager(getActivity());
+
+        bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
+        bookingList = root.findViewById(R.id.bookingList);
+
+        bookingList.setHasFixedSize(true);
+        bookingList.setLayoutManager(historyBookingListManager);
+        bookingList.setAdapter(adapterHistoryBookingListRV);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapterHistoryBookingListRV.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapterHistoryBookingListRV.stopListening();
     }
 }
