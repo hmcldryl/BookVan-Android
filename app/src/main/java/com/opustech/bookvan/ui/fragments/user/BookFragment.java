@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -58,10 +59,8 @@ public class BookFragment extends Fragment {
             addChildCount,
             subtractAdultCount,
             subtractChildCount;
-    private Button btnBook;
+    private ExtendedFloatingActionButton btnBook;
     private AutoCompleteTextView inputVanTransportACT, bookingLocationFromACT, bookingLocationToACT;
-
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -73,27 +72,7 @@ public class BookFragment extends Fragment {
         bookingsReference = firebaseFirestore.collection("bookings");
         partnersReference = firebaseFirestore.collection("partners");
 
-        String currentUserId = firebaseAuth.getCurrentUser().getUid();
-
-        bookingCustomerName = root.findViewById(R.id.bookingCustomerName);
-        bookingContactNumber = root.findViewById(R.id.bookingContactNumber);
-        bookingVanTransport = root.findViewById(R.id.inputVanTransport);
-        inputVanTransportACT = root.findViewById(R.id.inputVanTransportACT);
-        bookingLocationFrom = root.findViewById(R.id.bookingLocationFrom);
-        bookingLocationFromACT = root.findViewById(R.id.bookingLocationFromACT);
-        bookingLocationTo = root.findViewById(R.id.bookingLocationTo);
-        bookingLocationToACT = root.findViewById(R.id.bookingLocationToACT);
-        bookingScheduleDate = root.findViewById(R.id.bookingScheduleDate);
-        bookingScheduleTime = root.findViewById(R.id.bookingScheduleTime);
-        bookingCountAdult = root.findViewById(R.id.bookingCountAdult);
-        bookingCountChild = root.findViewById(R.id.bookingCountChild);
-
-        addAdultCount = root.findViewById(R.id.btnCountAdultAdd);
-        subtractAdultCount = root.findViewById(R.id.btnCountAdultSubtract);
-        addChildCount = root.findViewById(R.id.btnCountChildAdd);
-        subtractChildCount = root.findViewById(R.id.btnCountChildSubtract);
-
-        btnBook = root.findViewById(R.id.btnConfirmBooking);
+        initializeUi(root);
 
         populateVanTransportList();
         populateLocationList();
@@ -151,11 +130,33 @@ public class BookFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 disableInput();
-                inputCheck(currentUserId);
+                inputCheck();
             }
         });
 
         return root;
+    }
+
+    private void initializeUi(View root) {
+        bookingCustomerName = root.findViewById(R.id.bookingCustomerName);
+        bookingContactNumber = root.findViewById(R.id.bookingContactNumber);
+        bookingVanTransport = root.findViewById(R.id.inputVanTransport);
+        inputVanTransportACT = root.findViewById(R.id.inputVanTransportACT);
+        bookingLocationFrom = root.findViewById(R.id.bookingLocationFrom);
+        bookingLocationFromACT = root.findViewById(R.id.bookingLocationFromACT);
+        bookingLocationTo = root.findViewById(R.id.bookingLocationTo);
+        bookingLocationToACT = root.findViewById(R.id.bookingLocationToACT);
+        bookingScheduleDate = root.findViewById(R.id.bookingScheduleDate);
+        bookingScheduleTime = root.findViewById(R.id.bookingScheduleTime);
+        bookingCountAdult = root.findViewById(R.id.bookingCountAdult);
+        bookingCountChild = root.findViewById(R.id.bookingCountChild);
+
+        addAdultCount = root.findViewById(R.id.btnCountAdultAdd);
+        subtractAdultCount = root.findViewById(R.id.btnCountAdultSubtract);
+        addChildCount = root.findViewById(R.id.btnCountChildAdd);
+        subtractChildCount = root.findViewById(R.id.btnCountChildSubtract);
+
+        btnBook = root.findViewById(R.id.btnBook);
     }
 
     private void generateRefNum(String uid, String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
@@ -166,9 +167,7 @@ public class BookFragment extends Fragment {
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
 
-        usersReference.document(admin_uid)
-                .collection("bookings")
-                .get()
+        bookingsReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -205,7 +204,7 @@ public class BookFragment extends Fragment {
         bookingCountChild.setEnabled(true);
     }
 
-    private void inputCheck(String uid) {
+    private void inputCheck() {
         String name = bookingCustomerName.getEditText().getText().toString();
         String contact_number = bookingContactNumber.getEditText().getText().toString();
         String transport_name = bookingVanTransport.getEditText().getText().toString();
@@ -241,7 +240,7 @@ public class BookFragment extends Fragment {
             enableInput();
             bookingCountAdult.getEditText().setError("Must have at least 1 adult passenger.");
         } else {
-            generateRefNum(uid, name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
+            generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
         }
     }
 
@@ -273,7 +272,7 @@ public class BookFragment extends Fragment {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
                             enableInput();
-                            Toast.makeText(getActivity(), "Booking success!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Success.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -346,8 +345,8 @@ public class BookFragment extends Fragment {
         ArrayList<String> locationArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.destinations)));
         ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<>(getActivity(), R.layout.support_simple_spinner_dropdown_item, locationArray);
         bookingLocationFromACT.setAdapter(locationArrayAdapter);
-        bookingLocationFromACT.setThreshold(1);
         bookingLocationToACT.setAdapter(locationArrayAdapter);
+        bookingLocationFromACT.setThreshold(1);
         bookingLocationToACT.setThreshold(1);
     }
 }
