@@ -25,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.model.ChatMessage;
-import com.opustech.bookvan.adapters.user.AdapterMessageChatRV;
+import com.opustech.bookvan.adapters.chat.AdapterMessageChatRV;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
