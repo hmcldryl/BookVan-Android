@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato"
                 android:maxLength="255"
-                android:text="chat_message"
+                android:text=""
                 android:textColor="@color/textColor"
                 android:textSize="16sp" />
 
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato"
                 android:maxLines="1"
-                android:text="chat_timestamp"
+                android:text=""
                 android:textColor="#99121212"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato"
                 android:maxLength="255"
-                android:text="chat_message"
+                android:text=""
                 android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
@@ -110,11 +110,10 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato"
                 android:maxLines="1"
-                android:text="chat_timestamp"
+                android:text=""
                 android:textColor="#99FFFFFF"
                 android:textSize="14sp" />
         </LinearLayout>
 
     </RelativeLayout>
-
 </LinearLayout>
