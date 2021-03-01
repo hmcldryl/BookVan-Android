@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato_bold"
         android:textColor="#FFFFFF"
-        android:text="@string/nav_header_title"
+        android:text=""
         android:textSize="16sp" />
 
     <TextView
@@ -37,6 +37,6 @@
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
         android:fontFamily="@font/lato"
-        android:text="@string/nav_header_subtitle"
+        android:text=""
         android:textSize="14sp" />
 </LinearLayout>
