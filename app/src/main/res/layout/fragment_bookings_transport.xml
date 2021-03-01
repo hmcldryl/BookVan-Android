@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_body"
     android:orientation="vertical"
-    tools:context=".ui.fragments.transport.bookings.BookingsFragment">
+    tools:context=".ui.fragments.transport.bookings.BookingsTransportFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
