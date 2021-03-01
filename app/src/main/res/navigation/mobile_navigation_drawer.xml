@@ -2,48 +2,42 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
+    android:id="@+id/mobile_navigation_drawer"
     app:startDestination="@+id/nav_home">
 
     <fragment
         android:id="@+id/nav_home"
         android:name="com.opustech.bookvan.ui.fragments.user.HomeFragment"
-        android:label="@string/title_home"
+        android:label="@string/label_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_booking"
         android:name="com.opustech.bookvan.ui.fragments.user.booking.BookingFragment"
-        android:label="@string/title_booking"
+        android:label="@string/label_booking"
         tools:layout="@layout/fragment_booking" />
 
     <fragment
         android:id="@+id/nav_partners"
         android:name="com.opustech.bookvan.ui.fragments.user.PartnersFragment"
-        android:label="@string/title_partners"
+        android:label="@string/label_partners"
         tools:layout="@layout/fragment_partners" />
-
-    <fragment
-        android:id="@+id/nav_contact"
-        android:name="com.opustech.bookvan.ui.fragments.user.ContactFragment"
-        android:label="@string/title_contact"
-        tools:layout="@layout/fragment_contact" />
 
     <fragment
         android:id="@+id/nav_book"
         android:name="com.opustech.bookvan.ui.fragments.user.BookFragment"
-        android:label="@string/title_book"
+        android:label="@string/label_book"
         tools:layout="@layout/fragment_book" />
 
     <fragment
         android:id="@+id/nav_rent"
         android:name="com.opustech.bookvan.ui.fragments.user.RentFragment"
-        android:label="@string/title_rent"
+        android:label="@string/label_rent"
         tools:layout="@layout/fragment_rent" />
 
     <fragment
         android:id="@+id/nav_schedule"
         android:name="com.opustech.bookvan.ui.fragments.user.ScheduleFragment"
-        android:label="@string/title_schedule"
+        android:label="@string/label_schedule"
         tools:layout="@layout/fragment_schedule" />
 </navigation>
