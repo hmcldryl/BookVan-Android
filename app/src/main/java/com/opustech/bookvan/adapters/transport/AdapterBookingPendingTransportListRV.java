@@ -45,8 +45,6 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     private String uid;
 
     private Context context;
@@ -121,6 +119,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
             holder.bookingCountAdult.setText(outputAdult);
         } else {
             holder.bookingCountAdult.setVisibility(View.GONE);
+            holder.labelCountAdult.setVisibility(View.GONE);
         }
 
         if (count_child > 1) {
@@ -131,6 +130,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
             holder.bookingCountChild.setText(outputChild);
         } else {
             holder.bookingCountChild.setVisibility(View.GONE);
+            holder.labelCountChild.setVisibility(View.GONE);
         }
 
         holder.item.setOnClickListener(new View.OnClickListener() {
@@ -151,31 +151,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                     String customerNameId = "for " + name + " (" + reference_number + ")";
                     bookingCustomerNameId.setText(customerNameId);
 
-                    MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
                     MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
-
-                    btnCancelBooking.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            alertDialog.dismiss();
-                            new MaterialAlertDialogBuilder(context)
-                                    .setTitle("Cancel this booking?")
-                                    .setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    })
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            cancelPendingBooking(position);
-                                            dialogInterface.dismiss();
-                                        }
-                                    })
-                                    .show();
-                        }
-                    });
 
                     btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -184,30 +160,26 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                             inputVanPlate.setEnabled(false);
                             inputPrice.setEnabled(false);
                             btnConfirmBooking.setEnabled(false);
-                            btnCancelBooking.setEnabled(false);
                             String driver_name = inputDriverName.getEditText().getText().toString();
                             String plate_number = inputVanPlate.getEditText().getText().toString();
-                            String price = inputPrice.getEditText().getText().toString();
+                            float price = Float.parseFloat(inputPrice.getEditText().getText().toString());
                             if (driver_name.isEmpty()) {
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
                                 inputPrice.setEnabled(true);
                                 btnConfirmBooking.setEnabled(true);
-                                btnCancelBooking.setEnabled(true);
                                 inputDriverName.getEditText().setError("Please enter the name of the van driver.");
                             } else if (plate_number.isEmpty()) {
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
                                 inputPrice.setEnabled(true);
                                 btnConfirmBooking.setEnabled(true);
-                                btnCancelBooking.setEnabled(true);
                                 inputVanPlate.getEditText().setError("Please enter the van plate number.");
                             } else if (inputPrice.getEditText().toString().isEmpty()) {
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
                                 inputPrice.setEnabled(true);
                                 btnConfirmBooking.setEnabled(true);
-                                btnCancelBooking.setEnabled(true);
                                 inputPrice.getEditText().setError("Please enter price for this booking.");
                             } else {
                                 updateBookingInfo(alertDialog, driver_name, plate_number, price, position);
@@ -220,7 +192,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         });
     }
 
-    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, String price, int position) {
+    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, float price, int position) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("driver_name", driver_name);
         hashMap.put("plate_number", plate_number);
@@ -233,31 +205,43 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     alertDialog.dismiss();
-                    Toast.makeText(context, "Successfully confirmed this booking.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    public void cancelPendingBooking(int position) {
-        final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
-                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(context.getResources().getColor(R.color.white))
-                .text("Processing...")
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
-        getSnapshots().getSnapshot(position)
-                .getReference()
-                .delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+    public void cancelBooking(int position) {
+        new MaterialAlertDialogBuilder(context)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            dialog.dismiss();
-                            Toast.makeText(context, "Successfully cancelled this booking.", Toast.LENGTH_SHORT).show();
-                        }
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
+                                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                .themeColor(context.getResources().getColor(R.color.white))
+                                .text("Processing...")
+                                .fadeColor(Color.DKGRAY).build();
+                        dialog.show();
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("status", "cancelled");
+                        getSnapshots().getSnapshot(position)
+                                .getReference()
+                                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    dialogInterface.dismiss();
+                                    dialog.dismiss();
+                                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    dialogInterface.dismiss();
+                                    dialog.dismiss();
+                                    Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                     }
-                });
+                }).show();
     }
 
     @NonNull
@@ -278,17 +262,16 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                 bookingScheduleTime,
                 bookingCountAdult,
                 bookingCountChild,
-                bookingTransportName;
+                bookingTransportName,
+                labelCountAdult,
+                labelCountChild;
         LinearLayout item;
-        Button btnCancelBooking, btnConfirmBooking;
         CircleImageView customerPhoto;
 
         public BookingHolder(View view) {
             super(view);
             item = view.findViewById(R.id.item);
             customerPhoto = view.findViewById(R.id.customerPhoto);
-            btnCancelBooking = view.findViewById(R.id.btnCancelBooking);
-            btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
@@ -298,7 +281,9 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
+            labelCountAdult = view.findViewById(R.id.labelCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
+            labelCountChild = view.findViewById(R.id.labelCountChild);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
         }
     }
