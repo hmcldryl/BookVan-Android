@@ -17,8 +17,13 @@
         android:gravity="bottom">
 
         <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+            android:id="@+id/carousel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:autoPlay="true"
+            app:autoPlayDelay="6000"
+            app:carouselType="SHOWCASE"
+            app:showIndicator="false"
             app:showNavigationButtons="false" />
 
         <ImageView
@@ -47,6 +52,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputEmail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -57,18 +63,18 @@
                 app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:maxLines="1"
                     android:fontFamily="@font/lato"
                     android:inputType="textEmailAddress"
+                    android:maxLines="1"
                     android:textColor="@color/textColor"
                     android:textCursorDrawable="@null" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputPassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
@@ -81,7 +87,6 @@
                 app:startIconTint="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/inputPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -99,8 +104,24 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/lato"
-                android:text="@string/loginText"
+                android:text="@string/button_label_login"
                 app:icon="@drawable/ic_btn_login" />
+
+            <LinearLayout
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/btnForgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:fontFamily="@font/lato"
+                    android:text="@string/forgotPasswordText"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -161,29 +182,31 @@
             app:icon="@drawable/ic_input_google" />
 
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            android:gravity="center"
+            android:gravity="end"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
                 android:fontFamily="@font/lato"
                 android:text="Not a member?"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+                android:textSize="16sp" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:fontFamily="@font/lato"
-                android:text="@string/redirRegisterText"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+                android:text="@string/register_text"
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>
