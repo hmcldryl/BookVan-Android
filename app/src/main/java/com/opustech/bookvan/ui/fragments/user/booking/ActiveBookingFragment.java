@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.opustech.bookvan.adapters.user.AdapterBookingConfirmedListRV;
 import com.opustech.bookvan.adapters.user.AdapterBookingHistoryListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
@@ -34,13 +35,11 @@ public class ActiveBookingFragment extends Fragment {
     private TextView confirmedBookingStatusNone, pendingBookingStatusNone;
     private RecyclerView confirmedBookingList, pendingBookingList;
 
-    private AdapterBookingHistoryListRV adapterConfirmedBookingListRV;
+    private AdapterBookingConfirmedListRV adapterConfirmedBookingListRV;
     private AdapterBookingPendingListRV adapterBookingPendingListRV;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_active_booking, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -50,42 +49,13 @@ public class ActiveBookingFragment extends Fragment {
 
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
-        Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "confirmed")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+        populateList(root, currentUserId);
+        updateUi(currentUserId);
 
-        Query pendingBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "pending")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+        return root;
+    }
 
-        FirestoreRecyclerOptions<Booking> confirmedBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
-                .setQuery(confirmedBookingQuery, Booking.class)
-                .build();
-
-        FirestoreRecyclerOptions<Booking> pendingBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
-                .setQuery(pendingBookingQuery, Booking.class)
-                .build();
-
-        adapterConfirmedBookingListRV = new AdapterBookingHistoryListRV(confirmedBookingOptions);
-        adapterBookingPendingListRV = new AdapterBookingPendingListRV(pendingBookingOptions);
-
-        LinearLayoutManager confirmedBookingManager = new LinearLayoutManager(getActivity());
-        LinearLayoutManager pendingBookingManager = new LinearLayoutManager(getActivity());
-
-        confirmedBookingStatusNone = root.findViewById(R.id.confirmedBookingStatusNone);
-        pendingBookingStatusNone = root.findViewById(R.id.pendingBookingStatusNone);
-
-        confirmedBookingList = root.findViewById(R.id.confirmedBookingList);
-        pendingBookingList = root.findViewById(R.id.pendingBookingList);
-
-        confirmedBookingList.setHasFixedSize(true);
-        confirmedBookingList.setLayoutManager(confirmedBookingManager);
-        confirmedBookingList.setAdapter(adapterConfirmedBookingListRV);
-
-        pendingBookingList.setHasFixedSize(true);
-        pendingBookingList.setLayoutManager(pendingBookingManager);
-        pendingBookingList.setAdapter(adapterBookingPendingListRV);
-
+    private void updateUi(String currentUserId) {
         bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "confirmed")
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
@@ -121,7 +91,44 @@ public class ActiveBookingFragment extends Fragment {
                         }
                     }
                 });
-        return root;
+    }
+
+    private void populateList(View root, String currentUserId) {
+        Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
+                .whereEqualTo("status", "confirmed")
+                .orderBy("timestamp", Query.Direction.ASCENDING);
+
+        Query pendingBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
+                .whereEqualTo("status", "pending")
+                .orderBy("timestamp", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<Booking> confirmedBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
+                .setQuery(confirmedBookingQuery, Booking.class)
+                .build();
+
+        FirestoreRecyclerOptions<Booking> pendingBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
+                .setQuery(pendingBookingQuery, Booking.class)
+                .build();
+
+        adapterConfirmedBookingListRV = new AdapterBookingConfirmedListRV(confirmedBookingOptions, getActivity());
+        adapterBookingPendingListRV = new AdapterBookingPendingListRV(pendingBookingOptions, getActivity());
+
+        LinearLayoutManager confirmedBookingManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager pendingBookingManager = new LinearLayoutManager(getActivity());
+
+        confirmedBookingStatusNone = root.findViewById(R.id.confirmedBookingStatusNone);
+        pendingBookingStatusNone = root.findViewById(R.id.pendingBookingStatusNone);
+
+        confirmedBookingList = root.findViewById(R.id.confirmedBookingList);
+        pendingBookingList = root.findViewById(R.id.pendingBookingList);
+
+        confirmedBookingList.setHasFixedSize(true);
+        confirmedBookingList.setLayoutManager(confirmedBookingManager);
+        confirmedBookingList.setAdapter(adapterConfirmedBookingListRV);
+
+        pendingBookingList.setHasFixedSize(true);
+        pendingBookingList.setLayoutManager(pendingBookingManager);
+        pendingBookingList.setAdapter(adapterBookingPendingListRV);
     }
 
     @Override
