@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,48 +26,28 @@ import com.opustech.bookvan.model.Booking;
 
 public class BookingsHistoryAdminFragment extends Fragment {
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, bookingsReference;
+    private CollectionReference bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
     private AdapterBookingHistoryAdminListRV adapterBookingHistoryAdminListRV;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_bookings_history, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
         bookingsReference = firebaseFirestore.collection("bookings");
 
-        //currentUserID = firebaseAuth.getCurrentUser().getUid();
+        populateList(root);
+        updateUi();
 
-        Query query = bookingsReference.whereEqualTo("status", "done")
-                .whereEqualTo("status", "cancelled")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+        return root;
+    }
 
-        FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
-                .setQuery(query, Booking.class)
-                .build();
-
-        adapterBookingHistoryAdminListRV = new AdapterBookingHistoryAdminListRV(options);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
-
-        bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
-        bookingList = root.findViewById(R.id.bookingList);
-
-        bookingList.setHasFixedSize(true);
-        bookingList.setLayoutManager(manager);
-        bookingList.addItemDecoration(dividerItemDecoration);
-        bookingList.setAdapter(adapterBookingHistoryAdminListRV);
-
+    private void updateUi() {
         bookingsReference.whereEqualTo("status", "done")
                 .whereEqualTo("status", "cancelled")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -86,7 +65,28 @@ public class BookingsHistoryAdminFragment extends Fragment {
                         }
                     }
                 });
-        return root;
+    }
+
+    private void populateList(View root) {
+        Query query = bookingsReference.whereEqualTo("status", "done")
+                .whereEqualTo("status", "cancelled")
+                .orderBy("timestamp", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
+                .setQuery(query, Booking.class)
+                .build();
+
+        adapterBookingHistoryAdminListRV = new AdapterBookingHistoryAdminListRV(options, getActivity());
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
+
+        bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
+        bookingList = root.findViewById(R.id.bookingList);
+
+        bookingList.setHasFixedSize(true);
+        bookingList.setLayoutManager(manager);
+        bookingList.addItemDecoration(dividerItemDecoration);
+        bookingList.setAdapter(adapterBookingHistoryAdminListRV);
     }
 
     @Override
