@@ -3,18 +3,28 @@ package com.opustech.bookvan.model;
 import java.util.List;
 
 public class Rental {
-    String owner, van_description, timestamp, price;
+    String van_model, owner, van_description, timestamp;
+    float price;
     List<String> photo_url;
 
     public Rental() {
     }
 
-    public Rental(String owner, String van_description, String timestamp, List<String> photo_url, String price) {
+    public Rental(String van_model, String owner, String van_description, String timestamp, float price, List<String> photo_url) {
+        this.van_model = van_model;
         this.owner = owner;
         this.van_description = van_description;
         this.timestamp = timestamp;
-        this.photo_url = photo_url;
         this.price = price;
+        this.photo_url = photo_url;
+    }
+
+    public String getVan_model() {
+        return van_model;
+    }
+
+    public void setVan_model(String van_model) {
+        this.van_model = van_model;
     }
 
     public String getOwner() {
@@ -41,19 +51,19 @@ public class Rental {
         this.timestamp = timestamp;
     }
 
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public List<String> getPhoto_url() {
         return photo_url;
     }
 
     public void setPhoto_url(List<String> photo_url) {
         this.photo_url = photo_url;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 }
