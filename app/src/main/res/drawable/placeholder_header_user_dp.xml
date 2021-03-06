@@ -6,6 +6,6 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/ic_header_placeholder"
+        android:drawable="@drawable/ic_icon_image_round_placeholder"
         android:gravity="center" />
 </layer-list>

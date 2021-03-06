@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.opustech.bookvan.ui.fragments.admin.RentListFragment;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -27,11 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
-import com.opustech.bookvan.MainActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
 import com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment;
-import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
 import com.opustech.bookvan.ui.fragments.user.PartnersFragment;
 
@@ -104,7 +103,7 @@ public class AdminActivity extends AppCompatActivity {
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_rentals) {
-                    replaceFragment(RentalsFragment.class);
+                    replaceFragment(RentListFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_schedule) {
@@ -125,10 +124,6 @@ public class AdminActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.nav_partners) {
                     replaceFragment(PartnersFragment.class);
                     drawerLayout.close();
-                }
-                if (item.getItemId() == R.id.btnContact) {
-                    Intent intent = new Intent(AdminActivity.this, AboutActivity.class);
-                    startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnAbout) {
                     Intent intent = new Intent(AdminActivity.this, AboutActivity.class);

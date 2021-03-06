@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.opustech.bookvan">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -13,9 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme">
-        <activity android:name=".ScheduleActivity"></activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key" />
+
         <activity
-            android:name=".SplashScreen"
+            android:name="com.opustech.bookvan.SplashScreen"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,43 +29,46 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.opustech.bookvan.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.opustech.bookvan.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminActivity"
+            android:name="com.opustech.bookvan.ui.admin.AdminActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.opustech.bookvan.ui.user.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ProfileActivity"
+            android:name="com.opustech.bookvan.ui.user.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChatActivity"
+            android:name="com.opustech.bookvan.ui.user.ChatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.ChatAdminActivity"
+            android:name="com.opustech.bookvan.ui.user.ScheduleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.MessageAdminActivity"
+            android:name="com.opustech.bookvan.ui.admin.ChatAdminActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AboutActivity"
+            android:name="com.opustech.bookvan.ui.admin.MessageAdminActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportProfileActivity"
+            android:name="com.opustech.bookvan.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportProfileAdminActivity"
+            android:name="com.opustech.bookvan.ui.transport.TransportProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportEditProfileAdminActivity"
+            android:name="com.opustech.bookvan.ui.transport.TransportProfileAdminActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportCompanyAdminActivity"
+            android:name="com.opustech.bookvan.ui.transport.TransportEditProfileAdminActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.opustech.bookvan.ui.transport.TransportCompanyAdminActivity"
             android:screenOrientation="portrait" />
     </application>
 

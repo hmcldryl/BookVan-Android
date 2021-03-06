@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.opustech.bookvan.ui.user.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +24,7 @@ public class SplashScreen extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

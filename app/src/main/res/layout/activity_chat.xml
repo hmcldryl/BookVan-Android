@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_chat"
     android:fitsSystemWindows="true"
-    tools:context=".ChatActivity">
+    tools:context=".ui.user.ChatActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -32,10 +32,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:drawableTop="@drawable/ic_icon_status_no_chat"
+            android:drawableTop="@drawable/ic_icon_sad_chat_100"
             android:drawablePadding="16dp"
             android:fontFamily="@font/lato"
-            android:text="Enter your message below to start\nchatting with BookVan Tech Support."
+            android:text="@string/chat_status_text"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="16sp"

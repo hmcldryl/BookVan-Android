@@ -34,7 +34,7 @@ public class BookingFragment extends Fragment {
 
     private ProfilePagerAdapter profilePagerAdapter;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {

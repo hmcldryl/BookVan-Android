@@ -35,7 +35,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

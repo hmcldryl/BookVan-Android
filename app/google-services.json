@@ -7,18 +7,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:152068433081:android:ca442d22eafc6fa62be768",
+        "mobilesdk_app_id": "1:152068433081:android:431620df934af2542be768",
         "android_client_info": {
           "package_name": "com.opustech.bookvan"
         }
       },
       "oauth_client": [
         {
-          "client_id": "152068433081-untm2juk1ikl5p3pumr4g603705oel45.apps.googleusercontent.com",
+          "client_id": "152068433081-qmq01v7re88qlvno7gu1b3v11t80801q.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.opustech.bookvan",
-            "certificate_hash": "c9ca19236d8d4727fea1835731e7d855e3b90237"
+            "certificate_hash": "1d6bc3848cc6b64b3a581cb01c22bc45d705110c"
           }
         },
         {

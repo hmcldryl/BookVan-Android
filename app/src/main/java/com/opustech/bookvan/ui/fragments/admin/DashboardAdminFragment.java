@@ -10,12 +10,6 @@ import androidx.fragment.app.Fragment;
 
 import com.opustech.bookvan.R;
 
-import org.imaginativeworld.whynotimagecarousel.CarouselItem;
-import org.imaginativeworld.whynotimagecarousel.ImageCarousel;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class DashboardAdminFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,

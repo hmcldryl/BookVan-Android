@@ -1,4 +1,4 @@
-package com.opustech.bookvan;
+package com.opustech.bookvan.ui.user;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.opustech.bookvan.AboutActivity;
+import com.opustech.bookvan.LoginActivity;
+import com.opustech.bookvan.R;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;

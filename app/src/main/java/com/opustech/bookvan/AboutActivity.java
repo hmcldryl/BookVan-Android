@@ -1,35 +1,28 @@
 package com.opustech.bookvan;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.imaginativeworld.whynotimagecarousel.CarouselItem;
+public class AboutActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-import java.util.ArrayList;
-import java.util.List;
+    private GoogleMap googleMap;
 
-public class AboutActivity extends AppCompatActivity {
-
-    private FirebaseAuth firebaseAuth;
-    private FirebaseFirestore firebaseFirestore;
-    private DocumentReference systemReference;
-
-    private TextView textAppDescription;
+    private ImageView btnSocialFacebook, btnSocialTwitter, btnSocialInstagram, btnSocialYoutube;
     private Button btnLicenses;
 
     @Override
@@ -37,14 +30,15 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        systemReference = firebaseFirestore.collection("system").document("data");
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.officeMap);
+        mapFragment.getMapAsync(this);
 
-        textAppDescription = findViewById(R.id.app_description);
         btnLicenses = findViewById(R.id.btnLicenses);
-
-        updateUi();
+        btnSocialFacebook = findViewById(R.id.btnSocialFacebook);
+        btnSocialTwitter = findViewById(R.id.btnSocialTwitter);
+        btnSocialInstagram = findViewById(R.id.btnSocialInstagram);
+        btnSocialYoutube = findViewById(R.id.btnSocialYoutube);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -57,6 +51,34 @@ public class AboutActivity extends AppCompatActivity {
             }
         });
 
+        btnSocialFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToUrl("https://www.facebook.com/BookVan.ph");
+            }
+        });
+
+        btnSocialTwitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToUrl("https://twitter.com/BookvanOfficial");
+            }
+        });
+
+        btnSocialInstagram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToUrl("https://www.instagram.com/bookvan.ph/");
+            }
+        });
+
+        btnSocialYoutube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToUrl("https://www.youtube.com/channel/UCF4Q-yrY7Rqdopb37qd2ntQ?view_as=subscriber");
+            }
+        });
+
         btnLicenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,18 +87,19 @@ public class AboutActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUi() {
-        systemReference.get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String app_description = task.getResult().getString("app_description");
-                            if (app_description != null) {
-                                textAppDescription.setText(app_description);
-                            }
-                        }
-                    }
-                });
+    private void goToUrl(String url) {
+        Uri uri = Uri.parse(url);
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        LatLng office = new LatLng(9.777869272890038, 118.73571612331892);
+        googleMap.addMarker(new MarkerOptions()
+        .position(office)
+        .title("BookVan Office"));
+        googleMap.setMinZoomPreference(17.5f);
+        googleMap.setMaxZoomPreference(20.0f);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(office));
     }
 }

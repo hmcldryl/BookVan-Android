@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFormFragment;
-import com.opustech.bookvan.ui.fragments.admin.rentals.RentalsListingFragment;
 import com.opustech.bookvan.ui.fragments.user.ScheduleNorthFragment;
 import com.opustech.bookvan.ui.fragments.user.ScheduleSouthFragment;
 

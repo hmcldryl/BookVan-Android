@@ -107,6 +107,10 @@
                 android:text="@string/button_label_login"
                 app:icon="@drawable/ic_btn_login" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
+
             <LinearLayout
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
@@ -147,7 +151,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="2"
                 android:fontFamily="@font/lato_bold"
-                android:text="or"
+                android:text="@string/text_or"
                 android:textAlignment="center"
                 android:textColor="#99000000"
                 android:textSize="16sp" />
@@ -161,15 +165,15 @@
         </LinearLayout>
 
 
-        <com.google.android.material.button.MaterialButton
+<!--        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLoginFacebook"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/lato"
-            android:text="SIGN IN WITH FACEBOOK"
-            app:icon="@drawable/ic_input_facebook" />
+            android:text="@string/button_label_facebook"
+            app:icon="@drawable/ic_input_facebook" />-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLoginGoogle"
@@ -178,7 +182,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/lato"
-            android:text="SIGN IN WITH GOOGLE"
+            android:text="@string/button_label_google"
             app:icon="@drawable/ic_input_google" />
 
         <LinearLayout
@@ -193,7 +197,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato"
-                android:text="Not a member?"
+                android:text="@string/text_not_registered"
                 android:textSize="16sp" />
 
             <Space

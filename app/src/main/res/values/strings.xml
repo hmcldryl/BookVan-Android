@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name"><b>BookVan</b></string>
-    <string name="app_version">v1.2.30b</string>
+    <string name="app_version">v1.2.33b</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -42,6 +42,11 @@
     <string name="label_rent_admin">Rentals</string>
     <string name="label_scan_admin">Scan</string>
     <string name="label_schedule_admin">Schedule</string>
+
+    <string-array name="rent_type">
+        <item>Self-Drive</item>
+        <item>Rent Driver</item>
+    </string-array>
 
     <string-array name="destinations">
         <item>Abongan (Taytay)</item>
@@ -86,6 +91,18 @@
     </string-array>
 
     <string name="default_web_citement_secret">HQ2vZK-JQK3hgE2x3ZJdNy6B</string>
+    <string name="MAPS_API_KEY">AIzaSyAQ2kMrb11I1POkP6xrTgQkaRFoov8vvJ0</string>
+
+    <string name="about_app_name">BookVan Android</string>
+    <string name="about_developer_name">Developed by OPUS.tech</string>
+    <string name="about_developer_website">www.opustechph.com</string>
+    <string name="chat_status_text">Enter your message below to start\nchatting with BookVan Tech Support.</string>
+    <string name="chat_admin_status_text">Enter your message below to\nstart chatting with this user.</string>
+    <string name="text_or">or</string>
+    <string name="button_label_facebook">SIGN IN WITH FACEBOOK</string>
+    <string name="button_label_google">SIGN IN WITH GOOGLE</string>
+    <string name="text_not_registered">Not a member?</string>
+    <string name="chat_message_admin_status_text">No conversation found.</string>
     <!--    <string name="default_web_client_id">152068433081-untm2juk1ikl5p3pumr4g603705oel45.apps.googleusercontent.com</string>-->
 
 </resources>

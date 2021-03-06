@@ -9,12 +9,12 @@
 
         <item
             android:id="@+id/nav_dashboard"
-            android:icon="@drawable/ic_menu_dashboard"
+            android:icon="@drawable/ic_icon_dashboard"
             android:title="@string/label_dashboard" />
 
         <item
             android:id="@+id/btnProfile"
-            android:icon="@drawable/ic_menu_profile"
+            android:icon="@drawable/ic_icon_profile"
             android:title="@string/label_profile" />
 
     </group>
@@ -25,12 +25,12 @@
 
         <item
             android:id="@+id/btnAbout"
-            android:icon="@drawable/ic_menu_about"
+            android:icon="@drawable/ic_icon_about"
             android:title="@string/label_about" />
 
         <item
             android:id="@+id/btnLogout"
-            android:icon="@drawable/ic_menu_logout"
+            android:icon="@drawable/ic_btn_logout"
             android:title="Sign Out" />
 
     </group>

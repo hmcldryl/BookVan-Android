@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,10 +43,10 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private Context context;
+    private final Context context;
 
-    private static String OT_SALT = "TEST";
-    private static String OT_KEY = "TEST";
+    private static final String OT_SALT = "TEST";
+    private static final String OT_KEY = "TEST";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

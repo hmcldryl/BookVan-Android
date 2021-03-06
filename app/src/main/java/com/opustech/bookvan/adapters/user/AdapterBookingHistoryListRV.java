@@ -3,11 +3,9 @@ package com.opustech.bookvan.adapters.user;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,7 +27,7 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

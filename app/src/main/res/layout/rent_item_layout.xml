@@ -23,6 +23,7 @@
                 android:layout_width="175dp"
                 android:layout_height="175dp"
                 app:autoPlay="true"
+                app:autoPlayDelay="5000"
                 app:carouselType="SHOWCASE"
                 app:showCaption="false"
                 app:showNavigationButtons="false" />

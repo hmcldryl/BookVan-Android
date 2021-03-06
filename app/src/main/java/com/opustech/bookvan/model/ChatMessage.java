@@ -1,7 +1,5 @@
 package com.opustech.bookvan.model;
 
-import com.google.firebase.Timestamp;
-
 public class ChatMessage {
     String uid, message, timestamp;
 

@@ -46,7 +46,7 @@ public class ChatAdminActivity extends AppCompatActivity {
 
     private AdapterMessageChatAdminRV adapterMessageChatAdminRV;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package com.opustech.bookvan.ui.fragments.admin.rentals;
+package com.opustech.bookvan.ui.fragments.admin;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,9 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.admin.AdapterRentAdminListRV;
+import com.opustech.bookvan.model.Rent;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -21,11 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.admin.AdapterRentalsAdminListRV;
-import com.opustech.bookvan.model.Rental;
 
-public class RentalsListingFragment extends Fragment {
+public class RentListFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -36,11 +37,11 @@ public class RentalsListingFragment extends Fragment {
 
     private Context context;
 
-    private AdapterRentalsAdminListRV adapterRentalsAdminListRV;
+    private AdapterRentAdminListRV adapterRentAdminListRV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_rentals_listing, container, false);
+        View root = inflater.inflate(R.layout.fragment_rent_list, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -48,20 +49,22 @@ public class RentalsListingFragment extends Fragment {
 
         Query query = rentalsReference.orderBy("timestamp", Query.Direction.DESCENDING);
 
-        FirestoreRecyclerOptions<Rental> options = new FirestoreRecyclerOptions.Builder<Rental>()
-                .setQuery(query, Rental.class)
+        FirestoreRecyclerOptions<Rent> options = new FirestoreRecyclerOptions.Builder<Rent>()
+                .setQuery(query, Rent.class)
                 .build();
 
-        adapterRentalsAdminListRV = new AdapterRentalsAdminListRV(options, context);
+        adapterRentAdminListRV = new AdapterRentAdminListRV(options, context);
 
         LinearLayoutManager manager = new LinearLayoutManager(context);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         rentalsStatusNone = root.findViewById(R.id.rentalsStatusNone);
         rentalsList = root.findViewById(R.id.rentalsList);
 
         rentalsList.setHasFixedSize(true);
         rentalsList.setLayoutManager(manager);
-        rentalsList.setAdapter(adapterRentalsAdminListRV);
+        rentalsList.addItemDecoration(dividerItemDecoration);
+        rentalsList.setAdapter(adapterRentAdminListRV);
 
         rentalsReference.addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
             @Override
@@ -91,12 +94,12 @@ public class RentalsListingFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapterRentalsAdminListRV.startListening();
+        adapterRentAdminListRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterRentalsAdminListRV.stopListening();
+        adapterRentAdminListRV.stopListening();
     }
 }

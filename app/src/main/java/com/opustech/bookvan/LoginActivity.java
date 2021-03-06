@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.opustech.bookvan.ui.user.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -21,8 +22,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -58,9 +57,9 @@ public class LoginActivity extends AppCompatActivity {
     private TextView btnRegister, btnForgotPassword;
     private ImageCarousel imageCarousel;
 
-    private int RC_SIGN_IN = 1;
+    private final int RC_SIGN_IN = 1;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         btnForgotPassword = findViewById(R.id.btnForgotPassword);
 
         btnLogin = findViewById(R.id.btnLogin);
-        btnLoginFacebook = findViewById(R.id.btnLoginFacebook);
+        //btnLoginFacebook = findViewById(R.id.btnLoginFacebook);
         btnLoginGoogle = findViewById(R.id.btnLoginGoogle);
         btnRegister = findViewById(R.id.btnRegister);
 
@@ -102,12 +101,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
+/*        btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Snackbar.make(v, "This feature is not yet implemented.", Snackbar.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,8 +175,7 @@ public class LoginActivity extends AppCompatActivity {
                                     data.add(new CarouselItem(photo_url.get(i)));
                                 }
                                 imageCarousel.addData(data);
-                            }
-                            else {
+                            } else {
                                 imageCarousel.setVisibility(View.GONE);
                             }
                         }
@@ -204,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setEnabled(false);
         btnRegister.setEnabled(false);
         btnLoginGoogle.setEnabled(false);
-        btnLoginFacebook.setEnabled(false);
+        //btnLoginFacebook.setEnabled(false);
         inputEmail.setEnabled(false);
         inputPassword.setEnabled(false);
     }
@@ -213,7 +211,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setEnabled(true);
         btnRegister.setEnabled(true);
         btnLoginGoogle.setEnabled(true);
-        btnLoginFacebook.setEnabled(true);
+        //btnLoginFacebook.setEnabled(true);
         inputEmail.setEnabled(true);
         inputPassword.setEnabled(true);
     }
@@ -255,7 +253,7 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
                 firebaseAuth.signInWithCredential(credential)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
@@ -265,21 +263,25 @@ public class LoginActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
-                                                        if (!task.getResult().exists()) {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
-                                                            hashMap.put("email", account.getEmail());
-                                                            hashMap.put("photo_url", account.getPhotoUrl());
-                                                            usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                    .set(hashMap)
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isSuccessful()) {
-                                                                                checkUserSession(dialog);
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().exists()) {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
+                                                                hashMap.put("email", account.getEmail());
+                                                                hashMap.put("photo_url", account.getPhotoUrl());
+                                                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                        .set(hashMap)
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    checkUserSession(dialog);
+                                                                                }
                                                                             }
-                                                                        }
-                                                                    });
+                                                                        });
+                                                            } else {
+                                                                checkUserSession(dialog);
+                                                            }
                                                         } else {
                                                             checkUserSession(dialog);
                                                         }

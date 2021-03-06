@@ -19,16 +19,11 @@ import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.TransportCompany;
 import com.opustech.bookvan.ui.transport.TransportProfileActivity;
 
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterTransportPartnerListRV extends FirestoreRecyclerAdapter<TransportCompany, AdapterTransportPartnerListRV.TransportCompanyHolder> {
 
-    private Context context;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

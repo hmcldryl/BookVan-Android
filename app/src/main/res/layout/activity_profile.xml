@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_body"
     android:orientation="vertical"
-    tools:context=".ProfileActivity">
+    tools:context=".ui.user.ProfileActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -23,8 +23,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="#EEEEEE"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#EEEEEE">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,12 +64,12 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="8dp"
-                        android:layout_toRightOf="@+id/profilePhoto"
                         android:fontFamily="@font/lato_black"
                         android:text=""
                         android:textAlignment="center"
                         android:textColor="@color/textColor"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:layout_toEndOf="@+id/profilePhoto" />
 
                 </RelativeLayout>
 

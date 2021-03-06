@@ -33,7 +33,7 @@ public class AdapterMessageChatAdminRV extends FirestoreRecyclerAdapter<ChatMess
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

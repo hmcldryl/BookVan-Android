@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_rentals"
-        android:name="com.opustech.bookvan.ui.fragments.admin.rentals.RentalsFragment"
+        android:name="com.opustech.bookvan.ui.fragments.admin.RentListFragment"
         android:label="@string/label_rent_admin"
         tools:layout="@layout/fragment_rentals" />
 

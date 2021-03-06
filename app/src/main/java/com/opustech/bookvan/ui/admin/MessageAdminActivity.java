@@ -32,7 +32,7 @@ public class MessageAdminActivity extends AppCompatActivity {
 
     private AdapterMessageListRV adapterMessageListRV;
 
-    private String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
