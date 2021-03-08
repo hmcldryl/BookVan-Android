@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
@@ -51,6 +54,20 @@ public class MainActivity extends AppCompatActivity {
     private String name = "";
     private String email = "";
     private String photo_url = "";
+
+    private static final int TIME_INTERVAL = 2000;
+    private long backPressed;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+            super.onBackPressed();
+        }
+        else {
+            Toast.makeText(this, "Press back again to exit BookVan.", Toast.LENGTH_SHORT).show();
+        }
+        backPressed = System.currentTimeMillis();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
