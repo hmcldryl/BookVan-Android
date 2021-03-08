@@ -1,5 +1,6 @@
 package com.opustech.bookvan.ui.fragments.user;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
@@ -157,14 +158,27 @@ public class BookFragment extends Fragment {
         btnBook = root.findViewById(R.id.btnBook);
     }
 
-    private void generateRefNum(String uid, String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
+    private void getTransportCompanyUid(String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(getActivity())
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
                 .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
+        partnersReference.whereEqualTo("name", transport_name)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            generateRefNum(dialog, firebaseAuth.getCurrentUser().getUid(), name, contact_number, task.getResult().getDocuments().get(0).getString("uid"), location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
+                        }
+                    }
+                });
+    }
 
+    private void generateRefNum(ACProgressFlower dialog, String uid, String name, String contact_number, String transport_uid, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
         bookingsReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -172,7 +186,7 @@ public class BookFragment extends Fragment {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
                             String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
-                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
+                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_uid, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
                         }
                     }
                 });
@@ -238,7 +252,7 @@ public class BookFragment extends Fragment {
             enableInput();
             bookingCountAdult.getEditText().setError("Must have at least 1 adult passenger.");
         } else {
-            generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
+            getTransportCompanyUid(name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
         }
     }
 
@@ -247,13 +261,13 @@ public class BookFragment extends Fragment {
         return format.format(Calendar.getInstance().getTime());
     }
 
-    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
+    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_uid, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("reference_number", reference_number);
         hashMap.put("uid", uid);
         hashMap.put("name", name);
         hashMap.put("contact_number", contact_number);
-        hashMap.put("transport_name", transport_name);
+        hashMap.put("transport_uid", transport_uid);
         hashMap.put("location_from", location_from);
         hashMap.put("location_to", location_to);
         hashMap.put("schedule_date", schedule_date);
