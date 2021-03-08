@@ -47,18 +47,18 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:navGraph="@navigation/mobile_navigation_drawer_admin"
             android:layout_above="@id/bottom_nav_view"
             android:layout_below="@+id/toolbarContainer"
-            app:defaultNavHost="true" />
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/mobile_navigation_drawer_admin" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            app:elevation="8dp"
             android:background="?android:attr/windowBackground"
+            app:elevation="8dp"
             app:itemIconTint="@color/colorPrimary"
             app:itemTextAppearanceActive="@style/BottomNavBarTextAppearanceActive"
             app:itemTextAppearanceInactive="@style/BottomNavBarTextAppearanceInactive"
