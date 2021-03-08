@@ -7,7 +7,7 @@
         android:id="@+id/bookingCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground">
@@ -184,6 +184,7 @@
                             android:layout_height="6dp" />
 
                         <TextView
+                            android:id="@+id/labelCountAdult"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
@@ -194,6 +195,7 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/labelCountChild"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
