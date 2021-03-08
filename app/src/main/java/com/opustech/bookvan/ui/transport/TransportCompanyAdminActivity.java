@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -30,6 +31,7 @@ import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
 import com.opustech.bookvan.ui.fragments.transport.DashboardTransportAdminFragment;
 import com.opustech.bookvan.ui.fragments.transport.ScanBookingFragment;
+import com.opustech.bookvan.ui.fragments.transport.bookings.BookingsTransportFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,6 +46,20 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
     private TextView headerUserName, headerUserEmail, headerUserAccountType, companyName, companyAddress;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+
+    private static final int TIME_INTERVAL = 2000;
+    private long backPressed;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+            super.onBackPressed();
+        }
+        else {
+            Toast.makeText(this, "Press back again to exit BookVan.", Toast.LENGTH_SHORT).show();
+        }
+        backPressed = System.currentTimeMillis();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +102,7 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.nav_bookings) {
-                    replaceFragment(BookingsFragment.class);
+                    replaceFragment(BookingsTransportFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_scan) {
@@ -211,8 +227,8 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
         } else {
             Intent intent = new Intent(TransportCompanyAdminActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            finish();
             startActivity(intent);
+            finish();
         }
     }
 }
