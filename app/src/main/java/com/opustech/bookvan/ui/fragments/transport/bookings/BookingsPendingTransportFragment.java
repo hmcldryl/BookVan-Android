@@ -44,14 +44,14 @@ public class BookingsPendingTransportFragment extends Fragment {
         bookingsReference = firebaseFirestore.collection("bookings");
         partnersReference = firebaseFirestore.collection("partners");
 
-        populateList(root, getTransportName());
-        updateUi(getTransportName());
+        populateList(root, getTransportUid());
+        updateUi(getTransportUid());
 
         return root;
     }
 
-    private void updateUi(String transport_name) {
-        bookingsReference.whereEqualTo("transport_name", transport_name)
+    private void updateUi(String transport_uid) {
+        bookingsReference.whereEqualTo("transport_uid", transport_uid)
                 .whereEqualTo("status", "pending")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -82,8 +82,8 @@ public class BookingsPendingTransportFragment extends Fragment {
         }).attachToRecyclerView(bookingList);
     }
 
-    private void populateList(View root, String transport_name) {
-        Query query = bookingsReference.whereEqualTo("transport_name", transport_name)
+    private void populateList(View root, String transport_uid) {
+        Query query = bookingsReference.whereEqualTo("transport_uid", transport_uid)
                 .whereEqualTo("status", "pending")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
@@ -91,7 +91,7 @@ public class BookingsPendingTransportFragment extends Fragment {
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingPendingTransportListRV = new AdapterBookingPendingTransportListRV(options, getCompanyUid(), getActivity());
+        adapterBookingPendingTransportListRV = new AdapterBookingPendingTransportListRV(options, getTransportUid(), getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
@@ -104,14 +104,9 @@ public class BookingsPendingTransportFragment extends Fragment {
         bookingList.setAdapter(adapterBookingPendingTransportListRV);
     }
 
-    private String getCompanyUid() {
+    private String getTransportUid() {
         Intent intent = getActivity().getIntent();
         return intent.getStringExtra("uid");
-    }
-
-    private String getTransportName() {
-        Intent intent = getActivity().getIntent();
-        return intent.getStringExtra("transport_name");
     }
 
     @Override
