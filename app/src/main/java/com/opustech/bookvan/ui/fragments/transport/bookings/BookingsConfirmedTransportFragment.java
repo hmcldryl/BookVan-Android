@@ -44,14 +44,14 @@ public class BookingsConfirmedTransportFragment extends Fragment {
         bookingsReference = firebaseFirestore.collection("bookings");
         partnersReference = firebaseFirestore.collection("partners");
 
-        populateList(root, getTransportName());
-        updateUi(getTransportName());
+        populateList(root, getTransportUid());
+        updateUi(getTransportUid());
 
         return root;
     }
 
-    private void updateUi(String transport_name) {
-        bookingsReference.whereEqualTo("transport_name", transport_name)
+    private void updateUi(String transport_uid) {
+        bookingsReference.whereEqualTo("transport_uid", transport_uid)
                 .whereEqualTo("status", "confirmed")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -82,8 +82,8 @@ public class BookingsConfirmedTransportFragment extends Fragment {
         }).attachToRecyclerView(bookingList);
     }
 
-    private void populateList(View root, String transport_name) {
-        Query query = bookingsReference.whereEqualTo("transport_name", transport_name)
+    private void populateList(View root, String transport_uid) {
+        Query query = bookingsReference.whereEqualTo("transport_uid", transport_uid)
                 .whereEqualTo("status", "confirmed")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
@@ -104,9 +104,9 @@ public class BookingsConfirmedTransportFragment extends Fragment {
         bookingList.setAdapter(adapterBookingConfirmedTransportListRV);
     }
 
-    private String getTransportName() {
+    private String getTransportUid() {
         Intent intent = getActivity().getIntent();
-        return intent.getStringExtra("transport_name");
+        return intent.getStringExtra("uid");
     }
 
     @Override
