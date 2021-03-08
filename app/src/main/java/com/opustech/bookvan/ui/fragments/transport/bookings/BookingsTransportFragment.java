@@ -41,8 +41,6 @@ public class BookingsTransportFragment extends Fragment {
 
     private Context context;
 
-    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_bookings_transport, container, false);
@@ -94,100 +92,73 @@ public class BookingsTransportFragment extends Fragment {
     }
 
     private void updateConfirmedListTabBadge(TabLayout.Tab tab) {
-        partnersReference.document(getCompanyUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
+                .whereEqualTo("status", "confirmed")
+                .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            bookingsReference.whereEqualTo("transport_name", task.getResult().getString("name"))
-                                    .whereEqualTo("status", "confirmed")
-                                    .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            if (value != null) {
-                                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
-                                                badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
-                                                badgeDrawable.setMaxCharacterCount(2);
-                                                int size = value.size();
-                                                if (size > 0) {
-                                                    badgeDrawable.setNumber(size);
-                                                    badgeDrawable.setVisible(true);
-                                                }
-                                                else if (size == 0) {
-                                                    badgeDrawable.setVisible(false);
-                                                }
-                                            }
-                                        }
-                                    });
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(3);
+                            int size = value.size();
+                            if (size > 0) {
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            }
+                            else if (size == 0) {
+                                badgeDrawable.setVisible(false);
+                            }
                         }
                     }
                 });
     }
 
     private void updatePendingListTabBadge(TabLayout.Tab tab) {
-        partnersReference.document(getCompanyUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
+                .whereEqualTo("status", "pending")
+                .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            bookingsReference.whereEqualTo("transport_name", task.getResult().getString("name"))
-                                    .whereEqualTo("status", "pending")
-                                    .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            if (value != null) {
-                                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
-                                                badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
-                                                badgeDrawable.setMaxCharacterCount(2);
-                                                int size = value.size();
-                                                if (size > 0) {
-                                                    badgeDrawable.setNumber(size);
-                                                    badgeDrawable.setVisible(true);
-                                                }
-                                                else if (size == 0) {
-                                                    badgeDrawable.setVisible(false);
-                                                }
-                                            }
-                                        }
-                                    });
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(3);
+                            int size = value.size();
+                            if (size > 0) {
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            }
+                            else if (size == 0) {
+                                badgeDrawable.setVisible(false);
+                            }
                         }
                     }
                 });
     }
 
     private void updateHistoryListTabBadge(TabLayout.Tab tab) {
-        partnersReference.document(getCompanyUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
+                .whereEqualTo("status", "done")
+                .whereEqualTo("status", "cancelled")
+                .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            bookingsReference.whereEqualTo("transport_name", task.getResult().getString("name"))
-                                    .whereEqualTo("status", "done")
-                                    .whereEqualTo("status", "cancelled")
-                                    .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                            if (value != null) {
-                                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
-                                                badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
-                                                badgeDrawable.setMaxCharacterCount(2);
-                                                int size = value.size();
-                                                if (size > 0) {
-                                                    badgeDrawable.setNumber(size);
-                                                    badgeDrawable.setVisible(true);
-                                                }
-                                                else if (size == 0) {
-                                                    badgeDrawable.setVisible(false);
-                                                }
-                                            }
-                                        }
-                                    });
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(context, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(3);
+                            int size = value.size();
+                            if (size > 0) {
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            }
+                            else if (size == 0) {
+                                badgeDrawable.setVisible(false);
+                            }
                         }
                     }
                 });
