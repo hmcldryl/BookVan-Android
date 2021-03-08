@@ -187,12 +187,10 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // SEND WELCOME MESSAGE TO NEW USER
                             String message = task.getResult().getString("welcome_message");
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                            String timestamp = format.format(Calendar.getInstance().getTime());
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("uid", admin_uid);
                             hashMap.put("message", message);
-                            hashMap.put("timestamp", timestamp);
+                            hashMap.put("timestamp", generateTimestamp());
                             conversationsReference.document(firebaseAuth.getCurrentUser().getUid())
                                     .collection("chat")
                                     .add(hashMap)
@@ -202,7 +200,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             if (task.isSuccessful()) {
                                                 HashMap<String, Object> hashMap = new HashMap<>();
                                                 hashMap.put("uid", firebaseAuth.getCurrentUser().getUid());
-                                                hashMap.put("timestamp", timestamp);
+                                                hashMap.put("timestamp", generateTimestamp());
                                                 conversationsReference.document(firebaseAuth.getCurrentUser().getUid())
                                                         .set(hashMap)
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -222,6 +220,11 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private String generateTimestamp() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
     }
 
     private void startMainActivity() {
