@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.opustech.bookvan.ui.fragments.admin.RentListFragment;
 import com.bumptech.glide.Glide;
@@ -50,6 +51,20 @@ public class AdminActivity extends AppCompatActivity {
     private String name = "";
     private String email = "";
     private String photo_url = "";
+
+    private static final int TIME_INTERVAL = 2000;
+    private long backPressed;
+
+    @Override
+    public void onBackPressed() {
+        if (backPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+            super.onBackPressed();
+        }
+        else {
+            Toast.makeText(this, "Press back again to exit BookVan.", Toast.LENGTH_SHORT).show();
+        }
+        backPressed = System.currentTimeMillis();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
