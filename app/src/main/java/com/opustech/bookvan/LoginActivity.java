@@ -200,7 +200,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void disableInput() {
         btnLogin.setEnabled(false);
-        btnRegister.setEnabled(false);
         btnLoginGoogle.setEnabled(false);
         //btnLoginFacebook.setEnabled(false);
         inputEmail.setEnabled(false);
@@ -209,7 +208,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void enableInput() {
         btnLogin.setEnabled(true);
-        btnRegister.setEnabled(true);
         btnLoginGoogle.setEnabled(true);
         //btnLoginFacebook.setEnabled(true);
         inputEmail.setEnabled(true);
@@ -263,25 +261,21 @@ public class LoginActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
-                                                        if (task.getResult() != null) {
-                                                            if (!task.getResult().exists()) {
-                                                                HashMap<String, Object> hashMap = new HashMap<>();
-                                                                hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
-                                                                hashMap.put("email", account.getEmail());
-                                                                hashMap.put("photo_url", account.getPhotoUrl());
-                                                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                        .set(hashMap)
-                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                if (task.isSuccessful()) {
-                                                                                    checkUserSession(dialog);
-                                                                                }
+                                                        if (!task.getResult().exists()) {
+                                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                                            hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
+                                                            hashMap.put("email", account.getEmail());
+                                                            hashMap.put("photo_url", account.getPhotoUrl());
+                                                            usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                    .set(hashMap)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()) {
+                                                                                checkUserSession(dialog);
                                                                             }
-                                                                        });
-                                                            } else {
-                                                                checkUserSession(dialog);
-                                                            }
+                                                                        }
+                                                                    });
                                                         } else {
                                                             checkUserSession(dialog);
                                                         }
