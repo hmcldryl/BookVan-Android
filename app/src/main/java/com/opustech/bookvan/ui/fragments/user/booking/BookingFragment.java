@@ -84,7 +84,7 @@ public class BookingFragment extends Fragment {
                             if (size > 0) {
                                 BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                                 badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
+                                badgeDrawable.setMaxCharacterCount(3);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
                             }
@@ -104,7 +104,7 @@ public class BookingFragment extends Fragment {
                             if (size > 0) {
                                 BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                                 badgeDrawable.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
+                                badgeDrawable.setMaxCharacterCount(3);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
                             }
