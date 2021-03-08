@@ -36,8 +36,6 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     private final Context context;
 
     /**
