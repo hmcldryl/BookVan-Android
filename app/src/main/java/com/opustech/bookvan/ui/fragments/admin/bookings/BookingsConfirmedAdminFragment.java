@@ -83,7 +83,7 @@ public class BookingsConfirmedAdminFragment extends Fragment {
 
     private void populateList(View root) {
         Query query = bookingsReference.whereEqualTo("status", "confirmed")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
