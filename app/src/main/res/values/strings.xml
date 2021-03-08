@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name"><b>BookVan</b></string>
-    <string name="app_version">v1.2.33b</string>
+    <string name="app_version">v1.2.35b</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -24,7 +24,7 @@
     <string name="button_label_login">Sign In to BookVan</string>
     <string name="login_text"><u>Sign in here.</u></string>
     <string name="register_text"><u>Sign up here.</u></string>
-    <string name="forgotPasswordText"><u>Forgot password?</u></string>
+    <string name="forgotPasswordText"><u>Click here.</u></string>
 
     <string name="label_home">Home</string>
     <string name="label_dashboard">Dashboard</string>
