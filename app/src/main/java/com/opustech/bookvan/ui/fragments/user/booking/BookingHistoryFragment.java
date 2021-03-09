@@ -24,6 +24,8 @@ import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.adapters.user.AdapterBookingHistoryListRV;
 
+import java.util.Arrays;
+
 public class BookingHistoryFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
@@ -36,7 +38,7 @@ public class BookingHistoryFragment extends Fragment {
     private AdapterBookingHistoryListRV adapterHistoryBookingListRV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_bookings_history, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -54,7 +56,7 @@ public class BookingHistoryFragment extends Fragment {
 
     private void updateUi(String currentUserId) {
         bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "cancelled"))
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -73,9 +75,8 @@ public class BookingHistoryFragment extends Fragment {
 
     private void populateList(View root, String currentUserId) {
         Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "done")
-                .whereEqualTo("status", "cancelled")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> historyBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(confirmedBookingQuery, Booking.class)
