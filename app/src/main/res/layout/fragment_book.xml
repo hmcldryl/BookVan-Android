@@ -28,7 +28,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="12">
@@ -51,6 +50,10 @@
                         android:background="#1F000000" />
                 </LinearLayout>
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bookingCustomerName"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -71,10 +74,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bookingContactNumber"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -94,10 +93,6 @@
                         android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputVanTransport"
@@ -122,10 +117,6 @@
                         android:textCursorDrawable="@null" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bookingLocationFrom"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
@@ -146,10 +137,6 @@
                         android:textCursorDrawable="@null" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/bookingLocationTo"
@@ -172,10 +159,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -188,7 +171,6 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
                         android:layout_weight="5"
                         android:clickable="true"
                         android:focusable="true"
@@ -207,12 +189,15 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="match_parent" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/bookingScheduleTime"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
                         android:layout_weight="5"
                         android:clickable="true"
                         android:focusable="true"
@@ -240,7 +225,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:baselineAligned="false"
                     android:orientation="horizontal"
                     android:weightSum="10">
@@ -378,8 +362,13 @@
                                 android:background="@drawable/ic_input_add" />
 
                         </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
