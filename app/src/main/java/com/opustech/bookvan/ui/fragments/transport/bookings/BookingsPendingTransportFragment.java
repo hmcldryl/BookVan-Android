@@ -85,7 +85,7 @@ public class BookingsPendingTransportFragment extends Fragment {
     private void populateList(View root, String transport_uid) {
         Query query = bookingsReference.whereEqualTo("transport_uid", transport_uid)
                 .whereEqualTo("status", "pending")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
