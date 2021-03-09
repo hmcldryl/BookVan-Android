@@ -25,9 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingHistoryListRV.BookingHolder> {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
-
-    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private CollectionReference usersReference, partnersReference;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -44,6 +42,7 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        partnersReference = firebaseFirestore.collection("partners");
 
         String uid = model.getUid();
         String name = model.getName();
@@ -55,7 +54,7 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
-        String transport_name = model.getTransport_name();
+        String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
         String plate_number = model.getPlate_number();
         float price = model.getPrice();
@@ -78,6 +77,18 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
                     }
                 });
 
+        partnersReference.document(transport_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String transport_name = task.getResult().getString("transport_name");
+                            holder.bookingTransportName.setText(transport_name);
+                        }
+                    }
+                });
+
         holder.bookingCustomerName.setText(name);
         holder.bookingContactNumber.setText(contact_number);
         holder.bookingReferenceNumber.setText(reference_number);
@@ -85,7 +96,6 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingLocationTo.setText(location_to);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingTransportName.setText(transport_name);
         holder.bookingDriverName.setText(driver_name);
         holder.bookingPlateNumber.setText(plate_number);
 
