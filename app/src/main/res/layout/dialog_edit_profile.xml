@@ -40,7 +40,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp"/>
+                    android:layout_height="8dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -49,12 +49,24 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp"/>
+                    android:layout_height="8dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato"
+                        android:text="Enter your display name and contact number here to update your info."
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp" />
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="8dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/inputName"
@@ -109,10 +121,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
                 android:paddingStart="16dp"
-                android:paddingEnd="16sp">
+                android:paddingTop="8dp"
+                android:paddingEnd="16sp"
+                android:paddingBottom="8dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnConfirm"
