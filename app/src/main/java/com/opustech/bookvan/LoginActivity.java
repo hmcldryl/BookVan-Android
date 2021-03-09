@@ -261,24 +261,29 @@ public class LoginActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
-                                                        if (!task.getResult().exists()) {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
-                                                            hashMap.put("email", account.getEmail());
-                                                            hashMap.put("photo_url", account.getPhotoUrl());
-                                                            usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                    .set(hashMap)
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isSuccessful()) {
-                                                                                checkUserSession(dialog);
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().exists()) {
+                                                                HashMap<String, Object> hashMap = new HashMap<>();
+                                                                hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
+                                                                hashMap.put("email", account.getEmail());
+                                                                hashMap.put("photo_url", account.getPhotoUrl());
+                                                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                        .set(hashMap)
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    checkUserSession(dialog);
+                                                                                }
                                                                             }
-                                                                        }
-                                                                    });
+                                                                        });
+                                                            } else {
+                                                                checkUserSession(dialog);
+                                                            }
                                                         } else {
                                                             checkUserSession(dialog);
                                                         }
+
                                                     }
                                                 }
                                             });
@@ -288,7 +293,7 @@ public class LoginActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 dialog.dismiss();
                 enableInput();
-                Toast.makeText(this, "Google sign in failed. Please check your internet connection and try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Google sign in failed. Please check your internet connection and try again. " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
