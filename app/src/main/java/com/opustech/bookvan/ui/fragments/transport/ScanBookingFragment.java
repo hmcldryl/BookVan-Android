@@ -3,6 +3,7 @@ package com.opustech.bookvan.ui.fragments.transport;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -142,9 +143,9 @@ public class ScanBookingFragment extends Fragment {
                                                         String transport_name = task.getResult().getDocuments().get(0).getString("transport_name");
                                                         String driver_name = task.getResult().getDocuments().get(0).getString("driver_name");
                                                         String plate_number = task.getResult().getDocuments().get(0).getString("plate_number");
-                                                        String count_adult = task.getResult().getDocuments().get(0).getString("count_adult");
-                                                        String count_child = task.getResult().getDocuments().get(0).getString("count_child");
-                                                        String price = task.getResult().getDocuments().get(0).getString("price");
+                                                        int count_adult = task.getResult().getDocuments().get(0).getLong("count_adult").intValue();
+                                                        int count_child = task.getResult().getDocuments().get(0).getLong("count_child").intValue();
+                                                        float price = task.getResult().getDocuments().get(0).getLong("price").floatValue();
 
                                                         bookingCustomerName.setText(name);
                                                         bookingContactNumber.setText(contact_number);
@@ -205,8 +206,7 @@ public class ScanBookingFragment extends Fragment {
 
                                 alertDialog.show();
                             }
-                        }
-                        else {
+                        } else {
                             Toast.makeText(context, "Invalid QR code.", Toast.LENGTH_SHORT).show();
                         }
                     }
