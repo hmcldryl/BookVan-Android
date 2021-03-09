@@ -11,7 +11,7 @@ android {
         applicationId "com.opustech.bookvan"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 4
+        versionCode 5
         versionName "@string/app_version"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -48,11 +48,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     implementation platform('com.google.firebase:firebase-bom:26.4.0')
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
-    implementation 'com.google.firebase:firebase-firestore:22.1.0'
+    implementation 'com.google.firebase:firebase-firestore:22.1.1'
     implementation 'com.google.firebase:firebase-messaging:21.0.1'
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     implementation 'com.google.firebase:firebase-analytics'
-    implementation 'com.google.firebase:firebase-auth:20.0.2'
+    implementation 'com.google.firebase:firebase-auth:20.0.3'
     implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.github.ImaginativeShohag:Why-Not-Image-Carousel:v1.1.0'
