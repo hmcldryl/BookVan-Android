@@ -73,7 +73,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
-        String transport_name = model.getTransport_name();
+        String transport_uid = model.getTransport_uid();
 
         usersReference.document(customer_uid)
                 .get()
@@ -95,6 +95,18 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                     }
                 });
 
+        partnersReference.document(transport_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String transport_name = task.getResult().getString("transport_name");
+                            holder.bookingTransportName.setText(transport_name);
+                        }
+                    }
+                });
+
         holder.bookingCustomerName.setText(name);
         holder.bookingContactNumber.setText(contact_number);
         holder.bookingReferenceNumber.setText(reference_number);
@@ -104,7 +116,6 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         holder.bookingScheduleTime.setText(schedule_time);
         holder.bookingCountAdult.setText(String.valueOf(count_adult));
         holder.bookingCountChild.setText(String.valueOf(count_child));
-        holder.bookingTransportName.setText(transport_name);
 
         if (count_adult > 1) {
             String outputAdult = count_adult + " adults.";
