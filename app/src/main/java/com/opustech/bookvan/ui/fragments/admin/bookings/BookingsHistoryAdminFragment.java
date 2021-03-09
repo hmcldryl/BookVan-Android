@@ -24,6 +24,8 @@ import com.opustech.bookvan.adapters.admin.AdapterBookingHistoryAdminListRV;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import java.util.Arrays;
+
 public class BookingsHistoryAdminFragment extends Fragment {
 
     private FirebaseFirestore firebaseFirestore;
@@ -48,8 +50,7 @@ public class BookingsHistoryAdminFragment extends Fragment {
     }
 
     private void updateUi() {
-        bookingsReference.whereEqualTo("status", "done")
-                .whereEqualTo("status", "cancelled")
+        bookingsReference.whereIn("status", Arrays.asList("done", "cancelled"))
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -68,9 +69,8 @@ public class BookingsHistoryAdminFragment extends Fragment {
     }
 
     private void populateList(View root) {
-        Query query = bookingsReference.whereEqualTo("status", "done")
-                .whereEqualTo("status", "cancelled")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+        Query query = bookingsReference.whereIn("status", Arrays.asList("done", "cancelled"))
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
