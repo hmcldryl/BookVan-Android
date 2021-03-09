@@ -25,6 +25,8 @@ import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.adapters.transport.AdapterBookingHistoryTransportListRV;
 
+import java.util.Arrays;
+
 public class BookingsHistoryTransportFragment extends Fragment {
 
     private FirebaseFirestore firebaseFirestore;
@@ -51,8 +53,7 @@ public class BookingsHistoryTransportFragment extends Fragment {
 
     private void updateUi(String transport_uid) {
         bookingsReference.whereEqualTo("transport_uid", transport_uid)
-                .whereEqualTo("status", "done")
-                .whereEqualTo("status", "cancelled")
+                .whereIn("status", Arrays.asList("done", "cancelled"))
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -72,9 +73,8 @@ public class BookingsHistoryTransportFragment extends Fragment {
 
     private void populateList(View root, String transport_uid) {
         Query query = bookingsReference.whereEqualTo("transport_uid", transport_uid)
-                .whereEqualTo("status", "done")
-                .whereEqualTo("status", "cancelled")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
