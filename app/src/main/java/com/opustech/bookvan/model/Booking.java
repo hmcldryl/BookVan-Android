@@ -9,7 +9,7 @@ public class Booking {
             location_to,
             schedule_date,
             schedule_time,
-            transport_name,
+            transport_uid,
             driver_name,
             plate_number,
             status,
@@ -20,7 +20,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String transport_name, String driver_name, String plate_number, String status, String timestamp, int count_adult, int count_child, float price) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String transport_uid, String driver_name, String plate_number, String status, String timestamp, int count_adult, int count_child, float price) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
@@ -29,7 +29,7 @@ public class Booking {
         this.location_to = location_to;
         this.schedule_date = schedule_date;
         this.schedule_time = schedule_time;
-        this.transport_name = transport_name;
+        this.transport_uid = transport_uid;
         this.driver_name = driver_name;
         this.plate_number = plate_number;
         this.status = status;
@@ -103,12 +103,12 @@ public class Booking {
         this.schedule_time = schedule_time;
     }
 
-    public String getTransport_name() {
-        return transport_name;
+    public String getTransport_uid() {
+        return transport_uid;
     }
 
-    public void setTransport_name(String transport_name) {
-        this.transport_name = transport_name;
+    public void setTransport_uid(String transport_uid) {
+        this.transport_uid = transport_uid;
     }
 
     public String getDriver_name() {
