@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -95,11 +96,11 @@ public class ActiveBookingFragment extends Fragment {
     private void populateList(View root, String currentUserId) {
         Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "confirmed")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         Query pendingBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "pending")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+                .orderBy("timestamp", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Booking> confirmedBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(confirmedBookingQuery, Booking.class)
@@ -115,6 +116,9 @@ public class ActiveBookingFragment extends Fragment {
         LinearLayoutManager confirmedBookingManager = new LinearLayoutManager(getActivity());
         LinearLayoutManager pendingBookingManager = new LinearLayoutManager(getActivity());
 
+        //DividerItemDecoration confirmedBookingItemDecoration = new DividerItemDecoration(getActivity(), confirmedBookingManager.getOrientation());
+        DividerItemDecoration pendingBookingItemDecoration = new DividerItemDecoration(getActivity(), pendingBookingManager.getOrientation());
+
         confirmedBookingStatusNone = root.findViewById(R.id.confirmedBookingStatusNone);
         pendingBookingStatusNone = root.findViewById(R.id.pendingBookingStatusNone);
 
@@ -123,10 +127,12 @@ public class ActiveBookingFragment extends Fragment {
 
         confirmedBookingList.setHasFixedSize(true);
         confirmedBookingList.setLayoutManager(confirmedBookingManager);
+        //confirmedBookingList.addItemDecoration(confirmedBookingItemDecoration);
         confirmedBookingList.setAdapter(adapterConfirmedBookingListRV);
 
         pendingBookingList.setHasFixedSize(true);
         pendingBookingList.setLayoutManager(pendingBookingManager);
+        pendingBookingList.addItemDecoration(pendingBookingItemDecoration);
         pendingBookingList.setAdapter(adapterBookingPendingListRV);
     }
 
