@@ -33,7 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingPendingListRV.BookingHolder> {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, partnersReference;
 
     private final Context context;
 
@@ -53,6 +53,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        partnersReference = firebaseFirestore.collection("partners");
 
         String uid = model.getUid();
         String name = model.getName();
@@ -64,7 +65,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
-        String transport_name = model.getTransport_name();
+        String transport_uid = model.getTransport_uid();
 
         usersReference.document(uid)
                 .get()
@@ -84,6 +85,18 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                     }
                 });
 
+        partnersReference.document(transport_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String transport_name = task.getResult().getString("transport_name");
+                            holder.bookingTransportName.setText(transport_name);
+                        }
+                    }
+                });
+
         holder.bookingCustomerName.setText(name);
         holder.bookingContactNumber.setText(contact_number);
         holder.bookingReferenceNumber.setText(reference_number);
@@ -91,29 +104,24 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingLocationTo.setText(location_to);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingTransportName.setText(transport_name);
 
         if (count_adult > 1) {
             String outputAdult = count_adult + " adults.";
             holder.bookingCountAdult.setText(outputAdult);
-        }
-        else if (count_adult == 1) {
+        } else if (count_adult == 1) {
             String outputAdult = count_adult + " adult.";
             holder.bookingCountAdult.setText(outputAdult);
-        }
-        else {
+        } else {
             holder.bookingCountAdult.setVisibility(View.GONE);
         }
 
         if (count_child > 1) {
             String outputChild = count_child + " children.";
             holder.bookingCountChild.setText(outputChild);
-        }
-        else if (count_child == 1) {
+        } else if (count_child == 1) {
             String outputChild = count_child + " child.";
             holder.bookingCountChild.setText(outputChild);
-        }
-        else {
+        } else {
             holder.bookingCountChild.setVisibility(View.GONE);
         }
     }
