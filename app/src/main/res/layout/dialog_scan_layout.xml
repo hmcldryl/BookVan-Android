@@ -390,6 +390,20 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnNoId"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_black"
+                        android:text="NO ID"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/colorPrimary" />
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="match_parent"/>
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnConfirmBooking"
                         style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
