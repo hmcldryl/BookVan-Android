@@ -28,7 +28,6 @@ import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
-import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
 import com.opustech.bookvan.ui.fragments.transport.DashboardTransportAdminFragment;
 import com.opustech.bookvan.ui.fragments.transport.ScanBookingFragment;
 import com.opustech.bookvan.ui.fragments.transport.bookings.BookingsTransportFragment;
