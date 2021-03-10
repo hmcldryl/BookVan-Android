@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,24 +67,12 @@ public class BookingsPendingTransportFragment extends Fragment {
                         }
                     }
                 });
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                adapterBookingPendingTransportListRV.cancelBooking(viewHolder.getAdapterPosition());
-            }
-        }).attachToRecyclerView(bookingList);
     }
 
     private void populateList(View root, String transport_uid) {
         Query query = bookingsReference.whereEqualTo("transport_uid", transport_uid)
                 .whereEqualTo("status", "pending")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
@@ -93,6 +80,8 @@ public class BookingsPendingTransportFragment extends Fragment {
 
         adapterBookingPendingTransportListRV = new AdapterBookingPendingTransportListRV(options, getTransportUid(), getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
@@ -102,6 +91,13 @@ public class BookingsPendingTransportFragment extends Fragment {
         bookingList.setLayoutManager(manager);
         bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingPendingTransportListRV);
+
+        adapterBookingPendingTransportListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                bookingList.smoothScrollToPosition(adapterBookingPendingTransportListRV.getItemCount());
+            }
+        });
     }
 
     private String getTransportUid() {
