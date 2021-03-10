@@ -1,6 +1,5 @@
 package com.opustech.bookvan.ui.fragments.user;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
@@ -28,6 +27,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.ui.fragments.user.booking.BookingFragment;
+import com.opustech.bookvan.ui.user.MainActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -192,6 +193,16 @@ public class BookFragment extends Fragment {
                 });
     }
 
+    private void clearInput() {
+        bookingCustomerName.getEditText().getText().clear();
+        bookingContactNumber.getEditText().getText().clear();
+        bookingLocationTo.getEditText().getText().clear();
+        bookingScheduleDate.getEditText().getText().clear();
+        bookingScheduleTime.getEditText().getText().clear();
+        bookingCountAdult.getEditText().getText().clear();
+        bookingCountChild.getEditText().getText().clear();
+    }
+
     private void disableInput() {
         btnBook.setEnabled(false);
         bookingCustomerName.setEnabled(false);
@@ -284,7 +295,9 @@ public class BookFragment extends Fragment {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
                             enableInput();
+                            clearInput();
                             Toast.makeText(getActivity(), "Success.", Toast.LENGTH_SHORT).show();
+                            ((MainActivity) getActivity()).replaceFragment(BookingFragment.class);
                         }
                     }
                 });
