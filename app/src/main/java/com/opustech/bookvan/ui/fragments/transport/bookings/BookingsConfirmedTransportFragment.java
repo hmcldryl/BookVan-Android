@@ -93,6 +93,8 @@ public class BookingsConfirmedTransportFragment extends Fragment {
 
         adapterBookingConfirmedTransportListRV = new AdapterBookingConfirmedTransportListRV(options, getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
@@ -102,6 +104,13 @@ public class BookingsConfirmedTransportFragment extends Fragment {
         bookingList.setLayoutManager(manager);
         bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingConfirmedTransportListRV);
+
+        adapterBookingConfirmedTransportListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                bookingList.smoothScrollToPosition(adapterBookingConfirmedTransportListRV.getItemCount());
+            }
+        });
     }
 
     private String getTransportUid() {
