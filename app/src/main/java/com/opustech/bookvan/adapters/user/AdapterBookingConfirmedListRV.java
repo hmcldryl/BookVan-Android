@@ -36,8 +36,6 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     private final Context context;
 
     private static final String OT_SALT = "TEST";
@@ -57,6 +55,8 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
+        holder.itemNumber.setText(String.valueOf(position + 1));
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");
@@ -100,7 +100,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            String transport_name = task.getResult().getString("transport_name");
+                            String transport_name = task.getResult().getString("name");
                             holder.bookingTransportName.setText(transport_name);
                         }
                     }
@@ -188,12 +188,14 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                 bookingPlateNumber,
                 bookingPrice,
                 labelCountAdult,
-                labelCountChild;
+                labelCountChild,
+                itemNumber;
         MaterialCardView bookingCard;
         CircleImageView customerPhoto;
 
         public BookingHolder(View view) {
             super(view);
+            itemNumber = view.findViewById(R.id.itemNumber);
             customerPhoto = view.findViewById(R.id.customerPhoto);
             bookingCard = view.findViewById(R.id.bookingCard);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
