@@ -70,7 +70,7 @@ public class BookingsHistoryAdminFragment extends Fragment {
 
     private void populateList(View root) {
         Query query = bookingsReference.whereIn("status", Arrays.asList("done", "cancelled"))
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
@@ -78,6 +78,8 @@ public class BookingsHistoryAdminFragment extends Fragment {
 
         adapterBookingHistoryAdminListRV = new AdapterBookingHistoryAdminListRV(options, getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
@@ -87,6 +89,13 @@ public class BookingsHistoryAdminFragment extends Fragment {
         bookingList.setLayoutManager(manager);
         bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingHistoryAdminListRV);
+
+        adapterBookingHistoryAdminListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                bookingList.smoothScrollToPosition(adapterBookingHistoryAdminListRV.getItemCount());
+            }
+        });
     }
 
     @Override
