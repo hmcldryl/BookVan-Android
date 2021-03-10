@@ -76,7 +76,7 @@ public class BookingHistoryFragment extends Fragment {
     private void populateList(View root, String currentUserId) {
         Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereIn("status", Arrays.asList("done", "cancelled"))
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> historyBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(confirmedBookingQuery, Booking.class)
@@ -84,14 +84,23 @@ public class BookingHistoryFragment extends Fragment {
 
         adapterHistoryBookingListRV = new AdapterBookingHistoryListRV(historyBookingOptions);
 
-        LinearLayoutManager historyBookingListManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
 
         bookingList.setHasFixedSize(true);
-        bookingList.setLayoutManager(historyBookingListManager);
+        bookingList.setLayoutManager(manager);
         bookingList.setAdapter(adapterHistoryBookingListRV);
+
+        adapterHistoryBookingListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                bookingList.smoothScrollToPosition(adapterHistoryBookingListRV.getItemCount());
+            }
+        });
     }
 
 
