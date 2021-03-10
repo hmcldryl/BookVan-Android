@@ -96,11 +96,11 @@ public class ActiveBookingFragment extends Fragment {
     private void populateList(View root, String currentUserId) {
         Query confirmedBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "confirmed")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         Query pendingBookingQuery = bookingsReference.whereEqualTo("uid", currentUserId)
                 .whereEqualTo("status", "pending")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> confirmedBookingOptions = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(confirmedBookingQuery, Booking.class)
@@ -114,7 +114,11 @@ public class ActiveBookingFragment extends Fragment {
         adapterBookingPendingListRV = new AdapterBookingPendingListRV(pendingBookingOptions, getActivity());
 
         LinearLayoutManager confirmedBookingManager = new LinearLayoutManager(getActivity());
+        confirmedBookingManager.setReverseLayout(true);
+        confirmedBookingManager.setStackFromEnd(true);
         LinearLayoutManager pendingBookingManager = new LinearLayoutManager(getActivity());
+        pendingBookingManager.setReverseLayout(true);
+        pendingBookingManager.setStackFromEnd(true);
 
         //DividerItemDecoration confirmedBookingItemDecoration = new DividerItemDecoration(getActivity(), confirmedBookingManager.getOrientation());
         DividerItemDecoration pendingBookingItemDecoration = new DividerItemDecoration(getActivity(), pendingBookingManager.getOrientation());
@@ -134,6 +138,20 @@ public class ActiveBookingFragment extends Fragment {
         pendingBookingList.setLayoutManager(pendingBookingManager);
         pendingBookingList.addItemDecoration(pendingBookingItemDecoration);
         pendingBookingList.setAdapter(adapterBookingPendingListRV);
+
+        adapterConfirmedBookingListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                confirmedBookingList.smoothScrollToPosition(adapterConfirmedBookingListRV.getItemCount());
+            }
+        });
+
+        adapterBookingPendingListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                pendingBookingList.smoothScrollToPosition(adapterBookingPendingListRV.getItemCount());
+            }
+        });
     }
 
     @Override
