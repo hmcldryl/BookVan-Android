@@ -81,7 +81,7 @@ public class BookingsPendingAdminFragment extends Fragment {
 
     private void populateUi(View root) {
         Query query = bookingsReference.whereEqualTo("status", "pending")
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
@@ -89,6 +89,8 @@ public class BookingsPendingAdminFragment extends Fragment {
 
         adapterBookingPendingAdminListRV = new AdapterBookingPendingAdminListRV(options, getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
@@ -98,6 +100,13 @@ public class BookingsPendingAdminFragment extends Fragment {
         bookingList.setLayoutManager(manager);
         bookingList.addItemDecoration(dividerItemDecoration);
         bookingList.setAdapter(adapterBookingPendingAdminListRV);
+
+        adapterBookingPendingAdminListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                bookingList.smoothScrollToPosition(adapterBookingPendingAdminListRV.getItemCount());
+            }
+        });
     }
 
     @Override
