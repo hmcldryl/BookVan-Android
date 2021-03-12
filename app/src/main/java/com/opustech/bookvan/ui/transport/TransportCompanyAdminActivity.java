@@ -38,8 +38,7 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
-    private CollectionReference partnersReference;
+    private CollectionReference usersReference, partnersReference;
 
     private CircleImageView headerUserPhoto, companyPhoto;
     private TextView headerUserName, headerUserEmail, headerUserAccountType, companyName, companyAddress;
@@ -123,9 +122,13 @@ public class TransportCompanyAdminActivity extends AppCompatActivity {
                     replaceFragment(DashboardTransportAdminFragment.class);
                     drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.btnProfile) {
+                if (item.getItemId() == R.id.btnCompanyProfile) {
                     Intent intent = new Intent(TransportCompanyAdminActivity.this, TransportProfileAdminActivity.class);
                     intent.putExtra("uid", getCompanyUid());
+                    startActivity(intent);
+                }
+                if (item.getItemId() == R.id.btnProfile) {
+                    Intent intent = new Intent(TransportCompanyAdminActivity.this, TransportProfileAdminUserActivity.class);
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnAbout) {
