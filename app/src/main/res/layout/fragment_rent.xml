@@ -49,7 +49,7 @@
                             android:textColor="@color/textColor" />
 
                         <LinearLayout
-                            android:layout_width="75dp"
+                            android:layout_width="0dp"
                             android:layout_height="2dp"
                             android:layout_gravity="center"
                             android:layout_weight="10"
@@ -84,10 +84,6 @@
                                 android:textCursorDrawable="@null" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="8dp" />
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/inputName"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -111,6 +107,28 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/inputContactNumber"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:hint="@string/input_contact_number"
+                            app:hintEnabled="true"
+                            app:startIconDrawable="@drawable/ic_input_contact_num"
+                            app:startIconTint="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/lato"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textColor="@color/textColor"
+                                android:textCursorDrawable="@null" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
                         <Space
                             android:layout_width="match_parent"
                             android:layout_height="8dp" />
@@ -122,6 +140,91 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:hint="Pick-Up Location"
+                            app:hintEnabled="true"
+                            app:startIconDrawable="@drawable/ic_input_location"
+                            app:startIconTint="@color/colorPrimary">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/lato"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textColor="@color/textColor"
+                                android:textCursorDrawable="@null" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/inputPickUpDate"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="5"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:hint="Pick-Up Date"
+                                app:startIconDrawable="@drawable/ic_input_calendar"
+                                app:startIconTint="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:focusable="false"
+                                    android:inputType="date"
+                                    android:maxLines="1"
+                                    android:textCursorDrawable="@null" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <Space
+                                android:layout_width="8dp"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/inputPickUpTime"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="5"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:hint="Pick-Up Time"
+                                app:startIconDrawable="@drawable/ic_input_clock"
+                                app:startIconTint="@color/colorPrimary">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:focusable="false"
+                                    android:inputType="time"
+                                    android:maxLines="1"
+                                    android:textCursorDrawable="@null" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="8dp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/inputDestination"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:hint="Destination"
                             app:hintEnabled="true"
                             app:startIconDrawable="@drawable/ic_input_location"
                             app:startIconTint="@color/colorPrimary">
@@ -163,62 +266,6 @@
                                 android:textCursorDrawable="@null" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="8dp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/inputContactNumber"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:hint="@string/input_contact_number"
-                            app:hintEnabled="true"
-                            app:startIconDrawable="@drawable/ic_input_contact_num"
-                            app:startIconTint="@color/colorPrimary">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:fontFamily="@font/lato"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:textColor="@color/textColor"
-                                android:textCursorDrawable="@null" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="8dp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/inputDestination"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:hint="Destination"
-                            app:hintEnabled="true"
-                            app:startIconDrawable="@drawable/ic_input_location"
-                            app:startIconTint="@color/colorPrimary">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="end"
-                                android:fontFamily="@font/lato"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:textColor="@color/textColor"
-                                android:textCursorDrawable="@null" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="8dp" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -227,14 +274,14 @@
                             android:weightSum="10">
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/inputStartScheduleDate"
+                                android:id="@+id/inputDropOffDate"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:hint="Start Date"
+                                android:hint="Drop-Off Date"
                                 app:startIconDrawable="@drawable/ic_input_calendar"
                                 app:startIconTint="@color/colorPrimary">
 
@@ -250,19 +297,19 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <Space
-                                android:layout_width="16dp"
+                                android:layout_width="8dp"
                                 android:layout_height="match_parent" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/inputEndScheduleDate"
+                                android:id="@+id/inputDropOffTime"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="5"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:hint="End Date"
-                                app:startIconDrawable="@drawable/ic_input_calendar"
+                                android:hint="Drop-Off Time"
+                                app:startIconDrawable="@drawable/ic_input_clock"
                                 app:startIconTint="@color/colorPrimary">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -270,13 +317,14 @@
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
                                     android:focusable="false"
-                                    android:inputType="date"
+                                    android:inputType="time"
                                     android:maxLines="1"
                                     android:textCursorDrawable="@null" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
