@@ -29,6 +29,8 @@
     <string name="label_home">Home</string>
     <string name="label_dashboard">Dashboard</string>
     <string name="label_profile">Profile</string>
+    <string name="label_user_profile">User Profile</string>
+    <string name="label_company_profile">Company Profile</string>
     <string name="label_book">Book</string>
     <string name="label_booking">Booking</string>
     <string name="label_rent">Rent</string>
