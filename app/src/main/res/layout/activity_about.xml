@@ -513,38 +513,40 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:padding="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_icon_faq" />
+
+                <Space
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/lato_black"
+                    android:text="FAQs"
+                    android:textColor="#FFFFFF"
+                    android:textSize="26sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp"
                 android:orientation="vertical"
                 android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="horizontal">
-
-
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@drawable/ic_icon_faq" />
-
-                    <Space
-                        android:layout_width="16dp"
-                        android:layout_height="match_parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/lato_black"
-                        android:text="FAQs"
-                        android:textColor="#FFFFFF"
-                        android:textSize="26sp" />
-
-                </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
@@ -563,7 +565,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -576,7 +578,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="How can we book/reserve seat to you?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -598,7 +600,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -611,7 +613,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="We confirm booking by: Online (Facebook/messenger and mobile application), by phone (text or call), by website"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -633,7 +635,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -646,7 +648,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you have online payment?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -668,7 +670,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -681,7 +683,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="On next update"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -703,7 +705,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -716,7 +718,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you pick up in PPC?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -738,7 +740,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -751,7 +753,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes. We can pick up anywhere in the city like airports, hotels, restaurants, etc. This is part of our service"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -773,7 +775,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -786,7 +788,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Where are the vans located?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -808,7 +810,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -821,7 +823,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Puerto Princesa City Terminal"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -843,7 +845,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -856,7 +858,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you have a tour packages?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -878,7 +880,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -891,7 +893,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="None. We are a Technology Company and not a travel and tours agency. If you already have a travel agency in mind, let them know that you wish to book your ride with us and we shall coordinate with them."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -913,7 +915,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -926,7 +928,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="What is your fare price?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -948,7 +950,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -961,7 +963,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Same as the fare guidelines issued by the LTFRB Land Transportation Franchising and Regulatory Board (LTFRB)."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -983,7 +985,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -996,7 +998,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Can we rent a van through your company?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1018,7 +1020,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1031,7 +1033,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1053,7 +1055,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1066,7 +1068,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="What is unique with BookVan?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1088,7 +1090,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1101,7 +1103,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Offline booking on next update, price can be cheap, tracking of shuttle vans, Uber/grab like set-up with seats options."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1123,7 +1125,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1136,7 +1138,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you have the list of schedules of trips?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1158,7 +1160,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1171,7 +1173,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes, we do have schedule of trips. Just visit the mobile app/website and select departure date, point of interest and time. Should you wish to continue, the app/website will notify that you have successfully booked, unless otherwise cancelled or disregarded booking is invalid."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1193,7 +1195,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1206,7 +1208,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you have trips from North to PPC?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1228,7 +1230,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1241,7 +1243,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes, we provide our services in the whole island of Palawan"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1263,7 +1265,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1276,7 +1278,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you have trips from South to PPC?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1298,7 +1300,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1311,7 +1313,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes, we provide our services in the whole island of Palawan"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1333,7 +1335,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1346,7 +1348,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="I want to cancel my booking."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1368,7 +1370,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1381,7 +1383,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes of course, cancelled booking is free of charge."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1403,7 +1405,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1416,7 +1418,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="How to book?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1438,7 +1440,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1451,7 +1453,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Application link/website link/video link"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1473,7 +1475,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1486,7 +1488,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you accept multiple passengers in one booking?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1508,7 +1510,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1521,7 +1523,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes, a category listed in the application/website indicate how many persons wants to ride."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1543,7 +1545,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1556,7 +1558,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you deliver?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1578,7 +1580,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1591,7 +1593,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes we do delivery."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1613,7 +1615,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1626,7 +1628,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Can I become a private vehicle owner and use the application as a customer?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1648,7 +1650,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1661,7 +1663,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes, just visit our office for further assistance or you may call us, 0961-027-5583."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1683,7 +1685,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1696,7 +1698,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Can I become a private vehicle owner and use the application as a customer?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1718,7 +1720,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1731,7 +1733,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes, just visit our office for further assistance or you may call us, 0961-027-5583."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1753,7 +1755,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1766,7 +1768,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you accept PWD discount?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1788,7 +1790,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1801,7 +1803,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes, by just presenting your PWD ID and pay your fare to the Van Driver and a 20% PWD discounted rate is acceptable from the official government laws."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1823,7 +1825,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1836,7 +1838,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="I email forgot my password"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1858,7 +1860,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1871,7 +1873,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Please send us an email for verification regarding of your concern to revive your BookVan account. Personal details may be asked for verification. Your call may be monitored for quality assurance."
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -1893,7 +1895,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1906,7 +1908,7 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Do you have promos or discounts?"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic" />
 
@@ -1928,7 +1930,7 @@
                         android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="32sp" />
 
                     <Space
@@ -1941,24 +1943,12 @@
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
                         android:text="Yes, please visit our Facebook page/website/app to keep you updated"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/textColor"
                         android:textSize="16sp" />
 
                 </LinearLayout>
 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btnLicenses"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/lato"
-                android:text="VIEW LICENSES"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp" />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
