@@ -23,7 +23,6 @@ public class AboutActivity extends AppCompatActivity implements OnMapReadyCallba
     private GoogleMap googleMap;
 
     private ImageView btnSocialFacebook, btnSocialTwitter, btnSocialInstagram, btnSocialYoutube;
-    private Button btnLicenses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,6 @@ public class AboutActivity extends AppCompatActivity implements OnMapReadyCallba
                 .findFragmentById(R.id.officeMap);
         mapFragment.getMapAsync(this);
 
-        btnLicenses = findViewById(R.id.btnLicenses);
         btnSocialFacebook = findViewById(R.id.btnSocialFacebook);
         btnSocialTwitter = findViewById(R.id.btnSocialTwitter);
         btnSocialInstagram = findViewById(R.id.btnSocialInstagram);
@@ -76,13 +74,6 @@ public class AboutActivity extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onClick(View view) {
                 goToUrl("https://www.youtube.com/channel/UCF4Q-yrY7Rqdopb37qd2ntQ?view_as=subscriber");
-            }
-        });
-
-        btnLicenses.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AboutActivity.this, OssLicensesMenuActivity.class));
             }
         });
     }
