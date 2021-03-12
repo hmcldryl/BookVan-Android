@@ -13,9 +13,14 @@
             android:title="@string/label_dashboard" />
 
         <item
+            android:id="@+id/btnCompanyProfile"
+            android:icon="@drawable/ic_icon_company"
+            android:title="@string/label_company_profile" />
+
+        <item
             android:id="@+id/btnProfile"
             android:icon="@drawable/ic_icon_profile"
-            android:title="@string/label_profile" />
+            android:title="@string/label_user_profile" />
 
     </group>
 
