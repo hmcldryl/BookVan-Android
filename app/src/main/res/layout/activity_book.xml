@@ -158,7 +158,7 @@
                     app:startIconTint="@color/colorPrimary">
 
                     <AutoCompleteTextView
-                        android:id="@+id/bookingLocationFromACT"
+                        android:id="@+id/bookingRouteACT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none"
@@ -260,6 +260,7 @@
                             android:orientation="horizontal">
 
                             <ImageButton
+                                android:id="@+id/btnCountAdultSubtract"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -267,6 +268,7 @@
                                 android:background="@drawable/ic_input_minus" />
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bookingCountAdult"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                                 android:layout_width="50dp"
                                 android:layout_height="wrap_content"
@@ -284,6 +286,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
+                                android:id="@+id/btnCountAdultAdd"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -318,6 +321,7 @@
                             android:orientation="horizontal">
 
                             <ImageButton
+                                android:id="@+id/btnCountChildSubtract"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -325,6 +329,7 @@
                                 android:background="@drawable/ic_input_minus" />
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bookingCountChild"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                                 android:layout_width="50dp"
                                 android:layout_height="wrap_content"
@@ -342,6 +347,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
+                                android:id="@+id/btnCountChildAdd"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -376,6 +382,7 @@
                             android:orientation="horizontal">
 
                             <ImageButton
+                                android:id="@+id/btnCountSpecialSubtract"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -383,6 +390,7 @@
                                 android:background="@drawable/ic_input_minus" />
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/bookingCountSpecial"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                                 android:layout_width="50dp"
                                 android:layout_height="wrap_content"
@@ -400,6 +408,7 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
+                                android:id="@+id/btnCountSpecialAdd"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -424,7 +433,7 @@
         android:elevation="8dp">
 
         <TextView
-            android:id="@+id/totalPrice"
+            android:id="@+id/bookingTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
