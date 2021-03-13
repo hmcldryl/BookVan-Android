@@ -4,23 +4,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 import com.bumptech.glide.Glide;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,12 +31,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.opustech.bookvan.ui.fragments.user.BookFragment;
-import com.opustech.bookvan.ui.fragments.user.HomeFragment;
-import com.opustech.bookvan.ui.fragments.user.booking.BookingFragment;
-import com.opustech.bookvan.ui.fragments.user.RentFragment;
-import com.opustech.bookvan.ui.fragments.user.ScheduleFragment;
-import com.opustech.bookvan.ui.fragments.user.PartnersFragment;
+
+import org.imaginativeworld.whynotimagecarousel.CarouselItem;
+import org.imaginativeworld.whynotimagecarousel.ImageCarousel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,11 +45,15 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
+    private DocumentReference systemReference, destinationsReference;
 
     private CircleImageView headerUserPhoto;
     private TextView headerUserName, headerUserEmail;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private CardView btnBook, btnRental, btnPartner, btnBookElnido, btnBookTaytay;
+    private ImageView imageElnido, imageTaytay;
+    private ImageCarousel imageCarousel;
 
     private String name = "";
     private String email = "";
@@ -75,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        systemReference = firebaseFirestore.collection("system").document("data");
+        destinationsReference = firebaseFirestore.collection("system").document("destinations");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,7 +90,55 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
+
+        btnBook = findViewById(R.id.btnBook);
+        btnRental = findViewById(R.id.btnRental);
+        btnPartner = findViewById(R.id.btnPartner);
+        btnBookElnido = findViewById(R.id.btnBookElnido);
+        btnBookTaytay = findViewById(R.id.btnBookTaytay);
+        imageElnido = findViewById(R.id.imageElnido);
+        imageTaytay = findViewById(R.id.imageTaytay);
+        imageCarousel = findViewById(R.id.carousel);
+
+        updateUi();
+
+        btnBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BookActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnBookElnido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BookActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnBookTaytay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BookActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnRental.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RentActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnPartner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,43 +166,21 @@ public class MainActivity extends AppCompatActivity {
         headerUserName = navView.findViewById(R.id.headerUserName);
         headerUserEmail = navView.findViewById(R.id.headerUserEmail);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.nav_book) {
-                    replaceFragment(BookFragment.class);
-                }
-                if (item.getItemId() == R.id.nav_rent) {
-                    replaceFragment(RentFragment.class);
-                }
-                if (item.getItemId() == R.id.nav_schedule) {
-                    replaceFragment(ScheduleFragment.class);
-                }
-                return true;
-            }
-        });
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.nav_home) {
-                    replaceFragment(HomeFragment.class);
-                    drawerLayout.close();
-                }
                 if (item.getItemId() == R.id.btnProfile) {
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     startActivity(intent);
+                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_booking) {
-                    replaceFragment(BookingFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_partners) {
-                    replaceFragment(PartnersFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.nav_schedule) {
-                    replaceFragment(ScheduleFragment.class);
                     drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.btnAbout) {
@@ -160,21 +194,58 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-                return true;
+                return false;
             }
         });
     }
 
-    public void replaceFragment(Class fragmentClass) {
-        Fragment fragment = null;
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.drawer_nav_host_fragment, fragment)
-                .commit();
+    private void updateUi() {
+        systemReference.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            List<String> photo_url = (List<String>) task.getResult().get("home_image_carousel_urls");
+                            if (photo_url != null) {
+                                List<CarouselItem> data = new ArrayList<>();
+                                for (int i = 0; i < photo_url.size(); i++) {
+                                    data.add(new CarouselItem(photo_url.get(i)));
+                                }
+                                imageCarousel.addData(data);
+                            }
+                            else {
+                                imageCarousel.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                });
+
+        destinationsReference.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String elnido_image_url = task.getResult().getString("elnido_image_url");
+                            String taytay_image_url = task.getResult().getString("taytay_image_url");
+
+                            if (elnido_image_url != null) {
+                                if (!elnido_image_url.isEmpty()) {
+                                    Glide.with(MainActivity.this)
+                                            .load(elnido_image_url)
+                                            .into(imageElnido);
+                                }
+                            }
+
+                            if (taytay_image_url != null) {
+                                if (!taytay_image_url.isEmpty()) {
+                                    Glide.with(MainActivity.this)
+                                            .load(taytay_image_url)
+                                            .into(imageTaytay);
+                                }
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
