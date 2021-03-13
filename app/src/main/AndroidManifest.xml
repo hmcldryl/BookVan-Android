@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme">
-        <activity android:name=".ui.user.RentActivity"></activity>
+        <activity android:name=".ui.user.PartnerActivity"></activity>
+        <activity android:name=".ui.user.BookingActivity" />
+        <activity android:name=".ui.user.RentActivity" />
         <activity android:name=".ui.user.BookActivity" />
 
         <meta-data
