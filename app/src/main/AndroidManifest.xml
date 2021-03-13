@@ -14,8 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme">
-        <activity android:name=".RentActivity"></activity>
-        <activity android:name=".BookActivity" />
+        <activity android:name=".ui.user.RentActivity"></activity>
+        <activity android:name=".ui.user.BookActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
