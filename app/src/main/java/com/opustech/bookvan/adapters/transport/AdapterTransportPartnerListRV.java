@@ -17,7 +17,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.card.MaterialCardView;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.TransportCompany;
-import com.opustech.bookvan.ui.transport.TransportProfileActivity;
+import com.opustech.bookvan.ui.transport.TransportCompanyProfileActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -67,7 +67,7 @@ public class AdapterTransportPartnerListRV extends FirestoreRecyclerAdapter<Tran
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), TransportProfileActivity.class);
+                Intent intent = new Intent(view.getContext(), TransportCompanyProfileActivity.class);
                 intent.putExtra("uid", uid);
                 view.getContext().startActivity(intent);
             }
