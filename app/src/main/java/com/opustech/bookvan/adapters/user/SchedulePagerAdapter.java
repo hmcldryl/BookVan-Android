@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.opustech.bookvan.ui.fragments.user.ScheduleNorthFragment;
-import com.opustech.bookvan.ui.fragments.user.ScheduleSouthFragment;
+import com.opustech.bookvan.ui.fragments.user.schedules.SchedulesNorthFragment;
+import com.opustech.bookvan.ui.fragments.user.schedules.SchedulesSouthFragment;
 
 public class SchedulePagerAdapter extends FragmentStateAdapter {
 
@@ -19,9 +19,9 @@ public class SchedulePagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 1:
-                return new ScheduleSouthFragment();
+                return new SchedulesSouthFragment();
             default:
-                return new ScheduleNorthFragment();
+                return new SchedulesNorthFragment();
         }
     }
 
