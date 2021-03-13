@@ -8,14 +8,24 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_dashboard"
-            android:icon="@drawable/ic_icon_dashboard"
-            android:title="@string/label_dashboard" />
+            android:id="@+id/btnBookings"
+            android:icon="@drawable/ic_icon_bookings"
+            android:title="@string/label_book_admin" />
 
         <item
-            android:id="@+id/nav_partners"
-            android:icon="@drawable/ic_input_transport"
-            android:title="@string/label_partners" />
+            android:id="@+id/btnRentals"
+            android:icon="@drawable/ic_icon_rent"
+            android:title="@string/label_rent_admin" />
+
+        <item
+            android:id="@+id/btnSchedules"
+            android:icon="@drawable/ic_icon_schedule"
+            android:title="Schedules" />
+
+        <item
+            android:id="@+id/btnPartners"
+            android:icon="@drawable/ic_icon_company"
+            android:title="Partners" />
 
     </group>
 
