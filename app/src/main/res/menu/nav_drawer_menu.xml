@@ -8,11 +8,6 @@
         android:checkableBehavior="single">
 
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_icon_home"
-            android:title="@string/label_home" />
-
-        <item
             android:id="@+id/btnProfile"
             android:icon="@drawable/ic_icon_profile"
             android:title="@string/label_profile" />
