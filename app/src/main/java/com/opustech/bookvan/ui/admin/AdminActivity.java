@@ -33,7 +33,6 @@ import com.opustech.bookvan.R;
 import com.opustech.bookvan.ui.fragments.admin.bookings.BookingsFragment;
 import com.opustech.bookvan.ui.fragments.admin.DashboardAdminFragment;
 import com.opustech.bookvan.ui.fragments.admin.ScheduleAdminFragment;
-import com.opustech.bookvan.ui.fragments.user.PartnersFragment;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
