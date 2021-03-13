@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.opustech.bookvan.ui.user.MainActivity;
+import com.opustech.bookvan.ui.user.UserHomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -228,7 +228,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, UserHomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
