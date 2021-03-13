@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_body"
     android:orientation="vertical"
-    tools:context=".BookActivity">
+    tools:context=".ui.user.BookActivity">
 
     <RelativeLayout
         android:id="@+id/toolbarContainer"
@@ -230,79 +230,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="8dp" />
 
-                <LinearLayout
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
                     android:weightSum="10">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="5"
-                        android:orientation="vertical"
-                        android:weightSum="10">
+                    <TableRow>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="5"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_gravity="clip_vertical"
+                            android:layout_weight="6"
+                            android:fontFamily="@font/lato"
                             android:gravity="end|center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato"
-                                android:text="Adult:"
-                                android:textColor="#99242323"
-                                android:textSize="16sp" />
-
-                            <Space
-                                android:layout_width="16dp"
-                                android:layout_height="match_parent"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="5"
-                            android:gravity="end|center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/lato"
-                                android:text="PWD/Senior/Student:"
-                                android:textColor="#99242323"
-                                android:textSize="16sp" />
-
-                            <Space
-                                android:layout_width="16dp"
-                                android:layout_height="match_parent"/>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:orientation="vertical"
-                        android:weightSum="10">
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="Adult:"
+                            android:textColor="#99242323"
+                            android:textSize="16sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_column="2"
                             android:layout_weight="5"
                             android:gravity="start"
                             android:orientation="horizontal">
 
                             <ImageButton
-                                android:id="@+id/btnCountAdultSubtract"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -310,7 +267,6 @@
                                 android:background="@drawable/ic_input_minus" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/bookingCountAdult"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                                 android:layout_width="50dp"
                                 android:layout_height="wrap_content"
@@ -328,7 +284,6 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
-                                android:id="@+id/btnCountAdultAdd"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -336,16 +291,33 @@
                                 android:background="@drawable/ic_input_add" />
 
                         </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_gravity="clip_vertical"
+                            android:layout_weight="6"
+                            android:fontFamily="@font/lato"
+                            android:gravity="end|center_vertical"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="Child:"
+                            android:textColor="#99242323"
+                            android:textSize="16sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_column="2"
                             android:layout_weight="5"
                             android:gravity="start"
                             android:orientation="horizontal">
 
                             <ImageButton
-                                android:id="@+id/btnCountChildSubtract"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -353,7 +325,6 @@
                                 android:background="@drawable/ic_input_minus" />
 
                             <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/bookingCountChild"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                                 android:layout_width="50dp"
                                 android:layout_height="wrap_content"
@@ -371,7 +342,6 @@
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <ImageButton
-                                android:id="@+id/btnCountChildAdd"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:layout_gravity="center"
@@ -379,9 +349,68 @@
                                 android:background="@drawable/ic_input_add" />
 
                         </LinearLayout>
+                    </TableRow>
 
-                    </LinearLayout>
-                </LinearLayout>
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_column="1"
+                            android:layout_gravity="clip_vertical"
+                            android:layout_weight="6"
+                            android:fontFamily="@font/lato"
+                            android:gravity="end|center_vertical"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="PWD/Senior/Student:"
+                            android:textColor="#99242323"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_weight="5"
+                            android:gravity="start"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="4dp"
+                                android:background="@drawable/ic_input_minus" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginEnd="4dp">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:inputType="number"
+                                    android:maxLines="1" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="4dp"
+                                android:background="@drawable/ic_input_add" />
+
+                        </LinearLayout>
+                    </TableRow>
+
+                </TableLayout>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
