@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -40,23 +42,26 @@ public class BookActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, bookingsReference, partnersReference;
+    private CollectionReference usersReference, bookingsReference, partnersReference, schedulesReference;
 
     private TextInputLayout bookingCustomerName,
             bookingContactNumber,
             bookingVanTransport,
-            bookingLocationFrom,
-            bookingLocationTo,
+            bookingRoute,
             bookingScheduleDate,
             bookingScheduleTime,
             bookingCountAdult,
-            bookingCountChild;
+            bookingCountChild,
+            bookingCountSpecial;
     private ImageButton addAdultCount,
             addChildCount,
+            addSpecialCount,
             subtractAdultCount,
-            subtractChildCount;
+            subtractChildCount,
+            subtractSpecialCount;
+    private TextView bookingTotal;
     private ExtendedFloatingActionButton btnBook;
-    private AutoCompleteTextView inputVanTransportACT, bookingLocationFromACT, bookingLocationToACT;
+    private AutoCompleteTextView inputVanTransportACT, bookingRouteACT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,16 +73,18 @@ public class BookActivity extends AppCompatActivity {
         usersReference = firebaseFirestore.collection("users");
         bookingsReference = firebaseFirestore.collection("bookings");
         partnersReference = firebaseFirestore.collection("partners");
+        schedulesReference = firebaseFirestore.collection("schedules");
 
         initializeUi();
 
         populateVanTransportList();
-        populateLocationList();
+        //populateRouteList();
         initializeDatePicker();
         initializeTimePicker();
 
         bookingCountAdult.getEditText().setText("1");
         bookingCountChild.getEditText().setText("0");
+        bookingCountSpecial.getEditText().setText("0");
 
         addAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +130,29 @@ public class BookActivity extends AppCompatActivity {
             }
         });
 
+
+        addSpecialCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count_child = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
+                if (count_child >= 0) {
+                    int count = count_child + 1;
+                    bookingCountSpecial.getEditText().setText(String.valueOf(count));
+                }
+            }
+        });
+
+        subtractSpecialCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count_child = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
+                if (count_child > 0) {
+                    int count = count_child - 1;
+                    bookingCountSpecial.getEditText().setText(String.valueOf(count));
+                }
+            }
+        });
+
         btnBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,24 +167,27 @@ public class BookActivity extends AppCompatActivity {
         bookingContactNumber = findViewById(R.id.bookingContactNumber);
         bookingVanTransport = findViewById(R.id.inputVanTransport);
         inputVanTransportACT = findViewById(R.id.inputVanTransportACT);
-        bookingLocationFrom = findViewById(R.id.bookingLocationFrom);
-        bookingLocationFromACT = findViewById(R.id.bookingLocationFromACT);
-        bookingLocationTo = findViewById(R.id.bookingLocationTo);
-        bookingLocationToACT = findViewById(R.id.bookingLocationToACT);
+        bookingRoute = findViewById(R.id.bookingRoute);
+        bookingRouteACT = findViewById(R.id.bookingRouteACT);
         bookingScheduleDate = findViewById(R.id.bookingScheduleDate);
         bookingScheduleTime = findViewById(R.id.bookingScheduleTime);
         bookingCountAdult = findViewById(R.id.bookingCountAdult);
         bookingCountChild = findViewById(R.id.bookingCountChild);
+        bookingCountSpecial = findViewById(R.id.bookingCountSpecial);
 
         addAdultCount = findViewById(R.id.btnCountAdultAdd);
         subtractAdultCount = findViewById(R.id.btnCountAdultSubtract);
         addChildCount = findViewById(R.id.btnCountChildAdd);
         subtractChildCount = findViewById(R.id.btnCountChildSubtract);
+        addSpecialCount = findViewById(R.id.btnCountSpecialAdd);
+        subtractSpecialCount = findViewById(R.id.btnCountSpecialSubtract);
+
+        bookingTotal = findViewById(R.id.bookingTotal);
 
         btnBook = findViewById(R.id.btnBook);
     }
 
-    private void getTransportCompanyUid(String name, String contact_number, String transport_name, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
+    private void getTransportCompanyUid(String name, String contact_number, String transport_name, String trip_route, String schedule_date, String schedule_time, int count_adult, int count_child, int count_special) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -168,13 +201,13 @@ public class BookActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            generateRefNum(dialog, firebaseAuth.getCurrentUser().getUid(), name, contact_number, task.getResult().getDocuments().get(0).getString("uid"), location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
+                            generateRefNum(dialog, firebaseAuth.getCurrentUser().getUid(), name, contact_number, task.getResult().getDocuments().get(0).getString("uid"), trip_route, schedule_date, schedule_time, count_adult, count_child, count_special);
                         }
                     }
                 });
     }
 
-    private void generateRefNum(ACProgressFlower dialog, String uid, String name, String contact_number, String transport_uid, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
+    private void generateRefNum(ACProgressFlower dialog, String uid, String name, String contact_number, String transport_uid, String trip_route, String schedule_date, String schedule_time, int count_adult, int count_child, int count_special) {
         bookingsReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -182,7 +215,7 @@ public class BookActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
                             String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
-                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_uid, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
+                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_uid, trip_route, schedule_date, schedule_time, count_adult, count_child, count_special);
                         }
                     }
                 });
@@ -191,7 +224,7 @@ public class BookActivity extends AppCompatActivity {
     private void clearInput() {
         bookingCustomerName.getEditText().getText().clear();
         bookingContactNumber.getEditText().getText().clear();
-        bookingLocationTo.getEditText().getText().clear();
+        bookingRoute.getEditText().getText().clear();
         bookingScheduleDate.getEditText().getText().clear();
         bookingScheduleTime.getEditText().getText().clear();
         bookingCountAdult.getEditText().getText().clear();
@@ -202,36 +235,38 @@ public class BookActivity extends AppCompatActivity {
         btnBook.setEnabled(false);
         bookingCustomerName.setEnabled(false);
         bookingContactNumber.setEnabled(false);
-        bookingLocationFrom.setEnabled(false);
-        bookingLocationTo.setEnabled(false);
+        bookingVanTransport.setEnabled(false);
+        bookingRoute.setEnabled(false);
         bookingScheduleDate.setEnabled(false);
         bookingScheduleTime.setEnabled(false);
         bookingCountAdult.setEnabled(false);
         bookingCountChild.setEnabled(false);
+        bookingCountSpecial.setEnabled(false);
     }
 
     private void enableInput() {
         btnBook.setEnabled(true);
         bookingCustomerName.setEnabled(true);
         bookingContactNumber.setEnabled(true);
-        bookingLocationFrom.setEnabled(true);
-        bookingLocationTo.setEnabled(true);
+        bookingVanTransport.setEnabled(true);
+        bookingRoute.setEnabled(true);
         bookingScheduleDate.setEnabled(true);
         bookingScheduleTime.setEnabled(true);
         bookingCountAdult.setEnabled(true);
         bookingCountChild.setEnabled(true);
+        bookingCountSpecial.setEnabled(true);
     }
 
     private void inputCheck() {
         String name = bookingCustomerName.getEditText().getText().toString();
         String contact_number = bookingContactNumber.getEditText().getText().toString();
         String transport_name = bookingVanTransport.getEditText().getText().toString();
-        String location_from = bookingLocationFrom.getEditText().getText().toString();
-        String location_to = bookingLocationTo.getEditText().getText().toString();
+        String trip_route = bookingRoute.getEditText().getText().toString();
         String schedule_date = bookingScheduleDate.getEditText().getText().toString();
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
         int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
         int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
+        int count_special = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
 
         if (name.isEmpty()) {
             enableInput();
@@ -239,15 +274,12 @@ public class BookActivity extends AppCompatActivity {
         } else if (contact_number.isEmpty()) {
             enableInput();
             bookingContactNumber.getEditText().setError("Please enter a contact number.");
-        } else if (location_from.isEmpty()) {
-            enableInput();
-            bookingLocationFrom.getEditText().setError("Please enter your starting location.");
         } else if (transport_name.isEmpty()) {
             enableInput();
             bookingVanTransport.getEditText().setError("Please select your preferred van transport.");
-        } else if (location_to.isEmpty()) {
+        } else if (trip_route.isEmpty()) {
             enableInput();
-            bookingLocationTo.getEditText().setError("Please enter the location you wish to go.");
+            bookingRoute.getEditText().setError("Please enter your starting location.");
         } else if (schedule_date.isEmpty()) {
             enableInput();
             bookingScheduleDate.getEditText().setError("Please enter desired schedule date.");
@@ -256,9 +288,9 @@ public class BookActivity extends AppCompatActivity {
             bookingScheduleTime.getEditText().setError("Please enter desired schedule time.");
         } else if (count_adult == 0 && count_child == 0) {
             enableInput();
-            bookingCountAdult.getEditText().setError("Must have at least 1 adult passenger.");
+            bookingCountAdult.getEditText().setError("Must have at least 1 passenger.");
         } else {
-            getTransportCompanyUid(name, contact_number, transport_name, location_from, location_to, schedule_date, schedule_time, count_adult, count_child);
+            getTransportCompanyUid(name, contact_number, transport_name, trip_route, schedule_date, schedule_time, count_adult, count_child, count_special);
         }
     }
 
@@ -267,15 +299,14 @@ public class BookActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
-    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_uid, String location_from, String location_to, String schedule_date, String schedule_time, int count_adult, int count_child) {
+    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_uid, String trip_route, String schedule_date, String schedule_time, int count_adult, int count_child, int count_special) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("reference_number", reference_number);
         hashMap.put("uid", uid);
         hashMap.put("name", name);
         hashMap.put("contact_number", contact_number);
         hashMap.put("transport_uid", transport_uid);
-        hashMap.put("location_from", location_from);
-        hashMap.put("location_to", location_to);
+        hashMap.put("trip_route", trip_route);
         hashMap.put("schedule_date", schedule_date);
         hashMap.put("schedule_time", schedule_time);
         hashMap.put("count_adult", count_adult);
@@ -289,7 +320,9 @@ public class BookActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
-                            Toast.makeText(BookActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookActivity.this, "Success.", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(BookActivity.this, BookingActivity.class);
+                            startActivity(intent);
                             finish();
                         }
                     }
@@ -359,12 +392,22 @@ public class BookActivity extends AppCompatActivity {
                 });
     }
 
-    private void populateLocationList() {
-        ArrayList<String> locationArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.destinations)));
-        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, locationArray);
-        bookingLocationFromACT.setAdapter(locationArrayAdapter);
-        bookingLocationToACT.setAdapter(locationArrayAdapter);
-        bookingLocationFromACT.setThreshold(1);
-        bookingLocationToACT.setThreshold(1);
+    private void populateRouteList(String uid) {
+        ArrayList<String> routeArray = new ArrayList<>();
+        schedulesReference.whereEqualTo("transport_uid", uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                routeArray.add(i, task.getResult().getDocuments().get(i).getString("route"));
+                            }
+                            ArrayAdapter<String> routeArrayAdapter = new ArrayAdapter<>(BookActivity.this, R.layout.support_simple_spinner_dropdown_item, routeArray);
+                            bookingRouteACT.setAdapter(routeArrayAdapter);
+                            bookingRouteACT.setThreshold(1);
+                        }
+                    }
+                });
     }
 }
