@@ -17,6 +17,16 @@
             android:icon="@drawable/ic_icon_profile"
             android:title="@string/label_user_profile" />
 
+        <item
+            android:id="@+id/btnBookings"
+            android:icon="@drawable/ic_icon_bookings"
+            android:title="Bookings" />
+
+        <item
+            android:id="@+id/btnSchedules"
+            android:icon="@drawable/ic_icon_schedule"
+            android:title="Schedules" />
+
     </group>
 
     <group
