@@ -8,6 +8,19 @@
     android:orientation="vertical"
     tools:context=".ui.user.UserBookingActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/background_toolbar"
+        android:elevation="8dp"
+        app:navigationIcon="@drawable/ic_btn_back"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
+        app:subtitleTextColor="#FFFFFF"
+        app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+        app:titleTextColor="#FFFFFF" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         style="@style/Widget.MaterialComponents.TabLayout"
