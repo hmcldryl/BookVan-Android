@@ -68,6 +68,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Your Profile");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
