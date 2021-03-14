@@ -13,13 +13,18 @@
             android:title="@string/label_profile" />
 
         <item
-            android:id="@+id/nav_booking"
+            android:id="@+id/btnBooking"
             android:icon="@drawable/ic_icon_booking"
             android:title="@string/label_booking" />
 
         <item
-            android:id="@+id/nav_partners"
-            android:icon="@drawable/ic_input_transport"
+            android:id="@+id/btnSchedules"
+            android:icon="@drawable/ic_icon_schedule"
+            android:title="@string/label_schedule" />
+
+        <item
+            android:id="@+id/btnPartners"
+            android:icon="@drawable/ic_icon_company"
             android:title="@string/label_partners" />
 
     </group>
