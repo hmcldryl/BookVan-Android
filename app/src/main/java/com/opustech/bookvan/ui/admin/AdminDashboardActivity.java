@@ -75,8 +75,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav_view);
-
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,22 +108,18 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.btnBookings) {
                     Intent intent = new Intent(AdminDashboardActivity.this, AdminBookingsActivity.class);
                     startActivity(intent);
-                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.btnRentals) {
                     Intent intent = new Intent(AdminDashboardActivity.this, AdminRentalsActivity.class);
                     startActivity(intent);
-                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.btnSchedules) {
                     Intent intent = new Intent(AdminDashboardActivity.this, AdminTripSchedulesActivity.class);
                     startActivity(intent);
-                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.btnPartners) {
                     Intent intent = new Intent(AdminDashboardActivity.this, UserPartnersActivity.class);
                     startActivity(intent);
-                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.btnAbout) {
                     Intent intent = new Intent(AdminDashboardActivity.this, AboutActivity.class);
