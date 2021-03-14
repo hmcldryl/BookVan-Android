@@ -7,7 +7,18 @@
     android:orientation="vertical"
     tools:context=".ui.admin.AdminRentalsActivity">
 
-
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/background_toolbar"
+        android:elevation="8dp"
+        app:navigationIcon="@drawable/ic_btn_back"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
+        app:subtitleTextColor="#FFFFFF"
+        app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+        app:titleTextColor="#FFFFFF" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,7 +31,7 @@
             android:layout_centerInParent="true"
             android:drawableTop="@drawable/ic_icon_sad_100"
             android:fontFamily="@font/lato"
-            android:text="No van available for rent (yet)."
+            android:text="No rentals found."
             android:textColor="@color/textColor"
             android:textSize="16sp"
             android:visibility="visible" />
