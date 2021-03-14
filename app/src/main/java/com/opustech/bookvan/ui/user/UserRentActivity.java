@@ -2,6 +2,7 @@ package com.opustech.bookvan.ui.user;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -54,6 +55,19 @@ public class UserRentActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         rentalsReference = firebaseFirestore.collection("rentals");
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Renting Form");
+        getSupportActionBar().setSubtitle("Fill up the following fields to rent a van.");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         inputRentType = findViewById(R.id.inputRentType);
         inputRentTypeACT = findViewById(R.id.inputRentTypeACT);
