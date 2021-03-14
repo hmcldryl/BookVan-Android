@@ -3,6 +3,7 @@ package com.opustech.bookvan.ui.user;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -42,6 +43,11 @@ public class UserBookingActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         bookingsReference = firebaseFirestore.collection("bookings");
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Booking");
 
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
