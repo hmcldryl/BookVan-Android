@@ -2,6 +2,7 @@ package com.opustech.bookvan.ui.user;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -73,6 +74,19 @@ public class UserBookActivity extends AppCompatActivity {
         bookingsReference = firebaseFirestore.collection("bookings");
         partnersReference = firebaseFirestore.collection("partners");
         schedulesReference = firebaseFirestore.collection("schedules");
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Booking Form");
+        getSupportActionBar().setSubtitle("Fill up the following fields to book your trip.");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         initializeUi();
 
