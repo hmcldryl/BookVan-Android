@@ -51,7 +51,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private TextView headerUserName, headerUserEmail;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-    private CardView btnBook, btnRental, btnPartner, btnBookElnido, btnBookTaytay;
+    private CardView btnBook, btnRent, btnPartners, btnBookElnido, btnBookTaytay;
     private ImageView imageElnido, imageTaytay;
     private ImageCarousel imageCarousel;
 
@@ -88,15 +88,15 @@ public class UserHomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Home");
-        getSupportActionBar().setTitle("Welcome to BookVan!");
+        getSupportActionBar().setSubtitle("Welcome to BookVan!");
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
 
         btnBook = findViewById(R.id.btnBook);
-        btnRental = findViewById(R.id.btnRental);
-        btnPartner = findViewById(R.id.btnPartner);
+        btnRent = findViewById(R.id.btnRent);
+        btnPartners = findViewById(R.id.btnPartners);
         btnBookElnido = findViewById(R.id.btnBookElnido);
         btnBookTaytay = findViewById(R.id.btnBookTaytay);
         imageElnido = findViewById(R.id.imageElnido);
@@ -129,7 +129,7 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
-        btnRental.setOnClickListener(new View.OnClickListener() {
+        btnRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserHomeActivity.this, UserRentActivity.class);
@@ -137,9 +137,11 @@ public class UserHomeActivity extends AppCompatActivity {
             }
         });
 
-        btnPartner.setOnClickListener(new View.OnClickListener() {
+        btnPartners.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(UserHomeActivity.this, UserPartnersActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -175,16 +177,18 @@ public class UserHomeActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.btnProfile) {
                     Intent intent = new Intent(UserHomeActivity.this, UserProfileActivity.class);
                     startActivity(intent);
-                    drawerLayout.close();
                 }
-                if (item.getItemId() == R.id.nav_booking) {
-                    drawerLayout.close();
+                if (item.getItemId() == R.id.btnBooking) {
+                    Intent intent = new Intent(UserHomeActivity.this, UserBookingActivity.class);
+                    startActivity(intent);
                 }
-                if (item.getItemId() == R.id.nav_partners) {
-                    drawerLayout.close();
+                if (item.getItemId() == R.id.btnPartners) {
+                    Intent intent = new Intent(UserHomeActivity.this, UserPartnersActivity.class);
+                    startActivity(intent);
                 }
-                if (item.getItemId() == R.id.nav_schedule) {
-                    drawerLayout.close();
+                if (item.getItemId() == R.id.btnSchedules) {
+                    Intent intent = new Intent(UserHomeActivity.this, UserSchedulesActivity.class);
+                    startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnAbout) {
                     Intent intent = new Intent(UserHomeActivity.this, AboutActivity.class);
@@ -260,9 +264,8 @@ public class UserHomeActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            String currentUserId = currentUser.getUid();
+        if (firebaseAuth.getCurrentUser() != null) {
+            String currentUserId = firebaseAuth.getCurrentUser().getUid();
             if (!currentUserId.isEmpty()) {
                 usersReference.document(currentUserId)
                         .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
