@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.user.UserSchedulesActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/background_toolbar"
+        android:elevation="8dp"
+        app:navigationIcon="@drawable/ic_btn_back"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
+        app:subtitleTextColor="#FFFFFF"
+        app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+        app:titleTextColor="#FFFFFF" />
+
     <com.google.android.material.tabs.TabLayout
         style="@style/Widget.MaterialComponents.TabLayout"
         android:id="@+id/tabLayout"
