@@ -61,7 +61,7 @@ public class UserChatActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("BookVan Tech Support");
+        getSupportActionBar().setTitle("Customer Support");
         getSupportActionBar().setSubtitle("For comments, suggestions, and concerns.");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
