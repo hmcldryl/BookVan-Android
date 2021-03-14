@@ -7,38 +7,24 @@
     android:background="@drawable/background_body"
     tools:context=".ui.user.UserRentActivity">
 
-    <RelativeLayout
-        android:id="@+id/toolbarContainer"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            style="@style/ThemeOverlay.MaterialComponents.Toolbar.Primary"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/background_toolbar"
-            android:elevation="8dp"
-            app:navigationIcon="@drawable/ic_btn_back"
-            app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
-            app:subtitleTextColor="#FFFFFF"
-            app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
-            app:titleTextColor="#FFFFFF" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:elevation="8dp"
-            android:padding="8dp"
-            android:src="@drawable/bookvan_logo_full" />
-    </RelativeLayout>
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/background_toolbar"
+        android:elevation="8dp"
+        app:navigationIcon="@drawable/ic_btn_back"
+        app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
+        app:subtitleTextColor="#FFFFFF"
+        app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
+        app:titleTextColor="#FFFFFF" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomBar"
-        android:layout_below="@+id/toolbarContainer">
+        android:layout_below="@+id/toolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -57,33 +43,6 @@
                     android:paddingStart="16dp"
                     android:paddingTop="16dp"
                     android:paddingEnd="16dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:weightSum="12">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/lato_black"
-                            android:text="Rent-a-Van Form"
-                            android:textAlignment="center"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                            android:textColor="@color/textColor" />
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="2dp"
-                            android:layout_gravity="center"
-                            android:layout_weight="10"
-                            android:background="#1F000000" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -113,6 +72,10 @@
                                 android:textCursorDrawable="@null" />
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="8dp" />
+
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/inputName"
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -135,6 +98,10 @@
                                 android:textCursorDrawable="@null" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="8dp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/inputContactNumber"
@@ -160,7 +127,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="8dp" />
+                            android:layout_height="16dp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/inputLocationPickUp"
@@ -183,6 +150,10 @@
                                 android:textColor="@color/textColor"
                                 android:textCursorDrawable="@null" />
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="8dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -245,7 +216,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="8dp" />
+                            android:layout_height="16dp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/inputDestination"
@@ -271,7 +242,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="8dp" />
+                            android:layout_height="16dp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/inputLocationDropOff"
@@ -294,6 +265,10 @@
                                 android:textColor="@color/textColor"
                                 android:textCursorDrawable="@null" />
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="8dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
