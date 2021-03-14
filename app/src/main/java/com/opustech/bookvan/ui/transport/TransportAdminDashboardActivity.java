@@ -48,8 +48,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (backPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             super.onBackPressed();
-        }
-        else {
+        } else {
             Toast.makeText(this, "Press back again to exit BookVan.", Toast.LENGTH_SHORT).show();
         }
         backPressed = System.currentTimeMillis();
@@ -94,33 +93,28 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.btnBookings) {
-                    Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminCompanyProfileActivity.class);
-                    intent.putExtra("uid", getCompanyUid());
-                    startActivity(intent);
-                    drawerLayout.close();
-                }
-                if (item.getItemId() == R.id.btnSchedules) {
-                    Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminCompanyProfileActivity.class);
-                    intent.putExtra("uid", getCompanyUid());
-                    startActivity(intent);
-                    drawerLayout.close();
-                }
                 if (item.getItemId() == R.id.btnCompanyProfile) {
                     Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminCompanyProfileActivity.class);
                     intent.putExtra("uid", getCompanyUid());
                     startActivity(intent);
-                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.btnProfile) {
                     Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminUserProfileActivity.class);
                     startActivity(intent);
-                    drawerLayout.close();
+                }
+                if (item.getItemId() == R.id.btnBookings) {
+                    Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminBookingsActivity.class);
+                    intent.putExtra("uid", getCompanyUid());
+                    startActivity(intent);
+                }
+                if (item.getItemId() == R.id.btnSchedules) {
+                    Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminSchedulesActivity.class);
+                    intent.putExtra("uid", getCompanyUid());
+                    startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnAbout) {
                     Intent intent = new Intent(TransportAdminDashboardActivity.this, AboutActivity.class);
                     startActivity(intent);
-                    drawerLayout.close();
                 }
                 if (item.getItemId() == R.id.btnLogout) {
                     firebaseAuth.signOut();
