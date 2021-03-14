@@ -86,7 +86,10 @@ public class UserHomeActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("Welcome to BookVan!");
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
