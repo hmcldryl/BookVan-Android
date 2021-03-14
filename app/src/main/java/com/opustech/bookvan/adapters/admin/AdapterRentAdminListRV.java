@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Rent;
 import com.bumptech.glide.Glide;
@@ -88,7 +89,7 @@ public class AdapterRentAdminListRV extends FirestoreRecyclerAdapter<Rent, Adapt
     @NonNull
     @Override
     public RentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rent_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rent_admin_item_layout, parent, false);
         return new RentHolder(view);
     }
 
