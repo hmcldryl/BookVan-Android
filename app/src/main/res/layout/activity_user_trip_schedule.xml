@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.user.UserTripScheduleActivity">
 
@@ -23,9 +23,6 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:orientation="vertical"
         android:weightSum="10">
 
@@ -34,32 +31,35 @@
             <TextView
                 android:layout_column="1"
                 android:layout_weight="2"
-                android:fontFamily="@font/lato_black"
-                android:padding="16dp"
+                android:fontFamily="@font/lato_bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:text="QUEUE"
                 android:textAlignment="center"
                 android:textColor="@color/textColor"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_column="2"
                 android:layout_weight="2"
                 android:fontFamily="@font/lato_black"
-                android:padding="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:text="DEPART"
                 android:textAlignment="center"
                 android:textColor="@color/textColor"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_column="3"
                 android:layout_weight="6"
-                android:fontFamily="@font/lato_black"
-                android:padding="16dp"
+                android:fontFamily="@font/lato_bold"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:text="TRANSPORT"
                 android:textAlignment="center"
                 android:textColor="@color/textColor"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
         </TableRow>
 
     </TableLayout>
@@ -75,8 +75,8 @@
         android:id="@+id/scheduleList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp" />
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp" />
 
 </LinearLayout>
