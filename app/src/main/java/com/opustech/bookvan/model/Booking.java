@@ -5,8 +5,7 @@ public class Booking {
             uid,
             name,
             contact_number,
-            location_from,
-            location_to,
+            trip_route,
             schedule_date,
             schedule_time,
             transport_uid,
@@ -14,19 +13,18 @@ public class Booking {
             plate_number,
             status,
             timestamp;
-    int count_adult, count_child;
+    int count_adult, count_child, count_special;
     float price;
 
     public Booking() {
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String location_from, String location_to, String schedule_date, String schedule_time, String transport_uid, String driver_name, String plate_number, String status, String timestamp, int count_adult, int count_child, float price) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time, String transport_uid, String driver_name, String plate_number, String status, String timestamp, int count_adult, int count_child, int count_special, float price) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
         this.contact_number = contact_number;
-        this.location_from = location_from;
-        this.location_to = location_to;
+        this.trip_route = trip_route;
         this.schedule_date = schedule_date;
         this.schedule_time = schedule_time;
         this.transport_uid = transport_uid;
@@ -36,6 +34,7 @@ public class Booking {
         this.timestamp = timestamp;
         this.count_adult = count_adult;
         this.count_child = count_child;
+        this.count_special = count_special;
         this.price = price;
     }
 
@@ -71,20 +70,12 @@ public class Booking {
         this.contact_number = contact_number;
     }
 
-    public String getLocation_from() {
-        return location_from;
+    public String getTrip_route() {
+        return trip_route;
     }
 
-    public void setLocation_from(String location_from) {
-        this.location_from = location_from;
-    }
-
-    public String getLocation_to() {
-        return location_to;
-    }
-
-    public void setLocation_to(String location_to) {
-        this.location_to = location_to;
+    public void setTrip_route(String trip_route) {
+        this.trip_route = trip_route;
     }
 
     public String getSchedule_date() {
@@ -157,6 +148,14 @@ public class Booking {
 
     public void setCount_child(int count_child) {
         this.count_child = count_child;
+    }
+
+    public int getCount_special() {
+        return count_special;
+    }
+
+    public void setCount_special(int count_special) {
+        this.count_special = count_special;
     }
 
     public float getPrice() {
