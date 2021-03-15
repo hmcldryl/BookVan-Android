@@ -53,6 +53,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="0dp"
                         android:ellipsize="end"
+                        android:fontFamily="@font/lato"
                         android:inputType="text"
                         android:maxLines="1"
                         android:textCursorDrawable="@null" />
@@ -76,6 +77,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:fontFamily="@font/lato"
                         android:inputType="phone"
                         android:maxLength="13"
                         android:maxLines="1"
@@ -93,6 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:hint="Van Transport"
                     app:endIconTint="@color/colorPrimary"
                     app:hintEnabled="true"
                     app:startIconDrawable="@drawable/ic_input_transport"
@@ -102,9 +105,9 @@
                         android:id="@+id/inputVanTransportACT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:completionThreshold="1"
                         android:fontFamily="@font/lato"
-                        android:hint="Van Transport"
-                        android:inputType="text"
+                        android:inputType="none"
                         android:singleLine="true"
                         android:textColor="@color/textColor"
                         android:textCursorDrawable="@null" />
@@ -120,7 +123,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="From - To"
-                    android:inputType="none"
                     app:endIconTint="@color/colorPrimary"
                     app:startIconDrawable="@drawable/ic_input_location"
                     app:startIconTint="@color/colorPrimary">
@@ -129,7 +131,9 @@
                         android:id="@+id/bookingRouteACT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="none"
+                        android:completionThreshold="2"
+                        android:fontFamily="@font/lato"
+                        android:inputType="text"
                         android:singleLine="true"
                         android:textCursorDrawable="@null" />
 
@@ -163,6 +167,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:focusable="false"
+                            android:fontFamily="@font/lato"
                             android:inputType="date"
                             android:maxLines="1"
                             android:textCursorDrawable="@null" />
@@ -190,6 +195,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:focusable="false"
+                            android:fontFamily="@font/lato"
                             android:inputType="time"
                             android:maxLines="1"
                             android:textCursorDrawable="@null" />
@@ -217,8 +223,8 @@
                             android:layout_weight="5"
                             android:fontFamily="@font/lato"
                             android:gravity="end|center_vertical"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
                             android:text="Adult:"
                             android:textColor="#99242323"
                             android:textSize="16sp" />
@@ -252,6 +258,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
+                                    android:fontFamily="@font/lato"
                                     android:inputType="number"
                                     android:maxLines="1" />
 
@@ -278,8 +285,8 @@
                             android:layout_weight="5"
                             android:fontFamily="@font/lato"
                             android:gravity="end|center_vertical"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
                             android:text="Child:"
                             android:textColor="#99242323"
                             android:textSize="16sp" />
@@ -313,6 +320,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
+                                    android:fontFamily="@font/lato"
                                     android:inputType="number"
                                     android:maxLines="1" />
 
@@ -339,9 +347,9 @@
                             android:layout_weight="5"
                             android:fontFamily="@font/lato"
                             android:gravity="end|center_vertical"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:text="PWD/Senior/Student:"
+                            android:paddingStart="8dp"
+                            android:paddingEnd="8dp"
+                            android:text="PWD/Senior/Student*:"
                             android:textColor="#99242323"
                             android:textSize="14sp" />
 
@@ -374,6 +382,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
+                                    android:fontFamily="@font/lato"
                                     android:inputType="number"
                                     android:maxLines="1" />
 
@@ -389,8 +398,38 @@
 
                         </LinearLayout>
                     </TableRow>
-
                 </TableLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/lato"
+                        android:text="* Persons with disability (PWDs), senior citizens, and students are given a 20% discount and VAT-exemption on the purchase of services from all transport services."
+                        android:textColor="#99242323"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/lato"
+                        android:text="To avail of these benefits, a Proof of Entitlement must be presented, such as the PWD ID, Senior Citizen ID, or School ID."
+                        android:textColor="#99242323"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
@@ -413,9 +452,11 @@
             android:layout_toStartOf="@+id/btnBook"
             android:drawableStart="@drawable/ic_input_price"
             android:ellipsize="end"
+            android:fontFamily="@font/lato_bold"
             android:maxLines="1"
-            android:text=""
-            android:textSize="16sp" />
+            android:text="0.00"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/btnBook"
