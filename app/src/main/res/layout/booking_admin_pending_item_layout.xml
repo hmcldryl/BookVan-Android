@@ -178,17 +178,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/lato"
                         android:maxLines="1"
-                        android:text="From:"
-                        android:textColor="@color/textColor"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/lato"
-                        android:maxLines="1"
-                        android:text="To:"
+                        android:text="Route:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -242,9 +232,20 @@
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
+                    <TextView
+                        android:id="@+id/labelCountSpecial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="PWD/SC/S:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="16dp" />
+                        android:layout_height="8dp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -279,18 +280,7 @@
                         android:layout_height="6dp" />
 
                     <TextView
-                        android:id="@+id/bookingLocationFrom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/lato"
-                        android:maxLines="1"
-                        android:text=""
-                        android:textColor="@color/textColor"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/bookingLocationTo"
+                        android:id="@+id/bookingTripRoute"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -352,9 +342,20 @@
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
+                    <TextView
+                        android:id="@+id/bookingCountSpecial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="16dp" />
+                        android:layout_height="8dp" />
 
                     <TextView
                         android:id="@+id/bookingTransportName"
