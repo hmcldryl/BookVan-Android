@@ -62,8 +62,7 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
         String name = model.getName();
         String contact_number = model.getContact_number();
         String reference_number = model.getReference_number();
-        String location_from = model.getLocation_from();
-        String location_to = model.getLocation_to();
+        String trip_route = model.getTrip_route();
         String schedule_date = model.getSchedule_date();
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
@@ -106,8 +105,7 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
         holder.bookingCustomerName.setText(name);
         holder.bookingContactNumber.setText(contact_number);
         holder.bookingReferenceNumber.setText(reference_number);
-        holder.bookingLocationFrom.setText(location_from);
-        holder.bookingLocationTo.setText(location_to);
+        holder.bookingTripRoute.setText(trip_route);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
         holder.bookingDriverName.setText(driver_name);
@@ -175,8 +173,7 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
                 bookingCustomerEmail,
                 bookingContactNumber,
                 bookingReferenceNumber,
-                bookingLocationFrom,
-                bookingLocationTo,
+                bookingTripRoute,
                 bookingScheduleDate,
                 bookingScheduleTime,
                 bookingCountAdult,
@@ -200,8 +197,7 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
             bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
-            bookingLocationFrom = view.findViewById(R.id.bookingLocationFrom);
-            bookingLocationTo = view.findViewById(R.id.bookingLocationTo);
+            bookingTripRoute = view.findViewById(R.id.bookingTripRoute);
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
