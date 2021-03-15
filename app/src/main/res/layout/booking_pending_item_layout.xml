@@ -200,13 +200,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="6dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
                     <TextView
-                        android:id="@+id/bookingLocationFrom"
+                        android:id="@+id/bookingTripRoute"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
@@ -216,28 +211,6 @@
                         android:text=""
                         android:textColor="#FFFFFF"
                         android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato"
-                        android:text="-to-"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/bookingLocationTo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/lato_bold"
-                        android:maxLines="1"
-                        android:text=""
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
@@ -297,6 +270,18 @@
 
                     <TextView
                         android:id="@+id/bookingCountChild"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/bookingCountSpecial"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
