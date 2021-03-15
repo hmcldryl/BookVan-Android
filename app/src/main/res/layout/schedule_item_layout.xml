@@ -8,43 +8,41 @@
     <TableRow>
 
         <TextView
-            android:id="@+id/timePila"
+            android:id="@+id/timeQueue"
             android:layout_column="1"
             android:layout_weight="2"
-            android:ellipsize="end"
+            android:ellipsize="marquee"
             android:fontFamily="@font/lato"
-            android:maxLines="1"
             android:padding="8dp"
-            android:text="time_pila"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@color/textColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/timeAlis"
+            android:id="@+id/timeDepart"
             android:layout_column="2"
             android:layout_weight="2"
-            android:ellipsize="end"
+            android:ellipsize="marquee"
             android:fontFamily="@font/lato"
-            android:maxLines="1"
             android:padding="8dp"
-            android:text="time_alis"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@color/textColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/vanCompany"
             android:layout_column="3"
             android:layout_weight="6"
-            android:ellipsize="end"
+            android:ellipsize="marquee"
             android:fontFamily="@font/lato"
-            android:maxLines="1"
             android:padding="8dp"
-            android:text="company_name"
+            android:singleLine="true"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@color/textColor"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
     </TableRow>
 
 </TableLayout>
