@@ -1,10 +1,12 @@
 package com.opustech.bookvan.ui.user;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.opustech.bookvan.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -28,10 +30,25 @@ public class UserTripScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_trip_schedule);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Van Trip Schedule");
+        getSupportActionBar().setSubtitle("Trip Schedule for " + getIntent().getStringExtra("destination").toUpperCase() + ".");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         schedulesReference = firebaseFirestore.collection("schedules");
 
-        Query query = schedulesReference.whereEqualTo("destination", getIntent().getStringExtra("destination"))
+        String destination = capitalizeWords(getIntent().getStringExtra("destination"));
+
+        Query query = schedulesReference.whereEqualTo("route_to", destination)
                 .orderBy("time_queue", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Schedule> options = new FirestoreRecyclerOptions.Builder<Schedule>()
@@ -46,6 +63,17 @@ public class UserTripScheduleActivity extends AppCompatActivity {
         scheduleList.setHasFixedSize(true);
         scheduleList.setLayoutManager(manager);
         scheduleList.setAdapter(adapterScheduleListRV);
+    }
+
+    public static String capitalizeWords(String str) {
+        String[] words = str.split("\\s");
+        String capitalizeWords = "";
+        for (String w : words) {
+            String a = w.substring(0, 1);
+            String b = w.substring(1);
+            capitalizeWords += a.toUpperCase() + b + " ";
+        }
+        return capitalizeWords.trim();
     }
 
     @Override
