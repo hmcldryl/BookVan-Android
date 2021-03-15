@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+style="?attr/spinnerDropDownItemStyle"
+android:layout_width="match_parent"
+android:layout_height="?attr/dropdownListPreferredItemHeight"
+android:weightSum="10">
+
+<TableRow>
+
+    <TextView
+        android:id="@+id/routeDescription"
+        android:layout_height="wrap_content"
+        android:layout_column="1"
+        android:layout_weight="6"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato"
+        android:singleLine="true"
+        android:textColor="@color/textColor"
+        android:textSize="16sp" />
+
+    <Space
+        android:layout_height="match_parent"
+        android:layout_column="2"
+        android:layout_weight="2" />
+
+    <TextView
+        android:id="@+id/routePrice"
+        android:layout_height="wrap_content"
+        android:layout_column="3"
+        android:layout_weight="2"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato_bold"
+        android:singleLine="true"
+        android:textColor="@color/textColor"
+        android:textSize="16sp" />
+</TableRow>
+</TableLayout>
