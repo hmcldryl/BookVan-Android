@@ -41,6 +41,7 @@ public class UserPartnersActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Our Transport Partners");
+        getSupportActionBar().setTitle("BookVan Official Transport Partners");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
