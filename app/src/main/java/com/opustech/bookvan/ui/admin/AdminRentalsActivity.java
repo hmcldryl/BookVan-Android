@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,7 +21,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.admin.AdapterRentAdminListRV;
-import com.opustech.bookvan.model.Rent;
+import com.opustech.bookvan.model.Rental;
 
 public class AdminRentalsActivity extends AppCompatActivity {
 
@@ -58,8 +57,8 @@ public class AdminRentalsActivity extends AppCompatActivity {
 
         Query query = rentalsReference.orderBy("timestamp", Query.Direction.ASCENDING);
 
-        FirestoreRecyclerOptions<Rent> options = new FirestoreRecyclerOptions.Builder<Rent>()
-                .setQuery(query, Rent.class)
+        FirestoreRecyclerOptions<Rental> options = new FirestoreRecyclerOptions.Builder<Rental>()
+                .setQuery(query, Rental.class)
                 .build();
 
         adapterRentAdminListRV = new AdapterRentAdminListRV(options, this);
