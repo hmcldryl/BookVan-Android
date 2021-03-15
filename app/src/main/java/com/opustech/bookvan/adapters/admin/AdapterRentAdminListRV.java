@@ -10,9 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.model.Rent;
+import com.opustech.bookvan.model.Rental;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -24,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterRentAdminListRV extends FirestoreRecyclerAdapter<Rent, AdapterRentAdminListRV.RentHolder> {
+public class AdapterRentAdminListRV extends FirestoreRecyclerAdapter<Rental, AdapterRentAdminListRV.RentHolder> {
 
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, rentalsReference;
@@ -38,13 +37,13 @@ public class AdapterRentAdminListRV extends FirestoreRecyclerAdapter<Rent, Adapt
      * @param options
      */
 
-    public AdapterRentAdminListRV(@NonNull FirestoreRecyclerOptions<Rent> options, Context context) {
+    public AdapterRentAdminListRV(@NonNull FirestoreRecyclerOptions<Rental> options, Context context) {
         super(options);
         this.context = context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull RentHolder holder, int position, @NonNull Rent model) {
+    protected void onBindViewHolder(@NonNull RentHolder holder, int position, @NonNull Rental model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
         rentalsReference = firebaseFirestore.collection("rentals");
         usersReference = firebaseFirestore.collection("users");
