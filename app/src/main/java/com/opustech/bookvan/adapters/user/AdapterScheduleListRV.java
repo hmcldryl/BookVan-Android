@@ -10,10 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Schedule;
 
 public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, AdapterScheduleListRV.ScheduleHolder> {
+
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference partnersReference;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -28,13 +36,27 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
 
     @Override
     protected void onBindViewHolder(@NonNull ScheduleHolder holder, int position, @NonNull Schedule model) {
-        String time_pila = model.getTime_pila();
-        String time_alis = model.getTime_alis();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        partnersReference = firebaseFirestore.collection("partners");
+
+        String time_queue = model.getTime_queue();
+        String time_depart = model.getTime_depart();
         String van_company_uid = model.getVan_company_uid();
 
-        holder.timePila.setText(time_pila);
-        holder.timeAlis.setText(time_alis);
-        holder.vanCompany.setText(van_company_uid);
+        holder.timeQueue.setText(time_queue);
+        holder.timeDepart.setText(time_depart);
+
+        partnersReference.document(van_company_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            holder.vanCompany.setText(task.getResult().getString("name"));
+                        }
+                    }
+                });
+
     }
 
     @NonNull
@@ -46,12 +68,12 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
 
 
     class ScheduleHolder extends RecyclerView.ViewHolder {
-        TextView timePila, timeAlis, vanCompany;
+        TextView timeQueue, timeDepart, vanCompany;
 
         public ScheduleHolder(View view) {
             super(view);
-            timePila = view.findViewById(R.id.timePila);
-            timeAlis = view.findViewById(R.id.timeAlis);
+            timeQueue = view.findViewById(R.id.timeQueue);
+            timeDepart = view.findViewById(R.id.timeDepart);
             vanCompany = view.findViewById(R.id.vanCompany);
         }
     }
