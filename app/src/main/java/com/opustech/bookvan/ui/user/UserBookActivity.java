@@ -9,7 +9,10 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -19,6 +22,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -26,8 +31,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
+import com.opustech.bookvan.model.Schedule;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +71,16 @@ public class UserBookActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton btnBook;
     private AutoCompleteTextView inputVanTransportACT, bookingRouteACT;
 
+    private AdapterDropdownSchedule adapterDropdownSchedule;
+    private ArrayList<Schedule> routeArray;
+
+    private int countAdult = 1;
+    private int countChild = 0;
+    private int countSpecial = 0;
+    private final double specialDiscount = 0.20;
+    private double tripPrice = 0.00;
+    private double totalPrice = 0.00;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,34 +107,23 @@ public class UserBookActivity extends AppCompatActivity {
         });
 
         initializeUi();
-
+        initPriceWatcher();
         populateVanTransportList();
-        //populateRouteList();
+        vanTransportTextWatcher();
         initializeDatePicker();
         initializeTimePicker();
 
-        bookingCountAdult.getEditText().setText("1");
-        bookingCountChild.getEditText().setText("0");
-        bookingCountSpecial.getEditText().setText("0");
+        bookingCountAdult.getEditText().setText((String.valueOf(countAdult)));
+        bookingCountChild.getEditText().setText((String.valueOf(countChild)));
+        bookingCountSpecial.getEditText().setText((String.valueOf(countSpecial)));
 
         addAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
-                if (count_adult >= 0) {
-                    int count = count_adult + 1;
-                    bookingCountAdult.getEditText().setText(String.valueOf(count));
-                }
-            }
-        });
-
-        addChildCount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-                if (count_child >= 0) {
-                    int count = count_child + 1;
-                    bookingCountChild.getEditText().setText(String.valueOf(count));
+                countAdult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
+                if (countAdult >= 0) {
+                    countAdult = countAdult + 1;
+                    bookingCountAdult.getEditText().setText(String.valueOf(countAdult));
                 }
             }
         });
@@ -124,10 +131,21 @@ public class UserBookActivity extends AppCompatActivity {
         subtractAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
-                if (count_adult > 0) {
-                    int count = count_adult - 1;
-                    bookingCountAdult.getEditText().setText(String.valueOf(count));
+                countAdult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
+                if (countAdult > 0) {
+                    countAdult = countAdult - 1;
+                    bookingCountAdult.getEditText().setText(String.valueOf(countAdult));
+                }
+            }
+        });
+
+        addChildCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                countChild = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
+                if (countChild >= 0) {
+                    countChild = countChild + 1;
+                    bookingCountChild.getEditText().setText(String.valueOf(countChild));
                 }
             }
         });
@@ -135,10 +153,10 @@ public class UserBookActivity extends AppCompatActivity {
         subtractChildCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-                if (count_child > 0) {
-                    int count = count_child - 1;
-                    bookingCountChild.getEditText().setText(String.valueOf(count));
+                countChild = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
+                if (countChild > 0) {
+                    countChild = countChild - 1;
+                    bookingCountChild.getEditText().setText(String.valueOf(countChild));
                 }
             }
         });
@@ -146,10 +164,10 @@ public class UserBookActivity extends AppCompatActivity {
         addSpecialCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int count_child = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
-                if (count_child >= 0) {
-                    int count = count_child + 1;
-                    bookingCountSpecial.getEditText().setText(String.valueOf(count));
+                countSpecial = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
+                if (countSpecial >= 0) {
+                    countSpecial = countSpecial + 1;
+                    bookingCountSpecial.getEditText().setText(String.valueOf(countSpecial));
                 }
             }
         });
@@ -157,10 +175,10 @@ public class UserBookActivity extends AppCompatActivity {
         subtractSpecialCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int count_child = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
-                if (count_child > 0) {
-                    int count = count_child - 1;
-                    bookingCountSpecial.getEditText().setText(String.valueOf(count));
+                countSpecial = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
+                if (countSpecial > 0) {
+                    countSpecial = countSpecial - 1;
+                    bookingCountSpecial.getEditText().setText(String.valueOf(countSpecial));
                 }
             }
         });
@@ -173,6 +191,29 @@ public class UserBookActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void initPriceWatcher() {
+        bookingCountAdult.getEditText().addTextChangedListener(priceWatcher);
+        bookingCountChild.getEditText().addTextChangedListener(priceWatcher);
+        bookingCountSpecial.getEditText().addTextChangedListener(priceWatcher);
+    }
+
+    private final TextWatcher priceWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            computeTotalPrice();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     private void initializeUi() {
         bookingCustomerName = findViewById(R.id.bookingCustomerName);
@@ -199,7 +240,45 @@ public class UserBookActivity extends AppCompatActivity {
         btnBook = findViewById(R.id.btnBook);
     }
 
-    private void getTransportCompanyUid(String name, String contact_number, String transport_name, String trip_route, String schedule_date, String schedule_time, int count_adult, int count_child, int count_special) {
+    private void vanTransportTextWatcher() {
+        bookingVanTransport.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String transport_name = bookingVanTransport.getEditText().getText().toString();
+                partnersReference.whereEqualTo("name", transport_name)
+                        .limit(1)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                if (queryDocumentSnapshots != null) {
+                                    if (queryDocumentSnapshots.size() != 0) {
+                                        populateRouteList(queryDocumentSnapshots.getDocuments().get(0).getString("uid"));
+                                    }
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                bookingVanTransport.setError("Van transport does not exist.");
+                            }
+                        });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void getTransportCompanyUid(String name, String contact_number, String transport_name, String trip_route, String schedule_date, String schedule_time) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -213,13 +292,13 @@ public class UserBookActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            generateRefNum(dialog, firebaseAuth.getCurrentUser().getUid(), name, contact_number, task.getResult().getDocuments().get(0).getString("uid"), trip_route, schedule_date, schedule_time, count_adult, count_child, count_special);
+                            generateRefNum(dialog, firebaseAuth.getCurrentUser().getUid(), name, contact_number, task.getResult().getDocuments().get(0).getString("uid"), trip_route, schedule_date, schedule_time);
                         }
                     }
                 });
     }
 
-    private void generateRefNum(ACProgressFlower dialog, String uid, String name, String contact_number, String transport_uid, String trip_route, String schedule_date, String schedule_time, int count_adult, int count_child, int count_special) {
+    private void generateRefNum(ACProgressFlower dialog, String uid, String name, String contact_number, String transport_uid, String trip_route, String schedule_date, String schedule_time) {
         bookingsReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -227,7 +306,7 @@ public class UserBookActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
                             String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
-                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_uid, trip_route, schedule_date, schedule_time, count_adult, count_child, count_special);
+                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_uid, trip_route, schedule_date, schedule_time);
                         }
                     }
                 });
@@ -276,9 +355,6 @@ public class UserBookActivity extends AppCompatActivity {
         String trip_route = bookingRoute.getEditText().getText().toString();
         String schedule_date = bookingScheduleDate.getEditText().getText().toString();
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
-        int count_adult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
-        int count_child = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-        int count_special = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
 
         if (name.isEmpty()) {
             enableInput();
@@ -298,11 +374,11 @@ public class UserBookActivity extends AppCompatActivity {
         } else if (schedule_time.isEmpty()) {
             enableInput();
             bookingScheduleTime.getEditText().setError("Please enter desired schedule time.");
-        } else if (count_adult == 0 && count_child == 0) {
+        } else if (countAdult == 0 && countChild == 0 && countSpecial == 0) {
             enableInput();
             bookingCountAdult.getEditText().setError("Must have at least 1 passenger.");
         } else {
-            getTransportCompanyUid(name, contact_number, transport_name, trip_route, schedule_date, schedule_time, count_adult, count_child, count_special);
+            getTransportCompanyUid(name, contact_number, transport_name, trip_route, schedule_date, schedule_time);
         }
     }
 
@@ -311,7 +387,7 @@ public class UserBookActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
-    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_uid, String trip_route, String schedule_date, String schedule_time, int count_adult, int count_child, int count_special) {
+    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_uid, String trip_route, String schedule_date, String schedule_time) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("reference_number", reference_number);
         hashMap.put("uid", uid);
@@ -321,8 +397,10 @@ public class UserBookActivity extends AppCompatActivity {
         hashMap.put("trip_route", trip_route);
         hashMap.put("schedule_date", schedule_date);
         hashMap.put("schedule_time", schedule_time);
-        hashMap.put("count_adult", count_adult);
-        hashMap.put("count_child", count_child);
+        hashMap.put("count_adult", countAdult);
+        hashMap.put("count_child", countChild);
+        hashMap.put("count_special", countSpecial);
+        hashMap.put("price", totalPrice);
         hashMap.put("timestamp", generateTimestamp());
         hashMap.put("status", "pending");
 
@@ -405,21 +483,43 @@ public class UserBookActivity extends AppCompatActivity {
     }
 
     private void populateRouteList(String uid) {
-        ArrayList<String> routeArray = new ArrayList<>();
-        schedulesReference.whereEqualTo("transport_uid", uid)
+        routeArray = new ArrayList<>();
+        schedulesReference.whereEqualTo("van_company_uid", uid)
+                .orderBy("route_from", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                routeArray.add(i, task.getResult().getDocuments().get(i).getString("route"));
+                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), Float.valueOf(task.getResult().getDocuments().get(i).getLong("price")));
+                                routeArray.add(i, schedule);
                             }
-                            ArrayAdapter<String> routeArrayAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, routeArray);
-                            bookingRouteACT.setAdapter(routeArrayAdapter);
+                            adapterDropdownSchedule = new AdapterDropdownSchedule(UserBookActivity.this, routeArray);
+
+                            bookingRouteACT.setAdapter(adapterDropdownSchedule);
                             bookingRouteACT.setThreshold(1);
+                            bookingRouteACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Schedule selectedSchedule = (Schedule) parent.getItemAtPosition(position);
+                                    tripPrice = (double) selectedSchedule.getPrice();
+                                    computeTotalPrice();
+                                }
+                            });
                         }
                     }
                 });
+    }
+
+    private void computeTotalPrice() {
+        if (tripPrice != 0) {
+            if (countSpecial > 0) {
+                totalPrice = (tripPrice * (countAdult + countChild)) + specialDiscount * (tripPrice * countSpecial);
+            } else {
+                totalPrice = (tripPrice * (countAdult + countChild));
+            }
+            bookingTotal.setText(String.format(Locale.ENGLISH, "%.2f", totalPrice));
+        }
     }
 }
