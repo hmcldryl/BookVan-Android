@@ -61,12 +61,12 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         String name = model.getName();
         String contact_number = model.getContact_number();
         String reference_number = model.getReference_number();
-        String location_from = model.getLocation_from();
-        String location_to = model.getLocation_to();
+        String trip_route = model.getTrip_route();
         String schedule_date = model.getSchedule_date();
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
+        int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
 
         usersReference.document(uid)
@@ -102,8 +102,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingCustomerName.setText(name);
         holder.bookingContactNumber.setText(contact_number);
         holder.bookingReferenceNumber.setText(reference_number);
-        holder.bookingLocationFrom.setText(location_from);
-        holder.bookingLocationTo.setText(location_to);
+        holder.bookingTripRoute.setText(trip_route);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
 
@@ -126,6 +125,14 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         } else {
             holder.bookingCountChild.setVisibility(View.GONE);
         }
+
+        if (count_special >= 1) {
+            String outputChild = count_child + " PWD/Senior/Student.";
+            holder.bookingCountSpecial.setText(outputChild);
+        } else {
+            holder.bookingCountSpecial.setVisibility(View.GONE);
+        }
+
     }
 
     public void cancelBooking(int position) {
@@ -173,12 +180,12 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                 bookingCustomerEmail,
                 bookingContactNumber,
                 bookingReferenceNumber,
-                bookingLocationFrom,
-                bookingLocationTo,
+                bookingTripRoute,
                 bookingScheduleDate,
                 bookingScheduleTime,
                 bookingCountAdult,
                 bookingCountChild,
+                bookingCountSpecial,
                 bookingTransportName,
                 itemNumber;
         CircleImageView customerPhoto;
@@ -191,12 +198,12 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
             bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
             bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
             bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
-            bookingLocationFrom = view.findViewById(R.id.bookingLocationFrom);
-            bookingLocationTo = view.findViewById(R.id.bookingLocationTo);
+            bookingTripRoute = view.findViewById(R.id.bookingTripRoute);
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
             bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
             bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
+            bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
         }
     }
