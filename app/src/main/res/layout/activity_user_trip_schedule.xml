@@ -20,49 +20,49 @@
         app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
         app:titleTextColor="#FFFFFF" />
 
-    <TableLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:weightSum="10">
 
-        <TableRow>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/lato_bold"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="QUEUE"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
 
-            <TextView
-                android:layout_column="1"
-                android:layout_weight="2"
-                android:fontFamily="@font/lato_bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="QUEUE"
-                android:textAlignment="center"
-                android:textColor="@color/textColor"
-                android:textSize="14sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/lato_black"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="DEPART"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
 
-            <TextView
-                android:layout_column="2"
-                android:layout_weight="2"
-                android:fontFamily="@font/lato_black"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="DEPART"
-                android:textAlignment="center"
-                android:textColor="@color/textColor"
-                android:textSize="14sp" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:fontFamily="@font/lato_bold"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="TRANSPORT"
+            android:textAlignment="center"
+            android:textColor="@color/textColor"
+            android:textSize="14sp" />
 
-            <TextView
-                android:layout_column="3"
-                android:layout_weight="6"
-                android:fontFamily="@font/lato_bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="TRANSPORT"
-                android:textAlignment="center"
-                android:textColor="@color/textColor"
-                android:textSize="14sp" />
-        </TableRow>
-
-    </TableLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
