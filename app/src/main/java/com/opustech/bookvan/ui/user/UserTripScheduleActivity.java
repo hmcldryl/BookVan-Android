@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.opustech.bookvan.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -21,6 +23,7 @@ public class UserTripScheduleActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference schedulesReference;
 
+    private ImageView previewImage;
     private RecyclerView scheduleList;
 
     private AdapterScheduleListRV adapterScheduleListRV;
@@ -31,10 +34,10 @@ public class UserTripScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_trip_schedule);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        previewImage = findViewById(R.id.previewImage);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Van Trip Schedule");
-        getSupportActionBar().setSubtitle("Trip Schedule for " + getIntent().getStringExtra("destination").toUpperCase() + ".");
+        getSupportActionBar().setTitle(capitalizeWords(getIntent().getStringExtra("destination")));
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +45,15 @@ public class UserTripScheduleActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        String image_url = getIntent().getStringExtra("image_url");
+        if (image_url != null) {
+            if (!image_url.isEmpty()) {
+                Glide.with(this)
+                        .load(image_url)
+                        .into(previewImage);
+            }
+        }
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         schedulesReference = firebaseFirestore.collection("schedules");
@@ -67,13 +79,13 @@ public class UserTripScheduleActivity extends AppCompatActivity {
 
     public static String capitalizeWords(String str) {
         String[] words = str.split("\\s");
-        String capitalizeWords = "";
+        String result = "";
         for (String w : words) {
             String a = w.substring(0, 1);
             String b = w.substring(1);
-            capitalizeWords += a.toUpperCase() + b + " ";
+            result += a.toUpperCase() + b + " ";
         }
-        return capitalizeWords.trim();
+        return result.trim();
     }
 
     @Override
