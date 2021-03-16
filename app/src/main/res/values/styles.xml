@@ -13,14 +13,28 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="ExapandedToolbarTitleTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Title">
+        <item name="android:fontFamily">@font/lato_black</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="CollapsedToolbarTitleTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Title">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
     <style name="ToolbarTitleTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Title">
         <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <style name="ToolbarSubtitleTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Subtitle">
         <item name="android:fontFamily">@font/lato</item>
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <style name="BottomNavBarTextAppearanceActive" parent="android:TextAppearance.Material.Widget.Toolbar.Subtitle">
