@@ -64,4 +64,5 @@ dependencies {
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
     implementation 'com.github.afreakyelf:Pdf-Viewer:1.0.7'
     implementation 'com.karumi:dexter:6.0.2'
+    implementation 'com.github.PhilJay:MPAndroidChart:3.1.0'
 }
