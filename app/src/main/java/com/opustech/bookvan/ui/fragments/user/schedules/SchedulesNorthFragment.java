@@ -38,6 +38,8 @@ public class SchedulesNorthFragment extends Fragment {
 
     private Context context;
 
+    private String elnido_image_url, roxas_image_url, sanvicente_image_url, taytay_image_url;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_schedules_north, container, false);
@@ -53,6 +55,7 @@ public class SchedulesNorthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "el nido");
+                intent.putExtra("image_url", elnido_image_url);
                 startActivity(intent);
             }
         });
@@ -62,6 +65,7 @@ public class SchedulesNorthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "roxas");
+                intent.putExtra("image_url", roxas_image_url);
                 startActivity(intent);
             }
         });
@@ -71,6 +75,7 @@ public class SchedulesNorthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "san vicente");
+                intent.putExtra("image_url", sanvicente_image_url);
                 startActivity(intent);
             }
         });
@@ -80,6 +85,7 @@ public class SchedulesNorthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "taytay");
+                intent.putExtra("image_url", taytay_image_url);
                 startActivity(intent);
             }
         });
@@ -111,10 +117,10 @@ public class SchedulesNorthFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            String elnido_image_url = task.getResult().getString("elnido_image_url");
-                            String roxas_image_url = task.getResult().getString("roxas_image_url");
-                            String sanvicente_image_url = task.getResult().getString("sanvicente_image_url");
-                            String taytay_image_url = task.getResult().getString("taytay_image_url");
+                            elnido_image_url = task.getResult().getString("elnido_image_url");
+                            roxas_image_url = task.getResult().getString("roxas_image_url");
+                            sanvicente_image_url = task.getResult().getString("sanvicente_image_url");
+                            taytay_image_url = task.getResult().getString("taytay_image_url");
 
                             if (elnido_image_url != null) {
                                 if (!elnido_image_url.isEmpty()) {
