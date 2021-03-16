@@ -71,7 +71,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="5 hours away from Puerto Princesa City"
+                    android:text="1 hour and 4 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
@@ -138,7 +138,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="4 hours and 38 minutes away from Puerto Princesa City"
+                    android:text="4 hours and 42 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
@@ -205,7 +205,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="3 hours and 36 minutes away from Puerto Princesa City"
+                    android:text="3 hours and 44 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
@@ -272,7 +272,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="4 hours 33 minutes away from Puerto Princesa City"
+                    android:text="1 hour 12 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
@@ -339,7 +339,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="2 hours and 21 minutes away from Puerto Princesa City"
+                    android:text="2 hours and 25 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
@@ -406,7 +406,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="4 hours and 33 minutes away from Puerto Princesa City"
+                    android:text="4 hours and 37 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
@@ -473,7 +473,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="4 hours and 32 minutes away from Puerto Princesa City"
+                    android:text="4 hours and 35 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
@@ -540,7 +540,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="4 hours and 32 minutes away from Puerto Princesa City"
+                    android:text="4 hours and 37 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
@@ -607,7 +607,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/lato"
-                    android:text="3 hours and 15 minutes away from Puerto Princesa City"
+                    android:text="3 hours and 22 minutes away from Puerto Princesa City"
                     android:textColor="@color/textColor"
                     android:textSize="14sp" />
 
