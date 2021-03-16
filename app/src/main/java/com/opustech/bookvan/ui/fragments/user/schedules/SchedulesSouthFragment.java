@@ -47,6 +47,8 @@ public class SchedulesSouthFragment extends Fragment {
 
     private Context context;
 
+    private String aborlan_image_url, bataraza_image_url, brookespoint_image_url, narra_image_url, quezon_image_url, riotuba_image_url, rizal_image_url, sicud_image_url, sofronioespanola_image_url;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_schedules_south, container, false);
@@ -61,6 +63,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "aborlan");
+                intent.putExtra("image_url", aborlan_image_url);
                 startActivity(intent);
             }
         });
@@ -70,6 +73,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "bataraza");
+                intent.putExtra("image_url", bataraza_image_url);
                 startActivity(intent);
             }
         });
@@ -79,6 +83,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "brookes point");
+                intent.putExtra("image_url", brookespoint_image_url);
                 startActivity(intent);
             }
         });
@@ -88,6 +93,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "narra");
+                intent.putExtra("image_url", narra_image_url);
                 startActivity(intent);
             }
         });
@@ -97,6 +103,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "quezon");
+                intent.putExtra("image_url", quezon_image_url);
                 startActivity(intent);
             }
         });
@@ -106,6 +113,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "rio tuba");
+                intent.putExtra("image_url", riotuba_image_url);
                 startActivity(intent);
             }
         });
@@ -115,6 +123,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "rizal");
+                intent.putExtra("image_url", rizal_image_url);
                 startActivity(intent);
             }
         });
@@ -124,6 +133,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "sicud");
+                intent.putExtra("image_url", sicud_image_url);
                 startActivity(intent);
             }
         });
@@ -133,6 +143,7 @@ public class SchedulesSouthFragment extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
                 intent.putExtra("destination", "sofronio espanola");
+                intent.putExtra("image_url", sofronioespanola_image_url);
                 startActivity(intent);
             }
         });
@@ -174,15 +185,15 @@ public class SchedulesSouthFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            String aborlan_image_url = task.getResult().getString("aborlan_image_url");
-                            String bataraza_image_url = task.getResult().getString("bataraza_image_url");
-                            String brookespoint_image_url = task.getResult().getString("brookespoint_image_url");
-                            String narra_image_url = task.getResult().getString("narra_image_url");
-                            String quezon_image_url = task.getResult().getString("quezon_image_url");
-                            String riotuba_image_url = task.getResult().getString("riotuba_image_url");
-                            String rizal_image_url = task.getResult().getString("rizal_image_url");
-                            String sicud_image_url = task.getResult().getString("sicud_image_url");
-                            String sofronioespanola_image_url = task.getResult().getString("sofronioespanola_image_url");
+                            aborlan_image_url = task.getResult().getString("aborlan_image_url");
+                            bataraza_image_url = task.getResult().getString("bataraza_image_url");
+                            brookespoint_image_url = task.getResult().getString("brookespoint_image_url");
+                            narra_image_url = task.getResult().getString("narra_image_url");
+                            quezon_image_url = task.getResult().getString("quezon_image_url");
+                            riotuba_image_url = task.getResult().getString("riotuba_image_url");
+                            rizal_image_url = task.getResult().getString("rizal_image_url");
+                            sicud_image_url = task.getResult().getString("sicud_image_url");
+                            sofronioespanola_image_url = task.getResult().getString("sofronioespanola_image_url");
 
                             if (aborlan_image_url != null) {
                                 if (!aborlan_image_url.isEmpty()) {
