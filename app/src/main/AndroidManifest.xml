@@ -14,17 +14,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme">
-        <activity android:name=".ui.transport.TransportAdminBookingScannerActivity"></activity>
-        <activity android:name=".ui.transport.TransportAdminSchedulesActivity" />
-        <activity android:name=".ui.transport.TransportAdminBookingsActivity" />
-        <activity android:name=".ui.admin.AdminTripSchedulesActivity" />
-        <activity android:name=".ui.admin.AdminRentalsActivity" />
-        <activity android:name=".ui.admin.AdminBookingsActivity" />
-        <activity android:name=".ui.user.UserSchedulesActivity" />
-        <activity android:name=".ui.user.UserPartnersActivity" />
-        <activity android:name=".ui.user.UserBookingActivity" />
-        <activity android:name=".ui.user.UserRentActivity" />
-        <activity android:name=".ui.user.UserBookActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -46,9 +35,6 @@
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminDashboardActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.user.UserHomeActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -59,6 +45,33 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.user.UserTripScheduleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.UserSchedulesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.UserPartnersActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.UserBookingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.UserRentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.UserBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.AdminDashboardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.AdminTripSchedulesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.AdminRentalsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.AdminBookingsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin.AdminChatActivity"
@@ -83,6 +96,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.transport.TransportAdminDashboardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.transport.TransportAdminBookingScannerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.transport.TransportAdminSchedulesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.transport.TransportAdminBookingsActivity"
             android:screenOrientation="portrait" />
     </application>
 
