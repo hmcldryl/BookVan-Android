@@ -503,7 +503,7 @@ public class UserBookActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Schedule selectedSchedule = (Schedule) parent.getItemAtPosition(position);
-                                    tripPrice = (double) selectedSchedule.getPrice();
+                                    tripPrice = selectedSchedule.getPrice();
                                     computeTotalPrice();
                                 }
                             });
@@ -515,7 +515,7 @@ public class UserBookActivity extends AppCompatActivity {
     private void computeTotalPrice() {
         if (tripPrice != 0) {
             if (countSpecial > 0) {
-                totalPrice = (tripPrice * (countAdult + countChild)) + specialDiscount * (tripPrice * countSpecial);
+                totalPrice = (tripPrice * (countAdult + countChild)) + ((tripPrice * countSpecial) - (specialDiscount * (tripPrice * countSpecial)));
             } else {
                 totalPrice = (tripPrice * (countAdult + countChild));
             }
