@@ -66,7 +66,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Dashboard");
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_transport_main);
@@ -151,6 +153,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                                 .into(companyPhoto);
                                     }
                                 }
+                                getSupportActionBar().setSubtitle(name);
                                 companyName.setText(name);
                                 companyAddress.setText(address);
                             }
