@@ -293,7 +293,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="16dp" />
+                            android:layout_height="8dp" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -440,7 +440,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="16dp" />
+                            android:layout_height="8dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
