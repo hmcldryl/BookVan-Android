@@ -40,10 +40,12 @@ public class Booking {
         this.status = status;
     }
 
-    public Booking(String driver_name, String plate_number, String timestamp) {
+    public Booking(String driver_name, String plate_number, String status, String timestamp, double price) {
         this.driver_name = driver_name;
         this.plate_number = plate_number;
+        this.status = status;
         this.timestamp = timestamp;
+        this.price = price;
     }
 
     public String getReference_number() {
