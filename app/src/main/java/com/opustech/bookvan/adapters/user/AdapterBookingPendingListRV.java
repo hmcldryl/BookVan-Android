@@ -171,7 +171,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_pending_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_user_pending_item_layout, parent, false);
         return new BookingHolder(view);
     }
 

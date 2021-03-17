@@ -71,6 +71,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
+        int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
 
         usersReference.document(uid)
@@ -136,6 +137,13 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
             holder.labelCountChild.setVisibility(View.GONE);
         }
 
+        if (count_special >= 1) {
+            String outputChild = count_child + " PWD/Senior/Student.";
+            holder.bookingCountSpecial.setText(outputChild);
+        } else {
+            holder.bookingCountSpecial.setVisibility(View.GONE);
+        }
+
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,13 +154,13 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     alertDialog.setCancelable(true);
                     alertDialog.setView(dialogView);
-                    TextView bookingCustomerNameId = dialogView.findViewById(R.id.confirmBookingCustomerNameId);
+                    TextView confirmBookingReferenceNo = dialogView.findViewById(R.id.confirmBookingReferenceNo);
                     TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
                     TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
                     TextInputLayout inputPrice = dialogView.findViewById(R.id.inputPrice);
 
                     String customerNameId = "for " + name + " (" + reference_number + ")";
-                    bookingCustomerNameId.setText(customerNameId);
+                    confirmBookingReferenceNo.setText(customerNameId);
 
                     MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
 
@@ -196,6 +204,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
     }
 
     private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, float price, int position) {
+        Booking booking = new Booking(driver_name, plate_number, "", generateTimestamp(), price);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("driver_name", driver_name);
         hashMap.put("plate_number", plate_number);
@@ -264,9 +273,11 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                 bookingScheduleTime,
                 bookingCountAdult,
                 bookingCountChild,
+                bookingCountSpecial,
                 bookingTransportName,
                 labelCountAdult,
                 labelCountChild,
+                labelCountSpecial,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;
@@ -287,6 +298,8 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
             labelCountAdult = view.findViewById(R.id.labelCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
             labelCountChild = view.findViewById(R.id.labelCountChild);
+            bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
+            labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
         }
     }

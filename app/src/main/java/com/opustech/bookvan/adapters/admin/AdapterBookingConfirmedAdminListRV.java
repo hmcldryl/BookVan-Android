@@ -77,6 +77,7 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
+        int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
         String plate_number = model.getPlate_number();
@@ -133,6 +134,13 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         } else {
             holder.bookingCountChild.setVisibility(View.GONE);
             holder.labelCountChild.setVisibility(View.GONE);
+        }
+
+        if (count_special >= 1) {
+            holder.bookingCountSpecial.setText(String.valueOf(count_special));
+        } else {
+            holder.bookingCountSpecial.setVisibility(View.GONE);
+            holder.labelCountSpecial.setVisibility(View.GONE);
         }
 
         holder.bookingPrice.setText(String.valueOf(price));
@@ -220,12 +228,14 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
                 bookingScheduleTime,
                 bookingCountAdult,
                 bookingCountChild,
+                bookingCountSpecial,
                 bookingTransportName,
                 bookingDriverName,
                 bookingPlateNumber,
                 bookingPrice,
                 labelCountAdult,
                 labelCountChild,
+                labelCountSpecial,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;
@@ -246,6 +256,8 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
             labelCountAdult = view.findViewById(R.id.labelCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
             labelCountChild = view.findViewById(R.id.labelCountChild);
+            bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
+            labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
             bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);

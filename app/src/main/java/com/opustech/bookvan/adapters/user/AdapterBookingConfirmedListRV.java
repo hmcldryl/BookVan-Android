@@ -136,7 +136,6 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
             holder.labelCountSpecial.setVisibility(View.GONE);
         }
 
-
         holder.bookingPrice.setText(String.valueOf(price));
 
         holder.bookingCard.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +174,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_confirmed_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.booking_user_confirmed_item_layout, parent, false);
         return new BookingHolder(view);
     }
 
