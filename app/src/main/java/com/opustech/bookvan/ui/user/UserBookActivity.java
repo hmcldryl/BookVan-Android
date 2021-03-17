@@ -114,7 +114,7 @@ public class UserBookActivity extends AppCompatActivity {
         populateVanTransportList();
         vanTransportTextWatcher();
         initializeDatePicker();
-        initializeTimePicker();
+        //initializeTimePicker();
 
         bookingCountAdult.getEditText().setText((String.valueOf(countAdult)));
         bookingCountChild.getEditText().setText((String.valueOf(countChild)));
@@ -124,7 +124,7 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 countAdult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
-                if (countAdult >= 0) {
+                if (countAdult >= 0 && passengerCapacityAdd()) {
                     countAdult = countAdult + 1;
                     bookingCountAdult.getEditText().setText(String.valueOf(countAdult));
                 }
@@ -135,7 +135,7 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 countAdult = Integer.parseInt(bookingCountAdult.getEditText().getText().toString());
-                if (countAdult > 0) {
+                if (countAdult > 0 && passengerCapacityRemove()) {
                     countAdult = countAdult - 1;
                     bookingCountAdult.getEditText().setText(String.valueOf(countAdult));
                 }
@@ -146,7 +146,7 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 countChild = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-                if (countChild >= 0) {
+                if (countChild >= 0 && passengerCapacityAdd()) {
                     countChild = countChild + 1;
                     bookingCountChild.getEditText().setText(String.valueOf(countChild));
                 }
@@ -157,7 +157,7 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 countChild = Integer.parseInt(bookingCountChild.getEditText().getText().toString());
-                if (countChild > 0) {
+                if (countChild > 0 && passengerCapacityRemove()) {
                     countChild = countChild - 1;
                     bookingCountChild.getEditText().setText(String.valueOf(countChild));
                 }
@@ -168,7 +168,7 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 countSpecial = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
-                if (countSpecial >= 0) {
+                if (countSpecial >= 0 && passengerCapacityAdd()) {
                     countSpecial = countSpecial + 1;
                     bookingCountSpecial.getEditText().setText(String.valueOf(countSpecial));
                 }
@@ -179,7 +179,7 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 countSpecial = Integer.parseInt(bookingCountSpecial.getEditText().getText().toString());
-                if (countSpecial > 0) {
+                if (countSpecial > 0 && passengerCapacityRemove()) {
                     countSpecial = countSpecial - 1;
                     bookingCountSpecial.getEditText().setText(String.valueOf(countSpecial));
                 }
@@ -193,6 +193,14 @@ public class UserBookActivity extends AppCompatActivity {
                 inputCheck();
             }
         });
+    }
+
+    private boolean passengerCapacityAdd() {
+        return countAdult + countChild + countSpecial < 14;
+    }
+
+    private boolean passengerCapacityRemove() {
+        return countAdult + countChild + countSpecial <= 14;
     }
 
     private void initPriceWatcher() {
@@ -377,13 +385,14 @@ public class UserBookActivity extends AppCompatActivity {
                             Toast.makeText(UserBookActivity.this, "Success.", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(UserBookActivity.this, UserBookingActivity.class);
                             startActivity(intent);
+                            //overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                             finish();
                         }
                     }
                 });
     }
 
-    private void initializeTimePicker() {
+/*    private void initializeTimePicker() {
         final Calendar calendar = Calendar.getInstance();
         TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -403,7 +412,7 @@ public class UserBookActivity extends AppCompatActivity {
                         .show();
             }
         });
-    }
+    }*/
 
     private void initializeDatePicker() {
         final Calendar calendar = Calendar.getInstance();
@@ -464,7 +473,7 @@ public class UserBookActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), Float.valueOf(task.getResult().getDocuments().get(i).getLong("price")));
+                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_depart"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), Float.valueOf(task.getResult().getDocuments().get(i).getLong("price")));
                                 routeArray.add(i, schedule);
                             }
                             adapterDropdownSchedule = new AdapterDropdownSchedule(UserBookActivity.this, routeArray);
@@ -475,6 +484,8 @@ public class UserBookActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Schedule selectedSchedule = (Schedule) parent.getItemAtPosition(position);
                                     tripPrice = selectedSchedule.getPrice();
+                                    Toast.makeText(UserBookActivity.this, selectedSchedule.getTime_depart(), Toast.LENGTH_SHORT).show();
+                                    bookingScheduleTime.getEditText().setText(selectedSchedule.getTime_depart());
                                     computeTotalPrice();
                                 }
                             });
@@ -486,7 +497,7 @@ public class UserBookActivity extends AppCompatActivity {
     private void computeTotalPrice() {
         if (tripPrice != 0) {
             if (countSpecial > 0) {
-                totalPrice = (tripPrice * (countAdult + countChild)) + ((tripPrice * countSpecial) - (specialDiscount * (tripPrice * countSpecial)));
+                totalPrice = (tripPrice * (countAdult + countChild + countSpecial) - (specialDiscount * (tripPrice * countSpecial)));
             } else {
                 totalPrice = (tripPrice * (countAdult + countChild));
             }
