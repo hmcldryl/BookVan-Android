@@ -105,6 +105,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingTripRoute.setText(trip_route);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
+        double price = model.getPrice();
 
         if (count_adult > 1) {
             String outputAdult = count_adult + " adults.";
@@ -133,6 +134,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
             holder.bookingCountSpecial.setVisibility(View.GONE);
         }
 
+        holder.bookingPrice.setText(String.valueOf(price));
     }
 
     public void cancelBooking(int position) {
@@ -187,6 +189,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                 bookingCountChild,
                 bookingCountSpecial,
                 bookingTransportName,
+                bookingPrice,
                 itemNumber;
         CircleImageView customerPhoto;
 
@@ -205,6 +208,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
             bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
+            bookingPrice = view.findViewById(R.id.price);
         }
     }
 
