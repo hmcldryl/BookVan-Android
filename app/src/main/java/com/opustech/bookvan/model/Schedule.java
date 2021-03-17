@@ -7,7 +7,8 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(String route_from, String route_to, float price) {
+    public Schedule(String time_depart, String route_from, String route_to, float price) {
+        this.time_depart = time_depart;
         this.route_from = route_from;
         this.route_to = route_to;
         this.price = price;
