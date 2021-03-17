@@ -71,6 +71,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
+        int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
 
         usersReference.document(uid)
