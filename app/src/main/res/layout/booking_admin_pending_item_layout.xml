@@ -257,6 +257,20 @@
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_black"
+                        android:maxLines="1"
+                        android:text="Total:"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -367,6 +381,37 @@
                         android:text=""
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato_bold"
+                            android:maxLines="1"
+                            android:text="@string/peso_sign"
+                            android:textColor="@color/textColor"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato_bold"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="16sp" />
+                    </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
