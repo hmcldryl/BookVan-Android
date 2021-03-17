@@ -41,28 +41,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="8dp" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="125dp"
                     android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp">
+                    android:layout_marginEnd="32dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profilePhoto"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="8dp"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:src="@drawable/placeholder_header_user_dp" />
 
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="match_parent" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toEndOf="@+id/profilePhoto"
                         android:orientation="vertical">
 
                         <TextView
@@ -82,20 +84,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checkable="false"
-                            app:chipIcon="@drawable/ic_icon_book"
-                            android:text="0"
                             android:gravity="center"
-                            app:checkedIconEnabled="false"
-                            app:chipStartPadding="16dp"
-                            app:chipEndPadding="16dp"
-                            android:textColor="#FFFFFF"
+                            android:text="0 BP"
                             android:textAppearance="@style/PointChipTextAppearance"
+                            android:textColor="#FFFFFF"
+                            app:chipIconSize="24dp"
+                            app:checkedIconEnabled="false"
                             app:chipBackgroundColor="@color/colorPrimary"
+                            app:chipEndPadding="16dp"
+                            app:chipIcon="@drawable/ic_icon_book"
+                            app:chipStartPadding="16dp"
                             app:closeIconEnabled="false" />
 
                     </LinearLayout>
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
