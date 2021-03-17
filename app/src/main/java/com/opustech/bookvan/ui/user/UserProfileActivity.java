@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -43,10 +45,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference;
+    private CollectionReference usersReference, bookingsReference;
 
     private CircleImageView profilePhoto;
-    private TextView profileName, profileEmail, profileContactNumber;
+    private TextView profileName, profileEmail, profileContactNumber, profileSuccessfulTrips, profileTotalBookings;
 
     final static int PICK_IMAGE = 1;
 
@@ -65,6 +67,7 @@ public class UserProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,13 +81,13 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setTitle("Your Profile");
-
         btnEdit = findViewById(R.id.btnEdit);
         profilePhoto = findViewById(R.id.profilePhoto);
         profileName = findViewById(R.id.profileName);
         profileEmail = findViewById(R.id.profileEmail);
         profileContactNumber = findViewById(R.id.profileContactNumber);
+        profileSuccessfulTrips = findViewById(R.id.profileSuccessfulTrips);
+        profileTotalBookings = findViewById(R.id.profileTotalBookings);
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +105,9 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivityForResult(intent, PICK_IMAGE);
             }
         });
+
+        loadSuccessfulTrips();
+        loadTotalBookings();
     }
 
     private void startUpdateInfoDialog() {
@@ -137,15 +143,13 @@ public class UserProfileActivity extends AppCompatActivity {
                         inputContactNumber.setEnabled(true);
                         dialog.dismiss();
                         inputName.setError("Please enter your name.");
-                    }
-                    else if (inputContactNumber.getEditText().getText().toString().isEmpty()) {
+                    } else if (inputContactNumber.getEditText().getText().toString().isEmpty()) {
                         btnConfirm.setEnabled(true);
                         inputName.setEnabled(true);
                         inputContactNumber.setEnabled(true);
                         dialog.dismiss();
                         inputName.setError("Please enter your contact number.");
-                    }
-                    else {
+                    } else {
                         String name = inputName.getEditText().getText().toString();
                         String contact_number = inputContactNumber.getEditText().getText().toString();
 
@@ -170,6 +174,36 @@ public class UserProfileActivity extends AppCompatActivity {
 
             alertDialog.show();
         }
+    }
+
+    private void loadSuccessfulTrips() {
+        bookingsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
+                .whereEqualTo("status", "done")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            if (value.size() >= 0) {
+                                profileSuccessfulTrips.setText(String.valueOf(value.size()));
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void loadTotalBookings() {
+        bookingsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
+                .whereIn("status", Arrays.asList("pending", "done", "cancelled"))
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            if (value.size() >= 0) {
+                                profileTotalBookings.setText(String.valueOf(value.size()));
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
