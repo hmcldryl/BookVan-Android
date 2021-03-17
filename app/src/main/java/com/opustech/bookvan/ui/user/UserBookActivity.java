@@ -281,27 +281,13 @@ public class UserBookActivity extends AppCompatActivity {
         });
     }
 
-    private void getTransportCompanyUid(String name, String contact_number, String transport_name, String trip_route, String schedule_date, String schedule_time) {
+    private void generateRefNum(String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
                 .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
-        partnersReference.whereEqualTo("name", transport_name)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            generateRefNum(dialog, firebaseAuth.getCurrentUser().getUid(), name, contact_number, task.getResult().getDocuments().get(0).getString("uid"), trip_route, schedule_date, schedule_time);
-                        }
-                    }
-                });
-    }
-
-    private void generateRefNum(ACProgressFlower dialog, String uid, String name, String contact_number, String transport_uid, String trip_route, String schedule_date, String schedule_time) {
         bookingsReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -309,7 +295,7 @@ public class UserBookActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
                             String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
-                            addNewBooking(dialog, reference_number, uid, name, contact_number, transport_uid, trip_route, schedule_date, schedule_time);
+                            addNewBooking(dialog, reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time);
                         }
                     }
                 });
@@ -371,7 +357,7 @@ public class UserBookActivity extends AppCompatActivity {
             enableInput();
             bookingCountAdult.getEditText().setError("Must have at least 1 passenger.");
         } else {
-            getTransportCompanyUid(name, contact_number, transport_name, trip_route, schedule_date, schedule_time);
+            generateRefNum(name, contact_number, transport_name, trip_route, schedule_date, schedule_time);
         }
     }
 
@@ -380,9 +366,8 @@ public class UserBookActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
-    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time, String transport_uid) {
-        Booking booking = new Booking(reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time, transport_uid, "pending", generateTimestamp(), countAdult, countChild, countSpecial, totalPrice);
-
+    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time) {
+        Booking booking = new Booking(reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time, transportUid, "pending", generateTimestamp(), countAdult, countChild, countSpecial, totalPrice);
         bookingsReference.add(booking)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
