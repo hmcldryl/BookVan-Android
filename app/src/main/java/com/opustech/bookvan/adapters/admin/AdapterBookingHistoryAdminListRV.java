@@ -63,7 +63,7 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
         String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
         String plate_number = model.getPlate_number();
-        float price = model.getPrice();
+        double price = model.getPrice();
 
         usersReference.document(uid)
                 .get()

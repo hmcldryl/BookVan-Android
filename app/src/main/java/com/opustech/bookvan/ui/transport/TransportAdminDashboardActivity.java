@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,9 +26,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
+
+import java.util.Arrays;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -34,7 +39,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, partnersReference;
+    private CollectionReference usersReference, bookingsReference, partnersReference;
 
     private CircleImageView headerUserPhoto, companyPhoto;
     private TextView headerUserName, headerUserEmail, headerUserAccountType, companyName, companyAddress;
@@ -63,11 +68,13 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");
+        bookingsReference = firebaseFirestore.collection("bookings");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Dashboard");
+        getSupportActionBar().setSubtitle("Welcome to BookVan!");
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -188,6 +195,28 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void loadAnalytics() {
+
+    }
+
+    private void todayTotalBooking(String uid) {
+        bookingsReference.whereEqualTo("transport_uid", uid)
+                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                        }
+                    }
+                });
+    }
+
+    private void allTimeTotalBooking() {
+
     }
 
     @Override

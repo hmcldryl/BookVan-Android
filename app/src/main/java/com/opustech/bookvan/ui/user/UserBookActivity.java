@@ -35,7 +35,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
+import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.model.Schedule;
+import com.opustech.bookvan.model.TransportCompany;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,6 +76,7 @@ public class UserBookActivity extends AppCompatActivity {
     private AdapterDropdownSchedule adapterDropdownSchedule;
     private ArrayList<Schedule> routeArray;
 
+    private String transportUid = "";
     private int countAdult = 1;
     private int countChild = 0;
     private int countSpecial = 0;
@@ -312,16 +315,6 @@ public class UserBookActivity extends AppCompatActivity {
                 });
     }
 
-    private void clearInput() {
-        bookingCustomerName.getEditText().getText().clear();
-        bookingContactNumber.getEditText().getText().clear();
-        bookingRoute.getEditText().getText().clear();
-        bookingScheduleDate.getEditText().getText().clear();
-        bookingScheduleTime.getEditText().getText().clear();
-        bookingCountAdult.getEditText().getText().clear();
-        bookingCountChild.getEditText().getText().clear();
-    }
-
     private void disableInput() {
         btnBook.setEnabled(false);
         bookingCustomerName.setEnabled(false);
@@ -387,24 +380,10 @@ public class UserBookActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
-    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String transport_uid, String trip_route, String schedule_date, String schedule_time) {
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("reference_number", reference_number);
-        hashMap.put("uid", uid);
-        hashMap.put("name", name);
-        hashMap.put("contact_number", contact_number);
-        hashMap.put("transport_uid", transport_uid);
-        hashMap.put("trip_route", trip_route);
-        hashMap.put("schedule_date", schedule_date);
-        hashMap.put("schedule_time", schedule_time);
-        hashMap.put("count_adult", countAdult);
-        hashMap.put("count_child", countChild);
-        hashMap.put("count_special", countSpecial);
-        hashMap.put("price", totalPrice);
-        hashMap.put("timestamp", generateTimestamp());
-        hashMap.put("status", "pending");
+    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time, String transport_uid) {
+        Booking booking = new Booking(reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time, transport_uid, "pending", generateTimestamp(), countAdult, countChild, countSpecial, totalPrice);
 
-        bookingsReference.add(hashMap)
+        bookingsReference.add(booking)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -465,18 +444,26 @@ public class UserBookActivity extends AppCompatActivity {
     }
 
     private void populateVanTransportList() {
-        ArrayList<String> vanTransportList = new ArrayList<>();
+        ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
         partnersReference.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                vanTransportList.add(i, task.getResult().getDocuments().get(i).getString("name"));
+                                TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("name"));
+                                vanTransportList.add(i, transportCompany);
                             }
-                            ArrayAdapter<String> vanTransportAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
+                            ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
                             inputVanTransportACT.setAdapter(vanTransportAdapter);
                             inputVanTransportACT.setThreshold(1);
+                            inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
+                                    transportUid = selectedTransport.getUid();
+                                }
+                            });
                         }
                     }
                 });
@@ -496,7 +483,6 @@ public class UserBookActivity extends AppCompatActivity {
                                 routeArray.add(i, schedule);
                             }
                             adapterDropdownSchedule = new AdapterDropdownSchedule(UserBookActivity.this, routeArray);
-
                             bookingRouteACT.setAdapter(adapterDropdownSchedule);
                             bookingRouteACT.setThreshold(1);
                             bookingRouteACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
