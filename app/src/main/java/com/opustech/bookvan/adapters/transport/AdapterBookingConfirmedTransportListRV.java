@@ -67,10 +67,11 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
+        int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
         String plate_number = model.getPlate_number();
-        float price = model.getPrice();
+        double price = model.getPrice();
 
         usersReference.document(uid)
                 .get()
@@ -178,12 +179,14 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
                 bookingScheduleTime,
                 bookingCountAdult,
                 bookingCountChild,
+                bookingCountSpecial,
                 bookingTransportName,
                 bookingDriverName,
                 bookingPlateNumber,
                 bookingPrice,
                 labelCountAdult,
                 labelCountChild,
+                labelCountSpecial,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;
@@ -204,6 +207,8 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
             labelCountAdult = view.findViewById(R.id.labelCountAdult);
             bookingCountChild = view.findViewById(R.id.bookingCountChild);
             labelCountChild = view.findViewById(R.id.labelCountChild);
+            bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
+            labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
             bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
