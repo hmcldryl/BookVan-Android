@@ -29,7 +29,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -73,6 +76,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         int count_child = model.getCount_child();
         int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
+        double price = model.getPrice();
 
         usersReference.document(uid)
                 .get()
@@ -114,6 +118,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         holder.bookingScheduleTime.setText(schedule_time);
         holder.bookingCountAdult.setText(String.valueOf(count_adult));
         holder.bookingCountChild.setText(String.valueOf(count_child));
+        holder.bookingPrice.setText(String.valueOf(count_child));
 
         if (count_adult > 1) {
             String outputAdult = count_adult + " adults.";
@@ -138,11 +143,13 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         }
 
         if (count_special >= 1) {
-            String outputChild = count_child + " PWD/Senior/Student.";
-            holder.bookingCountSpecial.setText(outputChild);
+            String outputSpecial = count_special + " PWD/Senior/Student.";
+            holder.bookingCountSpecial.setText(outputSpecial);
         } else {
             holder.bookingCountSpecial.setVisibility(View.GONE);
         }
+
+        holder.bookingPrice.setText(String.valueOf(price));
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,7 +200,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                                 btnConfirmBooking.setEnabled(true);
                                 inputPrice.getEditText().setError("Please enter price for this booking.");
                             } else {
-                                updateBookingInfo(alertDialog, driver_name, plate_number, price, position);
+                                confirmBooking(alertDialog, driver_name, plate_number, price, position);
                             }
                         }
                     });
@@ -203,24 +210,30 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         });
     }
 
-    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, float price, int position) {
-        Booking booking = new Booking(driver_name, plate_number, "", generateTimestamp(), price);
+    private String generateTimestamp() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
+    }
+
+    private void confirmBooking(AlertDialog alertDialog, String driver_name, String plate_number, double price, int position) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("driver_name", driver_name);
         hashMap.put("plate_number", plate_number);
         hashMap.put("price", price);
         hashMap.put("status", "confirmed");
+        hashMap.put("timestamp", generateTimestamp());
         getSnapshots().getSnapshot(position)
                 .getReference()
-                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    alertDialog.dismiss();
-                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                .update(hashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            alertDialog.dismiss();
+                            Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     public void cancelBooking(int position) {
@@ -238,7 +251,8 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                         hashMap.put("status", "cancelled");
                         getSnapshots().getSnapshot(position)
                                 .getReference()
-                                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .update(hashMap)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
@@ -278,6 +292,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                 labelCountAdult,
                 labelCountChild,
                 labelCountSpecial,
+                bookingPrice,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;
@@ -301,6 +316,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
             bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
             labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
+            bookingPrice = view.findViewById(R.id.price);
         }
     }
 }
