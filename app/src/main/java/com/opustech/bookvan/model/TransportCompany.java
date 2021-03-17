@@ -9,6 +9,10 @@ public class TransportCompany {
     public TransportCompany() {
     }
 
+    public TransportCompany(String name) {
+        this.name = name;
+    }
+
     public TransportCompany(String uid, String name, String description, String address, String email, String website, String photo_url, String banner_url, List<String> telephone_number, List<String> cellphone_number) {
         this.uid = uid;
         this.name = name;
@@ -20,6 +24,11 @@ public class TransportCompany {
         this.banner_url = banner_url;
         this.telephone_number = telephone_number;
         this.cellphone_number = cellphone_number;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public String getUid() {
