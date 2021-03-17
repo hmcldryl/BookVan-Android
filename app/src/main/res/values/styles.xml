@@ -25,6 +25,12 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
+    <style name="PointChipTextAppearance" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
     <style name="ToolbarTitleTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Title">
         <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:textSize">16sp</item>
