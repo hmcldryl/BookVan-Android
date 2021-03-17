@@ -58,18 +58,42 @@
                         android:foreground="?android:attr/selectableItemBackground"
                         android:src="@drawable/placeholder_header_user_dp" />
 
-                    <TextView
-                        android:id="@+id/profileName"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginStart="8dp"
                         android:layout_toEndOf="@+id/profilePhoto"
-                        android:fontFamily="@font/lato_black"
-                        android:text=""
-                        android:textAlignment="center"
-                        android:textColor="@color/textColor"
-                        android:textSize="16sp" />
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/profileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/lato_black"
+                            android:text=""
+                            android:textAlignment="center"
+                            android:textColor="@color/textColor"
+                            android:textSize="16sp" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/userProfileBarterScore"
+                            style="@style/Widget.MaterialComponents.Chip.Entry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="false"
+                            app:chipIcon="@drawable/ic_icon_book"
+                            android:text="0"
+                            android:gravity="center"
+                            app:checkedIconEnabled="false"
+                            app:chipStartPadding="16dp"
+                            app:chipEndPadding="16dp"
+                            android:textColor="#FFFFFF"
+                            android:textAppearance="@style/PointChipTextAppearance"
+                            app:chipBackgroundColor="@color/colorPrimary"
+                            app:closeIconEnabled="false" />
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -129,22 +153,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
                     <LinearLayout
-                        android:layout_width="150dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="5"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/profileSuccessfulTrips"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
@@ -164,30 +189,22 @@
                             android:textSize="16sp" />
                     </LinearLayout>
 
-                    <Space
-                        android:layout_width="16dp"
-                        android:layout_height="match_parent" />
-
                     <LinearLayout
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
                         android:background="#1F121212" />
 
-                    <Space
-                        android:layout_width="16dp"
-                        android:layout_height="match_parent" />
-
                     <LinearLayout
-                        android:layout_width="150dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="5"
                         android:gravity="center"
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/profileTotalBookings"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
