@@ -101,13 +101,12 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
                             BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                             badgeDrawable.setBackgroundColor(ContextCompat.getColor(TransportAdminBookingsActivity.this, R.color.colorBadgeBackground));
                             badgeDrawable.setBadgeTextColor(ContextCompat.getColor(TransportAdminBookingsActivity.this, R.color.white));
-                            badgeDrawable.setMaxCharacterCount(3);
+                            badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
-                            }
-                            else if (size == 0) {
+                            } else if (size == 0) {
                                 badgeDrawable.setVisible(false);
                             }
                         }
@@ -125,13 +124,12 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
                             BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                             badgeDrawable.setBackgroundColor(ContextCompat.getColor(TransportAdminBookingsActivity.this, R.color.colorBadgeBackground));
                             badgeDrawable.setBadgeTextColor(ContextCompat.getColor(TransportAdminBookingsActivity.this, R.color.white));
-                            badgeDrawable.setMaxCharacterCount(3);
+                            badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
-                            }
-                            else if (size == 0) {
+                            } else if (size == 0) {
                                 badgeDrawable.setVisible(false);
                             }
                         }
@@ -154,8 +152,7 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
                             if (size > 0) {
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
-                            }
-                            else if (size == 0) {
+                            } else if (size == 0) {
                                 badgeDrawable.setVisible(false);
                             }
                         }
