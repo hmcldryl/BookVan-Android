@@ -96,8 +96,7 @@ public class AdminBookingsActivity extends AppCompatActivity {
                             if (size > 0) {
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
-                            }
-                            else if (size == 0) {
+                            } else if (size == 0) {
                                 badgeDrawable.setVisible(false);
                             }
                         }
@@ -119,8 +118,7 @@ public class AdminBookingsActivity extends AppCompatActivity {
                             if (size > 0) {
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
-                            }
-                            else if (size == 0) {
+                            } else if (size == 0) {
                                 badgeDrawable.setVisible(false);
                             }
                         }
@@ -138,13 +136,12 @@ public class AdminBookingsActivity extends AppCompatActivity {
                             BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                             badgeDrawable.setBackgroundColor(ContextCompat.getColor(AdminBookingsActivity.this, R.color.colorBadgeBackground));
                             badgeDrawable.setBadgeTextColor(ContextCompat.getColor(AdminBookingsActivity.this, R.color.white));
-                            badgeDrawable.setMaxCharacterCount(2);
+                            badgeDrawable.setMaxCharacterCount(3);
                             int size = value.size();
                             if (size > 0) {
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
-                            }
-                            else if (size == 0) {
+                            } else if (size == 0) {
                                 badgeDrawable.setVisible(false);
                             }
                         }
