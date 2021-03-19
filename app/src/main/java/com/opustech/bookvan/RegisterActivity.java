@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.opustech.bookvan.model.ChatConversation;
+import com.opustech.bookvan.model.ChatMessage;
+import com.opustech.bookvan.model.UserAccount;
 import com.opustech.bookvan.ui.user.UserHomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -153,7 +156,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             dialog.dismiss();
                             enableInput();
-                            Toast.makeText(RegisterActivity.this, "Sign up failed. " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Sign up failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -161,12 +164,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void uploadInfo(ACProgressFlower dialog, String name, String email, String contact_number) {
         // UPLOAD USER INFO TO SERVER
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("name", name);
-        hashMap.put("email", email);
-        hashMap.put("contact_number", contact_number);
+        UserAccount userAccount = new UserAccount(name, email, contact_number, 0);
         usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                .set(hashMap)
+                .set(userAccount)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -187,22 +187,17 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // SEND WELCOME MESSAGE TO NEW USER
                             String message = task.getResult().getString("welcome_message");
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("uid", admin_uid);
-                            hashMap.put("message", message);
-                            hashMap.put("timestamp", generateTimestamp());
+                            ChatMessage chatMessage = new ChatMessage(admin_uid, message, generateTimestamp());
                             conversationsReference.document(firebaseAuth.getCurrentUser().getUid())
                                     .collection("chat")
-                                    .add(hashMap)
+                                    .add(chatMessage)
                                     .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
                                             if (task.isSuccessful()) {
-                                                HashMap<String, Object> hashMap = new HashMap<>();
-                                                hashMap.put("uid", firebaseAuth.getCurrentUser().getUid());
-                                                hashMap.put("timestamp", generateTimestamp());
+                                                ChatConversation chatConversation = new ChatConversation(firebaseAuth.getCurrentUser().getUid(), generateTimestamp());
                                                 conversationsReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                        .set(hashMap)
+                                                        .set(chatConversation)
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
