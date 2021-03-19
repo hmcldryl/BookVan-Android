@@ -264,7 +264,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            dashboardBookingsToday.setText(String.valueOf(task.getResult().size()));
+                            dashboardBookingsAllTime.setText(String.valueOf(task.getResult().size()));
                         }
                     }
                 });
@@ -284,7 +284,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                     earnings = earnings + (double) task.getResult().getDocuments().get(i).getLong("price");
                                 }
                             }
-                            dashboardEarningsToday.setText(String.valueOf(earnings));
+                            dashboardEarningsAllTime.setText(String.valueOf(earnings));
                         }
                     }
                 });
