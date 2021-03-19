@@ -94,7 +94,7 @@ public class UserBookingActivity extends AppCompatActivity {
                             if (size > 0) {
                                 BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                                 badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(3);
+                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
                             }
@@ -114,7 +114,7 @@ public class UserBookingActivity extends AppCompatActivity {
                             if (size > 0) {
                                 BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
                                 badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(3);
+                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
                             }
