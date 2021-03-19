@@ -125,6 +125,7 @@
                                 android:padding="16dp">
 
                                 <TextView
+                                    android:id="@+id/dashboardBookingsToday"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato_black"
@@ -174,6 +175,7 @@
                                         android:textSize="32sp" />
 
                                     <TextView
+                                        android:id="@+id/dashboardEarningsToday"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/lato_black"
@@ -246,6 +248,7 @@
                                 android:padding="16dp">
 
                                 <TextView
+                                    android:id="@+id/dashboardBookingsAllTime"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato_black"
@@ -294,6 +297,7 @@
                                         android:textSize="32sp" />
 
                                     <TextView
+                                        android:id="@+id/dashboardEarningsAllTime"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/lato_black"
