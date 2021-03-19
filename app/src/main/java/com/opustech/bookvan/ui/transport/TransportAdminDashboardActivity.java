@@ -31,7 +31,10 @@ import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -42,7 +45,11 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     private CollectionReference usersReference, bookingsReference, partnersReference;
 
     private CircleImageView headerUserPhoto, companyPhoto;
-    private TextView headerUserName, headerUserEmail, headerUserAccountType, companyName, companyAddress;
+    private TextView headerUserName, headerUserEmail, headerUserAccountType, companyName, companyAddress,
+            dashboardBookingsToday,
+            dashboardEarningsToday,
+            dashboardBookingsAllTime,
+            dashboardEarningsAllTime;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
@@ -99,6 +106,11 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         companyName = navView.findViewById(R.id.companyName);
         companyAddress = navView.findViewById(R.id.companyAddress);
 
+        dashboardBookingsToday = findViewById(R.id.dashboardBookingsToday);
+        dashboardBookingsToday = findViewById(R.id.dashboardEarningsToday);
+        dashboardBookingsAllTime = findViewById(R.id.dashboardBookingsAllTime);
+        dashboardEarningsAllTime = findViewById(R.id.dashboardEarningsAllTime);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -135,6 +147,8 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        loadAnalytics();
     }
 
     private String getCompanyUid() {
@@ -198,10 +212,51 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     }
 
     private void loadAnalytics() {
-
+        todayTotalBooking(getCompanyUid());
+        todayTotalEarning(getCompanyUid());
+        allTimeTotalBooking(getCompanyUid());
+        allTimeTotalEarning(getCompanyUid());
     }
 
     private void todayTotalBooking(String uid) {
+        bookingsReference.whereEqualTo("transport_uid", uid)
+                .whereEqualTo("timestamp_date", getCurrentDate())
+                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                dashboardBookingsToday.setText(String.valueOf(task.getResult().size()));
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void todayTotalEarning(String uid) {
+        bookingsReference.whereEqualTo("transport_uid", uid)
+                .whereEqualTo("timestamp_date", getCurrentDate())
+                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            double earnings = 0.00;
+                            if (!task.getResult().isEmpty()) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    earnings = earnings + (double) task.getResult().getDocuments().get(i).getLong("price");
+                                }
+                            }
+                            dashboardEarningsToday.setText(String.valueOf(earnings));
+                        }
+                    }
+                });
+    }
+
+    private void allTimeTotalBooking(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
                 .whereIn("status", Arrays.asList("done", "cancelled"))
                 .get()
@@ -209,14 +264,35 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
+                            dashboardBookingsToday.setText(String.valueOf(task.getResult().size()));
                         }
                     }
                 });
     }
 
-    private void allTimeTotalBooking() {
+    private void allTimeTotalEarning(String uid) {
+        bookingsReference.whereEqualTo("transport_uid", uid)
+                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            double earnings = 0.00;
+                            if (!task.getResult().isEmpty()) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    earnings = earnings + (double) task.getResult().getDocuments().get(i).getLong("price");
+                                }
+                            }
+                            dashboardEarningsToday.setText(String.valueOf(earnings));
+                        }
+                    }
+                });
+    }
 
+    private String getCurrentDate() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
     }
 
     @Override
