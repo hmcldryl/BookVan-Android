@@ -12,6 +12,7 @@ public class Booking {
             driver_name,
             plate_number,
             status,
+            timestamp_date,
             timestamp;
     int count_adult, count_child, count_special;
     double price;
@@ -19,7 +20,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time, String transport_uid, String status, String timestamp, int count_adult, int count_child, int count_special, double price) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time, String transport_uid, String status, String timestamp_date,  String timestamp, int count_adult, int count_child, int count_special, double price) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
@@ -46,6 +47,14 @@ public class Booking {
         this.status = status;
         this.timestamp = timestamp;
         this.price = price;
+    }
+
+    public String getTimestamp_date() {
+        return timestamp_date;
+    }
+
+    public void setTimestamp_date(String timestamp_date) {
+        this.timestamp_date = timestamp_date;
     }
 
     public String getReference_number() {
