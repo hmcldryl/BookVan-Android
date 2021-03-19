@@ -170,7 +170,7 @@
                                 android:layout_weight="5"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:hint="Pick-Up Date"
+                                android:hint="Date"
                                 app:startIconDrawable="@drawable/ic_input_calendar"
                                 app:startIconTint="@color/colorPrimary">
 
@@ -197,7 +197,7 @@
                                 android:layout_weight="5"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:hint="Pick-Up Time"
+                                android:hint="Time"
                                 app:startIconDrawable="@drawable/ic_input_clock"
                                 app:startIconTint="@color/colorPrimary">
 
@@ -285,7 +285,7 @@
                                 android:layout_weight="5"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:hint="Drop-Off Date"
+                                android:hint="Date"
                                 app:startIconDrawable="@drawable/ic_input_calendar"
                                 app:startIconTint="@color/colorPrimary">
 
@@ -312,7 +312,7 @@
                                 android:layout_weight="5"
                                 android:clickable="true"
                                 android:focusable="true"
-                                android:hint="Drop-Off Time"
+                                android:hint="Time"
                                 app:startIconDrawable="@drawable/ic_input_clock"
                                 app:startIconTint="@color/colorPrimary">
 
