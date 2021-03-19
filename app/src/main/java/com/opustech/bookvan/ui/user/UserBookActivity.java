@@ -374,8 +374,13 @@ public class UserBookActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
+    private String getCurrentDate() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
+    }
+
     private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time) {
-        Booking booking = new Booking(reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time, transportUid, "pending", generateTimestamp(), countAdult, countChild, countSpecial, totalPrice);
+        Booking booking = new Booking(reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time, transportUid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice);
         bookingsReference.add(booking)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
