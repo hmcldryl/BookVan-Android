@@ -51,10 +51,8 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
     private SurfaceView scannerView;
     private QREader reader;
 
-    private Context context;
-
-    private final String OT_KEY = "TEST";
-    private final String OT_SALT = "TEST";
+    private final String OT_KEY = "TzA8gEdNHRphj6Hu";
+    private final String OT_SALT = "N5yH5dvCqskEfCGd";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +115,12 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                                 TextView bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
                                 TextView bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
                                 TextView bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
-                                TextView bookingLocationFrom = view.findViewById(R.id.bookingLocationFrom);
-                                TextView bookingLocationTo = view.findViewById(R.id.bookingLocationTo);
+                                TextView bookingTripRoute = view.findViewById(R.id.bookingTripRoute);
                                 TextView bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
                                 TextView bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
                                 TextView bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
                                 TextView bookingCountChild = view.findViewById(R.id.bookingCountChild);
+                                TextView bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
                                 TextView bookingTransportName = view.findViewById(R.id.bookingTransportName);
                                 TextView bookingDriverName = view.findViewById(R.id.bookingDriverName);
                                 TextView bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
@@ -141,8 +139,7 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                                                         String uid = task.getResult().getDocuments().get(0).getString("uid");
                                                         String name = task.getResult().getDocuments().get(0).getString("name");
                                                         String contact_number = task.getResult().getDocuments().get(0).getString("contact_number");
-                                                        String location_from = task.getResult().getDocuments().get(0).getString("location_from");
-                                                        String location_to = task.getResult().getDocuments().get(0).getString("location_to");
+                                                        String trip_route = task.getResult().getDocuments().get(0).getString("trip_route");
                                                         String schedule_date = task.getResult().getDocuments().get(0).getString("schedule_date");
                                                         String schedule_time = task.getResult().getDocuments().get(0).getString("schedule_time");
                                                         String transport_name = task.getResult().getDocuments().get(0).getString("transport_name");
@@ -150,17 +147,18 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                                                         String plate_number = task.getResult().getDocuments().get(0).getString("plate_number");
                                                         int count_adult = task.getResult().getDocuments().get(0).getLong("count_adult").intValue();
                                                         int count_child = task.getResult().getDocuments().get(0).getLong("count_child").intValue();
-                                                        float price = task.getResult().getDocuments().get(0).getLong("price").floatValue();
+                                                        int count_special = task.getResult().getDocuments().get(0).getLong("count_special").intValue();
+                                                        double price = task.getResult().getDocuments().get(0).getLong("price").doubleValue();
 
                                                         bookingCustomerName.setText(name);
                                                         bookingContactNumber.setText(contact_number);
                                                         bookingReferenceNumber.setText(reference_number);
-                                                        bookingLocationFrom.setText(location_from);
-                                                        bookingLocationTo.setText(location_to);
+                                                        bookingTripRoute.setText(trip_route);
                                                         bookingScheduleDate.setText(schedule_date);
                                                         bookingScheduleTime.setText(schedule_time);
                                                         bookingCountAdult.setText(String.valueOf(count_adult));
                                                         bookingCountChild.setText(String.valueOf(count_child));
+                                                        bookingCountSpecial.setText(String.valueOf(count_special));
                                                         bookingTransportName.setText(transport_name);
                                                         bookingDriverName.setText(driver_name);
                                                         bookingPlateNumber.setText(plate_number);
@@ -204,7 +202,7 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                                         } else {
                                             dialog.dismiss();
                                             alertDialog.dismiss();
-                                            Toast.makeText(TransportAdminBookingScannerActivity.this, "Invalid QR Code. Please scan again.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(TransportAdminBookingScannerActivity.this, "Invalid tr Code. Please scan again.", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
@@ -212,7 +210,7 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                                 alertDialog.show();
                             }
                         } else {
-                            Toast.makeText(context, "Invalid QR code.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TransportAdminBookingScannerActivity.this, "Invalid QR code.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
