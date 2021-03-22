@@ -32,7 +32,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,8 +43,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="?attr/actionBarSize">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -54,10 +54,11 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/today"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
-                            android:text="Thu"
+                            android:text="day"
                             android:textColor="@color/textColor"
                             android:textSize="32sp" />
 
@@ -67,17 +68,18 @@
                             android:fontFamily="@font/lato_black"
                             android:text=","
                             android:textColor="@color/textColor"
-                            android:textSize="32sp" />
+                            android:textSize="24sp" />
 
                         <Space
                             android:layout_width="8dp"
                             android:layout_height="match_parent" />
 
                         <TextView
+                            android:id="@+id/todayDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
-                            android:text="March 16, 2021"
+                            android:text="today_date"
                             android:textColor="@color/textColor"
                             android:textSize="24sp" />
 
@@ -131,7 +133,7 @@
                                     android:fontFamily="@font/lato_black"
                                     android:text="0"
                                     android:textColor="#FFFFFF"
-                                    android:textSize="32sp" />
+                                    android:textSize="24sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -172,7 +174,7 @@
                                         android:fontFamily="@font/lato_black"
                                         android:text="@string/peso_sign"
                                         android:textColor="#FFFFFF"
-                                        android:textSize="32sp" />
+                                        android:textSize="24sp" />
 
                                     <TextView
                                         android:id="@+id/dashboardEarningsToday"
@@ -181,7 +183,7 @@
                                         android:fontFamily="@font/lato_black"
                                         android:text="0.00"
                                         android:textColor="#FFFFFF"
-                                        android:textSize="32sp" />
+                                        android:textSize="24sp" />
                                 </LinearLayout>
 
                                 <TextView
@@ -205,7 +207,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_toolbar"
+                    android:background="@drawable/background_dashboard"
                     android:orientation="vertical">
 
                     <Space
@@ -254,7 +256,7 @@
                                     android:fontFamily="@font/lato_black"
                                     android:text="0"
                                     android:textColor="@color/textColor"
-                                    android:textSize="32sp" />
+                                    android:textSize="24sp" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -262,7 +264,7 @@
                                     android:fontFamily="@font/lato_bold"
                                     android:text="Total Bookings"
                                     android:textColor="@color/textColor"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
@@ -294,7 +296,7 @@
                                         android:fontFamily="@font/lato_black"
                                         android:text="@string/peso_sign"
                                         android:textColor="@color/textColor"
-                                        android:textSize="32sp" />
+                                        android:textSize="24sp" />
 
                                     <TextView
                                         android:id="@+id/dashboardEarningsAllTime"
@@ -303,7 +305,7 @@
                                         android:fontFamily="@font/lato_black"
                                         android:text="0.00"
                                         android:textColor="@color/textColor"
-                                        android:textSize="32sp" />
+                                        android:textSize="24sp" />
                                 </LinearLayout>
 
                                 <TextView
@@ -312,7 +314,7 @@
                                     android:fontFamily="@font/lato_bold"
                                     android:text="Total Earnings"
                                     android:textColor="@color/textColor"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
@@ -382,6 +384,28 @@
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="16dp" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:cardCornerRadius="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <com.github.mikephil.charting.charts.LineChart
+                                android:id="@+id/totalBookingLineChart"
+                                android:layout_width="match_parent"
+                                android:layout_height="300dp"
+                                android:background="#FFFFFF" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
             </LinearLayout>
