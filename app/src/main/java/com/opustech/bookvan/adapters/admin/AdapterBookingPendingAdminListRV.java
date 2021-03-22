@@ -161,13 +161,12 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     alertDialog.setCancelable(true);
                     alertDialog.setView(dialogView);
-                    TextView confirmBookingReferenceNo = dialogView.findViewById(R.id.confirmBookingReferenceNo);
+                    TextView bookingReferenceNo = dialogView.findViewById(R.id.bookingReferenceNo);
                     TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
                     TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
                     TextInputLayout inputPrice = dialogView.findViewById(R.id.inputPrice);
 
-                    String customerNameId = "for " + name + " (" + reference_number + ")";
-                    confirmBookingReferenceNo.setText(customerNameId);
+                    bookingReferenceNo.setText(reference_number);
 
                     MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
 
