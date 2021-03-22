@@ -193,7 +193,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="@font/lato"
-                            android:inputType="none"
+                            android:inputType="time"
                             android:maxLines="1"
                             android:textCursorDrawable="@null" />
 
