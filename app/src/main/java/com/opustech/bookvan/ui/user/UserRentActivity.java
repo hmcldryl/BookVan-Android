@@ -3,6 +3,8 @@ package com.opustech.bookvan.ui.user;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,6 +17,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -23,7 +26,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.chat.AdapterMessageChatRV;
+import com.opustech.bookvan.adapters.user.AdapterRentMessageChatRV;
+import com.opustech.bookvan.model.ChatMessage;
+import com.opustech.bookvan.model.RentChatMessage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,8 +51,11 @@ public class UserRentActivity extends AppCompatActivity {
 
     private TextInputLayout inputRentType, inputName, inputLocationPickUp, inputLocationDropOff, inputContactNumber, inputDestination, inputPickUpDate, inputPickUpTime, inputDropOffDate, inputDropOffTime;
     private AutoCompleteTextView inputRentTypeACT;
+    private RecyclerView rentChatList;
 
     private ExtendedFloatingActionButton btnRent;
+
+    private AdapterRentMessageChatRV adapterRentMessageChatRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +106,23 @@ public class UserRentActivity extends AppCompatActivity {
                 inputCheck();
             }
         });
+
+        Query query = rentalsReference.document(firebaseAuth.getCurrentUser().getUid())
+                .collection("chat")
+                .orderBy("timestamp", Query.Direction.ASCENDING);
+
+        FirestoreRecyclerOptions<RentChatMessage> options = new FirestoreRecyclerOptions.Builder<RentChatMessage>()
+                .setQuery(query, RentChatMessage.class)
+                .build();
+
+        adapterRentMessageChatRV = new AdapterRentMessageChatRV(options);
+        LinearLayoutManager manager = new LinearLayoutManager(UserRentActivity.this);
+        manager.setStackFromEnd(true);
+
+        rentChatList = findViewById(R.id.rentChatList);
+        rentChatList.setHasFixedSize(true);
+        rentChatList.setLayoutManager(manager);
+        rentChatList.setAdapter(adapterRentMessageChatRV);
     }
 
     private void enableInput() {
