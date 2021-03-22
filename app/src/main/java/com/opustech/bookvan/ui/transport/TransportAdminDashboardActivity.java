@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,9 +37,12 @@ import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,7 +58,10 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
             dashboardBookingsToday,
             dashboardEarningsToday,
             dashboardBookingsAllTime,
-            dashboardEarningsAllTime;
+            dashboardEarningsAllTime,
+            today,
+            todayDate;
+    private LineChart totalBookingLineChart;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
@@ -83,6 +95,15 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Dashboard");
         getSupportActionBar().setSubtitle("Welcome to BookVan!");
 
+        today = findViewById(R.id.today);
+        todayDate = findViewById(R.id.todayDate);
+
+        today.setText(getToday());
+        todayDate.setText(getTodayDate());
+
+        totalBookingLineChart = findViewById(R.id.totalBookingLineChart);
+        initializeTotalBookingLineChart();
+
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_transport_main);
@@ -107,7 +128,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         companyAddress = navView.findViewById(R.id.companyAddress);
 
         dashboardBookingsToday = findViewById(R.id.dashboardBookingsToday);
-        dashboardBookingsToday = findViewById(R.id.dashboardEarningsToday);
+        dashboardEarningsToday = findViewById(R.id.dashboardEarningsToday);
         dashboardBookingsAllTime = findViewById(R.id.dashboardBookingsAllTime);
         dashboardEarningsAllTime = findViewById(R.id.dashboardEarningsAllTime);
 
@@ -149,6 +170,57 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         });
 
         loadAnalytics();
+    }
+
+    private void initializeTotalBookingLineChart() {
+        LineDataSet lineDataSet = new LineDataSet(totalBookingLineChartDataSet(), "data set");
+        ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
+        iLineDataSets.add(lineDataSet);
+
+        LineData lineData = new LineData(iLineDataSets);
+        totalBookingLineChart.setData(lineData);
+        totalBookingLineChart.invalidate();
+
+        lineDataSet.setColor(getResources().getColor(R.color.colorPrimary));
+        lineDataSet.setCircleColor(getResources().getColor(R.color.colorPrimary));
+        lineDataSet.setLineWidth(4);
+        lineDataSet.setCircleRadius(6);
+        lineDataSet.setValueTextColor(getResources().getColor(R.color.textColor));
+        lineDataSet.setValueTextSize(14);
+
+        totalBookingLineChart.setNoDataText("Data not available.");
+        totalBookingLineChart.setNoDataTextColor(getResources().getColor(R.color.textColor));
+    }
+
+    private ArrayList<Entry> totalBookingLineChartDataSet() {
+        ArrayList<Entry> dataSet = new ArrayList<>();
+        bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
+                .whereEqualTo("status", "done")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.getResult() != null) {
+                            if (task.getResult().getDocuments().size() > 0) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    String timestamp_date = task.getResult().getDocuments().get(i).getString("timestamp_date");
+                                    dataSet.add(new Entry(i + 1, formatDate(timestamp_date)));
+                                }
+                            }
+                        }
+                    }
+                });
+        return dataSet;
+    }
+
+    private float formatDate(String timestamp_date) {
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(timestamp_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return Float.parseFloat(new SimpleDateFormat("dd", Locale.ENGLISH).format(date));
     }
 
     private String getCompanyUid() {
@@ -212,16 +284,22 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     }
 
     private void loadAnalytics() {
-        todayTotalBooking(getCompanyUid());
-        todayTotalEarning(getCompanyUid());
-        allTimeTotalBooking(getCompanyUid());
-        allTimeTotalEarning(getCompanyUid());
+        bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        todayTotalBooking(getCompanyUid());
+                        todayTotalEarning(getCompanyUid());
+                        allTimeTotalBooking(getCompanyUid());
+                        allTimeTotalEarning(getCompanyUid());
+                    }
+                });
     }
 
     private void todayTotalBooking(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
                 .whereEqualTo("timestamp_date", getCurrentDate())
-                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .whereIn("status", Arrays.asList("done", "cancelled", "pending"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -238,16 +316,18 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     private void todayTotalEarning(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
                 .whereEqualTo("timestamp_date", getCurrentDate())
-                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .whereEqualTo("status", "done")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             double earnings = 0.00;
-                            if (!task.getResult().isEmpty()) {
-                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                    earnings = earnings + (double) task.getResult().getDocuments().get(i).getLong("price");
+                            if (task.getResult() != null) {
+                                if (!task.getResult().isEmpty()) {
+                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                        earnings = earnings + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
+                                    }
                                 }
                             }
                             dashboardEarningsToday.setText(String.valueOf(earnings));
@@ -258,7 +338,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
     private void allTimeTotalBooking(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
-                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .whereIn("status", Arrays.asList("done", "cancelled", "pending"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -272,16 +352,18 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
     private void allTimeTotalEarning(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
-                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .whereEqualTo("status", "done")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             double earnings = 0.00;
-                            if (!task.getResult().isEmpty()) {
-                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                    earnings = earnings + (double) task.getResult().getDocuments().get(i).getLong("price");
+                            if (task.getResult() != null) {
+                                if (!task.getResult().isEmpty()) {
+                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                        earnings = earnings + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
+                                    }
                                 }
                             }
                             dashboardEarningsAllTime.setText(String.valueOf(earnings));
@@ -292,6 +374,16 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
     private String getCurrentDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
+    }
+
+    private String getTodayDate() {
+        SimpleDateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
+    }
+
+    private String getToday() {
+        SimpleDateFormat format = new SimpleDateFormat("E", Locale.ENGLISH);
         return format.format(Calendar.getInstance().getTime());
     }
 
