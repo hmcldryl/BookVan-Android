@@ -133,19 +133,26 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 final AlertDialog alertDialog = builder.create();
                 if (!alertDialog.isShowing()) {
-                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_booking_transport, null);
+                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_booking, null);
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     alertDialog.setCancelable(true);
                     alertDialog.setView(dialogView);
-                    TextView bookingCustomerNameId = dialogView.findViewById(R.id.confirmBookingCustomerNameId);
+                    TextView bookingReferenceNo = dialogView.findViewById(R.id.bookingReferenceNo);
                     TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
                     TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
                     TextInputLayout inputPrice = dialogView.findViewById(R.id.inputPrice);
 
-                    String customerNameId = "for " + name + " (" + reference_number + ")";
-                    bookingCustomerNameId.setText(customerNameId);
+                    bookingReferenceNo.setText(reference_number);
 
                     MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
+                    MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
+
+                    btnCancelBooking.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
 
                     btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -154,26 +161,32 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                             inputVanPlate.setEnabled(false);
                             inputPrice.setEnabled(false);
                             btnConfirmBooking.setEnabled(false);
+                            btnCancelBooking.setEnabled(false);
+
                             String driver_name = inputDriverName.getEditText().getText().toString();
                             String plate_number = inputVanPlate.getEditText().getText().toString();
-                            float price = Float.parseFloat(inputPrice.getEditText().getText().toString());
+                            double price = Float.parseFloat(inputPrice.getEditText().getText().toString());
+
                             if (driver_name.isEmpty()) {
+                                btnConfirmBooking.setEnabled(true);
+                                btnCancelBooking.setEnabled(true);
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
                                 inputPrice.setEnabled(true);
-                                btnConfirmBooking.setEnabled(true);
                                 inputDriverName.getEditText().setError("Please enter the name of the van driver.");
                             } else if (plate_number.isEmpty()) {
+                                btnConfirmBooking.setEnabled(true);
+                                btnCancelBooking.setEnabled(true);
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
                                 inputPrice.setEnabled(true);
-                                btnConfirmBooking.setEnabled(true);
                                 inputVanPlate.getEditText().setError("Please enter the van plate number.");
                             } else if (inputPrice.getEditText().toString().isEmpty()) {
+                                btnConfirmBooking.setEnabled(true);
+                                btnCancelBooking.setEnabled(true);
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
                                 inputPrice.setEnabled(true);
-                                btnConfirmBooking.setEnabled(true);
                                 inputPrice.getEditText().setError("Please enter price for this booking.");
                             } else {
                                 updateBookingInfo(alertDialog, driver_name, plate_number, price, position);
@@ -186,7 +199,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         });
     }
 
-    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, float price, int position) {
+    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, double price, int position) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("driver_name", driver_name);
         hashMap.put("plate_number", plate_number);
