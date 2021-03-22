@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/rentCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/customerPhoto"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/placeholder_header_user_dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/customerName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato_bold"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/customerEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#1F000000" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Contact Number:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Rent Type:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Pick-Up Location:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Date:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Time:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Destination:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Drop-Off Location:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Date:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="Time:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/rentContactNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/rentType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp" />
+
+                        <TextView
+                            android:id="@+id/rentPickUpLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/rentPickUpDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/rentPickUpTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp" />
+
+                        <TextView
+                            android:id="@+id/rentDestination"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp" />
+
+                        <TextView
+                            android:id="@+id/rentDropOffLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/rentDropOffDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/rentDropOffTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/chatReceiverItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:visibility="gone">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/receiverPhoto"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/placeholder_header_user_dp" />
+
+        <ImageView
+            android:id="@+id/chatBubbleArrowLeft"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/receiverPhoto"
+            android:src="@drawable/background_chat_bubble_arrow_left" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="100dp"
+            android:layout_toEndOf="@+id/chatBubbleArrowLeft"
+            android:background="@drawable/background_receiver_chat_message"
+            android:gravity="start"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/receiverChatMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:maxLength="255"
+                android:text=""
+                android:textColor="@color/textColor"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/receiverChatTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="#99121212"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/chatSenderItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:visibility="gone">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/senderPhoto"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/placeholder_header_user_dp" />
+
+        <ImageView
+            android:id="@+id/chatBubbleArrowRight"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/senderPhoto"
+            android:src="@drawable/background_chat_bubble_arrow_right" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:layout_toStartOf="@+id/chatBubbleArrowRight"
+            android:background="@drawable/background_sender_chat_message"
+            android:gravity="end"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/senderChatMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:maxLength="255"
+                android:text=""
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/senderChatTimestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:maxLines="1"
+                android:text=""
+                android:textColor="#99FFFFFF"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>
