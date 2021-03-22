@@ -137,15 +137,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
-                            android:text="From:"
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato"
-                            android:text="To:"
+                            android:text="Route:"
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
@@ -189,9 +181,19 @@
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text="PWD/SC/S:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="16dp" />
+                            android:layout_height="8dp" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -219,7 +221,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="16dp" />
+                            android:layout_height="8dp" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -250,16 +252,7 @@
                             android:layout_height="6dp" />
 
                         <TextView
-                            android:id="@+id/bookingLocationFrom"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato"
-                            android:text=""
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/bookingLocationTo"
+                            android:id="@+id/bookingTripRoute"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
@@ -311,9 +304,20 @@
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
+                        <TextView
+                            android:id="@+id/bookingCountSpecial"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="16dp" />
+                            android:layout_height="8dp" />
 
                         <TextView
                             android:id="@+id/bookingTransportName"
@@ -344,7 +348,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="16dp" />
+                            android:layout_height="8dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -385,7 +389,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_margin="8dp"
                     android:gravity="end"
                     android:orientation="horizontal">
 
