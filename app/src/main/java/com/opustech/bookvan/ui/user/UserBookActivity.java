@@ -478,7 +478,7 @@ public class UserBookActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_depart"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), Float.valueOf(task.getResult().getDocuments().get(i).getLong("price")));
+                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_depart"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), task.getResult().getDocuments().get(i).getLong("price").doubleValue());
                                 routeArray.add(i, schedule);
                             }
                             adapterDropdownSchedule = new AdapterDropdownSchedule(UserBookActivity.this, routeArray);
