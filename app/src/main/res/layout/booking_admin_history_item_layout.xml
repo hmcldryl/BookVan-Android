@@ -34,9 +34,9 @@
                         android:background="@color/colorAccent"
                         android:orientation="horizontal"
                         android:paddingStart="16dp"
-                        android:paddingTop="8dp"
+                        android:paddingTop="6dp"
                         android:paddingEnd="16dp"
-                        android:paddingBottom="8dp">
+                        android:paddingBottom="6dp">
 
                         <TextView
                             android:id="@+id/itemNumber"
@@ -57,9 +57,9 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:paddingStart="16dp"
-                        android:paddingTop="8dp"
+                        android:paddingTop="6dp"
                         android:paddingEnd="16dp"
-                        android:paddingBottom="8dp">
+                        android:paddingBottom="6dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="8dp" />
+                android:layout_height="6dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -140,7 +140,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="8dp" />
+                android:layout_height="6dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -149,7 +149,7 @@
 
             <Space
                 android:layout_width="match_parent"
-                android:layout_height="8dp" />
+                android:layout_height="6dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -251,7 +251,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="8dp" />
+                        android:layout_height="6dp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -285,7 +285,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="8dp" />
+                        android:layout_height="6dp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -395,7 +395,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="8dp" />
+                        android:layout_height="6dp" />
 
                     <TextView
                         android:id="@+id/bookingTransportName"
@@ -432,7 +432,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="8dp" />
+                        android:layout_height="6dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
