@@ -132,8 +132,9 @@ public class UserHomeActivity extends AppCompatActivity {
         btnRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, UserRentActivity.class);
-                startActivity(intent);
+                Toast.makeText(UserHomeActivity.this, "This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(UserHomeActivity.this, UserRentActivity.class);
+                //startActivity(intent);
             }
         });
 
