@@ -14,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme">
-        <activity android:name=".ui.transport.TransportAdminBookingQRActivity"></activity>
-        <activity android:name=".ui.user.UserConfirmBookingQRActivity"></activity>
+        <activity android:name=".ui.user.UserRentConversationActivity"></activity>
+        <activity android:name=".ui.transport.TransportAdminBookingQRActivity" />
+        <activity android:name=".ui.user.UserConfirmBookingQRActivity" />
         <activity android:name=".ui.user.UserConfirmBookingScanActivity" />
 
         <meta-data

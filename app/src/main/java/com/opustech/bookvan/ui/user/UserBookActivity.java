@@ -81,8 +81,10 @@ public class UserBookActivity extends AppCompatActivity {
     private int countChild = 0;
     private int countSpecial = 0;
     private final double specialDiscount = 0.20;
+    private final double commissionRate = 0.10;
     private double tripPrice = 0.00;
     private double totalPrice = 0.00;
+    private double totalCommission = 0.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +220,7 @@ public class UserBookActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             computeTotalPrice();
+            computeCommission();
         }
 
         @Override
@@ -289,26 +292,6 @@ public class UserBookActivity extends AppCompatActivity {
         });
     }
 
-    private void generateRefNum(String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time) {
-        final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
-                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(getResources().getColor(R.color.white))
-                .text("Processing...")
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
-        bookingsReference.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int num = task.getResult().getDocuments().size() + 1;
-                            String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
-                            addNewBooking(dialog, reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time);
-                        }
-                    }
-                });
-    }
-
     private void disableInput() {
         btnBook.setEnabled(false);
         bookingCustomerName.setEnabled(false);
@@ -365,8 +348,28 @@ public class UserBookActivity extends AppCompatActivity {
             enableInput();
             bookingCountAdult.getEditText().setError("Must have at least 1 passenger.");
         } else {
-            generateRefNum(name, contact_number, transport_name, trip_route, schedule_date, schedule_time);
+            generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, trip_route, schedule_date, schedule_time);
         }
+    }
+
+    private void generateRefNum(String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .text("Processing...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+        bookingsReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int num = task.getResult().getDocuments().size() + 1;
+                            String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
+                            addNewBooking(dialog, reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time);
+                        }
+                    }
+                });
     }
 
     private String generateTimestamp() {
@@ -380,7 +383,7 @@ public class UserBookActivity extends AppCompatActivity {
     }
 
     private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time) {
-        Booking booking = new Booking(reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time, transportUid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice);
+        Booking booking = new Booking(reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time, transportUid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice, totalCommission);
         bookingsReference.add(booking)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
@@ -390,7 +393,6 @@ public class UserBookActivity extends AppCompatActivity {
                             Toast.makeText(UserBookActivity.this, "Success.", Toast.LENGTH_LONG).show();
                             Intent intent = new Intent(UserBookActivity.this, UserBookingActivity.class);
                             startActivity(intent);
-                            //overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                             finish();
                         }
                     }
@@ -450,7 +452,7 @@ public class UserBookActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("name"));
+                                TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"));
                                 vanTransportList.add(i, transportCompany);
                             }
                             ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
@@ -461,6 +463,7 @@ public class UserBookActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
                                     transportUid = selectedTransport.getUid();
+                                    Toast.makeText(UserBookActivity.this, selectedTransport.getUid(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -489,9 +492,10 @@ public class UserBookActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Schedule selectedSchedule = (Schedule) parent.getItemAtPosition(position);
                                     tripPrice = selectedSchedule.getPrice();
-                                    Toast.makeText(UserBookActivity.this, selectedSchedule.getTime_depart(), Toast.LENGTH_SHORT).show();
                                     bookingScheduleTime.getEditText().setText(selectedSchedule.getTime_depart());
+                                    bookingScheduleDate.getEditText().setText(getCurrentDate());
                                     computeTotalPrice();
+                                    computeCommission();
                                 }
                             });
                         }
@@ -507,6 +511,16 @@ public class UserBookActivity extends AppCompatActivity {
                 totalPrice = (tripPrice * (countAdult + countChild));
             }
             bookingTotal.setText(String.format(Locale.ENGLISH, "%.2f", totalPrice));
+        }
+    }
+
+    private void computeCommission() {
+        if (tripPrice != 0) {
+            if (countSpecial > 0) {
+                totalCommission = commissionRate * (tripPrice * (countAdult + countChild)) + commissionRate * ((tripPrice * countSpecial) - (specialDiscount * (tripPrice * countSpecial)));
+            } else {
+                totalCommission = commissionRate * (tripPrice * (countAdult + countChild));
+            }
         }
     }
 }

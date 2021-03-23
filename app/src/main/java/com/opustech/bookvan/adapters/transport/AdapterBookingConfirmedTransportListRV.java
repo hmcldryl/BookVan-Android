@@ -126,6 +126,13 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
             holder.labelCountChild.setVisibility(View.GONE);
         }
 
+        if (count_special >= 1) {
+            holder.bookingCountSpecial.setText(String.valueOf(count_special));
+        } else {
+            holder.bookingCountSpecial.setVisibility(View.GONE);
+            holder.labelCountSpecial.setVisibility(View.GONE);
+        }
+
         holder.bookingPrice.setText(String.valueOf(price));
     }
 

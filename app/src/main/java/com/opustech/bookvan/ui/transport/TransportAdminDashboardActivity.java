@@ -101,8 +101,8 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         today.setText(getToday());
         todayDate.setText(getTodayDate());
 
-        totalBookingLineChart = findViewById(R.id.totalBookingLineChart);
-        initializeTotalBookingLineChart();
+        //totalBookingLineChart = findViewById(R.id.totalBookingLineChart);
+        //initializeTotalBookingLineChart();
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -330,7 +330,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                     }
                                 }
                             }
-                            dashboardEarningsToday.setText(String.valueOf(earnings));
+                            dashboardEarningsToday.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
                         }
                     }
                 });
@@ -366,7 +366,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                     }
                                 }
                             }
-                            dashboardEarningsAllTime.setText(String.valueOf(earnings));
+                            dashboardEarningsAllTime.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
                         }
                     }
                 });
