@@ -52,7 +52,6 @@ public class AdapterRentMessageChatRV extends FirestoreRecyclerAdapter<RentChatM
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
-        if (!model.getRent_type().isEmpty()) {
             String uid = model.getUid();
             String message = model.getMessage();
             String timestamp = model.getTimestamp();
@@ -99,27 +98,6 @@ public class AdapterRentMessageChatRV extends FirestoreRecyclerAdapter<RentChatM
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        } else {
-            String contact_number = model.getContact_number();
-            String pickup_location = model.getPickup_location();
-            String pickup_date = model.getPickup_date();
-            String pickup_time = model.getPickup_time();
-            String destination = model.getDestination();
-            String dropoff_location = model.getDropoff_location();
-            String dropoff_date = model.getDropoff_date();
-            String dropoff_time = model.getDropoff_time();
-
-            holder.rentContactNumber.setText(contact_number);
-            holder.rentPickUpLocation.setText(pickup_location);
-            holder.rentPickUpDate.setText(pickup_date);
-            holder.rentPickUpTime.setText(pickup_time);
-            holder.rentDestination.setText(destination);
-            holder.rentDropOffLocation.setText(dropoff_location);
-            holder.rentDropOffDate.setText(dropoff_date);
-            holder.rentDropOffTime.setText(dropoff_time);
-
-            holder.rentCard.setVisibility(View.VISIBLE);
-        }
 
 
     }
@@ -133,31 +111,11 @@ public class AdapterRentMessageChatRV extends FirestoreRecyclerAdapter<RentChatM
 
     class ChatMessageHolder extends RecyclerView.ViewHolder {
         RelativeLayout sender, receiver;
-        CardView rentCard;
         CircleImageView senderPhoto, receiverPhoto;
         TextView senderChatMessage, receiverChatMessage, senderChatTimestamp, receiverChatTimestamp;
-        TextView rentContactNumber,
-                rentType,
-                rentPickUpLocation,
-                rentPickUpDate,
-                rentPickUpTime,
-                rentDestination,
-                rentDropOffLocation,
-                rentDropOffDate,
-                rentDropOffTime;
 
         public ChatMessageHolder(View view) {
             super(view);
-            rentCard = view.findViewById(R.id.rentCard);
-            rentContactNumber = view.findViewById(R.id.rentContactNumber);
-            rentType = view.findViewById(R.id.rentType);
-            rentPickUpLocation = view.findViewById(R.id.rentPickUpLocation);
-            rentPickUpDate = view.findViewById(R.id.rentPickUpDate);
-            rentPickUpTime = view.findViewById(R.id.rentPickUpTime);
-            rentDestination = view.findViewById(R.id.rentDestination);
-            rentDropOffLocation = view.findViewById(R.id.rentDropOffLocation);
-            rentDropOffDate = view.findViewById(R.id.rentDropOffDate);
-            rentDropOffTime = view.findViewById(R.id.rentDropOffTime);
 
             receiver = view.findViewById(R.id.chatReceiverItem);
             receiverPhoto = view.findViewById(R.id.receiverPhoto);
