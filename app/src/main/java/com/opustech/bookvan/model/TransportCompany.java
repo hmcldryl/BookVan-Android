@@ -9,7 +9,8 @@ public class TransportCompany {
     public TransportCompany() {
     }
 
-    public TransportCompany(String name) {
+    public TransportCompany(String uid, String name) {
+        this.uid = uid;
         this.name = name;
     }
 
