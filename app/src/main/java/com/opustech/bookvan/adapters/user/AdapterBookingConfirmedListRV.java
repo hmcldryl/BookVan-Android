@@ -2,6 +2,7 @@ package com.opustech.bookvan.adapters.user;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +27,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
+import com.opustech.bookvan.ui.user.UserConfirmBookingQRActivity;
+import com.opustech.bookvan.ui.user.UserConfirmBookingScanActivity;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -37,9 +41,6 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
     private CollectionReference usersReference, partnersReference;
 
     private final Context context;
-
-    private static final String OT_SALT = "TEST";
-    private static final String OT_KEY = "TEST";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -144,31 +145,36 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 final AlertDialog alertDialog = builder.create();
                 if (!alertDialog.isShowing()) {
-                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_booking_confirmed_item_layout, null);
+                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_booking_confirm_payment, null);
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     alertDialog.setCancelable(true);
                     alertDialog.setView(dialogView);
 
-                    ImageView qrPlaceholder = dialogView.findViewById(R.id.qrPlaceholder);
+                    CardView btnScanMode = dialogView.findViewById(R.id.btnScanMode);
+                    CardView btnQRMode = dialogView.findViewById(R.id.btnQRMode);
 
-                    String inputValue = encryptString(reference_number);
+                    btnScanMode.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(context, UserConfirmBookingScanActivity.class);
+                            intent.putExtra("reference_number", reference_number);
+                            context.startActivity(intent);
+                        }
+                    });
 
-                    QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, 300);
-                    qrgEncoder.setColorBlack(context.getResources().getColor(R.color.colorPrimary));
-                    qrgEncoder.setColorWhite(context.getResources().getColor(R.color.white));
-                    Bitmap bitmap = qrgEncoder.getBitmap();
-                    qrPlaceholder.setImageBitmap(bitmap);
+                    btnQRMode.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(context, UserConfirmBookingQRActivity.class);
+                            intent.putExtra("reference_number", reference_number);
+                            context.startActivity(intent);
+                        }
+                    });
 
                     alertDialog.show();
                 }
             }
         });
-    }
-
-    private String encryptString(String data) {
-        byte[] iv = new byte[16];
-        Encryption encryption = Encryption.getDefault(OT_KEY, OT_SALT, iv);
-        return encryption.encryptOrNull(data);
     }
 
     @NonNull
