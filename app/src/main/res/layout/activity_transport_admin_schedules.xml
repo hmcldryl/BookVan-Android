@@ -20,9 +20,160 @@
         app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
         app:titleTextColor="#FFFFFF" />
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10.25">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/scheduleRouteTimeQueue"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="Queue"
+                    app:startIconDrawable="@drawable/ic_input_clock"
+                    app:startIconTint="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:inputType="time"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/scheduleRouteTimeDepart"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="Depart"
+                    app:startIconDrawable="@drawable/ic_input_clock"
+                    app:startIconTint="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:inputType="time"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/scheduleRoute"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="From - To"
+                app:endIconTint="@color/colorPrimary"
+                app:startIconDrawable="@drawable/ic_input_location"
+                app:startIconTint="@color/colorPrimary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/scheduleRouteACT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="2"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@null" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/scheduleRoutePrice"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"
+                app:startIconDrawable="@drawable/ic_input_price"
+                app:startIconTint="@color/colorPrimary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:clickable="false"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:fontFamily="@font/lato"
+                    android:inputType="number|numberDecimal"
+                    android:maxLines="1"
+                    android:textCursorDrawable="@null" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddRouteSchedule"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_black"
+                    android:text="CONFIRM"
+                    android:textColor="#FFFFFF"
+                    app:backgroundTint="@color/colorPrimary" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#99121212" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,216 +183,73 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10.25">
+                    android:layout_weight="5"
+                    android:fontFamily="@font/lato"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="ROUTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/scheduleRouteTimeQueue"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:hint="Queue"
-                        app:startIconDrawable="@drawable/ic_input_clock"
-                        app:startIconTint="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:inputType="time"
-                            android:maxLines="1"
-                            android:textCursorDrawable="@null" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Space
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.25" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/scheduleRouteTimeDepart"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:hint="Depart"
-                        app:startIconDrawable="@drawable/ic_input_clock"
-                        app:startIconTint="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:inputType="time"
-                            android:maxLines="1"
-                            android:textCursorDrawable="@null" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/scheduleRoute"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="From - To"
-                    app:endIconTint="@color/colorPrimary"
-                    app:startIconDrawable="@drawable/ic_input_location"
-                    app:startIconTint="@color/colorPrimary">
+                    android:layout_weight="2"
+                    android:fontFamily="@font/lato"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="QUEUE"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/scheduleRouteACT"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:completionThreshold="2"
-                        android:fontFamily="@font/lato"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textCursorDrawable="@null" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/scheduleRoutePrice"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:hint="Price"
-                    app:startIconDrawable="@drawable/ic_input_price"
-                    app:startIconTint="@color/colorPrimary">
+                    android:layout_weight="2"
+                    android:fontFamily="@font/lato"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="DEPART"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:clickable="false"
-                        android:ellipsize="end"
-                        android:focusable="false"
-                        android:fontFamily="@font/lato"
-                        android:inputType="number|numberDecimal"
-                        android:maxLines="1"
-                        android:textCursorDrawable="@null" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnAddRouteSchedule"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_black"
-                        android:text="CONFIRM"
-                        android:textColor="#FFFFFF"
-                        app:backgroundTint="@color/colorPrimary" />
-                </LinearLayout>
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="#"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#99121212" />
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="#1F121212" />
 
-            <Space
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/systemScheduleList"
                 android:layout_width="match_parent"
-                android:layout_height="8dp" />
+                android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:weightSum="10">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:fontFamily="@font/lato_bold"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="ROUTE"
-                        android:textAlignment="center"
-                        android:textColor="@color/textColor"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:fontFamily="@font/lato_bold"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="QUEUE"
-                        android:textAlignment="center"
-                        android:textColor="@color/textColor"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:fontFamily="@font/lato_bold"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:text="DEPART"
-                        android:textAlignment="center"
-                        android:textColor="@color/textColor"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="#1F121212" />
-
-            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>
