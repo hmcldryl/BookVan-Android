@@ -15,11 +15,6 @@ import com.opustech.bookvan.adapters.user.SchedulePagerAdapter;
 
 public class AdminTripSchedulesActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
-
-    private SchedulePagerAdapter schedulePagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,24 +33,6 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
             }
         });
 
-        viewPager = findViewById(R.id.viewPager);
-        tabLayout = findViewById(R.id.tabLayout);
 
-        schedulePagerAdapter = new SchedulePagerAdapter(this);
-        viewPager.setAdapter(schedulePagerAdapter);
-
-        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                switch (position) {
-                    case 0:
-                        tab.setText("North");
-                        break;
-                    case 1:
-                        tab.setText("South");
-                        break;
-                }
-            }
-        }).attach();
     }
 }
