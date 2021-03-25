@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,7 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
+import com.opustech.bookvan.adapters.user.AdapterDropdownTripSchedule;
 import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.TransportCompany;
@@ -42,7 +40,6 @@ import com.opustech.bookvan.model.TransportCompany;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -73,7 +70,7 @@ public class UserBookActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton btnBook;
     private AutoCompleteTextView inputVanTransportACT, bookingRouteACT;
 
-    private AdapterDropdownSchedule adapterDropdownSchedule;
+    private AdapterDropdownTripSchedule adapterDropdownTripSchedule;
     private ArrayList<Schedule> routeArray;
 
     private String transportUid = "";
@@ -463,7 +460,6 @@ public class UserBookActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                     TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
                                     transportUid = selectedTransport.getUid();
-                                    Toast.makeText(UserBookActivity.this, selectedTransport.getUid(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -481,18 +477,18 @@ public class UserBookActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_depart"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), task.getResult().getDocuments().get(i).getLong("price").doubleValue());
+                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_queue"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), task.getResult().getDocuments().get(i).getLong("price").doubleValue());
                                 routeArray.add(i, schedule);
                             }
-                            adapterDropdownSchedule = new AdapterDropdownSchedule(UserBookActivity.this, routeArray);
-                            bookingRouteACT.setAdapter(adapterDropdownSchedule);
+                            adapterDropdownTripSchedule = new AdapterDropdownTripSchedule(UserBookActivity.this, routeArray);
+                            bookingRouteACT.setAdapter(adapterDropdownTripSchedule);
                             bookingRouteACT.setThreshold(1);
                             bookingRouteACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Schedule selectedSchedule = (Schedule) parent.getItemAtPosition(position);
                                     tripPrice = selectedSchedule.getPrice();
-                                    bookingScheduleTime.getEditText().setText(selectedSchedule.getTime_depart());
+                                    bookingScheduleTime.getEditText().setText(selectedSchedule.getTime_queue());
                                     bookingScheduleDate.getEditText().setText(getCurrentDate());
                                     computeTotalPrice();
                                     computeCommission();

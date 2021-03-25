@@ -45,8 +45,8 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
 
     private final Context context;
 
-    private static final String OT_SALT = "TEST";
-    private static final String OT_KEY = "TEST";
+    private final String OT_KEY = "TzA8gEdNHRphj6Hu";
+    private final String OT_SALT = "N5yH5dvCqskEfCGd";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

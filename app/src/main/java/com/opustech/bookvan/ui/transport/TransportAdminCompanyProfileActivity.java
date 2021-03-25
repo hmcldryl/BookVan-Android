@@ -121,7 +121,7 @@ public class TransportAdminCompanyProfileActivity extends AppCompatActivity {
         if (banner_url != null) {
             if (!banner_url.isEmpty()) {
                 Glide.with(this)
-                        .load(photo_url)
+                        .load(banner_url)
                         .into(companyBanner);
             }
         }

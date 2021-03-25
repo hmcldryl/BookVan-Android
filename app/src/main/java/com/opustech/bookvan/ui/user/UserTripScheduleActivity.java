@@ -33,6 +33,9 @@ public class UserTripScheduleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_trip_schedule);
 
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        schedulesReference = firebaseFirestore.collection("schedules");
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         previewImage = findViewById(R.id.previewImage);
         setSupportActionBar(toolbar);
@@ -54,9 +57,6 @@ public class UserTripScheduleActivity extends AppCompatActivity {
                         .into(previewImage);
             }
         }
-
-        firebaseFirestore = FirebaseFirestore.getInstance();
-        schedulesReference = firebaseFirestore.collection("schedules");
 
         String destination = capitalizeWords(getIntent().getStringExtra("destination"));
 

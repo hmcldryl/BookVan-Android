@@ -4,8 +4,7 @@
     tools:showIn="navigation_view">
 
     <group
-        android:id="@+id/main_items"
-        android:checkableBehavior="single">
+        android:id="@+id/main_items">
 
         <item
             android:id="@+id/btnProfile"
@@ -30,8 +29,7 @@
     </group>
 
     <group
-        android:id="@+id/actionButtons"
-        android:checkableBehavior="single">
+        android:id="@+id/actionButtons">
 
         <item
             android:id="@+id/btnAbout"

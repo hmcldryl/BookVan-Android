@@ -7,14 +7,12 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(String time_depart, String route_from, String route_to, double price) {
-        this.time_depart = time_depart;
+    public Schedule(String time_queue, String route_from, String route_to, double price) {
+        this.time_queue = time_queue;
         this.route_from = route_from;
         this.route_to = route_to;
         this.price = price;
     }
-
-
 
     public Schedule(String time_queue, String time_depart, String van_company_uid, String route_from, String route_to, double price) {
         this.time_queue = time_queue;

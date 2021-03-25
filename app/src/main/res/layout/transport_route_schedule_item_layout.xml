@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="20">
+
+    <TextView
+        android:id="@+id/routeDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="7"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/routePrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3.5"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/timeQueue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:singleLine="true"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/timeDepart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:singleLine="true"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+
+    <ImageButton
+        android:id="@+id/options"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:background="@null"
+        android:src="@drawable/ic_icon_kebab"
+        android:tint="@color/colorAccent" />
+</LinearLayout>

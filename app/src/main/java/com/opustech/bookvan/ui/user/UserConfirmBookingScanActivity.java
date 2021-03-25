@@ -51,7 +51,7 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
     private QREader reader;
 
     private final String OT_KEY = "TzA8gEdNHRphj6Hu";
-    private final String OT_SALT = "TzA8gEdNHRphj6Hu";
+    private final String OT_SALT = "N5yH5dvCqskEfCGd";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +72,7 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                finish();
             }
         });
 

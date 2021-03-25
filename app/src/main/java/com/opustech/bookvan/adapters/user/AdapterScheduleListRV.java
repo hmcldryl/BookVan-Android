@@ -40,7 +40,7 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
         partnersReference = firebaseFirestore.collection("partners");
 
         String time_queue = model.getTime_queue();
-        String time_depart = model.getTime_depart();
+        String time_depart = model.getTime_queue();
         String van_company_uid = model.getVan_company_uid();
 
         holder.timeQueue.setText(time_queue);
@@ -62,7 +62,7 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
     @NonNull
     @Override
     public ScheduleHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_route_schedule_item_layout, parent, false);
         return new ScheduleHolder(view);
     }
 

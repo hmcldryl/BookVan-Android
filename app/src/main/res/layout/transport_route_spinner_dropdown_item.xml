@@ -10,26 +10,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        android:layout_weight="5"
+        android:layout_weight="7"
         android:ellipsize="marquee"
         android:fontFamily="@font/lato"
         android:singleLine="true"
-        android:text=""
-        android:textColor="@color/textColor"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/routeQueue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_weight="2.5"
-        android:ellipsize="marquee"
-        android:fontFamily="@font/lato"
-        android:singleLine="true"
-        android:text=""
-        android:textAlignment="center"
         android:textColor="@color/textColor"
         android:textSize="14sp" />
 
@@ -38,11 +22,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_weight="2.5"
+        android:layout_weight="3"
         android:ellipsize="marquee"
         android:fontFamily="@font/lato_bold"
         android:singleLine="true"
-        android:text=""
         android:textColor="@color/textColor"
         android:textSize="14sp" />
 </LinearLayout>

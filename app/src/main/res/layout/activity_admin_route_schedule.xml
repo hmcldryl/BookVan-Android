@@ -20,6 +20,237 @@
         app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
         app:titleTextColor="#FFFFFF" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/scheduleRouteFrom"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="From"
+                app:endIconTint="@color/colorPrimary"
+                app:startIconDrawable="@drawable/ic_input_location"
+                app:startIconTint="@color/colorPrimary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/scheduleRouteFromACT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="2"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@null" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/scheduleRouteTo"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="To"
+                app:endIconTint="@color/colorPrimary"
+                app:startIconDrawable="@drawable/ic_input_location"
+                app:startIconTint="@color/colorPrimary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/scheduleRouteToACT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="2"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@null" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/scheduleRouteCategory"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="South / North"
+                app:endIconTint="@color/colorPrimary"
+                app:startIconDrawable="@drawable/ic_input_location"
+                app:startIconTint="@color/colorPrimary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/scheduleRouteCategoryACT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="2"
+                    android:fontFamily="@font/lato"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@null" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/scheduleRoutePrice"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"
+                app:startIconDrawable="@drawable/ic_input_price"
+                app:startIconTint="@color/colorPrimary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:clickable="false"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:fontFamily="@font/lato"
+                    android:inputType="number|numberDecimal"
+                    android:maxLines="1"
+                    android:textCursorDrawable="@null" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddRouteSchedule"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_black"
+                    android:text="CONFIRM"
+                    android:textColor="#FFFFFF"
+                    app:backgroundTint="@color/colorPrimary" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#99121212" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="20">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:fontFamily="@font/lato"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="ROUTE"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3.5"
+                    android:fontFamily="@font/lato"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="PRICE"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3.25"
+                    android:fontFamily="@font/lato"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="QUEUE"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3.25"
+                    android:fontFamily="@font/lato"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="DEPART"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="#"
+                    android:textAlignment="center"
+                    android:textColor="@color/textColor"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="#1F121212" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/systemScheduleList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
