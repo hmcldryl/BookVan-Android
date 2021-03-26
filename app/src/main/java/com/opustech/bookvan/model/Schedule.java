@@ -1,14 +1,27 @@
 package com.opustech.bookvan.model;
 
 public class Schedule {
-    String time_queue, time_depart, van_company_uid, route_from, route_to;
+    String time_queue, time_depart, van_company_uid, route_from, route_to, category;
     double price;
 
     public Schedule() {
     }
 
-    public Schedule(String time_queue, String route_from, String route_to, double price) {
-        this.time_queue = time_queue;
+    public Schedule(String route_from, String route_to, double price) {
+        this.route_from = route_from;
+        this.route_to = route_to;
+        this.price = price;
+    }
+
+    public Schedule(String route_from, String route_to, String category, double price) {
+        this.route_from = route_from;
+        this.route_to = route_to;
+        this.category = category;
+        this.price = price;
+    }
+
+    public Schedule(String time_depart, String route_from, double price, String route_to) {
+        this.time_depart = time_depart;
         this.route_from = route_from;
         this.route_to = route_to;
         this.price = price;
@@ -74,5 +87,13 @@ public class Schedule {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

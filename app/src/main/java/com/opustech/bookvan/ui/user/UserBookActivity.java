@@ -471,13 +471,15 @@ public class UserBookActivity extends AppCompatActivity {
         routeArray = new ArrayList<>();
         schedulesReference.whereEqualTo("van_company_uid", uid)
                 .orderBy("route_from", Query.Direction.ASCENDING)
+                .orderBy("route_to", Query.Direction.ASCENDING)
+                .orderBy("time_depart", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_queue"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), task.getResult().getDocuments().get(i).getLong("price").doubleValue());
+                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_depart"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getLong("price").doubleValue(), task.getResult().getDocuments().get(i).getString("route_to"));
                                 routeArray.add(i, schedule);
                             }
                             adapterDropdownTripSchedule = new AdapterDropdownTripSchedule(UserBookActivity.this, routeArray);

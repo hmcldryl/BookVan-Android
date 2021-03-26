@@ -30,6 +30,7 @@ import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -143,7 +144,7 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
             holder.labelCountSpecial.setVisibility(View.GONE);
         }
 
-        holder.bookingPrice.setText(String.valueOf(price));
+        holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
 
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override

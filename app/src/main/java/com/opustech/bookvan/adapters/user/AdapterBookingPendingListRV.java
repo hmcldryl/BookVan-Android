@@ -25,6 +25,7 @@ import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -68,6 +69,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         int count_child = model.getCount_child();
         int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
+        double price = model.getPrice();
 
         usersReference.document(uid)
                 .get()
@@ -105,7 +107,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingTripRoute.setText(trip_route);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        double price = model.getPrice();
+
 
         if (count_adult > 1) {
             String outputAdult = count_adult + " adults.";
@@ -134,7 +136,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
             holder.bookingCountSpecial.setVisibility(View.GONE);
         }
 
-        holder.bookingPrice.setText(String.valueOf(price));
+        holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
     }
 
     public void cancelBooking(int position) {

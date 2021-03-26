@@ -39,7 +39,7 @@ public class UserConfirmBookingQRActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Confirm Payment");
-        getSupportActionBar().setSubtitle("Present payment and scan QR to confirm payment.");
+        getSupportActionBar().setSubtitle("Present payment and QR to confirm payment.");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,14 +50,14 @@ public class UserConfirmBookingQRActivity extends AppCompatActivity {
         });
 
         qrPlaceholder = findViewById(R.id.qrPlaceholder);
+        qrPlaceholder.setImageBitmap(generateQR());
+    }
 
-        String inputValue = encryptString(getIntent().getStringExtra("reference_number"));
-
-        QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, 500);
+    private Bitmap generateQR() {
+        QRGEncoder qrgEncoder = new QRGEncoder(encryptString(getIntent().getStringExtra("reference_number")), null, QRGContents.Type.TEXT, 500);
         qrgEncoder.setColorBlack(getResources().getColor(R.color.colorPrimary));
         qrgEncoder.setColorWhite(getResources().getColor(R.color.white));
-        Bitmap bitmap = qrgEncoder.getBitmap();
-        qrPlaceholder.setImageBitmap(bitmap);
+        return qrgEncoder.getBitmap();
     }
 
     private String encryptString(String data) {

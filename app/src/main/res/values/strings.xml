@@ -52,6 +52,11 @@
         <item>Rent Driver</item>
     </string-array>
 
+    <string-array name="category">
+        <item>North</item>
+        <item>South</item>
+    </string-array>
+
     <string-array name="destinations">
         <item>Abongan (Taytay)</item>
         <item>Aborlan</item>

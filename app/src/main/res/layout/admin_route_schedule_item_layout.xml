@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="?attr/spinnerDropDownItemStyle"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:weightSum="10">
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:weightSum="20">
 
     <TextView
         android:id="@+id/routeDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_weight="5"
+        android:layout_weight="11"
         android:ellipsize="marquee"
         android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:singleLine="true"
         android:text=""
         android:textColor="@color/textColor"
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/routeDepart"
+        android:id="@+id/routeCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_weight="2.5"
+        android:layout_weight="4"
         android:ellipsize="marquee"
         android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:singleLine="true"
         android:text=""
         android:textAlignment="center"
@@ -37,12 +39,22 @@
         android:id="@+id/routePrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_weight="2.5"
+        android:layout_weight="3.5"
         android:ellipsize="marquee"
-        android:fontFamily="@font/lato_bold"
+        android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:singleLine="true"
         android:text=""
         android:textColor="@color/textColor"
         android:textSize="14sp" />
+
+    <ImageButton
+        android:id="@+id/options"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:background="@null"
+        android:src="@drawable/ic_icon_kebab"
+        android:tint="@color/colorAccent" />
 </LinearLayout>

@@ -36,7 +36,9 @@
                     android:layout_height="125dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/placeholder_header_user_dp" />
+                    android:src="@drawable/placeholder_header_user_dp"
+                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_border_width="8dp" />
 
             </RelativeLayout>
 

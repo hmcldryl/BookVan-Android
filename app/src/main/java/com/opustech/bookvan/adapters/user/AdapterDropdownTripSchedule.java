@@ -37,14 +37,14 @@ public class AdapterDropdownTripSchedule extends ArrayAdapter<Schedule> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.route_spinner_dropdown_item, parent, false);
         }
         TextView routeDescription = convertView.findViewById(R.id.routeDescription);
-        TextView routeQueue = convertView.findViewById(R.id.routeQueue);
+        TextView routeDepart = convertView.findViewById(R.id.routeDepart);
         TextView routePrice = convertView.findViewById(R.id.routePrice);
         Schedule schedule = getItem(position);
         if (schedule != null) {
             String route = schedule.getRoute_from() + " to " + schedule.getRoute_to();
             String price = getContext().getResources().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", schedule.getPrice());
             routeDescription.setText(route);
-            routeQueue.setText(schedule.getTime_queue());
+            routeDepart.setText(schedule.getTime_depart());
             routePrice.setText(price);
         }
         return convertView;

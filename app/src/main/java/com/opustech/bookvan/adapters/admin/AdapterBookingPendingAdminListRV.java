@@ -118,7 +118,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         holder.bookingScheduleTime.setText(schedule_time);
         holder.bookingCountAdult.setText(String.valueOf(count_adult));
         holder.bookingCountChild.setText(String.valueOf(count_child));
-        holder.bookingPrice.setText(String.valueOf(count_child));
+        holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
 
         if (count_adult > 1) {
             String outputAdult = count_adult + " adults.";

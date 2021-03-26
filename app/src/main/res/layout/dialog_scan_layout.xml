@@ -193,7 +193,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="8dp" />
+                            android:layout_height="6dp" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -221,7 +221,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="8dp" />
+                            android:layout_height="6dp" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -317,7 +317,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="8dp" />
+                            android:layout_height="6dp" />
 
                         <TextView
                             android:id="@+id/bookingTransportName"
@@ -348,7 +348,7 @@
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="8dp" />
+                            android:layout_height="6dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

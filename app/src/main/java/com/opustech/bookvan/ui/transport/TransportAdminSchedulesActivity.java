@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -88,7 +90,9 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
         populateRouteList();
 
         Query query = schedulesReference.whereEqualTo("van_company_uid", getTransportUid())
-                .orderBy("time_queue", Query.Direction.ASCENDING);
+                .orderBy("route_from", Query.Direction.ASCENDING)
+                .orderBy("route_to", Query.Direction.ASCENDING)
+                .orderBy("time_depart", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Schedule> options = new FirestoreRecyclerOptions.Builder<Schedule>()
                 .setQuery(query, Schedule.class)
@@ -115,6 +119,30 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 disableInput();
                 checkInput();
+            }
+        });
+
+        scheduleRoutePrice.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                double priceInput = Double.parseDouble(scheduleRoutePrice.getEditText().getText().toString());
+                if (priceInput > price) {
+                    scheduleRoutePrice.setError("Error: Cannot set price more than LTFRB approved rate. " + "(" + String.format(Locale.ENGLISH, "%.2f", price) + " for " + route_from + " to " + route_to + ")");
+                    btnAddRouteSchedule.setEnabled(false);
+                } else if (priceInput == 0) {
+                    scheduleRoutePrice.setError("Error: Cannot set 0.00 as price.");
+                    btnAddRouteSchedule.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }
@@ -222,13 +250,15 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
     private void populateRouteList() {
         routeArray = new ArrayList<>();
         systemSchedulesReference.orderBy("route_from", Query.Direction.ASCENDING)
+                .orderBy("route_to", Query.Direction.ASCENDING)
+                .orderBy("time_depart", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_queue"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), task.getResult().getDocuments().get(i).getLong("price").doubleValue());
+                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), task.getResult().getDocuments().get(i).getLong("price").doubleValue());
                                 routeArray.add(i, schedule);
                             }
                             adapterDropdownTripSchedule = new AdapterTransportDropdownTripSchedule(TransportAdminSchedulesActivity.this, routeArray);
@@ -240,6 +270,7 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
                                     Schedule selectedSchedule = (Schedule) parent.getItemAtPosition(position);
                                     route_from = selectedSchedule.getRoute_from();
                                     route_to = selectedSchedule.getRoute_to();
+                                    price = selectedSchedule.getPrice();
                                     scheduleRoutePrice.getEditText().setText(String.format(Locale.ENGLISH, "%.2f", selectedSchedule.getPrice()));
                                 }
                             });

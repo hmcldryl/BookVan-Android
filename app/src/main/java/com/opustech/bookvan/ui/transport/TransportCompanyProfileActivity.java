@@ -33,6 +33,10 @@ public class TransportCompanyProfileActivity extends AppCompatActivity {
             companyCellphoneNumber,
             companyEmail,
             companyWebsite;
+    private TextView companyTelephoneNumberLabel,
+            companyCellphoneNumberLabel,
+            companyEmailLabel,
+            companyWebsiteLabel;
     private CircleImageView companyPhoto;
     private ImageView companyBanner;
 
@@ -54,6 +58,7 @@ public class TransportCompanyProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                finish();
             }
         });
 
@@ -70,6 +75,10 @@ public class TransportCompanyProfileActivity extends AppCompatActivity {
         companyCellphoneNumber = findViewById(R.id.companyCellphoneNumber);
         companyEmail = findViewById(R.id.companyEmail);
         companyWebsite = findViewById(R.id.companyWebsite);
+        companyTelephoneNumberLabel = findViewById(R.id.companyTelephoneNumberLabel);
+        companyCellphoneNumberLabel = findViewById(R.id.companyCellphoneNumberLabel);
+        companyEmailLabel = findViewById(R.id.companyEmailLabel);
+        companyWebsiteLabel = findViewById(R.id.companyWebsiteLabel);
     }
 
     @Override
@@ -114,36 +123,60 @@ public class TransportCompanyProfileActivity extends AppCompatActivity {
             }
         }
 
-        if (website != null || !website.isEmpty()) {
-            companyWebsite.setText(website);
-        }
-        else {
-            companyWebsite.setVisibility(View.GONE);
-        }
-
         companyName.setText(name);
         companyDescription.setText(description);
         companyAddress.setText(address);
-        companyEmail.setText(email);
 
-        if (telephone_number.size() == 1) {
-            companyTelephoneNumber.setText(telephone_number.get(0));
-        }
-        else if (telephone_number.size() > 1) {
-            companyTelephoneNumber.setText(formatArrayData(telephone_number));
-        }
-        else {
+        if (telephone_number != null) {
+            if (telephone_number.size() == 1) {
+                companyTelephoneNumber.setText(telephone_number.get(0));
+            } else if (telephone_number.size() > 1) {
+                companyTelephoneNumber.setText(formatArrayData(telephone_number));
+            } else if (telephone_number.size() == 0) {
+                companyTelephoneNumber.setVisibility(View.GONE);
+                companyTelephoneNumberLabel.setVisibility(View.GONE);
+            }
+        } else {
             companyTelephoneNumber.setVisibility(View.GONE);
+            companyTelephoneNumberLabel.setVisibility(View.GONE);
         }
 
-        if (cellphone_number.size() == 1) {
-            companyCellphoneNumber.setText(cellphone_number.get(0));
-        }
-        else if (cellphone_number.size() > 1) {
-            companyCellphoneNumber.setText(formatArrayData(cellphone_number));
-        }
-        else {
+        if (cellphone_number != null) {
+            if (cellphone_number.size() == 1) {
+                companyCellphoneNumber.setText(cellphone_number.get(0));
+            } else if (cellphone_number.size() > 1) {
+                companyCellphoneNumber.setText(formatArrayData(cellphone_number));
+            } else if (cellphone_number.size() == 0) {
+                companyCellphoneNumber.setVisibility(View.GONE);
+                companyCellphoneNumberLabel.setVisibility(View.GONE);
+            }
+        } else {
             companyCellphoneNumber.setVisibility(View.GONE);
+            companyCellphoneNumberLabel.setVisibility(View.GONE);
+        }
+
+        if (email != null) {
+            if (!email.isEmpty()) {
+                companyEmail.setText(email);
+            } else {
+                companyEmail.setVisibility(View.GONE);
+                companyEmailLabel.setVisibility(View.GONE);
+            }
+        } else {
+            companyEmail.setVisibility(View.GONE);
+            companyEmailLabel.setVisibility(View.GONE);
+        }
+
+        if (website != null) {
+            if (!website.isEmpty()) {
+                companyWebsite.setText(website);
+            } else {
+                companyWebsite.setVisibility(View.GONE);
+                companyWebsiteLabel.setVisibility(View.GONE);
+            }
+        } else {
+            companyWebsite.setVisibility(View.GONE);
+            companyWebsiteLabel.setVisibility(View.GONE);
         }
     }
 

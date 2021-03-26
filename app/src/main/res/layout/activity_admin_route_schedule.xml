@@ -143,7 +143,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnAddRouteSchedule"
+                    android:id="@+id/btnAddRoute"
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -166,7 +166,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -174,75 +174,41 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:weightSum="20">
 
-                <TextView
+                <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="8"
-                    android:fontFamily="@font/lato"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="ROUTE"
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp" />
+                    android:layout_weight="11"
+                    android:src="@drawable/ic_icon_route"
+                    app:tint="@color/colorAccent" />
 
-                <TextView
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:src="@drawable/ic_input_location"
+                    app:tint="@color/colorAccent" />
+
+                <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3.5"
-                    android:fontFamily="@font/lato"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="PRICE"
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp" />
+                    android:src="@drawable/ic_input_price"
+                    app:tint="@color/colorAccent" />
 
-                <TextView
+                <Space
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3.25"
-                    android:fontFamily="@font/lato"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="QUEUE"
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3.25"
-                    android:fontFamily="@font/lato"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="DEPART"
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="#"
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
                 android:background="#1F121212" />
 
             <androidx.recyclerview.widget.RecyclerView

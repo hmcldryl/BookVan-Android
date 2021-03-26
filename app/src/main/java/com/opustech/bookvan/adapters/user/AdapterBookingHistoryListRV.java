@@ -20,6 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import java.util.Locale;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingHistoryListRV.BookingHolder> {
@@ -121,8 +123,7 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
             holder.labelCountSpecial.setVisibility(View.GONE);
         }
 
-        holder.bookingPrice.setText(String.valueOf(price));
-
+        holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
     }
 
     @NonNull

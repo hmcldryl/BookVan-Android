@@ -30,6 +30,8 @@ import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.ui.user.UserConfirmBookingQRActivity;
 import com.opustech.bookvan.ui.user.UserConfirmBookingScanActivity;
 
+import java.util.Locale;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -137,7 +139,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
             holder.labelCountSpecial.setVisibility(View.GONE);
         }
 
-        holder.bookingPrice.setText(String.valueOf(price));
+        holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
 
         holder.bookingCard.setOnClickListener(new View.OnClickListener() {
             @Override
