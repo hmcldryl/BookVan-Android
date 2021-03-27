@@ -123,6 +123,8 @@ public class TransportCompanyProfileActivity extends AppCompatActivity {
             }
         }
 
+        getSupportActionBar().setSubtitle("About " + name);
+
         companyName.setText(name);
         companyDescription.setText(description);
         companyAddress.setText(address);

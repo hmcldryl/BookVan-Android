@@ -97,9 +97,9 @@
                     android:id="@+id/scheduleRouteCategoryACT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:completionThreshold="2"
+                    android:completionThreshold="1"
                     android:fontFamily="@font/lato"
-                    android:inputType="text"
+                    android:inputType="none"
                     android:singleLine="true"
                     android:textCursorDrawable="@null" />
 
@@ -122,9 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="0dp"
-                    android:clickable="false"
                     android:ellipsize="end"
-                    android:focusable="false"
                     android:fontFamily="@font/lato"
                     android:inputType="number|numberDecimal"
                     android:maxLines="1"

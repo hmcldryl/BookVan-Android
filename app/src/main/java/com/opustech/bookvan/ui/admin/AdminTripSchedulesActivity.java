@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +40,9 @@ import com.opustech.bookvan.ui.user.UserBookActivity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class AdminTripSchedulesActivity extends AppCompatActivity {
 
@@ -68,14 +73,15 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Schedules");
-        getSupportActionBar().setSubtitle("See trip schedules for popular destinations.");
+        getSupportActionBar().setSubtitle("Manage trip routes and pricing.");
 
         initializeUi();
         populateRouteFromList();
         populateRouteToList();
         populateRouteCategoryList();
 
-        Query query = systemSchedulesReference.orderBy("route_from", Query.Direction.ASCENDING);
+        Query query = systemSchedulesReference.orderBy("route_from", Query.Direction.ASCENDING)
+                .orderBy("route_to", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Schedule> options = new FirestoreRecyclerOptions.Builder<Schedule>()
                 .setQuery(query, Schedule.class)
@@ -117,7 +123,6 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
         scheduleRouteToACT.setEnabled(true);
         scheduleRouteCategoryACT.setEnabled(true);
         btnAddRoute.setEnabled(true);
-        systemScheduleList.setEnabled(true);
     }
 
     private void disableInput() {
@@ -129,7 +134,6 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
         scheduleRouteToACT.setEnabled(false);
         scheduleRouteCategoryACT.setEnabled(false);
         btnAddRoute.setEnabled(false);
-        systemScheduleList.setEnabled(false);
     }
 
     private void checkInput() {
@@ -146,7 +150,7 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
             enableInput();
             scheduleRoutePrice.setError("Please enter route price.");
         } else {
-            addTripRoute(scheduleRouteFrom.getEditText().getText().toString(), scheduleRouteTo.getEditText().getText().toString(), scheduleRouteCategory.getEditText().getText().toString(), Double.parseDouble(scheduleRoutePrice.getEditText().getText().toString()));
+            addTripRoute(scheduleRouteFrom.getEditText().getText().toString(), scheduleRouteTo.getEditText().getText().toString(), scheduleRouteCategory.getEditText().getText().toString().toLowerCase(), Double.parseDouble(scheduleRoutePrice.getEditText().getText().toString()));
         }
     }
 
@@ -163,13 +167,20 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
     }
 
     private void addTripRoute(String route_from, String route_to, String category, double price) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .text("Processing...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
         Schedule schedule = new Schedule(route_from, route_to, category, price);
         systemSchedulesReference.add(schedule)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
-
+                            dialog.dismiss();
+                            Toast.makeText(AdminTripSchedulesActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -195,5 +206,17 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
         ArrayAdapter<String> routeFromArrayAdapter = new ArrayAdapter<>(AdminTripSchedulesActivity.this, R.layout.support_simple_spinner_dropdown_item, routeFromArray);
         scheduleRouteCategoryACT.setAdapter(routeFromArrayAdapter);
         scheduleRouteCategoryACT.setThreshold(1);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapterAdminTripScheduleListRV.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapterAdminTripScheduleListRV.stopListening();
     }
 }

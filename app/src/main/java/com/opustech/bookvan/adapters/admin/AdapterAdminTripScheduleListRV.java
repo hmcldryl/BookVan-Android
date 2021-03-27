@@ -44,13 +44,16 @@ public class AdapterAdminTripScheduleListRV extends FirestoreRecyclerAdapter<Sch
     protected void onBindViewHolder(@NonNull ScheduleHolder holder, int position, @NonNull Schedule model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        String description = model.getRoute_from() + " to " + model.getRoute_to();
+        String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
+        String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
+
+        String description = route_from + " to " + route_to;
         String category = model.getCategory();
         String price = context.getResources().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", model.getPrice());
 
         holder.routeDescription.setText(description);
         holder.routePrice.setText(price);
-        holder.routeCategory.setText(category);
+        holder.routeCategory.setText(capitalizeWords(category));
 
         holder.options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +73,17 @@ public class AdapterAdminTripScheduleListRV extends FirestoreRecyclerAdapter<Sch
                 popup.show();
             }
         });
+    }
+
+    public static String capitalizeWords(String str) {
+        String[] words = str.split("\\s");
+        String result = "";
+        for (String w : words) {
+            String a = w.substring(0, 1);
+            String b = w.substring(1);
+            result += a.toUpperCase() + b + " ";
+        }
+        return result.trim();
     }
 
     @NonNull

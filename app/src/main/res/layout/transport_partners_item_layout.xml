@@ -52,21 +52,27 @@
                     android:id="@+id/companyName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato_bold"
+                    android:fontFamily="@font/lato_black"
                     android:maxLines="2"
                     android:text=""
                     android:textAlignment="center"
                     android:textColor="@color/textColor"
                     android:textSize="16sp" />
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
+
                 <TextView
                     android:id="@+id/companyDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:fontFamily="@font/lato"
+                    android:maxLines="4"
                     android:text=""
                     android:textAlignment="center"
-                    android:textColor="@color/textColor"
+                    android:textColor="#CC121212"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>

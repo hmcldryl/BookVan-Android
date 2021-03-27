@@ -24,6 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Schedule;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter<Schedule, AdapterTransportTripScheduleListRV.ScheduleHolder> {
@@ -48,15 +51,26 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
     protected void onBindViewHolder(@NonNull ScheduleHolder holder, int position, @NonNull Schedule model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        String description = model.getRoute_from() + " to " + model.getRoute_to();
+        String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
+        String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
+
+        String description = route_from + " to " + route_to;
         String price = context.getResources().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", model.getPrice());
         String time_queue = model.getTime_queue();
         String time_depart = model.getTime_depart();
 
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            Date date_queue = simpleDateFormat.parse(time_queue);
+            Date date_depart = simpleDateFormat.parse(time_depart);
+            holder.timeQueue.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_queue));
+            holder.timeDepart.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         holder.routeDescription.setText(description);
         holder.routePrice.setText(price);
-        holder.timeQueue.setText(time_queue);
-        holder.timeDepart.setText(time_depart);
 
         holder.options.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -58,45 +58,90 @@
     </string-array>
 
     <string-array name="destinations">
+        <item>Aberawan</item>
+        <item>Abo-abo (Narra)</item>
         <item>Abongan (Taytay)</item>
         <item>Aborlan</item>
-        <item>Abo-Abo (Narra)</item>
+        <item>Alemangoan</item>
+        <item>Aramaywan</item>
         <item>Bacungan</item>
+        <item>Bagong Bayan</item>
+        <item>Bahile</item>
+        <item>Baong</item>
         <item>Bataraza</item>
-        <item>Bato-Bato (Narra)</item>
+        <item>Bato</item>
+        <item>Bato-bato (Narra)</item>
+        <item>Binduyan</item>
         <item>Brooke\'s Point</item>
-        <item>Bucana (PPS)</item>
+        <item>Bucana</item>
+        <item>Buenavista</item>
+        <item>Burirao</item>
+        <item>Cabayogan</item>
+        <item>Calategas</item>
+        <item>Caramay</item>
+        <item>Cataban</item>
+        <item>Danat</item>
         <item>Dumaran</item>
+        <item>Dumarao</item>
         <item>El Nido</item>
+        <item>Ibangle</item>
+        <item>Igang</item>
         <item>Inagawan</item>
+        <item>Iraan</item>
         <item>Iraan (Quezon)</item>
+        <item>Isaub</item>
         <item>Isaub (Sofronio Española)</item>
+        <item>Isumbo</item>
         <item>Iwahig</item>
         <item>Labog (Sofronio Española)</item>
         <item>Langogan</item>
         <item>Luzviminda</item>
+        <item>Macarascas</item>
         <item>Magara (Roxas)</item>
         <item>Malatgao (Narra)</item>
+        <item>Malinao</item>
         <item>Manalo</item>
         <item>Manlag (El Nido)</item>
+        <item>Manlalic</item>
+        <item>Maoyon</item>
         <item>Narra</item>
+        <item>New Cuyo</item>
+        <item>New Rizal</item>
+        <item>Puerto Princesa City</item>
+        <item>Pancol</item>
         <item>Panitian (Sofronio Española)</item>
         <item>Plaridel (Aborlan)</item>
         <item>Port Barton</item>
-        <item>Puerto Princesa City</item>
         <item>Punang (Sofronio Española)</item>
         <item>Quezon</item>
         <item>Rio Tuba</item>
         <item>Rizal</item>
         <item>Roxas</item>
+        <item>Sabala</item>
+        <item>Sabang</item>
+        <item>Salogon</item>
+        <item>Salvacion</item>
+        <item>Samariñana</item>
+        <item>San Carlos</item>
+        <item>San Jose</item>
+        <item>San Rafael</item>
         <item>San Vicente</item>
-        <item>Sandoval</item>
+        <item>Sandoval (Narra)</item>
+        <item>Sandoval (Taytay)</item>
         <item>Sibaltan (El Nido)</item>
         <item>Sicud</item>
+        <item>Simpian</item>
+        <item>Sofronio Española</item>
+        <item>Sta. Fe</item>
+        <item>Sta. Rita</item>
         <item>Tacras (Narra)</item>
+        <item>Tagabinet</item>
         <item>Tagbarungis</item>
+        <item>Tagbiak</item>
+        <item>Tagumpay</item>
         <item>Tamlang (Brooke\'s Point)</item>
         <item>Taytay</item>
+        <item>Urduja</item>
     </string-array>
 
     <string name="default_web_citement_secret">HQ2vZK-JQK3hgE2x3ZJdNy6B</string>

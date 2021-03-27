@@ -210,7 +210,7 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 calendar.set(Calendar.HOUR_OF_DAY, i);
                 calendar.set(Calendar.MINUTE, i1);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
                 scheduleRouteTimeQueue.getEditText().setText(simpleDateFormat.format(calendar.getTime()));
             }
         };
@@ -232,7 +232,7 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 calendar.set(Calendar.HOUR_OF_DAY, i);
                 calendar.set(Calendar.MINUTE, i1);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
                 scheduleRouteTimeDepart.getEditText().setText(simpleDateFormat.format(calendar.getTime()));
             }
         };
@@ -251,7 +251,7 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
         routeArray = new ArrayList<>();
         systemSchedulesReference.orderBy("route_from", Query.Direction.ASCENDING)
                 .orderBy("route_to", Query.Direction.ASCENDING)
-                .orderBy("time_depart", Query.Direction.ASCENDING)
+                .orderBy("price", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

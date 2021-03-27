@@ -35,8 +35,6 @@ public class BookingsConfirmedAdminFragment extends Fragment {
 
     private AdapterBookingConfirmedAdminListRV adapterBookingConfirmedAdminListRV;
 
-    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_bookings_confirmed, container, false);
@@ -67,18 +65,6 @@ public class BookingsConfirmedAdminFragment extends Fragment {
                         }
                     }
                 });
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                adapterBookingConfirmedAdminListRV.cancelBooking(viewHolder.getAdapterPosition());
-            }
-        }).attachToRecyclerView(bookingList);
     }
 
     private void populateList(View root) {

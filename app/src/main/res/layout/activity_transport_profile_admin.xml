@@ -69,7 +69,7 @@
                         android:id="@+id/companyName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_bold"
+                        android:fontFamily="@font/lato_black"
                         android:text=""
                         android:textAlignment="center"
                         android:textColor="@color/textColor"
@@ -84,10 +84,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato"
-                        android:maxLength="500"
                         android:text=""
                         android:textAlignment="center"
-                        android:textColor="@color/textColor"
+                        android:textColor="#CC121212"
                         android:textSize="14sp" />
 
                     <Space

@@ -40,7 +40,10 @@ public class AdapterTransportDropdownTripSchedule extends ArrayAdapter<Schedule>
         TextView routePrice = convertView.findViewById(R.id.routePrice);
         Schedule schedule = getItem(position);
         if (schedule != null) {
-            String route = schedule.getRoute_from() + " to " + schedule.getRoute_to();
+            String route_from = schedule.getRoute_from().equals("Puerto Princesa City") ? "PPC" : schedule.getRoute_from();
+            String route_to = schedule.getRoute_to().equals("Puerto Princesa City") ? "PPC" : schedule.getRoute_to();
+
+            String route = route_from + " to " + route_to;
             String price = getContext().getResources().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", schedule.getPrice());
             routeDescription.setText(route);
             routePrice.setText(price);
