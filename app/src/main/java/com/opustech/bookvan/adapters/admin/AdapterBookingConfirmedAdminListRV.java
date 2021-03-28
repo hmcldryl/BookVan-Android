@@ -46,9 +46,6 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
 
     private final Context context;
 
-    private final String OT_KEY = "TzA8gEdNHRphj6Hu";
-    private final String OT_SALT = "N5yH5dvCqskEfCGd";
-
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -73,7 +70,9 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         String name = model.getName();
         String contact_number = model.getContact_number();
         String reference_number = model.getReference_number();
-        String trip_route = model.getTrip_route();
+        String route_from = model.getRoute_from();
+        String route_to = model.getRoute_to();
+        String trip_route = route_from + " to " + route_to;
         String schedule_date = model.getSchedule_date();
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
