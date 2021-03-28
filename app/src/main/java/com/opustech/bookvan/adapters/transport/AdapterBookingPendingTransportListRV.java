@@ -68,7 +68,9 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
 
         String name = model.getName();
         String reference_number = model.getReference_number();
-        String trip_route = model.getTrip_route();
+        String route_from = model.getRoute_from();
+        String route_to = model.getRoute_to();
+        String trip_route = route_from + " to " + route_to;
         String schedule_date = model.getSchedule_date();
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
