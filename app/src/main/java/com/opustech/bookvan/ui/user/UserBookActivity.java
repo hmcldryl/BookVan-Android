@@ -74,6 +74,8 @@ public class UserBookActivity extends AppCompatActivity {
     private ArrayList<Schedule> routeArray;
 
     private String transportUid = "";
+    private String route_from = "";
+    private String route_to = "";
     private int countAdult = 1;
     private int countChild = 0;
     private int countSpecial = 0;
@@ -105,6 +107,7 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                finish();
             }
         });
 
@@ -319,7 +322,6 @@ public class UserBookActivity extends AppCompatActivity {
         String name = bookingCustomerName.getEditText().getText().toString();
         String contact_number = bookingContactNumber.getEditText().getText().toString();
         String transport_name = bookingVanTransport.getEditText().getText().toString();
-        String trip_route = bookingRoute.getEditText().getText().toString();
         String schedule_date = bookingScheduleDate.getEditText().getText().toString();
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
 
@@ -332,9 +334,9 @@ public class UserBookActivity extends AppCompatActivity {
         } else if (transport_name.isEmpty()) {
             enableInput();
             bookingVanTransport.getEditText().setError("Please select your preferred van transport.");
-        } else if (trip_route.isEmpty()) {
+        } else if (route_from.isEmpty() || route_to.isEmpty()) {
             enableInput();
-            bookingRoute.getEditText().setError("Please enter your starting location.");
+            bookingRoute.getEditText().setError("Please enter your trip route.");
         } else if (schedule_date.isEmpty()) {
             enableInput();
             bookingScheduleDate.getEditText().setError("Please enter desired schedule date.");
@@ -345,11 +347,11 @@ public class UserBookActivity extends AppCompatActivity {
             enableInput();
             bookingCountAdult.getEditText().setError("Must have at least 1 passenger.");
         } else {
-            generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, trip_route, schedule_date, schedule_time);
+            generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, schedule_date, schedule_time);
         }
     }
 
-    private void generateRefNum(String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time) {
+    private void generateRefNum(String uid, String name, String contact_number, String schedule_date, String schedule_time) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -363,7 +365,7 @@ public class UserBookActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
                             String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
-                            addNewBooking(dialog, reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time);
+                            addNewBooking(dialog, reference_number, uid, name, contact_number, schedule_date, schedule_time);
                         }
                     }
                 });
@@ -379,8 +381,8 @@ public class UserBookActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
-    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time) {
-        Booking booking = new Booking(reference_number, uid, name, contact_number, trip_route, schedule_date, schedule_time, transportUid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice, totalCommission);
+    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String schedule_date, String schedule_time) {
+        Booking booking = new Booking(reference_number, uid, name, contact_number, route_from, route_to, schedule_date, schedule_time, transportUid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice, totalCommission);
         bookingsReference.add(booking)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
@@ -471,7 +473,6 @@ public class UserBookActivity extends AppCompatActivity {
         routeArray = new ArrayList<>();
         schedulesReference.whereEqualTo("van_company_uid", uid)
                 .orderBy("route_from", Query.Direction.ASCENDING)
-                .orderBy("route_to", Query.Direction.ASCENDING)
                 .orderBy("time_depart", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -490,7 +491,9 @@ public class UserBookActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Schedule selectedSchedule = (Schedule) parent.getItemAtPosition(position);
                                     tripPrice = selectedSchedule.getPrice();
-                                    bookingScheduleTime.getEditText().setText(selectedSchedule.getTime_queue());
+                                    route_from = selectedSchedule.getRoute_from();
+                                    route_to = selectedSchedule.getRoute_to();
+                                    bookingScheduleTime.getEditText().setText(selectedSchedule.getTime_depart());
                                     bookingScheduleDate.getEditText().setText(getCurrentDate());
                                     computeTotalPrice();
                                     computeCommission();
