@@ -5,7 +5,8 @@ public class Booking {
             uid,
             name,
             contact_number,
-            trip_route,
+            route_from,
+            route_to,
             schedule_date,
             schedule_time,
             transport_uid,
@@ -20,12 +21,13 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time, String transport_uid, String status, String timestamp_date, String timestamp, int count_adult, int count_child, int count_special, double price, double commission) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String route_from, String route_to, String schedule_date, String schedule_time, String transport_uid, String status, String timestamp_date, String timestamp, int count_adult, int count_child, int count_special, double price, double commission) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
         this.contact_number = contact_number;
-        this.trip_route = trip_route;
+        this.route_from = route_from;
+        this.route_to = route_to;
         this.schedule_date = schedule_date;
         this.schedule_time = schedule_time;
         this.transport_uid = transport_uid;
@@ -39,12 +41,13 @@ public class Booking {
         this.commission = commission;
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String trip_route, String schedule_date, String schedule_time, String transport_uid, String driver_name, String plate_number, String status, String timestamp_date, String timestamp, int count_adult, int count_child, int count_special, double price, double commission) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String route_from, String route_to, String schedule_date, String schedule_time, String transport_uid, String driver_name, String plate_number, String status, String timestamp_date, String timestamp, int count_adult, int count_child, int count_special, double price, double commission) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
         this.contact_number = contact_number;
-        this.trip_route = trip_route;
+        this.route_from = route_from;
+        this.route_to = route_to;
         this.schedule_date = schedule_date;
         this.schedule_time = schedule_time;
         this.transport_uid = transport_uid;
@@ -92,12 +95,20 @@ public class Booking {
         this.contact_number = contact_number;
     }
 
-    public String getTrip_route() {
-        return trip_route;
+    public String getRoute_from() {
+        return route_from;
     }
 
-    public void setTrip_route(String trip_route) {
-        this.trip_route = trip_route;
+    public void setRoute_from(String route_from) {
+        this.route_from = route_from;
+    }
+
+    public String getRoute_to() {
+        return route_to;
+    }
+
+    public void setRoute_to(String route_to) {
+        this.route_to = route_to;
     }
 
     public String getSchedule_date() {
