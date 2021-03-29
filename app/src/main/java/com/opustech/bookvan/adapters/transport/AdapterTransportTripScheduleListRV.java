@@ -82,7 +82,16 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.btnDelete) {
-                            Toast.makeText(context, "Deleted.", Toast.LENGTH_SHORT).show();
+                            getSnapshots().getSnapshot(position).getReference()
+                                    .delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                         }
                         return false;
                     }
