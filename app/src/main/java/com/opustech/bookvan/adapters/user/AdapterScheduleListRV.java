@@ -18,6 +18,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Schedule;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, AdapterScheduleListRV.ScheduleHolder> {
 
     private FirebaseFirestore firebaseFirestore;
@@ -39,12 +44,17 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
         firebaseFirestore = FirebaseFirestore.getInstance();
         partnersReference = firebaseFirestore.collection("partners");
 
-        String time_queue = model.getTime_queue();
-        String time_depart = model.getTime_queue();
         String van_company_uid = model.getVan_company_uid();
 
-        holder.timeQueue.setText(time_queue);
-        holder.timeDepart.setText(time_depart);
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            Date date_queue = simpleDateFormat.parse(model.getTime_queue());
+            Date date_depart = simpleDateFormat.parse(model.getTime_depart());
+            holder.timeQueue.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_queue));
+            holder.timeDepart.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         partnersReference.document(van_company_uid)
                 .get()
