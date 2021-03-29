@@ -90,8 +90,7 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
         populateRouteList();
 
         Query query = schedulesReference.whereEqualTo("van_company_uid", getTransportUid())
-                .orderBy("route_from", Query.Direction.ASCENDING)
-                .orderBy("route_to", Query.Direction.ASCENDING)
+                .orderBy("time_queue", Query.Direction.ASCENDING)
                 .orderBy("time_depart", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Schedule> options = new FirestoreRecyclerOptions.Builder<Schedule>()
