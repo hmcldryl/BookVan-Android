@@ -4,7 +4,5 @@
         android:angle="45"
         android:endColor="@color/colorPrimary"
         android:startColor="@color/colorPrimaryDark"/>
-    <corners android:topLeftRadius="24dp"
-        android:topRightRadius="24dp"/>
 
 </shape>
