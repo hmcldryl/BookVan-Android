@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -61,6 +62,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
             dashboardEarningsAllTime,
             today,
             todayDate;
+    private CardView btnScanMode, btnQRMode;
     private LineChart totalBookingLineChart;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -97,6 +99,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
         today = findViewById(R.id.today);
         todayDate = findViewById(R.id.todayDate);
+
+        btnScanMode = findViewById(R.id.btnScanMode);
+        btnQRMode = findViewById(R.id.btnQRMode);
 
         today.setText(getToday());
         todayDate.setText(getTodayDate());
@@ -166,6 +171,24 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                     finish();
                 }
                 return false;
+            }
+        });
+
+        btnScanMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminBookingScannerActivity.class);
+                intent.putExtra("uid", getCompanyUid());
+                startActivity(intent);
+            }
+        });
+
+        btnQRMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminBookingQRActivity.class);
+                intent.putExtra("uid", getCompanyUid());
+                startActivity(intent);
             }
         });
 
