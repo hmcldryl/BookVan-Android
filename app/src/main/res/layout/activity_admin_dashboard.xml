@@ -118,15 +118,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:weightSum="10">
 
                         <com.google.android.material.card.MaterialCardView
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginEnd="16dp"
                             android:layout_marginBottom="8dp"
                             android:layout_weight="4"
                             app:cardCornerRadius="8dp">
@@ -153,15 +153,15 @@
                                     android:fontFamily="@font/lato_bold"
                                     android:text="Bookings"
                                     android:textColor="#FFFFFF"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
 
                         <com.google.android.material.card.MaterialCardView
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginBottom="8dp"
@@ -204,7 +204,7 @@
                                     android:fontFamily="@font/lato_bold"
                                     android:text="Earnings"
                                     android:textColor="#FFFFFF"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                             </LinearLayout>
 
@@ -242,15 +242,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:weightSum="10">
 
                         <com.google.android.material.card.MaterialCardView
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
-                            android:layout_marginEnd="8dp"
+                            android:layout_marginEnd="16dp"
                             android:layout_marginBottom="8dp"
                             android:layout_weight="4"
                             app:cardCornerRadius="8dp">
@@ -282,9 +282,9 @@
                         </com.google.android.material.card.MaterialCardView>
 
                         <com.google.android.material.card.MaterialCardView
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginBottom="8dp"
