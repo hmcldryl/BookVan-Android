@@ -19,23 +19,27 @@
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="8dp"/>
+        android:layout_height="8dp" />
 
     <TextView
         android:id="@+id/headerUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:fontFamily="@font/lato_bold"
-        android:textColor="#FFFFFF"
+        android:maxLines="1"
         android:text=""
+        android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
     <TextView
         android:id="@+id/headerUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
+        android:ellipsize="end"
         android:fontFamily="@font/lato"
+        android:maxLines="1"
         android:text=""
+        android:textColor="#FFFFFF"
         android:textSize="14sp" />
 </LinearLayout>
