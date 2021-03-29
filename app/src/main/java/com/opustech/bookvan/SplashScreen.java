@@ -72,29 +72,27 @@ public class SplashScreen extends AppCompatActivity {
                             String account_type = task.getResult().getString("account_type");
                             if (account_type != null) {
                                 if (account_type.equals("administrator")) {
-                                    partnersReference.whereEqualTo("uid", task.getResult().getString("transport_company"))
-                                            .limit(1)
+                                    partnersReference.document(task.getResult().getString("transport_company"))
                                             .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                 @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
-                                                        String uid = task.getResult().getDocuments().get(0).getString("uid");
-                                                        String transport_name = task.getResult().getDocuments().get(0).getString("transport_name");
+                                                        String uid = task.getResult().getString("uid");
+                                                        String transport_name = task.getResult().getString("name");
                                                         startTransportAdminActivity(uid, transport_name);
                                                     }
                                                 }
                                             });
                                 } else if (account_type.equals("staff")) {
-                                    partnersReference.whereEqualTo("uid", task.getResult().getString("transport_company"))
-                                            .limit(1)
+                                    partnersReference.document(task.getResult().getString("transport_company"))
                                             .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                 @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
-                                                        String uid = task.getResult().getDocuments().get(0).getString("uid");
-                                                        String transport_name = task.getResult().getDocuments().get(0).getString("transport_name");
+                                                        String uid = task.getResult().getString("uid");
+                                                        String transport_name = task.getResult().getString("name");
                                                         startTransportUserActivity(uid, transport_name);
                                                     }
                                                 }
