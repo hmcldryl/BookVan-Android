@@ -69,8 +69,8 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         String name = model.getName();
         String contact_number = model.getContact_number();
         String reference_number = model.getReference_number();
-        String route_from = model.getRoute_from();
-        String route_to = model.getRoute_to();
+        String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
+        String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
         String trip_route = route_from + " to " + route_to;
         String schedule_date = model.getSchedule_date();
         String schedule_time = model.getSchedule_time();

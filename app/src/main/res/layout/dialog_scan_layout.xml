@@ -25,7 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/background_toolbar"
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
                     android:paddingTop="8dp"
@@ -394,14 +394,13 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnNoId"
-                        style="?attr/materialButtonOutlinedStyle"
+                        android:id="@+id/btnOptions"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_black"
-                        android:text="NO ID"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@color/colorPrimary" />
+                        android:text="OTHER"
+                        android:textColor="@color/colorPrimary"/>
 
                     <Space
                         android:layout_width="8dp"
@@ -409,13 +408,11 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnConfirmBooking"
-                        style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_black"
                         android:text="CONFIRM PAYMENT"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@color/colorPrimary" />
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 

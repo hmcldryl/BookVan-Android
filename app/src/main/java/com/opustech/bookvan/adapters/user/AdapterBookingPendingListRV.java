@@ -1,15 +1,21 @@
 package com.opustech.bookvan.adapters.user;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,7 +23,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,8 +70,8 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         String name = model.getName();
         String contact_number = model.getContact_number();
         String reference_number = model.getReference_number();
-        String route_from = model.getRoute_from();
-        String route_to = model.getRoute_to();
+        String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
+        String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
         String trip_route = route_from + " to " + route_to;
         String schedule_date = model.getSchedule_date();
         String schedule_time = model.getSchedule_time();
@@ -139,39 +147,82 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         }
 
         holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
+
+        holder.item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(context, v);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.booking_pending_user_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.btnCancelBooking) {
+                            cancelBooking(position, reference_number);
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
+            }
+        });
     }
 
-    public void cancelBooking(int position) {
-        new MaterialAlertDialogBuilder(context)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
-                                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                                .themeColor(context.getResources().getColor(R.color.white))
-                                .text("Processing...")
-                                .fadeColor(Color.DKGRAY).build();
-                        dialog.show();
+    public void cancelBooking(int position, String reference_number) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog alertDialog = builder.create();
+        if (!alertDialog.isShowing()) {
+            final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_cancel_booking, null);
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            alertDialog.setCancelable(true);
+            alertDialog.setView(dialogView);
+            TextView bookingReferenceNo = dialogView.findViewById(R.id.bookingReferenceNo);
+            TextInputLayout inputRemarks = dialogView.findViewById(R.id.inputRemarks);
+
+            bookingReferenceNo.setText(reference_number);
+
+            MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+            btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
+                            .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                            .themeColor(context.getResources().getColor(R.color.white))
+                            .text("Processing...")
+                            .fadeColor(Color.DKGRAY).build();
+                    dialog.show();
+
+                    inputRemarks.setEnabled(false);
+                    btnConfirm.setEnabled(false);
+
+                    String remarks = inputRemarks.getEditText().getText().toString();
+
+                    if (remarks.isEmpty()) {
+                        btnConfirm.setEnabled(true);
+                        inputRemarks.getEditText().setError("Please enter reason for cancellation.");
+                    } else {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("status", "cancelled");
+                        hashMap.put("remarks", remarks);
                         getSnapshots().getSnapshot(position)
                                 .getReference()
-                                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    dialogInterface.dismiss();
-                                    dialog.dismiss();
-                                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    dialogInterface.dismiss();
-                                    dialog.dismiss();
-                                    Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                                .update(hashMap)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            alertDialog.dismiss();
+                                            dialog.dismiss();
+                                            Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                     }
-                }).show();
+                }
+            });
+            alertDialog.show();
+        }
     }
 
     @NonNull
@@ -196,9 +247,11 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                 bookingPrice,
                 itemNumber;
         CircleImageView customerPhoto;
+        LinearLayout item;
 
         public BookingHolder(View view) {
             super(view);
+            item = view.findViewById(R.id.item);
             itemNumber = view.findViewById(R.id.itemNumber);
             customerPhoto = view.findViewById(R.id.customerPhoto);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);

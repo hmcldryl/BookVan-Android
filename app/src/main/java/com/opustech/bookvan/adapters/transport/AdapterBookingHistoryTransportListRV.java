@@ -57,14 +57,16 @@ public class AdapterBookingHistoryTransportListRV extends FirestoreRecyclerAdapt
         String name = model.getName();
         String contact_number = model.getContact_number();
         String reference_number = model.getReference_number();
-        String route_from = model.getRoute_from();
-        String route_to = model.getRoute_to();
+        String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
+        String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
         String trip_route = route_from + " to " + route_to;
         String schedule_date = model.getSchedule_date();
         String schedule_time = model.getSchedule_time();
         int count_adult = model.getCount_adult();
         int count_child = model.getCount_child();
         int count_special = model.getCount_special();
+        String status = model.getStatus();
+        String remarks = model.getRemarks();
         String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
         String plate_number = model.getPlate_number();
@@ -106,8 +108,21 @@ public class AdapterBookingHistoryTransportListRV extends FirestoreRecyclerAdapt
         holder.bookingTripRoute.setText(trip_route);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
-        holder.bookingDriverName.setText(driver_name);
-        holder.bookingPlateNumber.setText(plate_number);
+
+        if (status.equals("cancelled")) {
+            holder.bookingDriverName.setVisibility(View.GONE);
+            holder.bookingPlateNumber.setVisibility(View.GONE);
+        } else {
+            holder.bookingDriverName.setText(driver_name);
+            holder.bookingPlateNumber.setText(plate_number);
+        }
+
+        if (remarks.isEmpty()) {
+            holder.labelRemarks.setVisibility(View.GONE);
+            holder.bookingRemarks.setVisibility(View.GONE);
+        } else {
+            holder.bookingRemarks.setText(remarks);
+        }
 
         if (count_adult >= 1) {
             holder.bookingCountAdult.setText(String.valueOf(count_adult));
@@ -155,6 +170,10 @@ public class AdapterBookingHistoryTransportListRV extends FirestoreRecyclerAdapt
                 bookingDriverName,
                 bookingPlateNumber,
                 bookingPrice,
+                bookingRemarks,
+                labelRemarks,
+                labelVanDriver,
+                labelPlateNumber,
                 labelCountAdult,
                 labelCountChild,
                 labelCountSpecial,
@@ -182,8 +201,12 @@ public class AdapterBookingHistoryTransportListRV extends FirestoreRecyclerAdapt
             labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
+            labelVanDriver = view.findViewById(R.id.labelVanDriver);
             bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
+            labelPlateNumber = view.findViewById(R.id.labelPlateNumber);
             bookingPrice = view.findViewById(R.id.price);
+            bookingRemarks = view.findViewById(R.id.bookingRemarks);
+            labelRemarks = view.findViewById(R.id.labelRemarks);
         }
     }
 }

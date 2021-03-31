@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bookingCard"
@@ -10,6 +11,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="6dp"
+        app:cardCornerRadius="16dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground">
@@ -272,6 +274,7 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/labelVanDriver"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
@@ -282,12 +285,28 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/labelPlateNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="@font/lato"
                             android:maxLines="1"
                             android:text="Plate No.:"
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp" />
+
+                        <TextView
+                            android:id="@+id/labelRemarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato"
+                            android:lines="3"
+                            android:maxLines="3"
+                            android:text="Remarks:"
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
@@ -435,6 +454,22 @@
                             android:fontFamily="@font/lato"
                             android:maxLines="1"
                             android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="14sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp" />
+
+                        <TextView
+                            android:id="@+id/bookingRemarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:lines="3"
+                            android:ellipsize="end"
+                            android:text=""
+                            android:maxLines="3"
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 

@@ -24,6 +24,7 @@
             android:elevation="8dp"
             app:menu="@menu/toolbar_menu"
             app:navigationIcon="@drawable/ic_toolbar_nav"
+            app:navigationIconTint="#FFFFFF"
             app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
             app:subtitleTextColor="#FFFFFF"
             app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
@@ -97,7 +98,7 @@
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardBackgroundColor="@color/colorPrimary"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="16dp"
                         app:cardElevation="6dp">
 
                         <RelativeLayout
@@ -126,7 +127,7 @@
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardBackgroundColor="@color/colorPrimary"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="16dp"
                         app:cardElevation="6dp">
 
                         <RelativeLayout
@@ -155,7 +156,7 @@
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardBackgroundColor="@color/colorPrimary"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="16dp"
                         app:cardElevation="6dp">
 
                         <RelativeLayout
@@ -213,7 +214,7 @@
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="16dp"
                         app:cardElevation="6dp">
 
                         <LinearLayout
@@ -280,7 +281,7 @@
                         android:focusable="true"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="12dp"
+                        app:cardCornerRadius="16dp"
                         app:cardElevation="6dp">
 
                         <LinearLayout
@@ -393,7 +394,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackground"
                             app:cardBackgroundColor="@color/colorPrimary"
-                            app:cardCornerRadius="12dp"
+                            app:cardCornerRadius="16dp"
                             app:cardElevation="6dp">
 
                             <LinearLayout
@@ -451,7 +452,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackground"
                             app:cardBackgroundColor="@color/colorPrimary"
-                            app:cardCornerRadius="12dp"
+                            app:cardCornerRadius="16dp"
                             app:cardElevation="6dp">
 
                             <LinearLayout
@@ -509,7 +510,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackground"
                             app:cardBackgroundColor="@color/colorPrimary"
-                            app:cardCornerRadius="12dp"
+                            app:cardCornerRadius="16dp"
                             app:cardElevation="6dp">
 
                             <LinearLayout
@@ -567,7 +568,7 @@
                             android:focusable="true"
                             android:foreground="?android:attr/selectableItemBackground"
                             app:cardBackgroundColor="@color/colorPrimary"
-                            app:cardCornerRadius="12dp"
+                            app:cardCornerRadius="16dp"
                             app:cardElevation="6dp">
 
                             <LinearLayout

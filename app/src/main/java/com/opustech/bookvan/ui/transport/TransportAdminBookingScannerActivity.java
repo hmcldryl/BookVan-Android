@@ -70,23 +70,12 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Confirm Payment");
-        getSupportActionBar().setSubtitle("Scan Customer Booking QR to confirm payment.");
+        getSupportActionBar().setSubtitle("Scan Customer Booking QR");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
-            }
-        });
-
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.btnQRMode) {
-                    Intent intent = new Intent(TransportAdminBookingScannerActivity.this, TransportAdminBookingQRActivity.class);
-                    startActivity(intent);
-                }
-                return false;
             }
         });
 

@@ -68,8 +68,8 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
 
         String name = model.getName();
         String reference_number = model.getReference_number();
-        String route_from = model.getRoute_from();
-        String route_to = model.getRoute_to();
+        String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
+        String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
         String trip_route = route_from + " to " + route_to;
         String schedule_date = model.getSchedule_date();
         String schedule_time = model.getSchedule_time();
@@ -141,7 +141,6 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                     TextView bookingReferenceNo = dialogView.findViewById(R.id.bookingReferenceNo);
                     TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
                     TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
-                    TextInputLayout inputPrice = dialogView.findViewById(R.id.inputPrice);
 
                     bookingReferenceNo.setText(reference_number);
 
@@ -151,7 +150,60 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                     btnCancelBooking.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            final AlertDialog alertDialog = builder.create();
+                            if (!alertDialog.isShowing()) {
+                                final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_cancel_booking, null);
+                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                alertDialog.setCancelable(true);
+                                alertDialog.setView(dialogView);
+                                TextView bookingReferenceNo = dialogView.findViewById(R.id.bookingReferenceNo);
+                                TextInputLayout inputRemarks = dialogView.findViewById(R.id.inputRemarks);
 
+                                bookingReferenceNo.setText(reference_number);
+
+                                MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+                                btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
+                                                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                                .themeColor(context.getResources().getColor(R.color.white))
+                                                .text("Processing...")
+                                                .fadeColor(Color.DKGRAY).build();
+                                        dialog.show();
+
+                                        inputRemarks.setEnabled(false);
+                                        btnConfirm.setEnabled(false);
+
+                                        String remarks = inputRemarks.getEditText().getText().toString();
+
+                                        if (remarks.isEmpty()) {
+                                            btnConfirm.setEnabled(true);
+                                            inputRemarks.getEditText().setError("Please enter reason for cancellation.");
+                                        } else {
+                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                            hashMap.put("status", "cancelled");
+                                            hashMap.put("remarks", remarks);
+                                            getSnapshots().getSnapshot(position)
+                                                    .getReference()
+                                                    .update(hashMap)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                alertDialog.dismiss();
+                                                                dialog.dismiss();
+                                                                Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                });
+                                alertDialog.show();
+                            }
                         }
                     });
 
@@ -160,37 +212,26 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                         public void onClick(View v) {
                             inputDriverName.setEnabled(false);
                             inputVanPlate.setEnabled(false);
-                            inputPrice.setEnabled(false);
                             btnConfirmBooking.setEnabled(false);
                             btnCancelBooking.setEnabled(false);
 
                             String driver_name = inputDriverName.getEditText().getText().toString();
                             String plate_number = inputVanPlate.getEditText().getText().toString();
-                            double price = Float.parseFloat(inputPrice.getEditText().getText().toString());
 
                             if (driver_name.isEmpty()) {
                                 btnConfirmBooking.setEnabled(true);
                                 btnCancelBooking.setEnabled(true);
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
-                                inputPrice.setEnabled(true);
                                 inputDriverName.getEditText().setError("Please enter the name of the van driver.");
                             } else if (plate_number.isEmpty()) {
                                 btnConfirmBooking.setEnabled(true);
                                 btnCancelBooking.setEnabled(true);
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
-                                inputPrice.setEnabled(true);
                                 inputVanPlate.getEditText().setError("Please enter the van plate number.");
-                            } else if (inputPrice.getEditText().toString().isEmpty()) {
-                                btnConfirmBooking.setEnabled(true);
-                                btnCancelBooking.setEnabled(true);
-                                inputDriverName.setEnabled(true);
-                                inputVanPlate.setEnabled(true);
-                                inputPrice.setEnabled(true);
-                                inputPrice.getEditText().setError("Please enter price for this booking.");
                             } else {
-                                updateBookingInfo(alertDialog, driver_name, plate_number, price, position);
+                                updateBookingInfo(alertDialog, driver_name, plate_number, position);
                             }
                         }
                     });
@@ -200,23 +241,23 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         });
     }
 
-    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, double price, int position) {
+    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, int position) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("driver_name", driver_name);
         hashMap.put("plate_number", plate_number);
-        hashMap.put("price", price);
         hashMap.put("status", "confirmed");
         getSnapshots().getSnapshot(position)
                 .getReference()
-                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    alertDialog.dismiss();
-                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+                .update(hashMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            alertDialog.dismiss();
+                            Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     public void cancelBooking(int position) {

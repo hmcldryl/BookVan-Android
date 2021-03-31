@@ -264,6 +264,7 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/labelVanDriver"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -274,12 +275,28 @@
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/labelPlateNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/lato"
                         android:maxLines="1"
                         android:text="Plate No.:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:lines="3"
+                        android:maxLines="3"
+                        android:text="Remarks:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -427,6 +444,22 @@
                         android:fontFamily="@font/lato"
                         android:maxLines="1"
                         android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:id="@+id/bookingRemarks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato"
+                        android:lines="3"
+                        android:ellipsize="end"
+                        android:text=""
+                        android:maxLines="3"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 

@@ -39,7 +39,7 @@ public class UserConfirmBookingQRActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Confirm Payment");
-        getSupportActionBar().setSubtitle("Present payment and QR to confirm payment.");
+        getSupportActionBar().setSubtitle("Generate Booking QR");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +55,8 @@ public class UserConfirmBookingQRActivity extends AppCompatActivity {
 
     private Bitmap generateQR() {
         QRGEncoder qrgEncoder = new QRGEncoder(encryptString(getIntent().getStringExtra("reference_number")), null, QRGContents.Type.TEXT, 500);
-        qrgEncoder.setColorBlack(getResources().getColor(R.color.colorPrimary));
-        qrgEncoder.setColorWhite(getResources().getColor(R.color.white));
+        qrgEncoder.setColorBlack(getResources().getColor(R.color.white));
+        qrgEncoder.setColorWhite(getResources().getColor(R.color.colorQRBG));
         return qrgEncoder.getBitmap();
     }
 

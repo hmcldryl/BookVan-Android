@@ -13,6 +13,7 @@ public class Booking {
             driver_name,
             plate_number,
             status,
+            remarks,
             timestamp_date,
             timestamp;
     int count_adult, count_child, count_special;
@@ -31,28 +32,6 @@ public class Booking {
         this.schedule_date = schedule_date;
         this.schedule_time = schedule_time;
         this.transport_uid = transport_uid;
-        this.status = status;
-        this.timestamp_date = timestamp_date;
-        this.timestamp = timestamp;
-        this.count_adult = count_adult;
-        this.count_child = count_child;
-        this.count_special = count_special;
-        this.price = price;
-        this.commission = commission;
-    }
-
-    public Booking(String reference_number, String uid, String name, String contact_number, String route_from, String route_to, String schedule_date, String schedule_time, String transport_uid, String driver_name, String plate_number, String status, String timestamp_date, String timestamp, int count_adult, int count_child, int count_special, double price, double commission) {
-        this.reference_number = reference_number;
-        this.uid = uid;
-        this.name = name;
-        this.contact_number = contact_number;
-        this.route_from = route_from;
-        this.route_to = route_to;
-        this.schedule_date = schedule_date;
-        this.schedule_time = schedule_time;
-        this.transport_uid = transport_uid;
-        this.driver_name = driver_name;
-        this.plate_number = plate_number;
         this.status = status;
         this.timestamp_date = timestamp_date;
         this.timestamp = timestamp;
@@ -157,6 +136,14 @@ public class Booking {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public String getTimestamp_date() {

@@ -45,7 +45,7 @@ import se.simbio.encryption.Encryption;
 public class UserConfirmBookingScanActivity extends AppCompatActivity {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, bookingsReference;
+    private CollectionReference usersReference, partnersReference, bookingsReference;
 
     private SurfaceView scannerView;
     private QREader reader;
@@ -60,13 +60,14 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
+        partnersReference = firebaseFirestore.collection("partners");
         bookingsReference = firebaseFirestore.collection("bookings");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Confirm Payment");
-        getSupportActionBar().setSubtitle("Present payment and scan QR to confirm payment.");
+        getSupportActionBar().setSubtitle("QR Scanner");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +127,7 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
                                     TextView bookingDriverName = view.findViewById(R.id.bookingDriverName);
                                     TextView bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
                                     TextView bookingPrice = view.findViewById(R.id.bookingPrice);
+                                    Button btnOptions = view.findViewById(R.id.btnOptions);
                                     Button btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
                                     CircleImageView customerPhoto = view.findViewById(R.id.customerPhoto);
 
@@ -143,7 +145,7 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
                                                             String trip_route = task.getResult().getDocuments().get(0).getString("trip_route");
                                                             String schedule_date = task.getResult().getDocuments().get(0).getString("schedule_date");
                                                             String schedule_time = task.getResult().getDocuments().get(0).getString("schedule_time");
-                                                            String transport_name = task.getResult().getDocuments().get(0).getString("transport_name");
+                                                            String transport_uid = task.getResult().getDocuments().get(0).getString("transport_uid");
                                                             String driver_name = task.getResult().getDocuments().get(0).getString("driver_name");
                                                             String plate_number = task.getResult().getDocuments().get(0).getString("plate_number");
                                                             int count_adult = task.getResult().getDocuments().get(0).getLong("count_adult").intValue();
@@ -160,10 +162,20 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
                                                             bookingCountAdult.setText(String.valueOf(count_adult));
                                                             bookingCountChild.setText(String.valueOf(count_child));
                                                             bookingCountSpecial.setText(String.valueOf(count_special));
-                                                            bookingTransportName.setText(transport_name);
                                                             bookingDriverName.setText(driver_name);
                                                             bookingPlateNumber.setText(plate_number);
                                                             bookingPrice.setText(String.valueOf(price));
+
+                                                            partnersReference.document(transport_uid)
+                                                                    .get()
+                                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                            if (task.isSuccessful()) {
+                                                                                bookingTransportName.setText(task.getResult().getString("name"));
+                                                                            }
+                                                                        }
+                                                                    });
 
                                                             usersReference.document(uid)
                                                                     .get()
@@ -199,7 +211,7 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
                                                     .fadeColor(Color.DKGRAY).build();
                                             dialog.show();
                                             if (reference_number != null) {
-                                                getReferenceNumber(alertDialog, dialog, reference_number);
+                                                getBookingId(alertDialog, dialog, reference_number);
                                             } else {
                                                 dialog.dismiss();
                                                 alertDialog.dismiss();
@@ -224,7 +236,7 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
                 .build();
     }
 
-    private void getReferenceNumber(AlertDialog alertDialog, ACProgressFlower dialog, String reference_number) {
+    private void getBookingId(AlertDialog alertDialog, ACProgressFlower dialog, String reference_number) {
         bookingsReference.whereEqualTo("reference_number", reference_number)
                 .limit(1)
                 .get()
