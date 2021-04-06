@@ -11,7 +11,7 @@ android {
         applicationId "com.opustech.bookvan"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 6
+        versionCode 7
         versionName "@string/app_version"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -62,6 +62,7 @@ dependencies {
     implementation 'cc.cloudist.acplibrary:library:1.2.1'
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.0.Final'
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
+    implementation 'com.github.SumiMakito:AwesomeQRCode:1.2.0'
     implementation 'com.github.afreakyelf:Pdf-Viewer:1.0.7'
     implementation 'com.karumi:dexter:6.0.2'
     implementation 'com.github.PhilJay:MPAndroidChart:3.1.0'
