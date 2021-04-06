@@ -136,6 +136,13 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
         btnAddRoute.setEnabled(false);
     }
 
+    private void clearInput() {
+        scheduleRouteFrom.getEditText().getText().clear();
+        scheduleRouteTo.getEditText().getText().clear();
+        scheduleRouteCategory.getEditText().getText().clear();
+        scheduleRoutePrice.getEditText().getText().clear();
+    }
+
     private void checkInput() {
         if (scheduleRouteFrom.getEditText().getText().toString().isEmpty()) {
             enableInput();
@@ -180,6 +187,8 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
+                            enableInput();
+                            clearInput();
                             Toast.makeText(AdminTripSchedulesActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                         }
                     }
