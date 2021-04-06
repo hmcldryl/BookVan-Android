@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Schedule;
@@ -65,7 +67,17 @@ public class AdapterAdminTripScheduleListRV extends FirestoreRecyclerAdapter<Sch
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.btnDelete) {
-                            Toast.makeText(context, "Deleted.", Toast.LENGTH_SHORT).show();
+                            getSnapshots().getSnapshot(position)
+                                    .getReference()
+                                    .delete()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                         }
                         return false;
                     }
