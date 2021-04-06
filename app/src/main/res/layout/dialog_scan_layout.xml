@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="16dp"
         app:cardElevation="8dp">
 
         <LinearLayout
@@ -244,6 +245,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text=""
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
@@ -256,6 +259,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:text=""
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
@@ -270,6 +275,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text=""
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
@@ -278,6 +285,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:text=""
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
@@ -292,6 +301,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text=""
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
@@ -301,6 +312,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text=""
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
@@ -325,6 +338,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
                             android:text=""
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
@@ -333,6 +348,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:text=""
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
@@ -342,6 +359,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:text=""
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
@@ -369,6 +388,8 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:text=""
+                                android:maxLines="1"
+                                android:ellipsize="end"
                                 android:textColor="@color/textColor"
                                 android:textSize="16sp" />
                         </LinearLayout>
