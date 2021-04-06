@@ -124,6 +124,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
             holder.bookingCountSpecial.setText(outputSpecial);
         } else {
             holder.bookingCountSpecial.setVisibility(View.GONE);
+            holder.labelCountSpecial.setVisibility(View.GONE);
         }
 
         holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
