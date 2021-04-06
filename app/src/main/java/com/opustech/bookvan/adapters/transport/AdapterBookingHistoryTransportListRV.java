@@ -117,9 +117,13 @@ public class AdapterBookingHistoryTransportListRV extends FirestoreRecyclerAdapt
             holder.bookingPlateNumber.setText(plate_number);
         }
 
-        if (remarks.isEmpty()) {
-            holder.labelRemarks.setVisibility(View.GONE);
-            holder.bookingRemarks.setVisibility(View.GONE);
+        if (remarks != null) {
+            if (remarks.isEmpty()) {
+                holder.labelRemarks.setVisibility(View.GONE);
+                holder.bookingRemarks.setVisibility(View.GONE);
+            } else {
+                holder.bookingRemarks.setText(remarks);
+            }
         } else {
             holder.bookingRemarks.setText(remarks);
         }
