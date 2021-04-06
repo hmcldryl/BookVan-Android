@@ -149,6 +149,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
             holder.bookingCountSpecial.setText(outputSpecial);
         } else {
             holder.bookingCountSpecial.setVisibility(View.GONE);
+            holder.labelCountSpecial.setVisibility(View.GONE);
         }
 
         holder.bookingPrice.setText(String.valueOf(price));
