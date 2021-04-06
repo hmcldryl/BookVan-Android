@@ -139,39 +139,6 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
         holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
     }
 
-    public void cancelBooking(int position) {
-        new MaterialAlertDialogBuilder(context)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
-                                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                                .themeColor(context.getResources().getColor(R.color.white))
-                                .text("Processing...")
-                                .fadeColor(Color.DKGRAY).build();
-                        dialog.show();
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("status", "cancelled");
-                        getSnapshots().getSnapshot(position)
-                                .getReference()
-                                .update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    dialogInterface.dismiss();
-                                    dialog.dismiss();
-                                    Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    dialogInterface.dismiss();
-                                    dialog.dismiss();
-                                    Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
-                }).show();
-    }
-
     @NonNull
     @Override
     public BookingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
