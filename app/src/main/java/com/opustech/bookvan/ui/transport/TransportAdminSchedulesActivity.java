@@ -151,19 +151,26 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
     }
 
     private void enableInput() {
-        btnAddRouteSchedule.setEnabled(true);
         scheduleRouteTimeQueue.setEnabled(true);
         scheduleRouteTimeDepart.setEnabled(true);
         scheduleRoute.setEnabled(true);
         scheduleRoutePrice.setEnabled(true);
+        btnAddRouteSchedule.setEnabled(true);
     }
 
     private void disableInput() {
-        btnAddRouteSchedule.setEnabled(false);
         scheduleRouteTimeQueue.setEnabled(false);
         scheduleRouteTimeDepart.setEnabled(false);
         scheduleRoute.setEnabled(false);
         scheduleRoutePrice.setEnabled(false);
+        btnAddRouteSchedule.setEnabled(false);
+    }
+
+    private void clearInput() {
+        scheduleRouteTimeQueue.getEditText().getText().clear();
+        scheduleRouteTimeDepart.getEditText().getText().clear();
+        scheduleRoute.getEditText().getText().clear();
+        scheduleRoutePrice.getEditText().getText().clear();
     }
 
     private void checkInput() {
@@ -196,6 +203,7 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
                             enableInput();
+                            clearInput();
                             Toast.makeText(TransportAdminSchedulesActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                         }
                     }
