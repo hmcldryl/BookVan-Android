@@ -162,6 +162,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                         public void onClick(View view) {
                             Intent intent = new Intent(context, UserConfirmBookingScanActivity.class);
                             intent.putExtra("reference_number", reference_number);
+                            intent.putExtra("transport_uid", transport_uid);
                             context.startActivity(intent);
                         }
                     });
