@@ -322,7 +322,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     private void todayTotalBooking(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
                 .whereEqualTo("timestamp_date", getCurrentDate())
-                .whereIn("status", Arrays.asList("done", "cancelled", "pending"))
+                .whereIn("status", Arrays.asList("done", "cancelled", "pending", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -361,7 +361,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
     private void allTimeTotalBooking(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
-                .whereIn("status", Arrays.asList("done", "cancelled", "pending"))
+                .whereIn("status", Arrays.asList("done", "cancelled", "pending", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
