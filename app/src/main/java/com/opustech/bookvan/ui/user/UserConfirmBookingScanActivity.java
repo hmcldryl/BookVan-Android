@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -104,123 +105,129 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
                     public void run() {
                         if (data != null) {
                             if (decryptQR(data) != null) {
-                                if (!alertDialog.isShowing()) {
-                                    final LayoutInflater inflater = getLayoutInflater();
-                                    final View view = inflater.inflate(R.layout.dialog_scan_layout, null);
-                                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                    alertDialog.setCancelable(false);
-                                    alertDialog.setView(view);
+                                String booking_transport_uid = getIntent().getStringExtra("transport_uid");
+                                String uid = decryptQR(data);
+                                if (uid.equals(booking_transport_uid)) {
+                                    if (!alertDialog.isShowing()) {
+                                        final LayoutInflater inflater = getLayoutInflater();
+                                        final View view = inflater.inflate(R.layout.dialog_user_scan_layout, null);
+                                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        alertDialog.setCancelable(true);
+                                        alertDialog.setView(view);
 
-                                    String reference_number = decryptQR(data);
+                                        String reference_number = getIntent().getStringExtra("reference_number");
 
-                                    TextView bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
-                                    TextView bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
-                                    TextView bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
-                                    TextView bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
-                                    TextView bookingTripRoute = view.findViewById(R.id.bookingTripRoute);
-                                    TextView bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
-                                    TextView bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
-                                    TextView bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
-                                    TextView bookingCountChild = view.findViewById(R.id.bookingCountChild);
-                                    TextView bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
-                                    TextView bookingTransportName = view.findViewById(R.id.bookingTransportName);
-                                    TextView bookingDriverName = view.findViewById(R.id.bookingDriverName);
-                                    TextView bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
-                                    TextView bookingPrice = view.findViewById(R.id.bookingPrice);
-                                    Button btnOptions = view.findViewById(R.id.btnOptions);
-                                    Button btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
-                                    CircleImageView customerPhoto = view.findViewById(R.id.customerPhoto);
+                                        TextView bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
+                                        TextView bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
+                                        TextView bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
+                                        TextView bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
+                                        TextView bookingTripRoute = view.findViewById(R.id.bookingTripRoute);
+                                        TextView bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);
+                                        TextView bookingScheduleTime = view.findViewById(R.id.bookingScheduleTime);
+                                        TextView bookingCountAdult = view.findViewById(R.id.bookingCountAdult);
+                                        TextView bookingCountChild = view.findViewById(R.id.bookingCountChild);
+                                        TextView bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
+                                        TextView bookingTransportName = view.findViewById(R.id.bookingTransportName);
+                                        TextView bookingDriverName = view.findViewById(R.id.bookingDriverName);
+                                        TextView bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
+                                        TextView bookingPrice = view.findViewById(R.id.bookingPrice);
+                                        Button btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
+                                        CircleImageView customerPhoto = view.findViewById(R.id.customerPhoto);
 
-                                    bookingsReference.whereEqualTo("reference_number", reference_number)
-                                            .limit(1)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        if (task.getResult().getDocuments() != null) {
-                                                            String uid = task.getResult().getDocuments().get(0).getString("uid");
-                                                            String name = task.getResult().getDocuments().get(0).getString("name");
-                                                            String contact_number = task.getResult().getDocuments().get(0).getString("contact_number");
-                                                            String trip_route = task.getResult().getDocuments().get(0).getString("trip_route");
-                                                            String schedule_date = task.getResult().getDocuments().get(0).getString("schedule_date");
-                                                            String schedule_time = task.getResult().getDocuments().get(0).getString("schedule_time");
-                                                            String transport_uid = task.getResult().getDocuments().get(0).getString("transport_uid");
-                                                            String driver_name = task.getResult().getDocuments().get(0).getString("driver_name");
-                                                            String plate_number = task.getResult().getDocuments().get(0).getString("plate_number");
-                                                            int count_adult = task.getResult().getDocuments().get(0).getLong("count_adult").intValue();
-                                                            int count_child = task.getResult().getDocuments().get(0).getLong("count_child").intValue();
-                                                            int count_special = task.getResult().getDocuments().get(0).getLong("count_special").intValue();
-                                                            double price = task.getResult().getDocuments().get(0).getLong("price").doubleValue();
+                                        bookingsReference.whereEqualTo("reference_number", reference_number)
+                                                .limit(1)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            if (task.getResult().getDocuments() != null) {
+                                                                DocumentReference documentReference = task.getResult().getDocuments().get(0).getReference();
 
-                                                            bookingCustomerName.setText(name);
-                                                            bookingContactNumber.setText(contact_number);
-                                                            bookingReferenceNumber.setText(reference_number);
-                                                            bookingTripRoute.setText(trip_route);
-                                                            bookingScheduleDate.setText(schedule_date);
-                                                            bookingScheduleTime.setText(schedule_time);
-                                                            bookingCountAdult.setText(String.valueOf(count_adult));
-                                                            bookingCountChild.setText(String.valueOf(count_child));
-                                                            bookingCountSpecial.setText(String.valueOf(count_special));
-                                                            bookingDriverName.setText(driver_name);
-                                                            bookingPlateNumber.setText(plate_number);
-                                                            bookingPrice.setText(String.valueOf(price));
+                                                                String uid = task.getResult().getDocuments().get(0).getString("uid");
+                                                                String name = task.getResult().getDocuments().get(0).getString("name");
+                                                                String contact_number = task.getResult().getDocuments().get(0).getString("contact_number");
+                                                                String route_from = task.getResult().getDocuments().get(0).getString("route_from").equals("Puerto Princesa City") ? "PPC" : task.getResult().getDocuments().get(0).getString("route_from");
+                                                                String route_to = task.getResult().getDocuments().get(0).getString("route_to").equals("Puerto Princesa City") ? "PPC" : task.getResult().getDocuments().get(0).getString("route_to");
+                                                                String trip_route = route_from + " to " + route_to;
+                                                                String schedule_date = task.getResult().getDocuments().get(0).getString("schedule_date");
+                                                                String schedule_time = task.getResult().getDocuments().get(0).getString("schedule_time");
+                                                                String transport_uid = task.getResult().getDocuments().get(0).getString("transport_uid");
+                                                                String driver_name = task.getResult().getDocuments().get(0).getString("driver_name");
+                                                                String plate_number = task.getResult().getDocuments().get(0).getString("plate_number");
+                                                                int count_adult = task.getResult().getDocuments().get(0).getLong("count_adult").intValue();
+                                                                int count_child = task.getResult().getDocuments().get(0).getLong("count_child").intValue();
+                                                                int count_special = task.getResult().getDocuments().get(0).getLong("count_special").intValue();
+                                                                double price = task.getResult().getDocuments().get(0).getLong("price").doubleValue();
 
-                                                            partnersReference.document(transport_uid)
-                                                                    .get()
-                                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                                            if (task.isSuccessful()) {
-                                                                                bookingTransportName.setText(task.getResult().getString("name"));
-                                                                            }
-                                                                        }
-                                                                    });
+                                                                bookingCustomerName.setText(name);
+                                                                bookingContactNumber.setText(contact_number);
+                                                                bookingReferenceNumber.setText(reference_number);
+                                                                bookingTripRoute.setText(trip_route);
+                                                                bookingScheduleDate.setText(schedule_date);
+                                                                bookingScheduleTime.setText(schedule_time);
+                                                                bookingCountAdult.setText(String.valueOf(count_adult));
+                                                                bookingCountChild.setText(String.valueOf(count_child));
+                                                                bookingCountSpecial.setText(String.valueOf(count_special));
+                                                                bookingDriverName.setText(driver_name);
+                                                                bookingPlateNumber.setText(plate_number);
+                                                                bookingPrice.setText(String.valueOf(price));
 
-                                                            usersReference.document(uid)
-                                                                    .get()
-                                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                                            if (task.isSuccessful()) {
-                                                                                String photo_url = task.getResult().getString("photo_url");
-                                                                                String email = task.getResult().getString("email");
-
-                                                                                if (photo_url != null) {
-                                                                                    Glide.with(UserConfirmBookingScanActivity.this)
-                                                                                            .load(photo_url)
-                                                                                            .into(customerPhoto);
+                                                                partnersReference.document(transport_uid)
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    bookingTransportName.setText(task.getResult().getString("name"));
                                                                                 }
-                                                                                bookingCustomerEmail.setText(email);
                                                                             }
+                                                                        });
+
+                                                                usersReference.document(uid)
+                                                                        .get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    String photo_url = task.getResult().getString("photo_url");
+                                                                                    String email = task.getResult().getString("email");
+
+                                                                                    if (photo_url != null) {
+                                                                                        Glide.with(UserConfirmBookingScanActivity.this)
+                                                                                                .load(photo_url)
+                                                                                                .into(customerPhoto);
+                                                                                    }
+                                                                                    bookingCustomerEmail.setText(email);
+                                                                                }
+                                                                            }
+                                                                        });
+
+                                                                btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        btnConfirmBooking.setEnabled(false);
+                                                                        final ACProgressFlower dialog = new ACProgressFlower.Builder(UserConfirmBookingScanActivity.this)
+                                                                                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                                                                .themeColor(getResources().getColor(R.color.white))
+                                                                                .text("Processing...")
+                                                                                .fadeColor(Color.DKGRAY).build();
+                                                                        dialog.show();
+                                                                        if (reference_number != null) {
+                                                                            updateBooking(alertDialog, dialog, documentReference);
+                                                                        } else {
+                                                                            dialog.dismiss();
+                                                                            alertDialog.dismiss();
+                                                                            Toast.makeText(UserConfirmBookingScanActivity.this, "Invalid QR Code. Please try again.", Toast.LENGTH_SHORT).show();
                                                                         }
-                                                                    });
+                                                                    }
+                                                                });
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            });
-
-                                    btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            btnConfirmBooking.setEnabled(false);
-                                            final ACProgressFlower dialog = new ACProgressFlower.Builder(UserConfirmBookingScanActivity.this)
-                                                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                                                    .themeColor(getResources().getColor(R.color.white))
-                                                    .text("Processing...")
-                                                    .fadeColor(Color.DKGRAY).build();
-                                            dialog.show();
-                                            if (reference_number != null) {
-                                                getBookingId(alertDialog, dialog, reference_number);
-                                            } else {
-                                                dialog.dismiss();
-                                                alertDialog.dismiss();
-                                                Toast.makeText(UserConfirmBookingScanActivity.this, "Invalid QR Code. Please try again.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-
-                                    alertDialog.show();
+                                                });
+                                        alertDialog.show();
+                                    }
                                 }
                             }
                         } else {
@@ -236,32 +243,12 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
                 .build();
     }
 
-    private void getBookingId(AlertDialog alertDialog, ACProgressFlower dialog, String reference_number) {
-        bookingsReference.whereEqualTo("reference_number", reference_number)
-                .limit(1)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String id = task.getResult().getDocuments().get(0).getId();
-                            updateBooking(alertDialog, dialog, id);
-                        } else {
-                            dialog.dismiss();
-                            alertDialog.dismiss();
-                            Toast.makeText(UserConfirmBookingScanActivity.this, "Update booking failed.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void updateBooking(AlertDialog alertDialog, ACProgressFlower dialog, String id) {
+    private void updateBooking(AlertDialog alertDialog, ACProgressFlower dialog, DocumentReference documentReference) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", "done");
         hashMap.put("timestamp", generateTimestamp());
 
-        bookingsReference.document(id)
-                .update(hashMap)
+        documentReference.update(hashMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
