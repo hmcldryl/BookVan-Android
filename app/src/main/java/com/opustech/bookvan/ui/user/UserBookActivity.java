@@ -116,7 +116,6 @@ public class UserBookActivity extends AppCompatActivity {
         populateVanTransportList();
         vanTransportTextWatcher();
         initializeDatePicker();
-        //initializeTimePicker();
 
         bookingCountAdult.getEditText().setText((String.valueOf(countAdult)));
         bookingCountChild.getEditText().setText((String.valueOf(countChild)));
@@ -397,28 +396,6 @@ public class UserBookActivity extends AppCompatActivity {
                     }
                 });
     }
-
-/*    private void initializeTimePicker() {
-        final Calendar calendar = Calendar.getInstance();
-        TimePickerDialog.OnTimeSetListener time = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                calendar.set(Calendar.HOUR_OF_DAY, i);
-                calendar.set(Calendar.MINUTE, i1);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-                bookingScheduleTime.getEditText().setText(simpleDateFormat.format(calendar.getTime()));
-            }
-        };
-        bookingScheduleTime.getEditText().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new TimePickerDialog(UserBookActivity.this, time,
-                        calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE), false)
-                        .show();
-            }
-        });
-    }*/
 
     private void initializeDatePicker() {
         final Calendar calendar = Calendar.getInstance();

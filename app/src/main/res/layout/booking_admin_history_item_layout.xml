@@ -290,12 +290,11 @@
                         android:layout_height="6dp" />
 
                     <TextView
+                        android:id="@+id/labelRemarks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:fontFamily="@font/lato"
-                        android:lines="3"
-                        android:maxLines="3"
                         android:text="Remarks:"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
@@ -455,11 +454,9 @@
                         android:id="@+id/bookingRemarks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato"
-                        android:lines="3"
                         android:ellipsize="end"
+                        android:fontFamily="@font/lato"
                         android:text=""
-                        android:maxLines="3"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 

@@ -51,7 +51,7 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
         String uid = model.getUid();
         String name = model.getName();
         String contact_number = model.getContact_number();
-        String reference_number = model.getReference_number();
+        String reference_number = model.getStatus().equals("cancelled") ? model.getReference_number() + " (Cancelled)" : model.getReference_number();
         String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
         String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
         String trip_route = route_from + " to " + route_to;
@@ -105,7 +105,9 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingScheduleTime.setText(schedule_time);
 
         if (status.equals("cancelled")) {
+            holder.labelVanDriver.setVisibility(View.GONE);
             holder.bookingDriverName.setVisibility(View.GONE);
+            holder.labelPlateNumber.setVisibility(View.GONE);
             holder.bookingPlateNumber.setVisibility(View.GONE);
         } else {
             holder.bookingDriverName.setText(driver_name);
@@ -118,9 +120,11 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
                 holder.bookingRemarks.setVisibility(View.GONE);
             } else {
                 holder.bookingRemarks.setText(remarks);
+                holder.labelRemarks.setLines(holder.bookingRemarks.getLineCount());
             }
         } else {
-            holder.bookingRemarks.setText(remarks);
+            holder.labelRemarks.setVisibility(View.GONE);
+            holder.bookingRemarks.setVisibility(View.GONE);
         }
 
         if (count_adult >= 1) {
