@@ -51,8 +51,8 @@ public class UserRentActivity extends AppCompatActivity {
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, rentalsReference;
 
-    private TextInputLayout inputRentType, inputName, inputLocationPickUp, inputLocationDropOff, inputContactNumber, inputDestination, inputPickUpDate, inputPickUpTime, inputDropOffDate, inputDropOffTime;
-    private AutoCompleteTextView inputRentTypeACT;
+    private TextInputLayout inputName, inputLocationPickUp, inputLocationDropOff, inputContactNumber, inputDestination, inputPickUpDate, inputPickUpTime, inputDropOffDate, inputDropOffTime;
+
     private RecyclerView rentChatList;
 
     private ExtendedFloatingActionButton btnRent;
@@ -82,8 +82,6 @@ public class UserRentActivity extends AppCompatActivity {
             }
         });
 
-        inputRentType = findViewById(R.id.inputRentType);
-        inputRentTypeACT = findViewById(R.id.inputRentTypeACT);
         inputName = findViewById(R.id.inputName);
         inputContactNumber = findViewById(R.id.inputContactNumber);
         inputLocationPickUp = findViewById(R.id.inputLocationPickUp);
@@ -95,45 +93,10 @@ public class UserRentActivity extends AppCompatActivity {
         inputDropOffTime = findViewById(R.id.inputDropOffTime);
         btnRent = findViewById(R.id.btnRent);
 
-        populateRentTypeList();
         initializeDatePickerPickUp();
         initializeDatePickerDropOff();
         initializeTimePickerPickUp();
         initializeTimePickerDropOff();
-
-        inputRentType.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (inputRentType.getEditText().getText().toString().equals("Self-Drive")) {
-                    inputLocationPickUp.setVisibility(View.GONE);
-                    inputPickUpDate.setVisibility(View.GONE);
-                    inputPickUpTime.setVisibility(View.GONE);
-                    inputDestination.setVisibility(View.GONE);
-                    inputLocationDropOff.setVisibility(View.GONE);
-                    inputDropOffDate.setVisibility(View.GONE);
-                    inputDropOffTime.setVisibility(View.GONE);
-                }
-                if (inputRentType.getEditText().getText().toString().equals("Rent Driver")) {
-                    inputLocationPickUp.setVisibility(View.VISIBLE);
-                    inputPickUpDate.setVisibility(View.VISIBLE);
-                    inputPickUpTime.setVisibility(View.VISIBLE);
-                    inputDestination.setVisibility(View.VISIBLE);
-                    inputLocationDropOff.setVisibility(View.VISIBLE);
-                    inputDropOffDate.setVisibility(View.VISIBLE);
-                    inputDropOffTime.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
         btnRent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +125,6 @@ public class UserRentActivity extends AppCompatActivity {
     }
 
     private void enableInput() {
-        inputRentType.setEnabled(true);
         inputName.setEnabled(true);
         inputContactNumber.setEnabled(true);
         inputLocationPickUp.setEnabled(true);
@@ -176,7 +138,6 @@ public class UserRentActivity extends AppCompatActivity {
     }
 
     private void disableInput() {
-        inputRentType.setEnabled(false);
         inputName.setEnabled(false);
         inputContactNumber.setEnabled(false);
         inputLocationPickUp.setEnabled(false);
@@ -196,7 +157,6 @@ public class UserRentActivity extends AppCompatActivity {
 
 
     private void inputCheck() {
-        String rent_type = inputRentType.getEditText().getText().toString();
         String name = inputName.getEditText().getText().toString();
         String contact_number = inputContactNumber.getEditText().getText().toString();
         String pick_up_location = inputLocationPickUp.getEditText().getText().toString();
@@ -207,34 +167,39 @@ public class UserRentActivity extends AppCompatActivity {
         String drop_off_date = inputDropOffDate.getEditText().getText().toString();
         String drop_off_time = inputDropOffTime.getEditText().getText().toString();
 
-        if (rent_type.isEmpty()) {
+        if (name.isEmpty()) {
             enableInput();
-            inputRentType.setError("Select rent type.");
+            inputName.setError("Please enter a name.");
+        } else if (contact_number.isEmpty()) {
+            enableInput();
+            inputContactNumber.setError("Please enter a contact number.");
+        } else if (pick_up_location.isEmpty()) {
+            enableInput();
+            inputLocationPickUp.setError("Please enter a contact number.");
+        } else if (pick_up_date.isEmpty()) {
+            enableInput();
+            inputPickUpDate.setError("Please enter a contact number.");
+        } else if (pick_up_time.isEmpty()) {
+            enableInput();
+            inputPickUpTime.setError("Please enter a contact number.");
+        } else if (destination.isEmpty()) {
+            enableInput();
+            inputDestination.setError("Please enter a contact number.");
+        } else if (drop_off_location.isEmpty()) {
+            enableInput();
+            inputLocationDropOff.setError("Please enter a contact number.");
+        } else if (drop_off_date.isEmpty()) {
+            enableInput();
+            inputDropOffDate.setError("Please enter a contact number.");
+        } else if (drop_off_time.isEmpty()) {
+            enableInput();
+            inputDropOffTime.setError("Please enter a contact number.");
         } else {
-            if (rent_type.equals("Self-Drive")) {
-                rent_type = "self_drive";
-                if (name.isEmpty()) {
-                    enableInput();
-                    inputName.setError("Please enter a name.");
-                } else if (contact_number.isEmpty()) {
-                    enableInput();
-                    inputContactNumber.setError("Please enter a contact number.");
-                } else if (contact_number.isEmpty()) {
-                    enableInput();
-                    inputContactNumber.setError("Please enter a contact number.");
-                } else if (contact_number.isEmpty()) {
-                    enableInput();
-                    inputContactNumber.setError("Please enter a contact number.");
-                } else {
-                    submitRentInfo(rent_type, name, contact_number, pick_up_location, pick_up_date, pick_up_time, destination, drop_off_location, drop_off_date, drop_off_time);
-                }
-            } else if (rent_type.equals("Rent Driver")) {
-                rent_type = "rent_driver";
-            }
+            submitRentInfo(name, contact_number, pick_up_location, pick_up_date, pick_up_time, destination, drop_off_location, drop_off_date, drop_off_time);
         }
     }
 
-    private void submitRentInfo(String rent_type, String name, String contact_number, String pick_up_location, String pick_up_date, String pick_up_time, String destination, String drop_off_location, String drop_off_date, String drop_off_time) {
+    private void submitRentInfo(String name, String contact_number, String pick_up_location, String pick_up_date, String pick_up_time, String destination, String drop_off_location, String drop_off_date, String drop_off_time) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(this.getResources().getColor(R.color.white))
@@ -242,7 +207,6 @@ public class UserRentActivity extends AppCompatActivity {
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("rent_type", rent_type);
         hashMap.put("name", name);
         hashMap.put("contact_number", contact_number);
         hashMap.put("pick_up_location", pick_up_location);
@@ -355,12 +319,5 @@ public class UserRentActivity extends AppCompatActivity {
                         .show();
             }
         });
-    }
-
-    private void populateRentTypeList() {
-        ArrayList<String> rentTypeArray = new ArrayList<>(Arrays.asList(this.getResources().getStringArray(R.array.rent_type)));
-        ArrayAdapter<String> rentTypeArrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, rentTypeArray);
-        inputRentTypeACT.setAdapter(rentTypeArrayAdapter);
-        inputRentTypeACT.setThreshold(1);
     }
 }
