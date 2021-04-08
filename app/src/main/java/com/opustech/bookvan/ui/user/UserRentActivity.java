@@ -10,6 +10,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -99,6 +101,40 @@ public class UserRentActivity extends AppCompatActivity {
         initializeTimePickerPickUp();
         initializeTimePickerDropOff();
 
+        inputRentType.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (inputRentType.getEditText().getText().toString().equals("Self-Drive")) {
+                    inputLocationPickUp.setVisibility(View.GONE);
+                    inputPickUpDate.setVisibility(View.GONE);
+                    inputPickUpTime.setVisibility(View.GONE);
+                    inputDestination.setVisibility(View.GONE);
+                    inputLocationDropOff.setVisibility(View.GONE);
+                    inputDropOffDate.setVisibility(View.GONE);
+                    inputDropOffTime.setVisibility(View.GONE);
+                }
+                if (inputRentType.getEditText().getText().toString().equals("Rent Driver")) {
+                    inputLocationPickUp.setVisibility(View.VISIBLE);
+                    inputPickUpDate.setVisibility(View.VISIBLE);
+                    inputPickUpTime.setVisibility(View.VISIBLE);
+                    inputDestination.setVisibility(View.VISIBLE);
+                    inputLocationDropOff.setVisibility(View.VISIBLE);
+                    inputDropOffDate.setVisibility(View.VISIBLE);
+                    inputDropOffTime.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         btnRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,7 +144,7 @@ public class UserRentActivity extends AppCompatActivity {
         });
 
         Query query = rentalsReference.document(firebaseAuth.getCurrentUser().getUid())
-                .collection("chat")
+                .collection("rentals")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<RentChatMessage> options = new FirestoreRecyclerOptions.Builder<RentChatMessage>()
@@ -158,6 +194,7 @@ public class UserRentActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
+
     private void inputCheck() {
         String rent_type = inputRentType.getEditText().getText().toString();
         String name = inputName.getEditText().getText().toString();
@@ -173,14 +210,27 @@ public class UserRentActivity extends AppCompatActivity {
         if (rent_type.isEmpty()) {
             enableInput();
             inputRentType.setError("Select rent type.");
-        } else if (name.isEmpty()) {
-            enableInput();
-            inputName.setError("Please enter a name.");
-        } else if (contact_number.isEmpty()) {
-            enableInput();
-            inputContactNumber.setError("Please enter a contact number.");
         } else {
-            submitRentInfo(rent_type, name, contact_number, pick_up_location, pick_up_date, pick_up_time, destination, drop_off_location, drop_off_date, drop_off_time);
+            if (rent_type.equals("Self-Drive")) {
+                rent_type = "self_drive";
+                if (name.isEmpty()) {
+                    enableInput();
+                    inputName.setError("Please enter a name.");
+                } else if (contact_number.isEmpty()) {
+                    enableInput();
+                    inputContactNumber.setError("Please enter a contact number.");
+                } else if (contact_number.isEmpty()) {
+                    enableInput();
+                    inputContactNumber.setError("Please enter a contact number.");
+                } else if (contact_number.isEmpty()) {
+                    enableInput();
+                    inputContactNumber.setError("Please enter a contact number.");
+                } else {
+                    submitRentInfo(rent_type, name, contact_number, pick_up_location, pick_up_date, pick_up_time, destination, drop_off_location, drop_off_date, drop_off_time);
+                }
+            } else if (rent_type.equals("Rent Driver")) {
+                rent_type = "rent_driver";
+            }
         }
     }
 
