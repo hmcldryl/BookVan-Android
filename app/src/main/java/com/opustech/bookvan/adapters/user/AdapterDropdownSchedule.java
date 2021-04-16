@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Schedule;
+import com.opustech.bookvan.model.TripSchedule;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,8 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class AdapterDropdownTripSchedule extends ArrayAdapter<Schedule> {
-    public AdapterDropdownTripSchedule(@NonNull Context context, ArrayList<Schedule> scheduleArrayList) {
+public class AdapterDropdownSchedule extends ArrayAdapter<Schedule> {
+    public AdapterDropdownSchedule(@NonNull Context context, ArrayList<Schedule> scheduleArrayList) {
         super(context, 0, scheduleArrayList);
     }
 
@@ -40,7 +41,6 @@ public class AdapterDropdownTripSchedule extends ArrayAdapter<Schedule> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.route_spinner_dropdown_item, parent, false);
         }
         TextView routeDescription = convertView.findViewById(R.id.routeDescription);
-        TextView routeDepart = convertView.findViewById(R.id.routeDepart);
         TextView routePrice = convertView.findViewById(R.id.routePrice);
         Schedule schedule = getItem(position);
         if (schedule != null) {
@@ -50,14 +50,6 @@ public class AdapterDropdownTripSchedule extends ArrayAdapter<Schedule> {
             String route = route_from + " to " + route_to;
             String price = getContext().getResources().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", schedule.getPrice());
             routeDescription.setText(route);
-
-            try {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-                Date date_depart = simpleDateFormat.parse(schedule.getTime_depart());
-                routeDepart.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
 
             routePrice.setText(price);
         }

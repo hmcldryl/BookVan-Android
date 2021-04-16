@@ -97,6 +97,32 @@
                 android:layout_height="6dp" />
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/scheduleRouteCategory"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="North / South"
+                app:endIconTint="@color/colorPrimary"
+                app:startIconDrawable="@drawable/ic_icon_route"
+                app:startIconTint="@color/colorPrimary">
+
+                <AutoCompleteTextView
+                    android:id="@+id/scheduleRouteCategoryACT"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:completionThreshold="2"
+                    android:fontFamily="@font/lato"
+                    android:inputType="none"
+                    android:singleLine="true"
+                    android:textCursorDrawable="@null" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/scheduleRoute"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
@@ -117,6 +143,7 @@
                     android:textCursorDrawable="@null" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <Space
                 android:layout_width="match_parent"
@@ -181,42 +208,27 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:padding="8dp"
                 android:weightSum="20">
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
+                    android:layout_weight="13"
                     android:src="@drawable/ic_icon_route"
                     app:tint="@color/colorAccent" />
 
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:background="#99121212"
+                    android:layout_height="match_parent"/>
+
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3.5"
+                    android:layout_weight="7"
                     android:src="@drawable/ic_input_price"
                     app:tint="@color/colorAccent" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:src="@drawable/ic_icon_queue"
-                    app:tint="@color/colorAccent" />
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:src="@drawable/ic_input_transport"
-                    app:tint="@color/colorAccent" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5" />
 
             </LinearLayout>
 

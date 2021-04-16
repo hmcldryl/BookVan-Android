@@ -90,6 +90,34 @@
                     android:layout_height="6dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputVanRoute"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="North / South"
+                    app:endIconTint="@color/colorPrimary"
+                    app:hintEnabled="true"
+                    app:startIconDrawable="@drawable/ic_input_location"
+                    app:startIconTint="@color/colorPrimary">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/inputVanRouteACT"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:fontFamily="@font/lato"
+                        android:inputType="none"
+                        android:singleLine="true"
+                        android:textColor="@color/textColor"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputVanTransport"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
@@ -124,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:hint="From - To"
                     app:endIconTint="@color/colorPrimary"
-                    app:startIconDrawable="@drawable/ic_input_location"
+                    app:startIconDrawable="@drawable/ic_icon_route"
                     app:startIconTint="@color/colorPrimary">
 
                     <AutoCompleteTextView
@@ -143,65 +171,55 @@
                     android:layout_width="match_parent"
                     android:layout_height="6dp" />
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bookingScheduleDate"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="`Departure Date"
+                    app:startIconDrawable="@drawable/ic_input_calendar"
+                    app:startIconTint="@color/colorPrimary">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/bookingScheduleDate"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:hint="Date"
-                        app:startIconDrawable="@drawable/ic_input_calendar"
-                        app:startIconTint="@color/colorPrimary">
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:fontFamily="@font/lato"
+                        android:inputType="date"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:focusable="false"
-                            android:fontFamily="@font/lato"
-                            android:inputType="date"
-                            android:maxLines="1"
-                            android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp" />
 
-                    <Space
-                        android:layout_width="8dp"
-                        android:layout_height="match_parent" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bookingScheduleTime"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:hint="Departure Time"
+                    app:endIconTint="@color/colorPrimary"
+                    app:hintEnabled="true"
+                    app:startIconDrawable="@drawable/ic_input_clock"
+                    app:startIconTint="@color/colorPrimary">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/bookingScheduleTime"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="0dp"
+                    <AutoCompleteTextView
+                        android:id="@+id/bookingScheduleTimeACT"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:hint="Time"
-                        app:startIconDrawable="@drawable/ic_input_clock"
-                        app:startIconTint="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:ellipsize="end"
-                            android:focusable="false"
-                            android:fontFamily="@font/lato"
-                            android:inputType="time"
-                            android:maxLines="1"
-                            android:textCursorDrawable="@null" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
+                        android:fontFamily="@font/lato"
+                        android:inputType="time"
+                        android:singleLine="true"
+                        android:textColor="@color/textColor"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Space
                     android:layout_width="match_parent"

@@ -3,7 +3,6 @@ package com.opustech.bookvan.ui.user;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -19,8 +18,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
 import se.simbio.encryption.Encryption;
 
 public class UserConfirmBookingQRActivity extends AppCompatActivity {
@@ -65,13 +62,6 @@ public class UserConfirmBookingQRActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Bitmap generateQR() {
-        QRGEncoder qrgEncoder = new QRGEncoder(encryptString(getIntent().getStringExtra("reference_number")), null, QRGContents.Type.TEXT, 500);
-        qrgEncoder.setColorBlack(getResources().getColor(R.color.white));
-        qrgEncoder.setColorWhite(getResources().getColor(R.color.colorQRBG));
-        return qrgEncoder.getBitmap();
     }
 
     private String encryptString(String data) {

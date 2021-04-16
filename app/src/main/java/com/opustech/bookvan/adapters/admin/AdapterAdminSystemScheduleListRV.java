@@ -21,10 +21,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Schedule;
+import com.opustech.bookvan.model.SystemSchedule;
 
 import java.util.Locale;
 
-public class AdapterAdminTripScheduleListRV extends FirestoreRecyclerAdapter<Schedule, AdapterAdminTripScheduleListRV.ScheduleHolder> {
+public class AdapterAdminSystemScheduleListRV extends FirestoreRecyclerAdapter<SystemSchedule, AdapterAdminSystemScheduleListRV.SystemScheduleHolder> {
 
     private FirebaseFirestore firebaseFirestore;
 
@@ -37,13 +38,13 @@ public class AdapterAdminTripScheduleListRV extends FirestoreRecyclerAdapter<Sch
      * @param options
      */
 
-    public AdapterAdminTripScheduleListRV(@NonNull FirestoreRecyclerOptions<Schedule> options, Context context) {
+    public AdapterAdminSystemScheduleListRV(@NonNull FirestoreRecyclerOptions<SystemSchedule> options, Context context) {
         super(options);
         this.context = context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ScheduleHolder holder, int position, @NonNull Schedule model) {
+    protected void onBindViewHolder(@NonNull SystemScheduleHolder holder, int position, @NonNull SystemSchedule model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
@@ -100,16 +101,16 @@ public class AdapterAdminTripScheduleListRV extends FirestoreRecyclerAdapter<Sch
 
     @NonNull
     @Override
-    public ScheduleHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SystemScheduleHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.admin_route_schedule_item_layout, parent, false);
-        return new ScheduleHolder(view);
+        return new SystemScheduleHolder(view);
     }
 
-    class ScheduleHolder extends RecyclerView.ViewHolder {
+    class SystemScheduleHolder extends RecyclerView.ViewHolder {
         TextView routeDescription, routePrice, routeCategory;
         ImageButton options;
 
-        public ScheduleHolder(View view) {
+        public SystemScheduleHolder(View view) {
             super(view);
             routeDescription = view.findViewById(R.id.routeDescription);
             routeCategory = view.findViewById(R.id.routeCategory);

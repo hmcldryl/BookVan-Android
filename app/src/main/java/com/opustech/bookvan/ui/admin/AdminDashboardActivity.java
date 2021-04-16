@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -139,7 +138,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnSchedules) {
-                    Intent intent = new Intent(AdminDashboardActivity.this, AdminTripSchedulesActivity.class);
+                    Intent intent = new Intent(AdminDashboardActivity.this, AdminSystemSchedulesActivity.class);
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnPartners) {

@@ -1,12 +1,16 @@
 package com.opustech.bookvan.adapters.transport;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,18 +22,17 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Schedule;
+import com.opustech.bookvan.model.TripSchedule;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter<Schedule, AdapterTransportTripScheduleListRV.ScheduleHolder> {
+public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter<TripSchedule, AdapterTransportTripScheduleListRV.TripScheduleHolder> {
 
     private FirebaseFirestore firebaseFirestore;
 
@@ -42,20 +45,15 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
      * @param options
      */
 
-    public AdapterTransportTripScheduleListRV(@NonNull FirestoreRecyclerOptions<Schedule> options, Context context) {
+    public AdapterTransportTripScheduleListRV(@NonNull FirestoreRecyclerOptions<TripSchedule> options, Context context) {
         super(options);
         this.context = context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ScheduleHolder holder, int position, @NonNull Schedule model) {
+    protected void onBindViewHolder(@NonNull TripScheduleHolder holder, int position, @NonNull TripSchedule model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
-        String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
-
-        String description = route_from + " to " + route_to;
-        String price = context.getResources().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", model.getPrice());
         String time_queue = model.getTime_queue();
         String time_depart = model.getTime_depart();
 
@@ -68,9 +66,6 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        holder.routeDescription.setText(description);
-        holder.routePrice.setText(price);
 
         holder.options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,22 +98,20 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
 
     @NonNull
     @Override
-    public ScheduleHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.transport_route_schedule_item_layout, parent, false);
-        return new ScheduleHolder(view);
+    public TripScheduleHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.transport_route_trip_schedule_item_layout, parent, false);
+        return new TripScheduleHolder(view);
     }
 
-    class ScheduleHolder extends RecyclerView.ViewHolder {
-        TextView routeDescription, routePrice, timeQueue, timeDepart;
+    class TripScheduleHolder extends RecyclerView.ViewHolder {
         ImageButton options;
+        TextView timeQueue, timeDepart;
 
-        public ScheduleHolder(View view) {
+        public TripScheduleHolder(View view) {
             super(view);
-            routeDescription = view.findViewById(R.id.routeDescription);
-            routePrice = view.findViewById(R.id.routePrice);
+            options = view.findViewById(R.id.options);
             timeQueue = view.findViewById(R.id.timeQueue);
             timeDepart = view.findViewById(R.id.timeDepart);
-            options = view.findViewById(R.id.options);
         }
     }
 

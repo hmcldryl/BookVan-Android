@@ -5,12 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -19,32 +17,23 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.admin.AdapterAdminTripScheduleListRV;
-import com.opustech.bookvan.adapters.transport.AdapterTransportDropdownTripSchedule;
-import com.opustech.bookvan.adapters.transport.AdapterTransportTripScheduleListRV;
-import com.opustech.bookvan.adapters.user.SchedulePagerAdapter;
+import com.opustech.bookvan.adapters.admin.AdapterAdminSystemScheduleListRV;
 import com.opustech.bookvan.model.Schedule;
-import com.opustech.bookvan.model.TransportCompany;
-import com.opustech.bookvan.ui.transport.TransportAdminSchedulesActivity;
-import com.opustech.bookvan.ui.user.UserBookActivity;
+import com.opustech.bookvan.model.SystemSchedule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 
-public class AdminTripSchedulesActivity extends AppCompatActivity {
+public class AdminSystemSchedulesActivity extends AppCompatActivity {
 
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference systemSchedulesReference;
@@ -59,7 +48,7 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
 
     private double price = 0.00;
 
-    private AdapterAdminTripScheduleListRV adapterAdminTripScheduleListRV;
+    private AdapterAdminSystemScheduleListRV adapterAdminSystemScheduleListRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,18 +72,18 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
         Query query = systemSchedulesReference.orderBy("route_from", Query.Direction.ASCENDING)
                 .orderBy("route_to", Query.Direction.ASCENDING);
 
-        FirestoreRecyclerOptions<Schedule> options = new FirestoreRecyclerOptions.Builder<Schedule>()
-                .setQuery(query, Schedule.class)
+        FirestoreRecyclerOptions<SystemSchedule> options = new FirestoreRecyclerOptions.Builder<SystemSchedule>()
+                .setQuery(query, SystemSchedule.class)
                 .build();
 
-        adapterAdminTripScheduleListRV = new AdapterAdminTripScheduleListRV(options, this);
+        adapterAdminSystemScheduleListRV = new AdapterAdminSystemScheduleListRV(options, this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
 
         systemScheduleList = findViewById(R.id.systemScheduleList);
 
         systemScheduleList.setHasFixedSize(true);
         systemScheduleList.setLayoutManager(manager);
-        systemScheduleList.setAdapter(adapterAdminTripScheduleListRV);
+        systemScheduleList.setAdapter(adapterAdminSystemScheduleListRV);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +169,7 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
                 .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
-        Schedule schedule = new Schedule(route_from, route_to, category, price);
+        SystemSchedule schedule = new SystemSchedule(route_from, route_to, category, price);
         systemSchedulesReference.add(schedule)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
@@ -189,7 +178,7 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
                             dialog.dismiss();
                             enableInput();
                             clearInput();
-                            Toast.makeText(AdminTripSchedulesActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminSystemSchedulesActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -198,21 +187,21 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
 
     private void populateRouteFromList() {
         ArrayList<String> routeFromArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.destinations)));
-        ArrayAdapter<String> routeFromArrayAdapter = new ArrayAdapter<>(AdminTripSchedulesActivity.this, R.layout.support_simple_spinner_dropdown_item, routeFromArray);
+        ArrayAdapter<String> routeFromArrayAdapter = new ArrayAdapter<>(AdminSystemSchedulesActivity.this, R.layout.support_simple_spinner_dropdown_item, routeFromArray);
         scheduleRouteFromACT.setAdapter(routeFromArrayAdapter);
         scheduleRouteFromACT.setThreshold(1);
     }
 
     private void populateRouteToList() {
         ArrayList<String> routeToArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.destinations)));
-        ArrayAdapter<String> routeToArrayAdapter = new ArrayAdapter<>(AdminTripSchedulesActivity.this, R.layout.support_simple_spinner_dropdown_item, routeToArray);
+        ArrayAdapter<String> routeToArrayAdapter = new ArrayAdapter<>(AdminSystemSchedulesActivity.this, R.layout.support_simple_spinner_dropdown_item, routeToArray);
         scheduleRouteToACT.setAdapter(routeToArrayAdapter);
         scheduleRouteToACT.setThreshold(1);
     }
 
     private void populateRouteCategoryList() {
         ArrayList<String> routeFromArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.category)));
-        ArrayAdapter<String> routeFromArrayAdapter = new ArrayAdapter<>(AdminTripSchedulesActivity.this, R.layout.support_simple_spinner_dropdown_item, routeFromArray);
+        ArrayAdapter<String> routeFromArrayAdapter = new ArrayAdapter<>(AdminSystemSchedulesActivity.this, R.layout.support_simple_spinner_dropdown_item, routeFromArray);
         scheduleRouteCategoryACT.setAdapter(routeFromArrayAdapter);
         scheduleRouteCategoryACT.setThreshold(1);
     }
@@ -220,12 +209,12 @@ public class AdminTripSchedulesActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        adapterAdminTripScheduleListRV.startListening();
+        adapterAdminSystemScheduleListRV.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        adapterAdminTripScheduleListRV.stopListening();
+        adapterAdminSystemScheduleListRV.stopListening();
     }
 }

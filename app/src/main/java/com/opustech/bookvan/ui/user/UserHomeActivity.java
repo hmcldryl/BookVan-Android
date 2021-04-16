@@ -133,8 +133,8 @@ public class UserHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(UserHomeActivity.this, "This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(UserHomeActivity.this, UserRentActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(UserHomeActivity.this, UserRentActivity.class);
+                //startActivity(intent);
             }
         });
 

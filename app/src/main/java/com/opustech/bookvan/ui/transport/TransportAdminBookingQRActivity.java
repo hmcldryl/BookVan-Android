@@ -16,13 +16,8 @@ import com.github.sumimakito.awesomeqr.RenderResult;
 import com.github.sumimakito.awesomeqr.option.RenderOption;
 import com.github.sumimakito.awesomeqr.option.color.Color;
 import com.github.sumimakito.awesomeqr.option.logo.Logo;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.opustech.bookvan.R;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
 import se.simbio.encryption.Encryption;
 
 public class TransportAdminBookingQRActivity extends AppCompatActivity {

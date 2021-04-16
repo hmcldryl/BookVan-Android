@@ -72,7 +72,7 @@
             android:name=".ui.admin.AdminDashboardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminTripSchedulesActivity"
+            android:name=".ui.admin.AdminSystemSchedulesActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin.AdminRentalsActivity"

@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,18 +30,25 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.user.AdapterDropdownTripSchedule;
+import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
+import com.opustech.bookvan.adapters.user.AdapterDropdownScheduleTime;
 import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.TransportCompany;
+import com.opustech.bookvan.model.TripSchedule;
+import com.opustech.bookvan.ui.transport.TransportAdminSchedulesActivity;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -59,7 +68,8 @@ public class UserBookActivity extends AppCompatActivity {
             bookingScheduleTime,
             bookingCountAdult,
             bookingCountChild,
-            bookingCountSpecial;
+            bookingCountSpecial,
+            inputVanRoute;
     private ImageButton addAdultCount,
             addChildCount,
             addSpecialCount,
@@ -68,10 +78,11 @@ public class UserBookActivity extends AppCompatActivity {
             subtractSpecialCount;
     private TextView bookingTotal;
     private ExtendedFloatingActionButton btnBook;
-    private AutoCompleteTextView inputVanTransportACT, bookingRouteACT;
+    private AutoCompleteTextView inputVanTransportACT, bookingRouteACT, bookingScheduleTimeACT, inputVanRouteACT;
 
-    private AdapterDropdownTripSchedule adapterDropdownTripSchedule;
+    private AdapterDropdownSchedule adapterDropdownSchedule;
     private ArrayList<Schedule> routeArray;
+    private ArrayList<TripSchedule> tripSchedulesTimeList;
 
     private String transportUid = "";
     private String route_from = "";
@@ -85,6 +96,7 @@ public class UserBookActivity extends AppCompatActivity {
     private double totalPrice = 0.00;
     private double totalCommission = 0.00;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,9 +124,8 @@ public class UserBookActivity extends AppCompatActivity {
         });
 
         initializeUi();
+        populateRouteCategoryList();
         initPriceWatcher();
-        populateVanTransportList();
-        vanTransportTextWatcher();
         initializeDatePicker();
 
         bookingCountAdult.getEditText().setText((String.valueOf(countAdult)));
@@ -235,8 +246,11 @@ public class UserBookActivity extends AppCompatActivity {
         inputVanTransportACT = findViewById(R.id.inputVanTransportACT);
         bookingRoute = findViewById(R.id.bookingRoute);
         bookingRouteACT = findViewById(R.id.bookingRouteACT);
+        inputVanRoute = findViewById(R.id.inputVanRoute);
+        inputVanRouteACT = findViewById(R.id.inputVanRouteACT);
         bookingScheduleDate = findViewById(R.id.bookingScheduleDate);
         bookingScheduleTime = findViewById(R.id.bookingScheduleTime);
+        bookingScheduleTimeACT = findViewById(R.id.bookingScheduleTimeACT);
         bookingCountAdult = findViewById(R.id.bookingCountAdult);
         bookingCountChild = findViewById(R.id.bookingCountChild);
         bookingCountSpecial = findViewById(R.id.bookingCountSpecial);
@@ -251,44 +265,6 @@ public class UserBookActivity extends AppCompatActivity {
         bookingTotal = findViewById(R.id.bookingTotal);
 
         btnBook = findViewById(R.id.btnBook);
-    }
-
-    private void vanTransportTextWatcher() {
-        bookingVanTransport.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String transport_name = bookingVanTransport.getEditText().getText().toString();
-                partnersReference.whereEqualTo("name", transport_name)
-                        .limit(1)
-                        .get()
-                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                if (queryDocumentSnapshots != null) {
-                                    if (queryDocumentSnapshots.size() != 0) {
-                                        populateRouteList(queryDocumentSnapshots.getDocuments().get(0).getString("uid"));
-                                    }
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                bookingVanTransport.setError("Van transport does not exist.");
-                            }
-                        });
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     private void disableInput() {
@@ -324,6 +300,14 @@ public class UserBookActivity extends AppCompatActivity {
         String schedule_date = bookingScheduleDate.getEditText().getText().toString();
         String schedule_time = bookingScheduleTime.getEditText().getText().toString();
 
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+            Date date_depart = simpleDateFormat.parse(schedule_time);
+            schedule_time = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(date_depart);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         if (name.isEmpty()) {
             enableInput();
             bookingCustomerName.getEditText().setError("Please enter your name.");
@@ -341,7 +325,12 @@ public class UserBookActivity extends AppCompatActivity {
             bookingScheduleDate.getEditText().setError("Please enter desired schedule date.");
         } else if (schedule_time.isEmpty()) {
             enableInput();
+            bookingScheduleTime.getEditText().getText().clear();
             bookingScheduleTime.getEditText().setError("Please enter desired schedule time.");
+        } else if (!tripSchedulesTimeList.contains(new TripSchedule(schedule_time))) {
+            enableInput();
+            bookingScheduleTime.getEditText().getText().clear();
+            bookingScheduleTime.getEditText().setError("Please select an available schedule time.");
         } else if (countAdult == 0 && countChild == 0 && countSpecial == 0) {
             enableInput();
             bookingCountAdult.getEditText().setError("Must have at least 1 passenger.");
@@ -420,25 +409,31 @@ public class UserBookActivity extends AppCompatActivity {
         });
     }
 
-    private void populateVanTransportList() {
-        ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
-        partnersReference.get()
+    private void populateTripScheduleTimeList(DocumentReference tripScheduleReference) {
+        tripSchedulesTimeList = new ArrayList<>();
+        tripScheduleReference.collection("schedules")
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"));
-                                vanTransportList.add(i, transportCompany);
+                                TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
+                                tripSchedulesTimeList.add(i, transportCompany);
                             }
-                            ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
-                            inputVanTransportACT.setAdapter(vanTransportAdapter);
-                            inputVanTransportACT.setThreshold(1);
-                            inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            AdapterDropdownScheduleTime adapterDropdownScheduleTime = new AdapterDropdownScheduleTime(UserBookActivity.this, tripSchedulesTimeList);
+                            bookingScheduleTimeACT.setAdapter(adapterDropdownScheduleTime);
+                            bookingScheduleTimeACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
-                                    transportUid = selectedTransport.getUid();
+                                    TripSchedule selectedTime = (TripSchedule) adapterView.getItemAtPosition(i);
+                                    try {
+                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+                                        Date date_depart = simpleDateFormat.parse(selectedTime.getTime_depart());
+                                        bookingScheduleTime.getEditText().setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
                         }
@@ -446,22 +441,102 @@ public class UserBookActivity extends AppCompatActivity {
                 });
     }
 
+    private void populateVanTransportList(String route) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .text("Processing...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+        ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
+        if (route.toLowerCase().equals("north")) {
+            partnersReference.whereEqualTo("route_north", true)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"));
+                                    vanTransportList.add(i, transportCompany);
+                                }
+                                ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
+                                inputVanTransportACT.setAdapter(vanTransportAdapter);
+                                inputVanTransportACT.setThreshold(1);
+                                inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
+                                        transportUid = selectedTransport.getUid();
+                                        populateRouteList(transportUid);
+                                    }
+                                });
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+        } else if (route.toLowerCase().equals("south")) {
+            partnersReference.whereEqualTo("route_south", true)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"));
+                                    vanTransportList.add(i, transportCompany);
+                                }
+                                ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
+                                inputVanTransportACT.setAdapter(vanTransportAdapter);
+                                inputVanTransportACT.setThreshold(1);
+                                inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
+                                        transportUid = selectedTransport.getUid();
+                                        populateRouteList(transportUid);
+                                    }
+                                });
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+        }
+    }
+
+    private void populateRouteCategoryList() {
+        ArrayList<String> routeFromArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.category)));
+        ArrayAdapter<String> routeFromArrayAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, routeFromArray);
+        inputVanRouteACT.setAdapter(routeFromArrayAdapter);
+        inputVanRouteACT.setThreshold(1);
+        inputVanRouteACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                populateVanTransportList(inputVanRoute.getEditText().getText().toString());
+            }
+        });
+    }
+
     private void populateRouteList(String uid) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .text("Processing...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
         routeArray = new ArrayList<>();
         schedulesReference.whereEqualTo("van_company_uid", uid)
                 .orderBy("route_from", Query.Direction.ASCENDING)
-                .orderBy("time_depart", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                Schedule schedule = new Schedule(task.getResult().getDocuments().get(i).getString("time_depart"), task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getLong("price").doubleValue(), task.getResult().getDocuments().get(i).getString("route_to"));
-                                routeArray.add(i, schedule);
+                                routeArray.add(i, new Schedule(task.getResult().getDocuments().get(i).getString("route_from"), task.getResult().getDocuments().get(i).getString("route_to"), task.getResult().getDocuments().get(i).getLong("price").doubleValue()));
                             }
-                            adapterDropdownTripSchedule = new AdapterDropdownTripSchedule(UserBookActivity.this, routeArray);
-                            bookingRouteACT.setAdapter(adapterDropdownTripSchedule);
+                            adapterDropdownSchedule = new AdapterDropdownSchedule(UserBookActivity.this, routeArray);
+                            bookingRouteACT.setAdapter(adapterDropdownSchedule);
                             bookingRouteACT.setThreshold(1);
                             bookingRouteACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
@@ -470,12 +545,13 @@ public class UserBookActivity extends AppCompatActivity {
                                     tripPrice = selectedSchedule.getPrice();
                                     route_from = selectedSchedule.getRoute_from();
                                     route_to = selectedSchedule.getRoute_to();
-                                    bookingScheduleTime.getEditText().setText(selectedSchedule.getTime_depart());
                                     bookingScheduleDate.getEditText().setText(getCurrentDate());
                                     computeTotalPrice();
                                     computeCommission();
+                                    populateTripScheduleTimeList(task.getResult().getDocuments().get(position).getReference());
                                 }
                             });
+                            dialog.dismiss();
                         }
                     }
                 });

@@ -2,24 +2,23 @@ package com.opustech.bookvan.model;
 
 import androidx.annotation.NonNull;
 
-public class Schedule {
-    String route_from, route_to, category, van_company_uid;
+public class SystemSchedule {
+    String route_from, route_to, category;
     double price;
 
-    public Schedule() {
+    public SystemSchedule() {
     }
 
-    public Schedule(String route_from, String route_to, double price) {
-        this.route_from = route_from;
-        this.route_to = route_to;
-        this.price = price;
-    }
-
-    public Schedule(String route_from, String route_to, String category, String van_company_uid, double price) {
+    public SystemSchedule(String route_from, String route_to, String category, double price) {
         this.route_from = route_from;
         this.route_to = route_to;
         this.category = category;
-        this.van_company_uid = van_company_uid;
+        this.price = price;
+    }
+
+    public SystemSchedule(String route_from, String route_to, double price) {
+        this.route_from = route_from;
+        this.route_to = route_to;
         this.price = price;
     }
 
@@ -51,14 +50,6 @@ public class Schedule {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public String getVan_company_uid() {
-        return van_company_uid;
-    }
-
-    public void setVan_company_uid(String van_company_uid) {
-        this.van_company_uid = van_company_uid;
     }
 
     public double getPrice() {
