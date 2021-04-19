@@ -143,32 +143,6 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
 
             }
         });
-
-        scheduleRoutePrice.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!scheduleRoutePrice.getEditText().getText().toString().isEmpty()) {
-                    double priceInput = Double.parseDouble(scheduleRoutePrice.getEditText().getText().toString());
-                    if (priceInput > price) {
-                        scheduleRoutePrice.setError("Error: Cannot set price more than LTFRB approved rate. " + "(" + String.format(Locale.ENGLISH, "%.2f", price) + " for " + route_from + " to " + route_to + ")");
-                        btnAddRouteSchedule.setEnabled(false);
-                    } else if (priceInput == 0) {
-                        scheduleRoutePrice.setError("Error: Cannot set 0.00 as price.");
-                        btnAddRouteSchedule.setEnabled(false);
-                    }
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     private String getTransportUid() {
@@ -193,14 +167,6 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
         btnAddRouteSchedule.setEnabled(false);
     }
 
-    private void clearInput() {
-        scheduleRouteTimeQueue.getEditText().getText().clear();
-        scheduleRouteTimeDepart.getEditText().getText().clear();
-        scheduleRouteCategory.getEditText().getText().clear();
-        scheduleRoute.getEditText().getText().clear();
-        scheduleRoutePrice.getEditText().getText().clear();
-    }
-
     private void checkInput() {
         if (scheduleRouteTimeQueue.getEditText().getText().toString().isEmpty()) {
             enableInput();
@@ -211,6 +177,10 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
         } else if (scheduleRoute.getEditText().getText().toString().isEmpty()) {
             enableInput();
             scheduleRoute.setError("Please enter trip route.");
+        } else if (Double.parseDouble(scheduleRoutePrice.getEditText().getText().toString()) > price) {
+            enableInput();
+            Toast.makeText(this, "Cannot set price more than LTFRB approved rate. " + "(" + String.format(Locale.ENGLISH, "%.2f", price) + " for " + route_from + " to " + route_to + ")", Toast.LENGTH_SHORT).show();
+            scheduleRoutePrice.setError("Please enter valid price.");
         } else {
             addTripSchedule(scheduleRouteTimeQueue.getEditText().getText().toString(), scheduleRouteTimeDepart.getEditText().getText().toString(), getTransportUid(), Double.parseDouble(scheduleRoutePrice.getEditText().getText().toString()));
         }
@@ -220,7 +190,6 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
-                .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
 
@@ -248,7 +217,6 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
                                                                     if (task.isSuccessful()) {
                                                                         dialog.dismiss();
                                                                         enableInput();
-                                                                        clearInput();
                                                                         Toast.makeText(TransportAdminSchedulesActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                                                                     }
                                                                 }
@@ -270,7 +238,6 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
                                                                     if (task.isSuccessful()) {
                                                                         dialog.dismiss();
                                                                         enableInput();
-                                                                        clearInput();
                                                                         Toast.makeText(TransportAdminSchedulesActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                                                                     }
                                                                 }
@@ -287,7 +254,6 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
                                                 if (task.isSuccessful()) {
                                                     dialog.dismiss();
                                                     enableInput();
-                                                    clearInput();
                                                     Toast.makeText(TransportAdminSchedulesActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
@@ -353,7 +319,6 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
-                .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
 

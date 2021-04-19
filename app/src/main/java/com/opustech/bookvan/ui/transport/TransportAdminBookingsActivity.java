@@ -79,7 +79,7 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
                         break;
                     case 2:
                         tab.setText("Cancelled");
-                        updatePendingListTabBadge(tab);
+                        updateCancelledListTabBadge(tab);
                         break;
                     case 3:
                         tab.setText("History");
@@ -141,9 +141,32 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateHistoryListTabBadge(TabLayout.Tab tab) {
+    private void updateCancelledListTabBadge(TabLayout.Tab tab) {
         bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
                 .whereIn("status", Arrays.asList("done", "cancelled"))
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(TransportAdminBookingsActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(TransportAdminBookingsActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(3);
+                            int size = value.size();
+                            if (size > 0) {
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void updateHistoryListTabBadge(TabLayout.Tab tab) {
+        bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
+                .whereIn("status", Arrays.asList("done", "done"))
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

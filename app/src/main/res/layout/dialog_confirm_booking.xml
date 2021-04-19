@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_black"
-                    android:text="CANCEL BOOKING"
+                    android:text="CANCEL"
                     android:textColor="@color/colorPrimary" />
 
                 <Space

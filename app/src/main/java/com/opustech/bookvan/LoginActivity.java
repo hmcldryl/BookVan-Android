@@ -1,4 +1,4 @@
- package com.opustech.bookvan;
+package com.opustech.bookvan;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.opustech.bookvan.model.UserAccount;
 import com.opustech.bookvan.ui.user.UserHomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -262,12 +263,9 @@ public class LoginActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         if (!task.getResult().exists()) {
-                                                            HashMap<String, Object> hashMap = new HashMap<>();
-                                                            hashMap.put("name", account.getGivenName() + " " + account.getFamilyName());
-                                                            hashMap.put("email", account.getEmail());
-                                                            hashMap.put("photo_url", account.getPhotoUrl());
+                                                            UserAccount userAccount = new UserAccount(account.getGivenName() + " " + account.getFamilyName(), account.getEmail(), account.getPhotoUrl().toString(), 0);
                                                             usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                    .set(hashMap)
+                                                                    .set(userAccount)
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {

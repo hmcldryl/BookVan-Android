@@ -55,7 +55,6 @@ public class AdapterRentAdminListRV extends FirestoreRecyclerAdapter<Rental, Ada
         String reference_number = model.getReference_number();
         String name = model.getName();
         String contact_number = model.getContact_number();
-        String rent_type = model.getRent_type();
         String pickup_location = model.getPickup_location();
         String pickup_date = model.getPickup_date();
         String pickup_time = model.getPickup_time();
