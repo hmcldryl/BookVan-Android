@@ -16,16 +16,26 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
+import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -41,7 +51,10 @@ import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.TransportCompany;
 import com.opustech.bookvan.model.TripSchedule;
+import com.opustech.bookvan.ui.transport.TransportAdminEditCompanyProfileActivity;
 import com.opustech.bookvan.ui.transport.TransportAdminSchedulesActivity;
+
+import org.joda.time.DateTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,12 +77,10 @@ public class UserBookActivity extends AppCompatActivity {
             bookingContactNumber,
             bookingVanTransport,
             bookingRoute,
-            bookingScheduleDate,
-            bookingScheduleTime,
             bookingCountAdult,
             bookingCountChild,
-            bookingCountSpecial,
-            inputVanRoute;
+            bookingCountSpecial;
+    private HorizontalPicker picker;
     private ImageButton addAdultCount,
             addChildCount,
             addSpecialCount,
@@ -77,8 +88,12 @@ public class UserBookActivity extends AppCompatActivity {
             subtractChildCount,
             subtractSpecialCount;
     private TextView bookingTotal;
+    private ChipGroup timeChips;
+    private RadioGroup categoryRadio;
+    private MaterialRadioButton btnRadioNorth,
+            btnRadioSouth;
     private ExtendedFloatingActionButton btnBook;
-    private AutoCompleteTextView inputVanTransportACT, bookingRouteACT, bookingScheduleTimeACT, inputVanRouteACT;
+    private AutoCompleteTextView inputVanTransportACT, bookingRouteACT;
 
     private AdapterDropdownSchedule adapterDropdownSchedule;
     private ArrayList<Schedule> routeArray;
@@ -87,6 +102,8 @@ public class UserBookActivity extends AppCompatActivity {
     private String transportUid = "";
     private String route_from = "";
     private String route_to = "";
+    private String schedule_date = "";
+    private String schedule_time = "";
     private int countAdult = 1;
     private int countChild = 0;
     private int countSpecial = 0;
@@ -124,9 +141,25 @@ public class UserBookActivity extends AppCompatActivity {
         });
 
         initializeUi();
-        populateRouteCategoryList();
         initPriceWatcher();
-        initializeDatePicker();
+
+        bookingCustomerName.getEditText().setText(getIntent().getStringExtra("name"));
+        bookingContactNumber.getEditText().setText(getIntent().getStringExtra("contact_number"));
+
+        categoryRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (i == R.id.btnRadioNorth) {
+                    populateVanTransportList("north");
+                } else if (i == R.id.btnRadioSouth) {
+                    populateVanTransportList("south");
+                }
+            }
+        });
+
+        picker.showTodayButton(true)
+                .init();
+        picker.setDate(new DateTime());
 
         bookingCountAdult.getEditText().setText((String.valueOf(countAdult)));
         bookingCountChild.getEditText().setText((String.valueOf(countChild)));
@@ -202,7 +235,7 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 disableInput();
-                inputCheck();
+                inputCheck(view);
             }
         });
     }
@@ -246,14 +279,15 @@ public class UserBookActivity extends AppCompatActivity {
         inputVanTransportACT = findViewById(R.id.inputVanTransportACT);
         bookingRoute = findViewById(R.id.bookingRoute);
         bookingRouteACT = findViewById(R.id.bookingRouteACT);
-        inputVanRoute = findViewById(R.id.inputVanRoute);
-        inputVanRouteACT = findViewById(R.id.inputVanRouteACT);
-        bookingScheduleDate = findViewById(R.id.bookingScheduleDate);
-        bookingScheduleTime = findViewById(R.id.bookingScheduleTime);
-        bookingScheduleTimeACT = findViewById(R.id.bookingScheduleTimeACT);
+        picker = findViewById(R.id.bookingDatePicker);
         bookingCountAdult = findViewById(R.id.bookingCountAdult);
         bookingCountChild = findViewById(R.id.bookingCountChild);
         bookingCountSpecial = findViewById(R.id.bookingCountSpecial);
+
+        timeChips = findViewById(R.id.timeChips);
+        categoryRadio = findViewById(R.id.categoryRadio);
+        btnRadioNorth = findViewById(R.id.btnRadioNorth);
+        btnRadioSouth = findViewById(R.id.btnRadioSouth);
 
         addAdultCount = findViewById(R.id.btnCountAdultAdd);
         subtractAdultCount = findViewById(R.id.btnCountAdultSubtract);
@@ -273,8 +307,8 @@ public class UserBookActivity extends AppCompatActivity {
         bookingContactNumber.setEnabled(false);
         bookingVanTransport.setEnabled(false);
         bookingRoute.setEnabled(false);
-        bookingScheduleDate.setEnabled(false);
-        bookingScheduleTime.setEnabled(false);
+        btnRadioNorth.setEnabled(false);
+        btnRadioSouth.setEnabled(false);
         bookingCountAdult.setEnabled(false);
         bookingCountChild.setEnabled(false);
         bookingCountSpecial.setEnabled(false);
@@ -286,27 +320,18 @@ public class UserBookActivity extends AppCompatActivity {
         bookingContactNumber.setEnabled(true);
         bookingVanTransport.setEnabled(true);
         bookingRoute.setEnabled(true);
-        bookingScheduleDate.setEnabled(true);
-        bookingScheduleTime.setEnabled(true);
+        btnRadioNorth.setEnabled(true);
+        btnRadioSouth.setEnabled(true);
         bookingCountAdult.setEnabled(true);
         bookingCountChild.setEnabled(true);
         bookingCountSpecial.setEnabled(true);
     }
 
-    private void inputCheck() {
+    private void inputCheck(View view) {
         String name = bookingCustomerName.getEditText().getText().toString();
         String contact_number = bookingContactNumber.getEditText().getText().toString();
         String transport_name = bookingVanTransport.getEditText().getText().toString();
-        String schedule_date = bookingScheduleDate.getEditText().getText().toString();
-        String schedule_time = bookingScheduleTime.getEditText().getText().toString();
-
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
-            Date date_depart = simpleDateFormat.parse(schedule_time);
-            schedule_time = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(date_depart);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        String booking_schedule = schedule_date + " " + schedule_time;
 
         if (name.isEmpty()) {
             enableInput();
@@ -322,28 +347,46 @@ public class UserBookActivity extends AppCompatActivity {
             bookingRoute.getEditText().setError("Please enter your trip route.");
         } else if (schedule_date.isEmpty()) {
             enableInput();
-            bookingScheduleDate.getEditText().setError("Please enter desired schedule date.");
+            Snackbar.make(view, "Please select a valid booking date.", Snackbar.LENGTH_SHORT);
         } else if (schedule_time.isEmpty()) {
             enableInput();
-            bookingScheduleTime.getEditText().getText().clear();
-            bookingScheduleTime.getEditText().setError("Please enter desired schedule time.");
-        } else if (!tripSchedulesTimeList.contains(new TripSchedule(schedule_time))) {
-            enableInput();
-            bookingScheduleTime.getEditText().getText().clear();
-            bookingScheduleTime.getEditText().setError("Please select an available schedule time.");
+            Snackbar.make(view, "Please select a time for your booking.", Snackbar.LENGTH_SHORT);
         } else if (countAdult == 0 && countChild == 0 && countSpecial == 0) {
             enableInput();
-            bookingCountAdult.getEditText().setError("Must have at least 1 passenger.");
+            bookingCountAdult.getEditText().setText(String.valueOf(1));
+            Snackbar.make(view, "Must have at least 1 passenger.", Snackbar.LENGTH_SHORT);
+        } else if (compareSchedule(booking_schedule)) {
+            enableInput();
+            Snackbar.make(view, "Please select a valid booking date.", Snackbar.LENGTH_SHORT);
         } else {
             generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, schedule_date, schedule_time);
         }
+    }
+
+    private boolean compareSchedule(String booking_schedule) {
+        Date selectedDate = null;
+        Date minDate = null;
+        try {
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(booking_schedule);
+            minDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Date date_depart = new SimpleDateFormat("hh:mm a", Locale.ENGLISH).parse(schedule_time);
+            schedule_time = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(date_depart);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return selectedDate.compareTo(minDate) < 0;
     }
 
     private void generateRefNum(String uid, String name, String contact_number, String schedule_date, String schedule_time) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
-                .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         bookingsReference.get()
@@ -386,66 +429,10 @@ public class UserBookActivity extends AppCompatActivity {
                 });
     }
 
-    private void initializeDatePicker() {
-        final Calendar calendar = Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                bookingScheduleDate.getEditText().setText(simpleDateFormat.format(calendar.getTime()));
-            }
-        };
-        bookingScheduleDate.getEditText().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new DatePickerDialog(UserBookActivity.this, date,
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
-    }
-
-    private void populateTripScheduleTimeList(DocumentReference tripScheduleReference) {
-        tripSchedulesTimeList = new ArrayList<>();
-        tripScheduleReference.collection("schedules")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
-                                tripSchedulesTimeList.add(i, transportCompany);
-                            }
-                            AdapterDropdownScheduleTime adapterDropdownScheduleTime = new AdapterDropdownScheduleTime(UserBookActivity.this, tripSchedulesTimeList);
-                            bookingScheduleTimeACT.setAdapter(adapterDropdownScheduleTime);
-                            bookingScheduleTimeACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    TripSchedule selectedTime = (TripSchedule) adapterView.getItemAtPosition(i);
-                                    try {
-                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-                                        Date date_depart = simpleDateFormat.parse(selectedTime.getTime_depart());
-                                        bookingScheduleTime.getEditText().setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-    }
-
     private void populateVanTransportList(String route) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
-                .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
@@ -504,24 +491,10 @@ public class UserBookActivity extends AppCompatActivity {
         }
     }
 
-    private void populateRouteCategoryList() {
-        ArrayList<String> routeFromArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.category)));
-        ArrayAdapter<String> routeFromArrayAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, routeFromArray);
-        inputVanRouteACT.setAdapter(routeFromArrayAdapter);
-        inputVanRouteACT.setThreshold(1);
-        inputVanRouteACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                populateVanTransportList(inputVanRoute.getEditText().getText().toString());
-            }
-        });
-    }
-
     private void populateRouteList(String uid) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
-                .text("Processing...")
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         routeArray = new ArrayList<>();
@@ -545,12 +518,71 @@ public class UserBookActivity extends AppCompatActivity {
                                     tripPrice = selectedSchedule.getPrice();
                                     route_from = selectedSchedule.getRoute_from();
                                     route_to = selectedSchedule.getRoute_to();
-                                    bookingScheduleDate.getEditText().setText(getCurrentDate());
                                     computeTotalPrice();
                                     computeCommission();
-                                    populateTripScheduleTimeList(task.getResult().getDocuments().get(position).getReference());
+                                    picker.setListener(new DatePickerListener() {
+                                        @Override
+                                        public void onDateSelected(DateTime dateSelected) {
+                                            if (dateSelected.isBeforeNow()) {
+                                                timeChips.removeAllViews();
+                                                Toast.makeText(UserBookActivity.this, "Please select a later booking date.", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else {
+                                                schedule_date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate());
+                                                loadScheduleTimeChips(task.getResult().getDocuments().get(position).getReference());
+                                            }
+                                        }
+                                    });
                                 }
                             });
+                            dialog.dismiss();
+                        }
+                    }
+                });
+    }
+
+    private void loadScheduleTimeChips(DocumentReference tripScheduleReference) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+        timeChips.removeAllViews();
+        tripSchedulesTimeList = new ArrayList<>();
+        tripScheduleReference.collection("schedules")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
+                                tripSchedulesTimeList.add(i, transportCompany);
+                            }
+                            for (int i = 0; i < tripSchedulesTimeList.size(); i++) {
+                                try {
+                                    if (!compareSchedule(schedule_date + " " + new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(tripSchedulesTimeList.get(i).getTime_depart())))) {
+                                        final Chip chip = new Chip(UserBookActivity.this);
+                                        chip.setChipBackgroundColorResource(R.color.colorPrimary);
+                                        chip.setCheckable(true);
+                                        chip.setChipIconVisible(true);
+                                        chip.setChipIconResource(R.drawable.ic_input_clock);
+                                        chip.setTextColor(getResources().getColor(R.color.white));
+
+                                        chip.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(tripSchedulesTimeList.get(i).getTime_depart())));
+
+                                        chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                schedule_time = chip.getText().toString();
+                                            }
+                                        });
+                                        timeChips.addView(chip);
+                                    }
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                             dialog.dismiss();
                         }
                     }

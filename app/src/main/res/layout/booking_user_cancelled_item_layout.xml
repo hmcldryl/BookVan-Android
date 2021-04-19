@@ -274,28 +274,6 @@
                             android:textColor="@color/textColor"
                             android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/labelVanDriver"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:maxLines="1"
-                            android:text="Driver Name:"
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/labelPlateNumber"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:maxLines="1"
-                            android:text="Plate No.:"
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
                         <Space
                             android:layout_width="match_parent"
                             android:layout_height="6dp" />
@@ -426,28 +404,6 @@
 
                         <TextView
                             android:id="@+id/bookingTransportName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/bookingDriverName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:maxLines="1"
-                            android:text=""
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/bookingPlateNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"

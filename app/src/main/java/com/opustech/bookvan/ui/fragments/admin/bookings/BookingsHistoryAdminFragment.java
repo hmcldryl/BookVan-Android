@@ -38,7 +38,7 @@ public class BookingsHistoryAdminFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_bookings_history, container, false);
+        View root = inflater.inflate(R.layout.fragment_bookings_history_admin, container, false);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         bookingsReference = firebaseFirestore.collection("bookings");

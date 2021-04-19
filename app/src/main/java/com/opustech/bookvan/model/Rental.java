@@ -3,9 +3,9 @@ package com.opustech.bookvan.model;
 public class Rental {
     String uid,
             reference_number,
-            rent_type,
             name,
             contact_number,
+            transport_uid,
             pickup_location,
             pickup_date,
             pickup_time,
@@ -19,12 +19,12 @@ public class Rental {
     public Rental() {
     }
 
-    public Rental(String uid, String reference_number, String rent_type, String name, String contact_number, String pickup_location, String pickup_date, String pickup_time, String destination, String dropoff_location, String dropoff_date, String dropoff_time, String status, String timestamp) {
+    public Rental(String uid, String reference_number, String name, String contact_number, String transport_uid, String pickup_location, String pickup_date, String pickup_time, String destination, String dropoff_location, String dropoff_date, String dropoff_time, String status, String timestamp) {
         this.uid = uid;
         this.reference_number = reference_number;
-        this.rent_type = rent_type;
         this.name = name;
         this.contact_number = contact_number;
+        this.transport_uid = transport_uid;
         this.pickup_location = pickup_location;
         this.pickup_date = pickup_date;
         this.pickup_time = pickup_time;
@@ -52,14 +52,6 @@ public class Rental {
         this.reference_number = reference_number;
     }
 
-    public String getRent_type() {
-        return rent_type;
-    }
-
-    public void setRent_type(String rent_type) {
-        this.rent_type = rent_type;
-    }
-
     public String getName() {
         return name;
     }
@@ -74,6 +66,14 @@ public class Rental {
 
     public void setContact_number(String contact_number) {
         this.contact_number = contact_number;
+    }
+
+    public String getTransport_uid() {
+        return transport_uid;
+    }
+
+    public void setTransport_uid(String transport_uid) {
+        this.transport_uid = transport_uid;
     }
 
     public String getPickup_location() {

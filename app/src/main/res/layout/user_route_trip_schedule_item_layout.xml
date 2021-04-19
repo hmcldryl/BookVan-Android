@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:weightSum="20">
+
+    <TextView
+        android:id="@+id/timeQueue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:singleLine="true"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="#99121212" />
+
+    <TextView
+        android:id="@+id/timeDepart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:singleLine="true"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+</LinearLayout>

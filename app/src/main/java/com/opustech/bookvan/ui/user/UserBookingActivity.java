@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.user.ProfilePagerAdapter;
+import com.opustech.bookvan.adapters.user.BookingPagerAdapter;
 
 import java.util.Arrays;
 
@@ -33,7 +33,7 @@ public class UserBookingActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
 
-    private ProfilePagerAdapter profilePagerAdapter;
+    private BookingPagerAdapter bookingPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +63,27 @@ public class UserBookingActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
 
-        profilePagerAdapter = new ProfilePagerAdapter(this);
-        viewPager.setAdapter(profilePagerAdapter);
+        bookingPagerAdapter = new BookingPagerAdapter(this);
+        viewPager.setAdapter(bookingPagerAdapter);
 
         new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position) {
                     case 0:
-                        tab.setText("Active Booking");
-                        updateActiveListTabBadge(tab, currentUserId);
+                        tab.setText("Pending");
+                        updatePendingListTabBadge(tab, currentUserId);
                         break;
                     case 1:
-                        tab.setText("Booking History");
+                        tab.setText("Confirmed");
+                        updateConfirmedListTabBadge(tab, currentUserId);
+                        break;
+                    case 2:
+                        tab.setText("Cancelled");
+                        updateCancelledListTabBadge(tab, currentUserId);
+                        break;
+                    case 3:
+                        tab.setText("History");
                         updateHistoryListTabBadge(tab, currentUserId);
                         break;
                 }
@@ -83,9 +91,49 @@ public class UserBookingActivity extends AppCompatActivity {
         }).attach();
     }
 
-    private void updateActiveListTabBadge(TabLayout.Tab tab, String uid) {
+    private void updatePendingListTabBadge(TabLayout.Tab tab, String uid) {
         bookingsReference.whereEqualTo("uid", uid)
-                .whereIn("status", Arrays.asList("pending", "confirmed"))
+                .whereEqualTo("status", "pending")
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
+                                badgeDrawable.setMaxCharacterCount(2);
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void updateConfirmedListTabBadge(TabLayout.Tab tab, String uid) {
+        bookingsReference.whereEqualTo("uid", uid)
+                .whereEqualTo("status", "confirmed")
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
+                                badgeDrawable.setMaxCharacterCount(2);
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void updateCancelledListTabBadge(TabLayout.Tab tab, String uid) {
+        bookingsReference.whereEqualTo("uid", uid)
+                .whereEqualTo("status", "cancelled")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -105,7 +153,7 @@ public class UserBookingActivity extends AppCompatActivity {
 
     private void updateHistoryListTabBadge(TabLayout.Tab tab, String uid) {
         bookingsReference.whereEqualTo("uid", uid)
-                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .whereEqualTo("status", "done")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

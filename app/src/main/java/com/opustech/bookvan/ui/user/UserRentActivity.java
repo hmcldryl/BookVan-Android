@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
@@ -29,11 +30,15 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.chat.AdapterMessageChatRV;
 import com.opustech.bookvan.adapters.user.AdapterRentMessageChatRV;
 import com.opustech.bookvan.model.ChatMessage;
 import com.opustech.bookvan.model.RentChatMessage;
+import com.opustech.bookvan.model.Rental;
+import com.opustech.bookvan.model.TransportCompany;
+import com.opustech.bookvan.ui.transport.TransportAdminSchedulesActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,15 +54,26 @@ public class UserRentActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, rentalsReference;
+    private CollectionReference usersReference, rentalsReference, partnersReference;
 
-    private TextInputLayout inputName, inputLocationPickUp, inputLocationDropOff, inputContactNumber, inputDestination, inputPickUpDate, inputPickUpTime, inputDropOffDate, inputDropOffTime;
-
+    private TextInputLayout inputName,
+            inputContactNumber,
+            inputVanTransport,
+            inputLocationPickUp,
+            inputPickUpDate,
+            inputPickUpTime,
+            inputDestination,
+            inputLocationDropOff,
+            inputDropOffDate,
+            inputDropOffTime;
+    private AutoCompleteTextView inputVanTransportACT;
     private RecyclerView rentChatList;
 
     private ExtendedFloatingActionButton btnRent;
 
     private AdapterRentMessageChatRV adapterRentMessageChatRV;
+
+    private String transport_uid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +84,7 @@ public class UserRentActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         rentalsReference = firebaseFirestore.collection("rentals");
+        partnersReference = firebaseFirestore.collection("partners");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -84,6 +101,8 @@ public class UserRentActivity extends AppCompatActivity {
 
         inputName = findViewById(R.id.inputName);
         inputContactNumber = findViewById(R.id.inputContactNumber);
+        inputVanTransport = findViewById(R.id.inputVanTransport);
+        inputVanTransportACT = findViewById(R.id.inputVanTransportACT);
         inputLocationPickUp = findViewById(R.id.inputLocationPickUp);
         inputPickUpDate = findViewById(R.id.inputPickUpDate);
         inputPickUpTime = findViewById(R.id.inputPickUpTime);
@@ -93,6 +112,7 @@ public class UserRentActivity extends AppCompatActivity {
         inputDropOffTime = findViewById(R.id.inputDropOffTime);
         btnRent = findViewById(R.id.btnRent);
 
+        populateRouteCategoryList();
         initializeDatePickerPickUp();
         initializeDatePickerDropOff();
         initializeTimePickerPickUp();
@@ -127,6 +147,7 @@ public class UserRentActivity extends AppCompatActivity {
     private void enableInput() {
         inputName.setEnabled(true);
         inputContactNumber.setEnabled(true);
+        inputVanTransport.setEnabled(true);
         inputLocationPickUp.setEnabled(true);
         inputPickUpDate.setEnabled(true);
         inputPickUpTime.setEnabled(true);
@@ -140,6 +161,7 @@ public class UserRentActivity extends AppCompatActivity {
     private void disableInput() {
         inputName.setEnabled(false);
         inputContactNumber.setEnabled(false);
+        inputVanTransport.setEnabled(false);
         inputLocationPickUp.setEnabled(false);
         inputPickUpDate.setEnabled(false);
         inputPickUpTime.setEnabled(false);
@@ -159,13 +181,13 @@ public class UserRentActivity extends AppCompatActivity {
     private void inputCheck() {
         String name = inputName.getEditText().getText().toString();
         String contact_number = inputContactNumber.getEditText().getText().toString();
-        String pick_up_location = inputLocationPickUp.getEditText().getText().toString();
-        String pick_up_date = inputPickUpDate.getEditText().getText().toString();
-        String pick_up_time = inputPickUpTime.getEditText().getText().toString();
+        String pickup_location = inputLocationPickUp.getEditText().getText().toString();
+        String pickup_date = inputPickUpDate.getEditText().getText().toString();
+        String pickup_time = inputPickUpTime.getEditText().getText().toString();
         String destination = inputDestination.getEditText().getText().toString();
-        String drop_off_location = inputLocationDropOff.getEditText().getText().toString();
-        String drop_off_date = inputDropOffDate.getEditText().getText().toString();
-        String drop_off_time = inputDropOffTime.getEditText().getText().toString();
+        String dropoff_location = inputLocationDropOff.getEditText().getText().toString();
+        String dropoff_date = inputDropOffDate.getEditText().getText().toString();
+        String dropoff_time = inputDropOffTime.getEditText().getText().toString();
 
         if (name.isEmpty()) {
             enableInput();
@@ -173,52 +195,54 @@ public class UserRentActivity extends AppCompatActivity {
         } else if (contact_number.isEmpty()) {
             enableInput();
             inputContactNumber.setError("Please enter a contact number.");
-        } else if (pick_up_location.isEmpty()) {
+        } else if (pickup_location.isEmpty()) {
             enableInput();
             inputLocationPickUp.setError("Please enter a contact number.");
-        } else if (pick_up_date.isEmpty()) {
+        } else if (pickup_date.isEmpty()) {
             enableInput();
             inputPickUpDate.setError("Please enter a contact number.");
-        } else if (pick_up_time.isEmpty()) {
+        } else if (pickup_time.isEmpty()) {
             enableInput();
             inputPickUpTime.setError("Please enter a contact number.");
         } else if (destination.isEmpty()) {
             enableInput();
             inputDestination.setError("Please enter a contact number.");
-        } else if (drop_off_location.isEmpty()) {
+        } else if (dropoff_location.isEmpty()) {
             enableInput();
             inputLocationDropOff.setError("Please enter a contact number.");
-        } else if (drop_off_date.isEmpty()) {
+        } else if (dropoff_date.isEmpty()) {
             enableInput();
             inputDropOffDate.setError("Please enter a contact number.");
-        } else if (drop_off_time.isEmpty()) {
+        } else if (dropoff_time.isEmpty()) {
             enableInput();
             inputDropOffTime.setError("Please enter a contact number.");
         } else {
-            submitRentInfo(name, contact_number, pick_up_location, pick_up_date, pick_up_time, destination, drop_off_location, drop_off_date, drop_off_time);
+            generateRefNum(name, contact_number, transport_uid, pickup_location, pickup_date, pickup_time, destination, dropoff_location, dropoff_date, dropoff_time);
         }
     }
 
-    private void submitRentInfo(String name, String contact_number, String pick_up_location, String pick_up_date, String pick_up_time, String destination, String drop_off_location, String drop_off_date, String drop_off_time) {
+    private void generateRefNum(String name, String contact_number, String transport_uid, String pickup_location, String pickup_date, String pickup_time, String destination, String dropoff_location, String dropoff_date, String dropoff_time) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(this.getResources().getColor(R.color.white))
-                .text("Processing...")
+                .themeColor(getResources().getColor(R.color.white))
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("name", name);
-        hashMap.put("contact_number", contact_number);
-        hashMap.put("pick_up_location", pick_up_location);
-        hashMap.put("pick_up_date", pick_up_date);
-        hashMap.put("pick_up_time", pick_up_time);
-        hashMap.put("destination", destination);
-        hashMap.put("drop_off_location", drop_off_location);
-        hashMap.put("drop_off_date", drop_off_date);
-        hashMap.put("drop_off_time", drop_off_time);
-        hashMap.put("timestamp", generateTimestamp());
-        hashMap.put("uid", firebaseAuth.getCurrentUser().getUid());
-        rentalsReference.add(hashMap)
+        rentalsReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int num = task.getResult().getDocuments().size() + 1;
+                            String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
+                            submitRentInfo(dialog, reference_number, name, contact_number, transport_uid, pickup_location, pickup_date, pickup_time, destination, dropoff_location, dropoff_date, dropoff_time);
+                        }
+                    }
+                });
+    }
+
+    private void submitRentInfo(ACProgressFlower dialog, String reference_number, String name, String contact_number, String transport_uid, String pickup_location, String pickup_date, String pickup_time, String destination, String dropoff_location, String dropoff_date, String dropoff_time) {
+        Rental rental = new Rental(firebaseAuth.getCurrentUser().getUid(), reference_number, name, contact_number, transport_uid, pickup_location, pickup_date, pickup_time, destination, dropoff_location, dropoff_date, dropoff_time, "pending", generateTimestamp());
+        rentalsReference.add(rental)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -319,5 +343,38 @@ public class UserRentActivity extends AppCompatActivity {
                         .show();
             }
         });
+    }
+
+    private void populateRouteCategoryList() {
+        ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
+        partnersReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"));
+                                vanTransportList.add(i, transportCompany);
+                            }
+                            ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(UserRentActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
+                            inputVanTransportACT.setAdapter(vanTransportAdapter);
+                            inputVanTransportACT.setThreshold(1);
+                            inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
+                                    transport_uid = selectedTransport.getUid();
+                                }
+                            });
+                        }
+                    }
+                });
+    }
+
+    private void populateRouteCategoryList1() {
+        ArrayList<String> vanTransportArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.category)));
+        ArrayAdapter<String> vanTransportArrayAdapter = new ArrayAdapter<>(UserRentActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportArray);
+        inputVanTransportACT.setAdapter(vanTransportArrayAdapter);
+        inputVanTransportACT.setThreshold(1);
     }
 }

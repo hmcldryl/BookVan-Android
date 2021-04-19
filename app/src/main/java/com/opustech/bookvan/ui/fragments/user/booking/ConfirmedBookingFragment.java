@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,12 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.user.AdapterBookingConfirmedListRV;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.adapters.user.AdapterBookingHistoryListRV;
 
-import java.util.Arrays;
-
-public class BookingHistoryFragment extends Fragment {
+public class ConfirmedBookingFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -35,11 +34,11 @@ public class BookingHistoryFragment extends Fragment {
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
-    private AdapterBookingHistoryListRV adapterHistoryBookingListRV;
+    private AdapterBookingConfirmedListRV adapterConfirmedBookingListRV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_booking_history_user, container, false);
+        View root = inflater.inflate(R.layout.fragment_booking_confirmed_user, container, false);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -56,18 +55,19 @@ public class BookingHistoryFragment extends Fragment {
 
     private void updateUi(String currentUserId) {
         bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "done")
+                .whereEqualTo("status", "confirmed")
                 .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        int size = value.size();
-
-                        if (size > 0) {
-                            bookingList.setVisibility(View.VISIBLE);
-                            bookingStatusNone.setVisibility(View.GONE);
-                        } else {
-                            bookingStatusNone.setVisibility(View.VISIBLE);
-                            bookingList.setVisibility(View.GONE);
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                bookingList.setVisibility(View.VISIBLE);
+                                bookingStatusNone.setVisibility(View.GONE);
+                            } else {
+                                bookingStatusNone.setVisibility(View.VISIBLE);
+                                bookingList.setVisibility(View.GONE);
+                            }
                         }
                     }
                 });
@@ -75,44 +75,46 @@ public class BookingHistoryFragment extends Fragment {
 
     private void populateList(View root, String currentUserId) {
         Query query = bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "done")
+                .whereEqualTo("status", "confirmed")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
+
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterHistoryBookingListRV = new AdapterBookingHistoryListRV(options);
+        adapterConfirmedBookingListRV = new AdapterBookingConfirmedListRV(options, getActivity());
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(true);
         manager.setStackFromEnd(true);
+
+        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
 
         bookingList.setHasFixedSize(true);
         bookingList.setLayoutManager(manager);
-        bookingList.setAdapter(adapterHistoryBookingListRV);
+        bookingList.setAdapter(adapterConfirmedBookingListRV);
 
-        adapterHistoryBookingListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        adapterConfirmedBookingListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                bookingList.smoothScrollToPosition(adapterHistoryBookingListRV.getItemCount());
+                bookingList.smoothScrollToPosition(adapterConfirmedBookingListRV.getItemCount());
             }
         });
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
-        adapterHistoryBookingListRV.startListening();
+        adapterConfirmedBookingListRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterHistoryBookingListRV.stopListening();
+        adapterConfirmedBookingListRV.stopListening();
     }
 }

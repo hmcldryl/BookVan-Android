@@ -50,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:hint="Name"
+                        app:boxStrokeColor="@color/colorPrimary"
                         app:hintEnabled="true"
                         app:startIconDrawable="@drawable/ic_input_name"
                         app:startIconTint="@color/colorPrimary">
@@ -77,6 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:hint="@string/input_contact_number"
+                        app:boxStrokeColor="@color/colorPrimary"
                         app:hintEnabled="true"
                         app:startIconDrawable="@drawable/ic_input_contact_num"
                         app:startIconTint="@color/colorPrimary">
@@ -94,6 +96,35 @@
 
                     <Space
                         android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputVanTransport"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="Van Transport"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconTint="@color/colorPrimary"
+                        app:hintEnabled="true"
+                        app:startIconDrawable="@drawable/ic_input_transport"
+                        app:startIconTint="@color/colorPrimary">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/inputVanTransportACT"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:completionThreshold="1"
+                            android:fontFamily="@font/lato"
+                            android:inputType="none"
+                            android:singleLine="true"
+                            android:textColor="@color/textColor"
+                            android:textCursorDrawable="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
                         android:layout_height="8dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -103,6 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:hint="Pick-Up Location"
+                        app:boxStrokeColor="@color/colorPrimary"
                         app:hintEnabled="true"
                         app:startIconDrawable="@drawable/ic_input_location"
                         app:startIconTint="@color/colorPrimary">
@@ -138,6 +170,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:hint="Date"
+                            app:boxStrokeColor="@color/colorPrimary"
                             app:startIconDrawable="@drawable/ic_input_calendar"
                             app:startIconTint="@color/colorPrimary">
 
@@ -146,7 +179,7 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:focusable="false"
-                                android:inputType="date"
+                                android:inputType="none"
                                 android:maxLines="1"
                                 android:textCursorDrawable="@null" />
 
@@ -165,6 +198,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:hint="Time"
+                            app:boxStrokeColor="@color/colorPrimary"
                             app:startIconDrawable="@drawable/ic_input_clock"
                             app:startIconTint="@color/colorPrimary">
 
@@ -173,7 +207,7 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:focusable="false"
-                                android:inputType="time"
+                                android:inputType="none"
                                 android:maxLines="1"
                                 android:textCursorDrawable="@null" />
 
@@ -192,8 +226,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:hint="Destination"
+                        app:boxStrokeColor="@color/colorPrimary"
                         app:hintEnabled="true"
-                        app:startIconDrawable="@drawable/ic_input_location"
+                        app:startIconDrawable="@drawable/ic_icon_route"
                         app:startIconTint="@color/colorPrimary">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -218,6 +253,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:hint="Drop-Off Location"
+                        app:boxStrokeColor="@color/colorPrimary"
                         app:hintEnabled="true"
                         app:startIconDrawable="@drawable/ic_input_location"
                         app:startIconTint="@color/colorPrimary">
@@ -253,6 +289,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:hint="Date"
+                            app:boxStrokeColor="@color/colorPrimary"
                             app:startIconDrawable="@drawable/ic_input_calendar"
                             app:startIconTint="@color/colorPrimary">
 
@@ -261,7 +298,7 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:focusable="false"
-                                android:inputType="date"
+                                android:inputType="none"
                                 android:maxLines="1"
                                 android:textCursorDrawable="@null" />
 
@@ -280,6 +317,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:hint="Time"
+                            app:boxStrokeColor="@color/colorPrimary"
                             app:startIconDrawable="@drawable/ic_input_clock"
                             app:startIconTint="@color/colorPrimary">
 
@@ -288,7 +326,7 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:focusable="false"
-                                android:inputType="time"
+                                android:inputType="none"
                                 android:maxLines="1"
                                 android:textCursorDrawable="@null" />
 
@@ -313,6 +351,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_margin="16dp"
+                android:fontFamily="@font/lato_black"
                 android:text="RENT"
                 android:textColor="@color/colorPrimary"
                 app:backgroundTint="#FFFFFF"

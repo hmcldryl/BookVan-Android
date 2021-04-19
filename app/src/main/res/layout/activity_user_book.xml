@@ -45,6 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Name"
+                    app:boxStrokeColor="@color/colorPrimary"
                     app:startIconDrawable="@drawable/ic_input_name"
                     app:startIconTint="@color/colorPrimary">
 
@@ -70,6 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Contact Number"
+                    app:boxStrokeColor="@color/colorPrimary"
                     app:startIconDrawable="@drawable/ic_input_contact_num"
                     app:startIconTint="@color/colorPrimary">
 
@@ -89,57 +91,72 @@
                     android:layout_width="match_parent"
                     android:layout_height="6dp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/inputVanRoute"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:hint="North / South"
-                    app:endIconTint="@color/colorPrimary"
-                    app:hintEnabled="true"
-                    app:startIconDrawable="@drawable/ic_input_location"
-                    app:startIconTint="@color/colorPrimary">
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
-                    <AutoCompleteTextView
-                        android:id="@+id/inputVanRouteACT"
-                        android:layout_width="match_parent"
+                    <RadioGroup
+                        android:id="@+id/categoryRadio"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:completionThreshold="1"
-                        android:fontFamily="@font/lato"
-                        android:inputType="none"
-                        android:singleLine="true"
-                        android:textColor="@color/textColor"
-                        android:textCursorDrawable="@null" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_weight="3"
+                        android:orientation="vertical">
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="6dp" />
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/btnRadioNorth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:text="North"
+                            android:textColor="#99242323"
+                            android:textSize="16sp"
+                            app:buttonTint="@color/colorPrimary" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/inputVanTransport"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:hint="Van Transport"
-                    app:endIconTint="@color/colorPrimary"
-                    app:hintEnabled="true"
-                    app:startIconDrawable="@drawable/ic_input_transport"
-                    app:startIconTint="@color/colorPrimary">
+                        <com.google.android.material.radiobutton.MaterialRadioButton
+                            android:id="@+id/btnRadioSouth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato"
+                            android:text="South"
+                            android:textColor="#99242323"
+                            android:textSize="16sp"
+                            app:buttonTint="@color/colorPrimary" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/inputVanTransportACT"
-                        android:layout_width="match_parent"
+                    </RadioGroup>
+
+                    <Space
+                        android:layout_width="8dp"
+                        android:layout_height="match_parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/inputVanTransport"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:completionThreshold="1"
-                        android:fontFamily="@font/lato"
-                        android:inputType="none"
-                        android:singleLine="true"
-                        android:textColor="@color/textColor"
-                        android:textCursorDrawable="@null" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_gravity="center"
+                        android:layout_weight="7"
+                        android:hint="Van Transport"
+                        app:boxStrokeColor="@color/colorPrimary"
+                        app:endIconTint="@color/colorPrimary"
+                        app:hintEnabled="true"
+                        app:startIconDrawable="@drawable/ic_input_transport"
+                        app:startIconTint="@color/colorPrimary">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/inputVanTransportACT"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:completionThreshold="1"
+                            android:fontFamily="@font/lato"
+                            android:inputType="none"
+                            android:singleLine="true"
+                            android:textColor="@color/textColor"
+                            android:textCursorDrawable="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
@@ -151,6 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="From - To"
+                    app:boxStrokeColor="@color/colorPrimary"
                     app:endIconTint="@color/colorPrimary"
                     app:startIconDrawable="@drawable/ic_icon_route"
                     app:startIconTint="@color/colorPrimary">
@@ -171,55 +189,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="6dp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/bookingScheduleDate"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                <com.github.jhonnyx2012.horizontalpicker.HorizontalPicker
+                    android:id="@+id/bookingDatePicker"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:hint="`Departure Date"
-                    app:startIconDrawable="@drawable/ic_input_calendar"
-                    app:startIconTint="@color/colorPrimary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:focusable="false"
-                        android:fontFamily="@font/lato"
-                        android:inputType="date"
-                        android:maxLines="1"
-                        android:textCursorDrawable="@null" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"/>
 
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="6dp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/bookingScheduleTime"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/timeChips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:hint="Departure Time"
-                    app:endIconTint="@color/colorPrimary"
-                    app:hintEnabled="true"
-                    app:startIconDrawable="@drawable/ic_input_clock"
-                    app:startIconTint="@color/colorPrimary">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/bookingScheduleTimeACT"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato"
-                        android:inputType="time"
-                        android:singleLine="true"
-                        android:textColor="@color/textColor"
-                        android:textCursorDrawable="@null" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:selectionRequired="true"
+                    app:singleSelection="true" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -269,7 +253,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginStart="4dp"
-                                android:layout_marginEnd="4dp">
+                                android:layout_marginEnd="4dp"
+                                app:boxStrokeColor="@color/colorPrimary">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:layout_width="match_parent"
@@ -333,7 +318,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginStart="4dp"
-                                android:layout_marginEnd="4dp">
+                                android:layout_marginEnd="4dp"
+                                app:boxStrokeColor="@color/colorPrimary">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:layout_width="match_parent"
@@ -397,7 +383,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginStart="4dp"
-                                android:layout_marginEnd="4dp">
+                                android:layout_marginEnd="4dp"
+                                app:boxStrokeColor="@color/colorPrimary">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:layout_width="match_parent"
@@ -466,20 +453,53 @@
         android:background="@drawable/background_toolbar"
         android:elevation="8dp">
 
-        <TextView
-            android:id="@+id/bookingTotal"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_margin="16dp"
             android:layout_toStartOf="@+id/btnBook"
             android:drawableStart="@drawable/ic_input_price"
-            android:ellipsize="end"
-            android:fontFamily="@font/lato_bold"
-            android:maxLines="1"
-            android:text="0.00"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/lato"
+                android:maxLines="1"
+                android:text="Booking Total"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/lato_black"
+                    android:maxLines="1"
+                    android:text="@string/peso_sign"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/bookingTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/lato_black"
+                    android:maxLines="1"
+                    android:text="0.00"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp" />
+            </LinearLayout>
+        </LinearLayout>
+
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/btnBook"
@@ -491,7 +511,7 @@
             android:text="BOOK"
             android:textColor="@color/colorPrimary"
             app:backgroundTint="#FFFFFF"
-            app:icon="@drawable/ic_icon_book"
+            app:icon="@drawable/ic_icon_booking"
             app:iconTint="@color/colorPrimary" />
 
     </RelativeLayout>

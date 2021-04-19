@@ -70,14 +70,18 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 switch (position) {
                     case 0:
-                        tab.setText("Confirmed");
-                        updateConfirmedListTabBadge(tab);
-                        break;
-                    case 1:
                         tab.setText("Pending");
                         updatePendingListTabBadge(tab);
                         break;
+                    case 1:
+                        tab.setText("Confirmed");
+                        updateConfirmedListTabBadge(tab);
+                        break;
                     case 2:
+                        tab.setText("Cancelled");
+                        updatePendingListTabBadge(tab);
+                        break;
+                    case 3:
                         tab.setText("History");
                         updateHistoryListTabBadge(tab);
                         break;

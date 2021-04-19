@@ -1,5 +1,6 @@
-package com.opustech.bookvan.ui.fragments.admin.bookings;
+package com.opustech.bookvan.ui.fragments.transport.bookings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,35 +21,40 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.adapters.admin.AdapterBookingConfirmedAdminListRV;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.transport.AdapterBookingCancelledTransportListRV;
+import com.opustech.bookvan.adapters.transport.AdapterBookingHistoryTransportListRV;
 import com.opustech.bookvan.model.Booking;
 
-public class BookingsConfirmedAdminFragment extends Fragment {
+import java.util.Arrays;
+
+public class BookingsCancelledTransportFragment extends Fragment {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference bookingsReference;
+    private CollectionReference partnersReference, bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
-    private AdapterBookingConfirmedAdminListRV adapterBookingConfirmedAdminListRV;
+    private AdapterBookingCancelledTransportListRV adapterBookingCancelledTransportListRV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_bookings_confirmed_admin, container, false);
+        View root = inflater.inflate(R.layout.fragment_bookings_cancelled_transport, container, false);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         bookingsReference = firebaseFirestore.collection("bookings");
+        partnersReference = firebaseFirestore.collection("partners");
 
-        populateList(root);
-        updateUi();
+        populateList(root, getTransportUid());
+        updateUi(getTransportUid());
 
         return root;
     }
 
-    private void updateUi() {
-        bookingsReference.whereEqualTo("status", "confirmed")
+    private void updateUi(String transport_uid) {
+        bookingsReference.whereEqualTo("transport_uid", transport_uid)
+                .whereEqualTo("status", "cancelled")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -66,15 +72,16 @@ public class BookingsConfirmedAdminFragment extends Fragment {
                 });
     }
 
-    private void populateList(View root) {
-        Query query = bookingsReference.whereEqualTo("status", "confirmed")
+    private void populateList(View root, String transport_uid) {
+        Query query = bookingsReference.whereEqualTo("transport_uid", transport_uid)
+                .whereEqualTo("status", "cancelled")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingConfirmedAdminListRV = new AdapterBookingConfirmedAdminListRV(options, getActivity());
+        adapterBookingCancelledTransportListRV = new AdapterBookingCancelledTransportListRV(options, getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(true);
         manager.setStackFromEnd(true);
@@ -86,25 +93,30 @@ public class BookingsConfirmedAdminFragment extends Fragment {
         bookingList.setHasFixedSize(true);
         bookingList.setLayoutManager(manager);
         bookingList.addItemDecoration(dividerItemDecoration);
-        bookingList.setAdapter(adapterBookingConfirmedAdminListRV);
+        bookingList.setAdapter(adapterBookingCancelledTransportListRV);
 
-        adapterBookingConfirmedAdminListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        adapterBookingCancelledTransportListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                bookingList.smoothScrollToPosition(adapterBookingConfirmedAdminListRV.getItemCount());
+                bookingList.smoothScrollToPosition(adapterBookingCancelledTransportListRV.getItemCount());
             }
         });
+    }
+
+    private String getTransportUid() {
+        Intent intent = getActivity().getIntent();
+        return intent.getStringExtra("uid");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        adapterBookingConfirmedAdminListRV.startListening();
+        adapterBookingCancelledTransportListRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterBookingConfirmedAdminListRV.stopListening();
+        adapterBookingCancelledTransportListRV.stopListening();
     }
 }

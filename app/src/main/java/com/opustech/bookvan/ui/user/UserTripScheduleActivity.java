@@ -15,9 +15,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.opustech.bookvan.adapters.user.AdapterTripScheduleListRV;
+import com.opustech.bookvan.adapters.user.AdapterScheduleListRV;
 import com.opustech.bookvan.model.Schedule;
-import com.opustech.bookvan.model.TripSchedule;
 
 public class UserTripScheduleActivity extends AppCompatActivity {
 
@@ -27,7 +26,7 @@ public class UserTripScheduleActivity extends AppCompatActivity {
     private ImageView previewImage;
     private RecyclerView scheduleList;
 
-    private AdapterTripScheduleListRV adapterTripScheduleListRV;
+    private AdapterScheduleListRV adapterScheduleListRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +62,20 @@ public class UserTripScheduleActivity extends AppCompatActivity {
 
         Query query = firebaseFirestore.collection("schedules")
                 .whereEqualTo("route_to", destination)
-                .collectionGroup("schedules")
-                .orderBy("time_queue", Query.Direction.ASCENDING);
+                .orderBy("van_company_uid", Query.Direction.ASCENDING);
 
-        FirestoreRecyclerOptions<TripSchedule> options = new FirestoreRecyclerOptions.Builder<TripSchedule>()
-                .setQuery(query, TripSchedule.class)
+        FirestoreRecyclerOptions<Schedule> options = new FirestoreRecyclerOptions.Builder<Schedule>()
+                .setQuery(query, Schedule.class)
                 .build();
 
-        adapterTripScheduleListRV = new AdapterTripScheduleListRV(options);
+        adapterScheduleListRV = new AdapterScheduleListRV(options, this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
 
         scheduleList = findViewById(R.id.scheduleList);
 
         scheduleList.setHasFixedSize(true);
         scheduleList.setLayoutManager(manager);
-        scheduleList.setAdapter(adapterTripScheduleListRV);
+        scheduleList.setAdapter(adapterScheduleListRV);
     }
 
     public static String capitalizeWords(String str) {
@@ -94,12 +92,12 @@ public class UserTripScheduleActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        adapterTripScheduleListRV.startListening();
+        adapterScheduleListRV.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        adapterTripScheduleListRV.stopListening();
+        adapterScheduleListRV.stopListening();
     }
 }

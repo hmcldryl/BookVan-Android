@@ -52,67 +52,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:weightSum="10">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2.5"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="QUEUE"
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2.5"
-                    android:fontFamily="@font/lato_black"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="DEPART"
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:fontFamily="@font/lato_bold"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="TRANSPORT"
-                    android:textAlignment="center"
-                    android:textColor="@color/textColor"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="#1F121212" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/scheduleList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                android:paddingBottom="8dp" />
+                android:layout_height="match_parent"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

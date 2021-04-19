@@ -1,0 +1,367 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccent"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:id="@+id/itemNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_black"
+                        android:maxLines="1"
+                        android:text="#"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_black"
+                        android:maxLines="1"
+                        android:text="Ref. No.:"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/bookingReferenceNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_bold"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="Customer Name:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="Route:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="Date:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="Time:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:id="@+id/labelCountAdult"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="Adult:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/labelCountChild"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="Child:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/labelCountSpecial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="PWD/SC/S:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text="Transport Name:"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_black"
+                        android:maxLines="1"
+                        android:text="Total:"
+                        android:textColor="@color/textColor"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/bookingCustomerName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_bold"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:id="@+id/bookingTripRoute"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:id="@+id/bookingScheduleDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/bookingScheduleTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:id="@+id/bookingCountAdult"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/bookingCountChild"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/bookingCountSpecial"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:id="@+id/bookingTransportName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato_bold"
+                            android:maxLines="1"
+                            android:text="@string/peso_sign"
+                            android:textColor="@color/textColor"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/lato_bold"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

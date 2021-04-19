@@ -56,6 +56,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private ImageCarousel imageCarousel;
 
     private String name = "";
+    private String contact_number = "";
     private String email = "";
     private String photo_url = "";
 
@@ -109,6 +110,8 @@ public class UserHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserHomeActivity.this, UserBookActivity.class);
+                intent.putExtra("name", name);
+                intent.putExtra("contact_number", contact_number);
                 startActivity(intent);
             }
         });
@@ -276,6 +279,7 @@ public class UserHomeActivity extends AppCompatActivity {
                                     if (value.exists()) {
                                         name = value.getString("name");
                                         email = value.getString("email");
+                                        contact_number = value.getString("contact_number");
                                         photo_url = value.getString("photo_url");
 
                                         if (photo_url != null) {

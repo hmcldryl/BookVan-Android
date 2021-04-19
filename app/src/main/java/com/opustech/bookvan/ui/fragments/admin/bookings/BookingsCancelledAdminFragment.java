@@ -1,4 +1,4 @@
-package com.opustech.bookvan.ui.fragments.user.booking;
+package com.opustech.bookvan.ui.fragments.admin.bookings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,11 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,98 +21,93 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.admin.AdapterBookingCancelledAdminListRV;
+import com.opustech.bookvan.adapters.admin.AdapterBookingHistoryAdminListRV;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.adapters.user.AdapterBookingHistoryListRV;
 
 import java.util.Arrays;
 
-public class BookingHistoryFragment extends Fragment {
+public class BookingsCancelledAdminFragment extends Fragment {
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, bookingsReference;
+    private CollectionReference bookingsReference;
 
     private TextView bookingStatusNone;
     private RecyclerView bookingList;
 
-    private AdapterBookingHistoryListRV adapterHistoryBookingListRV;
+    private AdapterBookingCancelledAdminListRV adapterBookingCancelledAdminListRV;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_booking_history_user, container, false);
+        View root = inflater.inflate(R.layout.fragment_booking_cancelled_admin, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        usersReference = firebaseFirestore.collection("users");
         bookingsReference = firebaseFirestore.collection("bookings");
 
-        String currentUserId = firebaseAuth.getCurrentUser().getUid();
-
-        populateList(root, currentUserId);
-        updateUi(currentUserId);
+        populateList(root);
+        updateUi();
 
         return root;
     }
 
-    private void updateUi(String currentUserId) {
-        bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "done")
-                .addSnapshotListener(getActivity(), new EventListener<QuerySnapshot>() {
+    private void updateUi() {
+        bookingsReference.whereEqualTo("status", "cancelled")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        int size = value.size();
-
-                        if (size > 0) {
-                            bookingList.setVisibility(View.VISIBLE);
-                            bookingStatusNone.setVisibility(View.GONE);
-                        } else {
-                            bookingStatusNone.setVisibility(View.VISIBLE);
-                            bookingList.setVisibility(View.GONE);
+                        if (value != null) {
+                            int size = value.size();
+                            if (size > 0) {
+                                bookingList.setVisibility(View.VISIBLE);
+                                bookingStatusNone.setVisibility(View.GONE);
+                            } else {
+                                bookingStatusNone.setVisibility(View.VISIBLE);
+                                bookingList.setVisibility(View.GONE);
+                            }
                         }
                     }
                 });
     }
 
-    private void populateList(View root, String currentUserId) {
-        Query query = bookingsReference.whereEqualTo("uid", currentUserId)
-                .whereEqualTo("status", "done")
+    private void populateList(View root) {
+        Query query = bookingsReference.whereEqualTo("status", "cancelled")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Booking> options = new FirestoreRecyclerOptions.Builder<Booking>()
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterHistoryBookingListRV = new AdapterBookingHistoryListRV(options);
-
+        adapterBookingCancelledAdminListRV = new AdapterBookingCancelledAdminListRV(options, getActivity());
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(true);
         manager.setStackFromEnd(true);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
 
         bookingList.setHasFixedSize(true);
         bookingList.setLayoutManager(manager);
-        bookingList.setAdapter(adapterHistoryBookingListRV);
+        bookingList.addItemDecoration(dividerItemDecoration);
+        bookingList.setAdapter(adapterBookingCancelledAdminListRV);
 
-        adapterHistoryBookingListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        adapterBookingCancelledAdminListRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                bookingList.smoothScrollToPosition(adapterHistoryBookingListRV.getItemCount());
+                bookingList.smoothScrollToPosition(adapterBookingCancelledAdminListRV.getItemCount());
             }
         });
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
-        adapterHistoryBookingListRV.startListening();
+        adapterBookingCancelledAdminListRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterHistoryBookingListRV.stopListening();
+        adapterBookingCancelledAdminListRV.stopListening();
     }
 }

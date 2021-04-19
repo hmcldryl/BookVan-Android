@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.user.booking.BookingHistoryFragment">
+    tools:context=".ui.fragments.user.booking.CancelledBookingFragment">
 
     <TextView
         android:id="@+id/bookingStatusNone"
@@ -12,13 +12,13 @@
         android:layout_centerInParent="true"
         android:drawableTop="@drawable/ic_icon_sad_100"
         android:fontFamily="@font/lato"
-        android:text="No bookings found."
+        android:text="No cancelled bookings."
         android:textColor="@color/textColor"
         android:textSize="16sp"
         android:visibility="visible" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bookingHistoryList"
+        android:id="@+id/bookingList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
