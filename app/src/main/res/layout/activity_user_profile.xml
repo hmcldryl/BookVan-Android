@@ -85,14 +85,14 @@
                             android:layout_height="wrap_content"
                             android:checkable="false"
                             android:gravity="center"
-                            android:text="0 BP"
+                            android:text="0 TP"
                             android:textAppearance="@style/PointChipTextAppearance"
                             android:textColor="#FFFFFF"
-                            app:chipIconSize="24dp"
                             app:checkedIconEnabled="false"
                             app:chipBackgroundColor="@color/colorPrimary"
                             app:chipEndPadding="16dp"
                             app:chipIcon="@drawable/ic_icon_book"
+                            app:chipIconSize="24dp"
                             app:chipStartPadding="16dp"
                             app:closeIconEnabled="false" />
 

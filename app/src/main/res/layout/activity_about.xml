@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/background_dashboard_right"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -122,6 +122,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/lato"
+                    android:justificationMode="inter_word"
                     android:text="BookVan is a ride-sharing mobile application and website platform that will provide commuters in Palawan to book and reserve their seats in the shuttle vans within their vicinity in an online and offline set-up. This is a third-party platform that connects the van operator and passenger to provide cost-saving, time-saving, and convenience for both commuters and van operators. It is the first and only van booking and ride-sharing mobile application in Palawan, aiming to provide an innovative solution and change the mode of van transportation in Palawan."
                     android:textColor="#FFFFFF"
                     android:textSize="14sp" />
@@ -388,7 +389,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="350dp"
                 android:layout_marginEnd="16dp"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/background_dashboard_left"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -444,7 +445,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/background_dashboard_right"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -514,11 +515,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:padding="16dp"
                 android:layout_marginEnd="16dp"
-                android:background="@color/colorPrimary"
-                android:orientation="horizontal">
+                android:background="@drawable/background_dashboard_left"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
 
                 <ImageView
@@ -580,13 +581,13 @@
                         android:text="How can we book/reserve seat to you?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -612,6 +613,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="We confirm booking by: Online (Facebook/messenger and mobile application), by phone (text or call), by website"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -620,7 +622,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -650,13 +652,13 @@
                         android:text="Do you have online payment?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -682,6 +684,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="On next update"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -690,7 +693,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -720,13 +723,13 @@
                         android:text="Do you pick up in PPC?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -752,6 +755,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes. We can pick up anywhere in the city like airports, hotels, restaurants, etc. This is part of our service"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -760,7 +764,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -790,13 +794,13 @@
                         android:text="Where are the vans located?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -822,6 +826,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Puerto Princesa City Terminal"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -830,7 +835,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -860,13 +865,13 @@
                         android:text="Do you have a tour packages?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -892,6 +897,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="None. We are a Technology Company and not a travel and tours agency. If you already have a travel agency in mind, let them know that you wish to book your ride with us and we shall coordinate with them."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -900,7 +906,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -930,13 +936,13 @@
                         android:text="What is your fare price?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -962,6 +968,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Same as the fare guidelines issued by the LTFRB Land Transportation Franchising and Regulatory Board (LTFRB)."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -970,7 +977,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1000,13 +1007,13 @@
                         android:text="Can we rent a van through your company?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1032,6 +1039,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1040,7 +1048,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1070,13 +1078,13 @@
                         android:text="What is unique with BookVan?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1102,6 +1110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Offline booking on next update, price can be cheap, tracking of shuttle vans, Uber/grab like set-up with seats options."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1110,7 +1119,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1140,13 +1149,13 @@
                         android:text="Do you have the list of schedules of trips?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1172,6 +1181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes, we do have schedule of trips. Just visit the mobile app/website and select departure date, point of interest and time. Should you wish to continue, the app/website will notify that you have successfully booked, unless otherwise cancelled or disregarded booking is invalid."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1180,7 +1190,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1210,13 +1220,13 @@
                         android:text="Do you have trips from North to PPC?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1242,6 +1252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes, we provide our services in the whole island of Palawan"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1250,7 +1261,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1280,13 +1291,13 @@
                         android:text="Do you have trips from South to PPC?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1312,6 +1323,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes, we provide our services in the whole island of Palawan"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1320,7 +1332,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1350,13 +1362,13 @@
                         android:text="I want to cancel my booking."
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1382,6 +1394,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes of course, cancelled booking is free of charge."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1390,7 +1403,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1420,13 +1433,13 @@
                         android:text="How to book?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1452,6 +1465,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Application link/website link/video link"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1490,13 +1504,13 @@
                         android:text="Do you accept multiple passengers in one booking?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1522,6 +1536,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes, a category listed in the application/website indicate how many persons wants to ride."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1530,7 +1545,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1560,13 +1575,13 @@
                         android:text="Do you deliver?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1592,6 +1607,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes we do delivery."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1600,7 +1616,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1630,13 +1646,13 @@
                         android:text="Can I become a private vehicle owner and use the application as a customer?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1662,6 +1678,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes, just visit our office for further assistance or you may call us, 0961-027-5583."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1670,7 +1687,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1700,13 +1717,13 @@
                         android:text="Can I become a private vehicle owner and use the application as a customer?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1732,6 +1749,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes, just visit our office for further assistance or you may call us, 0961-027-5583."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1740,7 +1758,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1770,13 +1788,13 @@
                         android:text="Do you accept PWD discount?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1802,6 +1820,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes, by just presenting your PWD ID and pay your fare to the Van Driver and a 20% PWD discounted rate is acceptable from the official government laws."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1810,7 +1829,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1840,13 +1859,13 @@
                         android:text="I email forgot my password"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1872,6 +1891,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Please send us an email for verification regarding of your concern to revive your BookVan account. Personal details may be asked for verification. Your call may be monitored for quality assurance."
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
@@ -1880,7 +1900,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1910,13 +1930,13 @@
                         android:text="Do you have promos or discounts?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic|bold" />
 
                 </LinearLayout>
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="8dp" />
+                    android:layout_height="16dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1942,6 +1962,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text="Yes, please visit our Facebook page/website/app to keep you updated"
                         android:textColor="@color/textColor"
                         android:textSize="16sp" />
