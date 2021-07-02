@@ -53,9 +53,7 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");
 
-        String uid = model.getUid();
         String name = model.getName();
-        String contact_number = model.getContact_number();
         String reference_number = model.getReference_number();
         String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
         String route_to = model.getRoute_to().equals("Puerto Princesa City") ? "PPC" : model.getRoute_to();
@@ -68,24 +66,6 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
         String remarks = model.getRemarks();
         String transport_uid = model.getTransport_uid();
         double price = model.getPrice();
-
-        usersReference.document(uid)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String customerEmail = task.getResult().getString("email");
-                            holder.bookingCustomerEmail.setText(customerEmail);
-                            String customerPhoto = task.getResult().getString("photo_url");
-                            if (customerPhoto != null) {
-                                Glide.with(holder.itemView.getContext())
-                                        .load(customerPhoto)
-                                        .into(holder.customerPhoto);
-                            }
-                        }
-                    }
-                });
 
         partnersReference.document(transport_uid)
                 .get()
@@ -100,7 +80,6 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
                 });
 
         holder.bookingCustomerName.setText(name);
-        holder.bookingContactNumber.setText(contact_number);
         holder.bookingReferenceNumber.setText(reference_number);
         holder.bookingTripRoute.setText(trip_route);
         holder.bookingScheduleDate.setText(schedule_date);
@@ -112,7 +91,15 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
                 holder.bookingRemarks.setVisibility(View.GONE);
             } else {
                 holder.bookingRemarks.setText(remarks);
-                holder.labelRemarks.setLines(holder.bookingRemarks.getLineCount());
+                holder.bookingRemarks.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (holder.bookingRemarks.getLineCount() == 0 && !holder.bookingRemarks.getText().toString().isEmpty()) {
+                            //do nothing hehe
+                        }
+                        holder.labelRemarks.setLines(holder.bookingRemarks.getLineCount());
+                    }
+                });
             }
         } else {
             holder.labelRemarks.setVisibility(View.GONE);
@@ -152,8 +139,6 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
 
     class BookingHolder extends RecyclerView.ViewHolder {
         TextView bookingCustomerName,
-                bookingCustomerEmail,
-                bookingContactNumber,
                 bookingReferenceNumber,
                 bookingTripRoute,
                 bookingScheduleDate,
@@ -178,8 +163,6 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
             itemNumber = view.findViewById(R.id.itemNumber);
             customerPhoto = view.findViewById(R.id.customerPhoto);
             bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
-            bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
-            bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
             bookingReferenceNumber = view.findViewById(R.id.bookingReferenceNumber);
             bookingTripRoute = view.findViewById(R.id.bookingTripRoute);
             bookingScheduleDate = view.findViewById(R.id.bookingScheduleDate);

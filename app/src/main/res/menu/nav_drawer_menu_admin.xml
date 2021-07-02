@@ -7,6 +7,11 @@
         android:id="@+id/main_items">
 
         <item
+            android:id="@+id/btnGenerateQR"
+            android:icon="@drawable/ic_icon_qr"
+            android:title="Generate QR" />
+
+        <item
             android:id="@+id/btnBookings"
             android:icon="@drawable/ic_icon_bookings"
             android:title="@string/label_book_admin" />

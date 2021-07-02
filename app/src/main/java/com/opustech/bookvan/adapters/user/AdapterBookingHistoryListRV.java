@@ -120,7 +120,15 @@ public class AdapterBookingHistoryListRV extends FirestoreRecyclerAdapter<Bookin
                 holder.bookingRemarks.setVisibility(View.GONE);
             } else {
                 holder.bookingRemarks.setText(remarks);
-                holder.labelRemarks.setLines(holder.bookingRemarks.getLineCount());
+                holder.bookingRemarks.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (holder.bookingRemarks.getLineCount() == 0 && !holder.bookingRemarks.getText().toString().isEmpty()) {
+                            //do nothing hehe
+                        }
+                        holder.labelRemarks.setLines(holder.bookingRemarks.getLineCount());
+                    }
+                });
             }
         } else {
             holder.labelRemarks.setVisibility(View.GONE);
