@@ -34,25 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/colorPrimary"
-                    android:fontFamily="@font/lato"
-                    android:text="Ordinary QR"
-                    android:textColor="@color/textColor" />
-            </RadioGroup>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/inputOrdinaryQR"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -60,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="16dp"
-                android:hint="Enter Content">
+                android:hint="Enter QR Content">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -109,7 +90,21 @@
             </LinearLayout>
 
             <Space
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lato"
+                android:text="Save QR"
+                app:icon="@drawable/ic_icon_qr" />
+
+            <Space
+                android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
         </LinearLayout>
