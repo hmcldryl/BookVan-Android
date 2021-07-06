@@ -80,6 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato"
+                    android:justificationMode="inter_word"
                     android:text=""
                     android:textAlignment="center"
                     android:textColor="#CC121212"
@@ -108,86 +109,33 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="marquee"
-                        android:fontFamily="@font/lato_bold"
-                        android:singleLine="true"
-                        android:text="Contact Us:"
-                        android:textAlignment="center"
-                        android:textColor="@color/textColor"
-                        android:textSize="14sp" />
-
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="6dp" />
 
-                    <LinearLayout
-                        android:id="@+id/email"
+                    <TextView
+                        android:id="@+id/companyEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:ellipsize="marquee"
+                        android:fontFamily="@font/lato"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/companyEmailLabel"
-                            android:layout_width="110dp"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="marquee"
-                            android:fontFamily="@font/lato"
-                            android:singleLine="true"
-                            android:text="Email:"
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <Space
-                            android:layout_width="8dp"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:id="@+id/companyEmail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="marquee"
-                            android:fontFamily="@font/lato"
-                            android:singleLine="true"
-                            android:text=""
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/website"
+                    <TextView
+                        android:id="@+id/companyWebsite"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/companyWebsiteLabel"
-                            android:layout_width="110dp"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="marquee"
-                            android:fontFamily="@font/lato"
-                            android:singleLine="true"
-                            android:text="Website:"
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <Space
-                            android:layout_width="8dp"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:id="@+id/companyWebsite"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="marquee"
-                            android:fontFamily="@font/lato"
-                            android:singleLine="true"
-                            android:text=""
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                        android:ellipsize="marquee"
+                        android:fontFamily="@font/lato"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textColor="@color/textColor"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
             </LinearLayout>
