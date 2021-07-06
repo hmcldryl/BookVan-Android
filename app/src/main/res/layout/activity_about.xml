@@ -119,7 +119,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/lato"
                     android:justificationMode="inter_word"
@@ -143,7 +142,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:gravity="center"
@@ -182,7 +180,6 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="16dp"
@@ -231,7 +228,6 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="16dp"
@@ -280,7 +276,6 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="16dp"
@@ -329,7 +324,6 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="8dp"
                             android:layout_marginBottom="16dp"
@@ -395,7 +389,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:gravity="start"
@@ -404,6 +397,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:layout_marginStart="16dp"
                         android:background="@drawable/ic_input_location" />
 
                     <Space
@@ -451,7 +445,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:gravity="start"
@@ -460,6 +453,7 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:layout_marginStart="16dp"
                         android:background="@drawable/ic_icon_social" />
 
                     <Space
@@ -517,7 +511,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/background_dashboard_left"
-                android:gravity="end"
+                android:gravity="start"
                 android:orientation="horizontal"
                 android:padding="16dp">
 
@@ -545,7 +539,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -563,7 +556,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -578,27 +570,34 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
-                        android:text="How can we book/reserve seat to you?"
+                        android:text="How can we book/reserve seat to\nyou?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -634,7 +633,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -654,22 +652,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -705,7 +710,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -725,22 +729,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger3"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -776,7 +787,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -796,22 +806,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger4"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -847,7 +864,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -867,22 +883,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger5"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -918,7 +941,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -938,22 +960,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger6"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger6"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -989,7 +1018,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1004,27 +1032,34 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
-                        android:text="Can we rent a van through your company?"
+                        android:text="Can we rent a van through your\ncompany?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger7"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger7"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1060,7 +1095,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1080,22 +1114,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger8"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger8"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1131,7 +1172,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1146,27 +1186,34 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
-                        android:text="Do you have the list of schedules of trips?"
+                        android:text="Do you have the list of schedules\nof trips?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger9"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger9"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1202,7 +1249,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1222,22 +1268,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger10"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1273,7 +1326,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1293,22 +1345,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger11"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger11"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1344,7 +1403,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1364,22 +1422,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger12"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1415,7 +1480,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1435,22 +1499,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger13"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1486,7 +1557,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1501,27 +1571,34 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
-                        android:text="Do you accept multiple passengers in one booking?"
+                        android:text="Do you accept multiple passenger\nin one booking?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger14"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1557,7 +1634,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1577,22 +1653,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger15"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger15"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1628,7 +1711,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1643,27 +1725,34 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
-                        android:text="Can I become a private vehicle owner and use the application as a customer?"
+                        android:text="Can I become a private vehicle owner\nand use the application as a customer?"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger16"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger16"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1699,78 +1788,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/lato_black"
-                        android:text="Q"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="32sp" />
-
-                    <Space
-                        android:layout_width="16dp"
-                        android:layout_height="match_parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/lato"
-                        android:text="Can I become a private vehicle owner and use the application as a customer?"
-                        android:textColor="@color/textColor"
-                        android:textSize="16sp"
-                        android:textStyle="italic|bold" />
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
-                        android:fontFamily="@font/lato_black"
-                        android:text="A"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="32sp" />
-
-                    <Space
-                        android:layout_width="16dp"
-                        android:layout_height="match_parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/lato"
-                        android:justificationMode="inter_word"
-                        android:text="Yes, just visit our office for further assistance or you may call us, 0961-027-5583."
-                        android:textColor="@color/textColor"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1790,22 +1807,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger17"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger17"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1841,7 +1865,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1856,27 +1879,34 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:fontFamily="@font/lato"
-                        android:text="I email forgot my password"
+                        android:text="I forgot my email/password"
                         android:textColor="@color/textColor"
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger18"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger18"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"
@@ -1912,7 +1942,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Q"
                         android:textColor="@color/colorPrimary"
@@ -1932,22 +1961,29 @@
                         android:textSize="16sp"
                         android:textStyle="italic|bold" />
 
+                    <ImageButton
+                        android:id="@+id/btnTrigger19"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_dropdown" />
+
                 </LinearLayout>
 
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="16dp" />
-
                 <LinearLayout
+                    android:id="@+id/trigger19"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="top"
-                        android:layout_marginStart="16dp"
                         android:fontFamily="@font/lato_black"
                         android:text="A"
                         android:textColor="@color/colorPrimary"

@@ -60,6 +60,9 @@ public class UserHomeActivity extends AppCompatActivity {
     private String email = "";
     private String photo_url = "";
 
+    String elnido_image_url;
+    String taytay_image_url;
+
     private static final int TIME_INTERVAL = 2000;
     private long backPressed;
 
@@ -67,8 +70,7 @@ public class UserHomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (backPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             super.onBackPressed();
-        }
-        else {
+        } else {
             Toast.makeText(this, "Press back again to exit BookVan.", Toast.LENGTH_SHORT).show();
         }
         backPressed = System.currentTimeMillis();
@@ -119,7 +121,9 @@ public class UserHomeActivity extends AppCompatActivity {
         btnBookElnido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, UserBookActivity.class);
+                Intent intent = new Intent(UserHomeActivity.this, UserTripScheduleActivity.class);
+                intent.putExtra("destination", "el nido");
+                intent.putExtra("image_url", elnido_image_url);
                 startActivity(intent);
             }
         });
@@ -127,7 +131,9 @@ public class UserHomeActivity extends AppCompatActivity {
         btnBookTaytay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserHomeActivity.this, UserBookActivity.class);
+                Intent intent = new Intent(UserHomeActivity.this, UserTripScheduleActivity.class);
+                intent.putExtra("destination", "taytay");
+                intent.putExtra("image_url", taytay_image_url);
                 startActivity(intent);
             }
         });
@@ -223,8 +229,7 @@ public class UserHomeActivity extends AppCompatActivity {
                                     data.add(new CarouselItem(photo_url.get(i)));
                                 }
                                 imageCarousel.addData(data);
-                            }
-                            else {
+                            } else {
                                 imageCarousel.setVisibility(View.GONE);
                             }
                         }
@@ -236,8 +241,8 @@ public class UserHomeActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            String elnido_image_url = task.getResult().getString("elnido_image_url");
-                            String taytay_image_url = task.getResult().getString("taytay_image_url");
+                            elnido_image_url = task.getResult().getString("elnido_image_url");
+                            taytay_image_url = task.getResult().getString("taytay_image_url");
 
                             if (elnido_image_url != null) {
                                 if (!elnido_image_url.isEmpty()) {

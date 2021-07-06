@@ -24,6 +24,7 @@ import com.github.sumimakito.awesomeqr.option.color.Color;
 import com.github.sumimakito.awesomeqr.option.logo.Logo;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.opustech.bookvan.R;
 
 import se.simbio.encryption.Encryption;
@@ -91,25 +92,21 @@ public class AdminGenerateQRActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ContextCompat.checkSelfPermission(getActivity(),
+                if(ContextCompat.checkSelfPermission(AdminGenerateQRActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), "You must allow storage permissions for this feature.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminGenerateQRActivity.this, "You must allow storage permissions for this feature.", Toast.LENGTH_SHORT).show();
                 } else  {
-                    String a = encryptQR(qrContentName.getText().toString());
-                    String b = encryptQR(qrContentAddress.getText().toString());
-                    String c = encryptQR(qrContentContact.getText().toString());
-                    String line = "\n";
                     String savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ORB/";
-                    String inputValue = a + line + b + line + c;
-                    String qr_filename = "ORB_QR_" + a.trim().toUpperCase();
-                    QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, 300);
-                    qrgEncoder.setColorBlack(getResources().getColor(R.color.colorPrimaryDark));
-                    qrgEncoder.setColorWhite(getResources().getColor(R.color.colorBackground));
-                    Bitmap bitmap = qrgEncoder.getBitmap();
-                    QRGSaver qrgSaver = new QRGSaver();
-                    qrgSaver.save(savePath, qr_filename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
-                    Toast.makeText(getActivity(), "QR code saved in Downloads/ORB/.", Toast.LENGTH_SHORT).show();
+                    String inputValue = encryptString(inputOrdinaryQR.getEditText().getText().toString());
+                    String qr_filename = "BOOKVAN_QR_" + Timestamp.now().toString();
+                    //QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, 300);
+                    //qrgEncoder.setColorBlack(getResources().getColor(R.color.colorPrimaryDark));
+                    //qrgEncoder.setColorWhite(getResources().getColor(R.color.colorBackground));
+                    //Bitmap bitmap = qrgEncoder.getBitmap();
+                    //QRGSaver qrgSaver = new QRGSaver();
+                    //qrgSaver.save(savePath, qr_filename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
+                    Toast.makeText(AdminGenerateQRActivity.this, "QR code saved in Downloads/ORB/.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -198,12 +198,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="6dp" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/timeChips"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/bookingTime"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:selectionRequired="true"
-                    app:singleSelection="true" />
+                    android:hint="Time"
+                    app:boxStrokeColor="@color/colorPrimary"
+                    app:endIconTint="@color/colorPrimary"
+                    app:startIconDrawable="@drawable/ic_input_clock"
+                    app:startIconTint="@color/colorPrimary">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/bookingTimeACT"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:completionThreshold="1"
+                        android:fontFamily="@font/lato"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@null" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <Space
                     android:layout_width="match_parent"

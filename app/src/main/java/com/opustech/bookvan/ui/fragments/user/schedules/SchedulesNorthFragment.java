@@ -29,16 +29,18 @@ public class SchedulesNorthFragment extends Fragment {
     private CardView btnScheduleElnido,
             btnScheduleRoxas,
             btnScheduleSanVicente,
+            btnSchedulePortBarton,
             btnScheduleTaytay;
 
     private ImageView imageElnido,
             imageRoxas,
             imageSanVicente,
-            imageTaytay;
+            imageTaytay,
+            imagePortBarton;
 
     private Context context;
 
-    private String elnido_image_url, roxas_image_url, sanvicente_image_url, taytay_image_url;
+    private String elnido_image_url, roxas_image_url, sanvicente_image_url, taytay_image_url, port_barton_image_url;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,6 +51,26 @@ public class SchedulesNorthFragment extends Fragment {
 
         initializeUi(root);
         updateUi();
+
+        btnSchedulePortBarton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                intent.putExtra("destination", "port barton");
+                intent.putExtra("image_url", port_barton_image_url);
+                startActivity(intent);
+            }
+        });
+
+        btnScheduleElnido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                intent.putExtra("destination", "el nido");
+                intent.putExtra("image_url", elnido_image_url);
+                startActivity(intent);
+            }
+        });
 
         btnScheduleElnido.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,11 +126,13 @@ public class SchedulesNorthFragment extends Fragment {
         btnScheduleRoxas = root.findViewById(R.id.btnScheduleRoxas);
         btnScheduleSanVicente = root.findViewById(R.id.btnScheduleSanVicente);
         btnScheduleTaytay = root.findViewById(R.id.btnScheduleTaytay);
+        btnSchedulePortBarton = root.findViewById(R.id.btnSchedulePortBarton);
 
         imageElnido = root.findViewById(R.id.imageElnido);
         imageRoxas = root.findViewById(R.id.imageRoxas);
         imageSanVicente = root.findViewById(R.id.imageSanVicente);
         imageTaytay = root.findViewById(R.id.imageTaytay);
+        imagePortBarton = root.findViewById(R.id.imagePortBarton);
     }
 
     private void updateUi() {
@@ -121,12 +145,21 @@ public class SchedulesNorthFragment extends Fragment {
                             roxas_image_url = task.getResult().getString("roxas_image_url");
                             sanvicente_image_url = task.getResult().getString("sanvicente_image_url");
                             taytay_image_url = task.getResult().getString("taytay_image_url");
+                            port_barton_image_url = task.getResult().getString("port_barton_image_url");
 
                             if (elnido_image_url != null) {
                                 if (!elnido_image_url.isEmpty()) {
                                     Glide.with(context)
                                             .load(elnido_image_url)
                                             .into(imageElnido);
+                                }
+                            }
+
+                            if (port_barton_image_url != null) {
+                                if (!port_barton_image_url.isEmpty()) {
+                                    Glide.with(context)
+                                            .load(port_barton_image_url)
+                                            .into(imagePortBarton);
                                 }
                             }
 

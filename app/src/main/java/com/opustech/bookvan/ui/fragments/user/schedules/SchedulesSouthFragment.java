@@ -34,7 +34,8 @@ public class SchedulesSouthFragment extends Fragment {
             btnScheduleRioTuba,
             btnScheduleRizal,
             btnScheduleSicud,
-            btnScheduleSofronioEspanola;
+            btnScheduleSofronioEspanola,
+            btnScheduleBuliluyan;
     private ImageView imageAborlan,
             imageBataraza,
             imageBrookesPoint,
@@ -43,11 +44,12 @@ public class SchedulesSouthFragment extends Fragment {
             imageRioTuba,
             imageRizal,
             imageSicud,
-            imageSofronioEspanola;
+            imageSofronioEspanola,
+            imageBuliluyan;
 
     private Context context;
 
-    private String aborlan_image_url, bataraza_image_url, brookespoint_image_url, narra_image_url, quezon_image_url, riotuba_image_url, rizal_image_url, sicud_image_url, sofronioespanola_image_url;
+    private String aborlan_image_url, bataraza_image_url, brookespoint_image_url, narra_image_url, quezon_image_url, riotuba_image_url, rizal_image_url, sicud_image_url, sofronioespanola_image_url, buliluyan_image_url;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +59,16 @@ public class SchedulesSouthFragment extends Fragment {
 
         initializeUi(root);
         updateUi();
+
+        btnScheduleBuliluyan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                intent.putExtra("destination", "buliluyan");
+                intent.putExtra("image_url", buliluyan_image_url);
+                startActivity(intent);
+            }
+        });
 
         btnScheduleAborlan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,6 +179,7 @@ public class SchedulesSouthFragment extends Fragment {
         btnScheduleRizal = root.findViewById(R.id.btnScheduleRizal);
         btnScheduleSicud = root.findViewById(R.id.btnScheduleSicud);
         btnScheduleSofronioEspanola = root.findViewById(R.id.btnScheduleSofronioEspanola);
+        btnScheduleBuliluyan = root.findViewById(R.id.btnScheduleBuliluyan);
 
         imageAborlan = root.findViewById(R.id.imageAborlan);
         imageBataraza = root.findViewById(R.id.imageBataraza);
@@ -177,6 +190,7 @@ public class SchedulesSouthFragment extends Fragment {
         imageRizal = root.findViewById(R.id.imageRizal);
         imageSicud = root.findViewById(R.id.imageSicud);
         imageSofronioEspanola = root.findViewById(R.id.imageSofronioEspanola);
+        imageBuliluyan = root.findViewById(R.id.imageBuliluyan);
     }
 
     private void updateUi() {
@@ -186,14 +200,23 @@ public class SchedulesSouthFragment extends Fragment {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             aborlan_image_url = task.getResult().getString("aborlan_image_url");
-                            bataraza_image_url = task.getResult().getString("bataraza_image_url");
-                            brookespoint_image_url = task.getResult().getString("brookespoint_image_url");
                             narra_image_url = task.getResult().getString("narra_image_url");
                             quezon_image_url = task.getResult().getString("quezon_image_url");
-                            riotuba_image_url = task.getResult().getString("riotuba_image_url");
+                            sofronioespanola_image_url = task.getResult().getString("sofronioespanola_image_url");
                             rizal_image_url = task.getResult().getString("rizal_image_url");
                             sicud_image_url = task.getResult().getString("sicud_image_url");
-                            sofronioespanola_image_url = task.getResult().getString("sofronioespanola_image_url");
+                            brookespoint_image_url = task.getResult().getString("brookespoint_image_url");
+                            bataraza_image_url = task.getResult().getString("bataraza_image_url");
+                            riotuba_image_url = task.getResult().getString("riotuba_image_url");
+                            buliluyan_image_url = task.getResult().getString("buliluyan_image_url");
+
+                            if (buliluyan_image_url != null) {
+                                if (!buliluyan_image_url.isEmpty()) {
+                                    Glide.with(context)
+                                            .load(buliluyan_image_url)
+                                            .into(imageBuliluyan);
+                                }
+                            }
 
                             if (aborlan_image_url != null) {
                                 if (!aborlan_image_url.isEmpty()) {

@@ -77,6 +77,7 @@ public class UserBookActivity extends AppCompatActivity {
             bookingContactNumber,
             bookingVanTransport,
             bookingRoute,
+            bookingTime,
             bookingCountAdult,
             bookingCountChild,
             bookingCountSpecial;
@@ -88,14 +89,14 @@ public class UserBookActivity extends AppCompatActivity {
             subtractChildCount,
             subtractSpecialCount;
     private TextView bookingTotal;
-    private ChipGroup timeChips;
     private RadioGroup categoryRadio;
     private MaterialRadioButton btnRadioNorth,
             btnRadioSouth;
     private ExtendedFloatingActionButton btnBook;
-    private AutoCompleteTextView inputVanTransportACT, bookingRouteACT;
+    private AutoCompleteTextView inputVanTransportACT, bookingRouteACT, bookingTimeACT;
 
     private AdapterDropdownSchedule adapterDropdownSchedule;
+    private AdapterDropdownScheduleTime adapterDropdownScheduleTime;
     private ArrayList<Schedule> routeArray;
     private ArrayList<TripSchedule> tripSchedulesTimeList;
 
@@ -279,12 +280,13 @@ public class UserBookActivity extends AppCompatActivity {
         inputVanTransportACT = findViewById(R.id.inputVanTransportACT);
         bookingRoute = findViewById(R.id.bookingRoute);
         bookingRouteACT = findViewById(R.id.bookingRouteACT);
+        bookingTime = findViewById(R.id.bookingTime);
+        bookingTimeACT = findViewById(R.id.bookingTimeACT);
         picker = findViewById(R.id.bookingDatePicker);
         bookingCountAdult = findViewById(R.id.bookingCountAdult);
         bookingCountChild = findViewById(R.id.bookingCountChild);
         bookingCountSpecial = findViewById(R.id.bookingCountSpecial);
 
-        timeChips = findViewById(R.id.timeChips);
         categoryRadio = findViewById(R.id.categoryRadio);
         btnRadioNorth = findViewById(R.id.btnRadioNorth);
         btnRadioSouth = findViewById(R.id.btnRadioSouth);
@@ -524,7 +526,6 @@ public class UserBookActivity extends AppCompatActivity {
                                         @Override
                                         public void onDateSelected(DateTime dateSelected) {
                                             if (dateSelected.isBeforeNow()) {
-                                                timeChips.removeAllViews();
                                                 Toast.makeText(UserBookActivity.this, "Please select a later booking date.", Toast.LENGTH_SHORT).show();
                                             }
                                             else {
@@ -547,7 +548,6 @@ public class UserBookActivity extends AppCompatActivity {
                 .themeColor(getResources().getColor(R.color.white))
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
-        timeChips.removeAllViews();
         tripSchedulesTimeList = new ArrayList<>();
         tripScheduleReference.collection("schedules")
                 .get()
@@ -559,30 +559,22 @@ public class UserBookActivity extends AppCompatActivity {
                                 TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
                                 tripSchedulesTimeList.add(i, transportCompany);
                             }
-                            for (int i = 0; i < tripSchedulesTimeList.size(); i++) {
-                                try {
-                                    if (!compareSchedule(schedule_date + " " + new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(tripSchedulesTimeList.get(i).getTime_depart())))) {
-                                        final Chip chip = new Chip(UserBookActivity.this);
-                                        chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                                        chip.setCheckable(true);
-                                        chip.setChipIconVisible(true);
-                                        chip.setChipIconResource(R.drawable.ic_input_clock);
-                                        chip.setTextColor(getResources().getColor(R.color.white));
-
-                                        chip.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(tripSchedulesTimeList.get(i).getTime_depart())));
-
-                                        chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                            @Override
-                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                schedule_time = chip.getText().toString();
-                                            }
-                                        });
-                                        timeChips.addView(chip);
-                                    }
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
+                            adapterDropdownScheduleTime = new AdapterDropdownScheduleTime(UserBookActivity.this, tripSchedulesTimeList);
+                            bookingTimeACT.setAdapter(adapterDropdownScheduleTime);
+                            bookingTimeACT.setThreshold(1);
+                            bookingTimeACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    TripSchedule selectedTime = (TripSchedule) parent.getItemAtPosition(position);
+                                    picker.setListener(new DatePickerListener() {
+                                        @Override
+                                        public void onDateSelected(DateTime dateSelected) {
+                                            schedule_time = selectedTime.getTime_depart();
+                                            Toast.makeText(UserBookActivity.this, schedule_time, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
-                            }
+                            });
                             dialog.dismiss();
                         }
                     }
@@ -592,7 +584,7 @@ public class UserBookActivity extends AppCompatActivity {
     private void computeTotalPrice() {
         if (tripPrice != 0) {
             if (countSpecial > 0) {
-                totalPrice = (tripPrice * (countAdult + countChild + countSpecial) - (specialDiscount * (tripPrice * countSpecial)));
+                totalPrice = (tripPrice * (countAdult + countChild)) + ((tripPrice * countSpecial) - (specialDiscount * (tripPrice * countSpecial)));
             } else {
                 totalPrice = (tripPrice * (countAdult + countChild));
             }
@@ -603,7 +595,7 @@ public class UserBookActivity extends AppCompatActivity {
     private void computeCommission() {
         if (tripPrice != 0) {
             if (countSpecial > 0) {
-                totalCommission = commissionRate * (tripPrice * (countAdult + countChild)) + commissionRate * ((tripPrice * countSpecial) - (specialDiscount * (tripPrice * countSpecial)));
+                totalCommission = (commissionRate * (tripPrice * (countAdult + countChild))) + (commissionRate * ((tripPrice * countSpecial) - (specialDiscount * (tripPrice * countSpecial))));
             } else {
                 totalCommission = commissionRate * (tripPrice * (countAdult + countChild));
             }

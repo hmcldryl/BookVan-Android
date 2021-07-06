@@ -46,14 +46,10 @@ public class TransportAdminEditCompanyProfileActivity extends AppCompatActivity 
     private TextInputLayout companyName,
             companyDescription,
             companyAddress,
-            companyTelephoneNumber,
-            companyCellphoneNumber,
             companyEmail,
             companyWebsite;
     private CircleImageView companyPhoto;
     private ImageView companyBanner;
-    private ImageButton btnAddTelephoneNumber, btnAddCellphoneNumber;
-    private ChipGroup telephoneNumberCG, cellphoneNumberCG;
     private FloatingActionButton btnSave;
 
     final static int PICK_COMPANY_PHOTO = 1;
@@ -109,74 +105,12 @@ public class TransportAdminEditCompanyProfileActivity extends AppCompatActivity 
                 startActivityForResult(intent, PICK_COMPANY_BANNER);
             }
         });
-
-        btnAddTelephoneNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!companyTelephoneNumber.getEditText().getText().toString().isEmpty()) {
-                    final Chip chip = new Chip(TransportAdminEditCompanyProfileActivity.this);
-                    String tag = companyTelephoneNumber.getEditText().getText().toString();
-                    chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                    chip.setCloseIconVisible(true);
-                    chip.setText(tag);
-                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            telephoneNumberCG.removeView(chip);
-                        }
-                    });
-                    telephoneNumberCG.addView(chip);
-                    companyTelephoneNumber.getEditText().getText().clear();
-                }
-            }
-        });
-
-        btnAddCellphoneNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!companyCellphoneNumber.getEditText().getText().toString().isEmpty()) {
-                    final Chip chip = new Chip(TransportAdminEditCompanyProfileActivity.this);
-                    String tag = companyCellphoneNumber.getEditText().getText().toString();
-                    chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                    chip.setCloseIconVisible(true);
-                    chip.setText(tag);
-                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            cellphoneNumberCG.removeView(chip);
-                        }
-                    });
-                    cellphoneNumberCG.addView(chip);
-                    companyCellphoneNumber.getEditText().getText().clear();
-                }
-            }
-        });
-    }
-
-    private ArrayList<String> telephoneNumbers() {
-        ArrayList<String> telephoneNumberArray = new ArrayList<>();
-        for (int i = 0; i < telephoneNumberCG.getChildCount(); i++) {
-            Chip chip = (Chip) telephoneNumberCG.getChildAt(i);
-            telephoneNumberArray.add(chip.getText().toString());
-        }
-        return telephoneNumberArray;
-    }
-
-    private ArrayList<String> cellphoneNumbers() {
-        ArrayList<String> cellphoneNumberArray = new ArrayList<>();
-        for (int i = 0; i < cellphoneNumberCG.getChildCount(); i++) {
-            Chip chip = (Chip) cellphoneNumberCG.getChildAt(i);
-            cellphoneNumberArray.add(chip.getText().toString());
-        }
-        return cellphoneNumberArray;
     }
 
     private void inputCheck() {
         String name = companyName.getEditText().getText().toString();
         String description = companyDescription.getEditText().getText().toString();
         String address = companyAddress.getEditText().getText().toString();
-        List<String> telephone_number = telephoneNumbers();
-        List<String> cellphone_number = cellphoneNumbers();
         String email = companyEmail.getEditText().getText().toString();
         String website = companyWebsite.getEditText().getText().toString();
 
@@ -193,12 +127,12 @@ public class TransportAdminEditCompanyProfileActivity extends AppCompatActivity 
             enableInput();
             companyEmail.setError("Please enter an email.");
         } else {
-            updateInfo(name, description, address, email, website, telephone_number, cellphone_number);
+            updateInfo(name, description, address, email, website);
         }
 
     }
 
-    private void updateInfo(String name, String description, String address, String email, String website, List<String> telephone_number, List<String> cellphone_number) {
+    private void updateInfo(String name, String description, String address, String email, String website) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(TransportAdminEditCompanyProfileActivity.this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
@@ -212,8 +146,6 @@ public class TransportAdminEditCompanyProfileActivity extends AppCompatActivity 
         hashMap.put("address", address);
         hashMap.put("email", email);
         hashMap.put("website", website);
-        hashMap.put("telephone_number", telephone_number);
-        hashMap.put("cellphone_number", cellphone_number);
 
         partnersReference.document(getIntent().getStringExtra("uid"))
                 .update(hashMap)
@@ -233,24 +165,16 @@ public class TransportAdminEditCompanyProfileActivity extends AppCompatActivity 
         companyName.setEnabled(true);
         companyDescription.setEnabled(true);
         companyAddress.setEnabled(true);
-        companyTelephoneNumber.setEnabled(true);
-        btnAddTelephoneNumber.setEnabled(true);
-        companyCellphoneNumber.setEnabled(true);
-        btnAddCellphoneNumber.setEnabled(true);
         companyEmail.setEnabled(true);
         companyWebsite.setEnabled(true);
     }
 
     private void disableInput() {
-        companyName.setEnabled(true);
-        companyDescription.setEnabled(true);
-        companyAddress.setEnabled(true);
-        companyTelephoneNumber.setEnabled(true);
-        btnAddTelephoneNumber.setEnabled(true);
-        companyCellphoneNumber.setEnabled(true);
-        btnAddCellphoneNumber.setEnabled(true);
-        companyEmail.setEnabled(true);
-        companyWebsite.setEnabled(true);
+        companyName.setEnabled(false);
+        companyDescription.setEnabled(false);
+        companyAddress.setEnabled(false);
+        companyEmail.setEnabled(false);
+        companyWebsite.setEnabled(false);
     }
 
     private void initializeUi() {
@@ -260,12 +184,6 @@ public class TransportAdminEditCompanyProfileActivity extends AppCompatActivity 
         companyName = findViewById(R.id.inputCompanyName);
         companyDescription = findViewById(R.id.inputCompanyDescription);
         companyAddress = findViewById(R.id.inputCompanyAddress);
-        companyTelephoneNumber = findViewById(R.id.inputCompanyTelephone);
-        telephoneNumberCG = findViewById(R.id.telephoneNumberChipGroup);
-        btnAddTelephoneNumber = findViewById(R.id.btnAddTelephoneNumber);
-        cellphoneNumberCG = findViewById(R.id.cellphoneNumberChipGroup);
-        btnAddCellphoneNumber = findViewById(R.id.btnAddCellphoneNumber);
-        companyCellphoneNumber = findViewById(R.id.inputCompanyCellphone);
         companyEmail = findViewById(R.id.inputCompanyEmail);
         companyWebsite = findViewById(R.id.inputCompanyWebsite);
     }
@@ -286,16 +204,14 @@ public class TransportAdminEditCompanyProfileActivity extends AppCompatActivity 
                                 String address = value.getString("address");
                                 String email = value.getString("email");
                                 String website = value.getString("website");
-                                List<String> telephone_number = (List<String>) value.get("telephone_number");
-                                List<String> cellphone_number = (List<String>) value.get("cellphone_number");
-                                updateUi(photo_url, banner_url, name, description, address, email, website, telephone_number, cellphone_number);
+                                updateUi(photo_url, banner_url, name, description, address, email, website);
                             }
                         }
                     }
                 });
     }
 
-    private void updateUi(String photo_url, String banner_url, String name, String description, String address, String email, String website, List<String> telephone_number, List<String> cellphone_number) {
+    private void updateUi(String photo_url, String banner_url, String name, String description, String address, String email, String website) {
         if (photo_url != null) {
             if (!photo_url.isEmpty()) {
                 Glide.with(this)
@@ -326,44 +242,6 @@ public class TransportAdminEditCompanyProfileActivity extends AppCompatActivity 
         }
         if (companyWebsite.getEditText().getText().toString().isEmpty()) {
             companyWebsite.getEditText().setText(website);
-        }
-
-        if (telephoneNumberCG.getChildCount() == 0) {
-            if (telephone_number.size() > 0) {
-                for (int i = 0; i < telephone_number.size(); i++) {
-                    final Chip chip = new Chip(TransportAdminEditCompanyProfileActivity.this);
-                    String tag = telephone_number.get(i);
-                    chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                    chip.setCloseIconVisible(true);
-                    chip.setText(tag);
-                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            telephoneNumberCG.removeView(chip);
-                        }
-                    });
-                    telephoneNumberCG.addView(chip);
-                }
-            }
-        }
-
-        if (cellphoneNumberCG.getChildCount() == 0) {
-            if (cellphone_number.size() > 0) {
-                for (int i = 0; i < cellphone_number.size(); i++) {
-                    final Chip chip = new Chip(TransportAdminEditCompanyProfileActivity.this);
-                    String tag = cellphone_number.get(i);
-                    chip.setChipBackgroundColorResource(R.color.colorPrimary);
-                    chip.setCloseIconVisible(true);
-                    chip.setText(tag);
-                    chip.setOnCloseIconClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            cellphoneNumberCG.removeView(chip);
-                        }
-                    });
-                    cellphoneNumberCG.addView(chip);
-                }
-            }
         }
     }
 

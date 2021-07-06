@@ -121,69 +121,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="8dp" />
-
-                    <LinearLayout
-                        android:id="@+id/telephone_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/companyTelephoneNumberLabel"
-                            android:layout_width="110dp"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="marquee"
-                            android:fontFamily="@font/lato"
-                            android:singleLine="true"
-                            android:text="Telephone No.:"
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <Space
-                            android:layout_width="8dp"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:id="@+id/companyTelephoneNumber"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato"
-                            android:text=""
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/cellphone_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/companyCellphoneNumberLabel"
-                            android:layout_width="110dp"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="marquee"
-                            android:fontFamily="@font/lato"
-                            android:singleLine="true"
-                            android:text="Cellphone No.:"
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-
-                        <Space
-                            android:layout_width="8dp"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:id="@+id/companyCellphoneNumber"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato"
-                            android:text=""
-                            android:textColor="@color/textColor"
-                            android:textSize="14sp" />
-                    </LinearLayout>
+                        android:layout_height="6dp" />
 
                     <LinearLayout
                         android:id="@+id/email"
