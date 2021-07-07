@@ -63,4 +63,5 @@ dependencies {
     implementation 'com.karumi:dexter:6.0.2'
     implementation 'com.github.jhonnyx2012:horizontal-picker:1.0.6'
     implementation 'com.github.PhilJay:MPAndroidChart:3.1.0'
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
 }

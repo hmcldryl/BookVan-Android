@@ -129,6 +129,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.btnGenerateQR) {
+                    Intent intent = new Intent(AdminDashboardActivity.this, AdminGenerateQRActivity.class);
+                    startActivity(intent);
+                }
                 if (item.getItemId() == R.id.btnBookings) {
                     Intent intent = new Intent(AdminDashboardActivity.this, AdminBookingsActivity.class);
                     startActivity(intent);

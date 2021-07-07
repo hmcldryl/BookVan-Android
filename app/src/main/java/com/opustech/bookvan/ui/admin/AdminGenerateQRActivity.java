@@ -27,6 +27,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 import com.opustech.bookvan.R;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+import androidmads.library.qrgenearator.QRGSaver;
 import se.simbio.encryption.Encryption;
 
 public class AdminGenerateQRActivity extends AppCompatActivity {
@@ -97,16 +100,16 @@ public class AdminGenerateQRActivity extends AppCompatActivity {
                         != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(AdminGenerateQRActivity.this, "You must allow storage permissions for this feature.", Toast.LENGTH_SHORT).show();
                 } else  {
-                    String savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/ORB/";
-                    String inputValue = encryptString(inputOrdinaryQR.getEditText().getText().toString());
-                    String qr_filename = "BOOKVAN_QR_" + Timestamp.now().toString();
-                    //QRGEncoder qrgEncoder = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, 300);
-                    //qrgEncoder.setColorBlack(getResources().getColor(R.color.colorPrimaryDark));
-                    //qrgEncoder.setColorWhite(getResources().getColor(R.color.colorBackground));
-                    //Bitmap bitmap = qrgEncoder.getBitmap();
-                    //QRGSaver qrgSaver = new QRGSaver();
-                    //qrgSaver.save(savePath, qr_filename, bitmap, QRGContents.ImageType.IMAGE_JPEG);
-                    Toast.makeText(AdminGenerateQRActivity.this, "QR code saved in Downloads/ORB/.", Toast.LENGTH_SHORT).show();
+                    String savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/BOOKVAN/";
+                    try {
+                        RenderResult result = AwesomeQrRenderer.render(renderQR(inputOrdinaryQR.getEditText().getText().toString()));
+                        String qr_filename = "BOOKVAN_QR_" + Timestamp.now().toString();
+                        QRGSaver qrgSaver = new QRGSaver();
+                        qrgSaver.save(savePath, qr_filename, result.getBitmap(), QRGContents.ImageType.IMAGE_JPEG);
+                        Toast.makeText(AdminGenerateQRActivity.this, "QR code saved in Downloads/BOOKVAN/.", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

@@ -141,9 +141,9 @@ public class UserHomeActivity extends AppCompatActivity {
         btnRent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(UserHomeActivity.this, "This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(UserHomeActivity.this, UserRentActivity.class);
-                //startActivity(intent);
+                //Toast.makeText(UserHomeActivity.this, "This feature is not yet implemented.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserHomeActivity.this, UserRentActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -190,6 +190,10 @@ public class UserHomeActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.btnBooking) {
                     Intent intent = new Intent(UserHomeActivity.this, UserBookingActivity.class);
+                    startActivity(intent);
+                }
+                if (item.getItemId() == R.id.btnRentals) {
+                    Intent intent = new Intent(UserHomeActivity.this, UserRentConversationActivity.class);
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnPartners) {

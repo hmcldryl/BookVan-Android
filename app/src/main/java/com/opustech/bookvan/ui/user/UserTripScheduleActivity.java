@@ -2,6 +2,7 @@ package com.opustech.bookvan.ui.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,11 +71,13 @@ public class UserTripScheduleActivity extends AppCompatActivity {
 
         adapterScheduleListRV = new AdapterScheduleListRV(options, this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, manager.getOrientation());
 
         scheduleList = findViewById(R.id.scheduleList);
 
         scheduleList.setHasFixedSize(true);
         scheduleList.setLayoutManager(manager);
+        scheduleList.addItemDecoration(dividerItemDecoration);
         scheduleList.setAdapter(adapterScheduleListRV);
     }
 

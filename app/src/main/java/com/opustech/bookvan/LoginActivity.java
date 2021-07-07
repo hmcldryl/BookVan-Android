@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.opustech.bookvan.model.UserAccount;
 import com.opustech.bookvan.ui.user.UserHomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -80,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         btnForgotPassword = findViewById(R.id.btnForgotPassword);
 
         btnLogin = findViewById(R.id.btnLogin);
-        //btnLoginFacebook = findViewById(R.id.btnLoginFacebook);
+        btnLoginFacebook = findViewById(R.id.btnLoginFacebook);
         btnLoginGoogle = findViewById(R.id.btnLoginGoogle);
         btnRegister = findViewById(R.id.btnRegister);
 
@@ -102,12 +103,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-/*        btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
+        btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Snackbar.make(v, "This feature is not yet implemented.", Snackbar.LENGTH_SHORT).show();
             }
-        });*/
+        });
 
         btnLoginGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,7 +203,7 @@ public class LoginActivity extends AppCompatActivity {
     private void disableInput() {
         btnLogin.setEnabled(false);
         btnLoginGoogle.setEnabled(false);
-        //btnLoginFacebook.setEnabled(false);
+        btnLoginFacebook.setEnabled(false);
         inputEmail.setEnabled(false);
         inputPassword.setEnabled(false);
     }
@@ -210,7 +211,7 @@ public class LoginActivity extends AppCompatActivity {
     private void enableInput() {
         btnLogin.setEnabled(true);
         btnLoginGoogle.setEnabled(true);
-        //btnLoginFacebook.setEnabled(true);
+        btnLoginFacebook.setEnabled(true);
         inputEmail.setEnabled(true);
         inputPassword.setEnabled(true);
     }

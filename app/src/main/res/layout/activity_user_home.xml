@@ -101,17 +101,29 @@
                         app:cardCornerRadius="16dp"
                         app:cardElevation="6dp">
 
-                        <RelativeLayout
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/background_home_button"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <ImageView
-                                android:layout_width="90dp"
-                                android:layout_height="90dp"
-                                android:layout_centerInParent="true"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_home_book" />
-                        </RelativeLayout>
+                                android:src="@drawable/ic_icon_book" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="Book"
+                                android:fontFamily="@font/lato_bold"
+                                android:textColor="@color/white"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
 
@@ -130,18 +142,29 @@
                         app:cardCornerRadius="16dp"
                         app:cardElevation="6dp">
 
-                        <RelativeLayout
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/background_home_button"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <ImageView
-                                android:layout_width="90dp"
-                                android:layout_height="90dp"
-                                android:layout_centerInParent="true"
-                                android:padding="0dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_home_rent" />
-                        </RelativeLayout>
+                                android:src="@drawable/ic_icon_rent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="Rent"
+                                android:fontFamily="@font/lato_bold"
+                                android:textColor="@color/white"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -159,18 +182,29 @@
                         app:cardCornerRadius="16dp"
                         app:cardElevation="6dp">
 
-                        <RelativeLayout
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/background_home_button"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <ImageView
-                                android:layout_width="90dp"
-                                android:layout_height="90dp"
-                                android:layout_centerInParent="true"
-                                android:padding="0dp"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_home_partner" />
-                        </RelativeLayout>
+                                android:src="@drawable/ic_input_van_driver" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="Partners"
+                                android:fontFamily="@font/lato_bold"
+                                android:textColor="@color/white"
+                                android:textSize="16sp"
+                                android:layout_height="wrap_content"/>
+
+                        </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>

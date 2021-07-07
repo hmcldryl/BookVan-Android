@@ -22,10 +22,8 @@
         app:titleTextColor="#FFFFFF" />
 
     <RelativeLayout
-        android:id="@+id/rentMainView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
+        android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -360,11 +358,4 @@
 
         </RelativeLayout>
     </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rentChatList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible" />
-
 </LinearLayout>

@@ -1,12 +1,12 @@
 package com.opustech.bookvan.ui.user;
 
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
-import android.view.View;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,7 +17,7 @@ import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterRentChatMessageRV;
 import com.opustech.bookvan.model.RentChatMessage;
 
-public class UserRentConversationActivity extends AppCompatActivity {
+public class UserRentMessageActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -43,8 +43,8 @@ public class UserRentConversationActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Rent Form");
-        getSupportActionBar().setSubtitle("Fill up the following fields to rent a van.");
+        getSupportActionBar().setTitle("Rent-a-Van Chat");
+        getSupportActionBar().setSubtitle("Chat with Van Transport Provider");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +66,7 @@ public class UserRentConversationActivity extends AppCompatActivity {
                 .build();
 
         adapterRentChatMessageRV = new AdapterRentChatMessageRV(options, firebaseAuth.getCurrentUser().getUid());
-        LinearLayoutManager manager = new LinearLayoutManager(UserRentConversationActivity.this);
+        LinearLayoutManager manager = new LinearLayoutManager(UserRentMessageActivity.this);
         manager.setStackFromEnd(true);
 
         rentChatList.setHasFixedSize(true);

@@ -7,7 +7,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,12 +28,12 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterRentMessageChatRV extends FirestoreRecyclerAdapter<RentChatMessage, AdapterRentMessageChatRV.ChatMessageHolder> {
+public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatMessage, AdapterRentChatMessageRV.ChatMessageHolder> {
 
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+    private String uid;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -43,8 +42,9 @@ public class AdapterRentMessageChatRV extends FirestoreRecyclerAdapter<RentChatM
      * @param options
      */
 
-    public AdapterRentMessageChatRV(@NonNull FirestoreRecyclerOptions<RentChatMessage> options) {
+    public AdapterRentChatMessageRV(@NonNull FirestoreRecyclerOptions<RentChatMessage> options, String uid) {
         super(options);
+        this.uid = uid;
     }
 
     @Override
@@ -52,11 +52,11 @@ public class AdapterRentMessageChatRV extends FirestoreRecyclerAdapter<RentChatM
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 
-            String uid = model.getUid();
+            String messageUid = model.getUid();
             String message = model.getMessage();
             String timestamp = model.getTimestamp();
 
-            if (!uid.equals(admin_uid)) {
+            if (!messageUid.equals(uid)) {
                 holder.sender.setVisibility(View.VISIBLE);
                 holder.senderChatMessage.setText(message);
             } else {
@@ -72,7 +72,7 @@ public class AdapterRentMessageChatRV extends FirestoreRecyclerAdapter<RentChatM
                         String photo_url = task.getResult().getString("photo_url");
                         if (photo_url != null) {
                             if (!photo_url.isEmpty()) {
-                                if (!uid.equals(admin_uid)) {
+                                if (!messageUid.equals(uid)) {
                                     Glide.with(holder.itemView.getContext())
                                             .load(photo_url)
                                             .into(holder.senderPhoto);
@@ -90,7 +90,7 @@ public class AdapterRentMessageChatRV extends FirestoreRecyclerAdapter<RentChatM
             try {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
-                if (!uid.equals(admin_uid)) {
+                if (!messageUid.equals(messageUid)) {
                     holder.senderChatTimestamp.setText(outputText);
                 } else {
                     holder.receiverChatTimestamp.setText(outputText);

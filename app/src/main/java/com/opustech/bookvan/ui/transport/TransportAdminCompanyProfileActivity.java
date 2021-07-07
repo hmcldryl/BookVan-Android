@@ -31,14 +31,8 @@ public class TransportAdminCompanyProfileActivity extends AppCompatActivity {
     private TextView companyName,
             companyDescription,
             companyAddress,
-            companyTelephoneNumber,
-            companyCellphoneNumber,
             companyEmail,
             companyWebsite;
-    private TextView companyTelephoneNumberLabel,
-            companyCellphoneNumberLabel,
-            companyEmailLabel,
-            companyWebsiteLabel;
     private CircleImageView companyPhoto;
     private ImageView companyBanner;
     private FloatingActionButton btnEdit;
@@ -84,14 +78,8 @@ public class TransportAdminCompanyProfileActivity extends AppCompatActivity {
         companyName = findViewById(R.id.companyName);
         companyDescription = findViewById(R.id.companyDescription);
         companyAddress = findViewById(R.id.companyAddress);
-        companyTelephoneNumber = findViewById(R.id.companyTelephoneNumber);
-        companyCellphoneNumber = findViewById(R.id.companyCellphoneNumber);
         companyEmail = findViewById(R.id.companyEmail);
         companyWebsite = findViewById(R.id.companyWebsite);
-        companyTelephoneNumberLabel = findViewById(R.id.companyTelephoneNumberLabel);
-        companyCellphoneNumberLabel = findViewById(R.id.companyCellphoneNumberLabel);
-        companyEmailLabel = findViewById(R.id.companyEmailLabel);
-        companyWebsiteLabel = findViewById(R.id.companyWebsiteLabel);
     }
 
     @Override
@@ -110,16 +98,14 @@ public class TransportAdminCompanyProfileActivity extends AppCompatActivity {
                                 String address = value.getString("address");
                                 String email = value.getString("email");
                                 String website = value.getString("website");
-                                List<String> telephone_number = (List<String>) value.get("telephone_number");
-                                List<String> cellphone_number = (List<String>) value.get("cellphone_number");
-                                updateUi(photo_url, banner_url, name, description, address, email, website, telephone_number, cellphone_number);
+                                updateUi(photo_url, banner_url, name, description, address, email, website);
                             }
                         }
                     }
                 });
     }
 
-    private void updateUi(String photo_url, String banner_url, String name, String description, String address, String email, String website, List<String> telephone_number, List<String> cellphone_number) {
+    private void updateUi(String photo_url, String banner_url, String name, String description, String address, String email, String website) {
         if (photo_url != null) {
             if (!photo_url.isEmpty()) {
                 Glide.with(this)
@@ -140,44 +126,14 @@ public class TransportAdminCompanyProfileActivity extends AppCompatActivity {
         companyDescription.setText(description);
         companyAddress.setText(address);
 
-        if (telephone_number != null) {
-            if (telephone_number.size() == 1) {
-                companyTelephoneNumber.setText(telephone_number.get(0));
-            } else if (telephone_number.size() > 1) {
-                companyTelephoneNumber.setText(formatArrayData(telephone_number));
-            } else if (telephone_number.size() == 0) {
-                companyTelephoneNumber.setVisibility(View.GONE);
-                companyTelephoneNumberLabel.setVisibility(View.GONE);
-            }
-        } else {
-            companyTelephoneNumber.setVisibility(View.GONE);
-            companyTelephoneNumberLabel.setVisibility(View.GONE);
-        }
-
-        if (cellphone_number != null) {
-            if (cellphone_number.size() == 1) {
-                companyCellphoneNumber.setText(cellphone_number.get(0));
-            } else if (cellphone_number.size() > 1) {
-                companyCellphoneNumber.setText(formatArrayData(cellphone_number));
-            } else if (cellphone_number.size() == 0) {
-                companyCellphoneNumber.setVisibility(View.GONE);
-                companyCellphoneNumberLabel.setVisibility(View.GONE);
-            }
-        } else {
-            companyCellphoneNumber.setVisibility(View.GONE);
-            companyCellphoneNumberLabel.setVisibility(View.GONE);
-        }
-
         if (email != null) {
             if (!email.isEmpty()) {
                 companyEmail.setText(email);
             } else {
                 companyEmail.setVisibility(View.GONE);
-                companyEmailLabel.setVisibility(View.GONE);
             }
         } else {
             companyEmail.setVisibility(View.GONE);
-            companyEmailLabel.setVisibility(View.GONE);
         }
 
         if (website != null) {
@@ -185,23 +141,9 @@ public class TransportAdminCompanyProfileActivity extends AppCompatActivity {
                 companyWebsite.setText(website);
             } else {
                 companyWebsite.setVisibility(View.GONE);
-                companyWebsiteLabel.setVisibility(View.GONE);
             }
         } else {
             companyWebsite.setVisibility(View.GONE);
-            companyWebsiteLabel.setVisibility(View.GONE);
         }
-    }
-
-    private String formatArrayData(List<String> arrayList) {
-        String result = null;
-        if (arrayList.size() > 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (String s : arrayList) {
-                stringBuilder.append(s).append("\n");
-            }
-            result = stringBuilder.deleteCharAt(stringBuilder.length() - 1).toString();
-        }
-        return result;
     }
 }

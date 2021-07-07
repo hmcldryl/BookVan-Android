@@ -17,6 +17,11 @@
             android:title="@string/label_booking" />
 
         <item
+            android:id="@+id/btnRentals"
+            android:icon="@drawable/ic_icon_rent"
+            android:title="Rent-a-Van" />
+
+        <item
             android:id="@+id/btnSchedules"
             android:icon="@drawable/ic_icon_schedule"
             android:title="@string/label_schedule" />

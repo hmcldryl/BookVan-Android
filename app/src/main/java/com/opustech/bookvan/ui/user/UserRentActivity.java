@@ -3,15 +3,11 @@ package com.opustech.bookvan.ui.user;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +16,6 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -29,22 +24,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.chat.AdapterMessageChatRV;
-import com.opustech.bookvan.adapters.user.AdapterRentMessageChatRV;
-import com.opustech.bookvan.model.ChatMessage;
-import com.opustech.bookvan.model.RentChatMessage;
 import com.opustech.bookvan.model.Rental;
 import com.opustech.bookvan.model.TransportCompany;
-import com.opustech.bookvan.ui.transport.TransportAdminSchedulesActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -67,11 +54,8 @@ public class UserRentActivity extends AppCompatActivity {
             inputDropOffDate,
             inputDropOffTime;
     private AutoCompleteTextView inputVanTransportACT;
-    private RecyclerView rentChatList;
 
     private ExtendedFloatingActionButton btnRent;
-
-    private AdapterRentMessageChatRV adapterRentMessageChatRV;
 
     private String transport_uid = "";
 
@@ -89,7 +73,7 @@ public class UserRentActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Renting Form");
+        getSupportActionBar().setTitle("Rent Form");
         getSupportActionBar().setSubtitle("Fill up the following fields to rent a van.");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -99,6 +83,10 @@ public class UserRentActivity extends AppCompatActivity {
             }
         });
 
+        initForm();
+    }
+
+    private void initForm() {
         inputName = findViewById(R.id.inputName);
         inputContactNumber = findViewById(R.id.inputContactNumber);
         inputVanTransport = findViewById(R.id.inputVanTransport);
@@ -125,23 +113,6 @@ public class UserRentActivity extends AppCompatActivity {
                 inputCheck();
             }
         });
-
-        Query query = rentalsReference.document(firebaseAuth.getCurrentUser().getUid())
-                .collection("rentals")
-                .orderBy("timestamp", Query.Direction.ASCENDING);
-
-        FirestoreRecyclerOptions<RentChatMessage> options = new FirestoreRecyclerOptions.Builder<RentChatMessage>()
-                .setQuery(query, RentChatMessage.class)
-                .build();
-
-        adapterRentMessageChatRV = new AdapterRentMessageChatRV(options);
-        LinearLayoutManager manager = new LinearLayoutManager(UserRentActivity.this);
-        manager.setStackFromEnd(true);
-
-        rentChatList = findViewById(R.id.rentChatList);
-        rentChatList.setHasFixedSize(true);
-        rentChatList.setLayoutManager(manager);
-        rentChatList.setAdapter(adapterRentMessageChatRV);
     }
 
     private void enableInput() {
@@ -177,7 +148,6 @@ public class UserRentActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
-
     private void inputCheck() {
         String name = inputName.getEditText().getText().toString();
         String contact_number = inputContactNumber.getEditText().getText().toString();
@@ -195,27 +165,30 @@ public class UserRentActivity extends AppCompatActivity {
         } else if (contact_number.isEmpty()) {
             enableInput();
             inputContactNumber.setError("Please enter a contact number.");
+        } else if (transport_uid.isEmpty()) {
+            enableInput();
+            inputVanTransport.setError("Please select a van transport.");
         } else if (pickup_location.isEmpty()) {
             enableInput();
-            inputLocationPickUp.setError("Please enter a contact number.");
+            inputLocationPickUp.setError("Please enter pick-up location.");
         } else if (pickup_date.isEmpty()) {
             enableInput();
-            inputPickUpDate.setError("Please enter a contact number.");
+            inputPickUpDate.setError("Please enter pick-up date.");
         } else if (pickup_time.isEmpty()) {
             enableInput();
-            inputPickUpTime.setError("Please enter a contact number.");
+            inputPickUpTime.setError("Please enter pick-up time.");
         } else if (destination.isEmpty()) {
             enableInput();
-            inputDestination.setError("Please enter a contact number.");
+            inputDestination.setError("Please enter destination.");
         } else if (dropoff_location.isEmpty()) {
             enableInput();
-            inputLocationDropOff.setError("Please enter a contact number.");
+            inputLocationDropOff.setError("Please enter drop-off location.");
         } else if (dropoff_date.isEmpty()) {
             enableInput();
-            inputDropOffDate.setError("Please enter a contact number.");
+            inputDropOffDate.setError("Please enter drop-off date.");
         } else if (dropoff_time.isEmpty()) {
             enableInput();
-            inputDropOffTime.setError("Please enter a contact number.");
+            inputDropOffTime.setError("Please enter drop-off time.");
         } else {
             generateRefNum(name, contact_number, transport_uid, pickup_location, pickup_date, pickup_time, destination, dropoff_location, dropoff_date, dropoff_time);
         }
@@ -233,7 +206,7 @@ public class UserRentActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
-                            String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
+                            String reference_number = "BV-R" + String.format(Locale.ENGLISH, "%06d", num);
                             submitRentInfo(dialog, reference_number, name, contact_number, transport_uid, pickup_location, pickup_date, pickup_time, destination, dropoff_location, dropoff_date, dropoff_time);
                         }
                     }
@@ -369,12 +342,5 @@ public class UserRentActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    private void populateRouteCategoryList1() {
-        ArrayList<String> vanTransportArray = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.category)));
-        ArrayAdapter<String> vanTransportArrayAdapter = new ArrayAdapter<>(UserRentActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportArray);
-        inputVanTransportACT.setAdapter(vanTransportArrayAdapter);
-        inputVanTransportACT.setThreshold(1);
     }
 }
