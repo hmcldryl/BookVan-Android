@@ -1,4 +1,4 @@
-package com.opustech.bookvan.adapters.user;
+package com.opustech.bookvan.adapters.transport;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +28,7 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatMessage, AdapterRentChatMessageRV.ChatMessageHolder> {
+public class AdapterTransportRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatMessage, AdapterTransportRentChatMessageRV.ChatMessageHolder> {
 
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
@@ -42,7 +42,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
      * @param options
      */
 
-    public AdapterRentChatMessageRV(@NonNull FirestoreRecyclerOptions<RentChatMessage> options, String uid) {
+    public AdapterTransportRentChatMessageRV(@NonNull FirestoreRecyclerOptions<RentChatMessage> options, String uid) {
         super(options);
         this.uid = uid;
     }
@@ -60,7 +60,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
         if (messageUid.equals(uid)) {
             holder.sender.setVisibility(View.VISIBLE);
             holder.senderChatMessage.setText(message);
-            usersReference.document(messageUid)
+            partnersReference.document(messageUid)
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -79,7 +79,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
         } else {
             holder.receiver.setVisibility(View.VISIBLE);
             holder.receiverChatMessage.setText(message);
-            partnersReference.document(messageUid)
+            usersReference.document(messageUid)
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {

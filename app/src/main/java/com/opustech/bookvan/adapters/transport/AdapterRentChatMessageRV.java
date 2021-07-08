@@ -1,4 +1,4 @@
-package com.opustech.bookvan.adapters.user;
+package com.opustech.bookvan.adapters.transport;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,7 +57,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
         String message = model.getMessage();
         String timestamp = model.getTimestamp();
 
-        if (messageUid.equals(uid)) {
+        if (!messageUid.equals(uid)) {
             holder.sender.setVisibility(View.VISIBLE);
             holder.senderChatMessage.setText(message);
             usersReference.document(messageUid)
@@ -100,7 +100,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
-            if (messageUid.equals(uid)) {
+            if (!messageUid.equals(uid)) {
                 holder.senderChatTimestamp.setText(outputText);
             } else {
                 holder.receiverChatTimestamp.setText(outputText);

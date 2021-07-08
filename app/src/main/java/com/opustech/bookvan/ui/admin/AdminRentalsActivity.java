@@ -20,7 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.admin.AdapterRentAdminListRV;
+import com.opustech.bookvan.adapters.admin.AdapterAdminRentRV;
 import com.opustech.bookvan.model.Rental;
 
 public class AdminRentalsActivity extends AppCompatActivity {
@@ -32,7 +32,7 @@ public class AdminRentalsActivity extends AppCompatActivity {
     private TextView rentalsStatusNone;
     private RecyclerView rentalsList;
 
-    private AdapterRentAdminListRV adapterRentAdminListRV;
+    private AdapterAdminRentRV adapterAdminRentRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class AdminRentalsActivity extends AppCompatActivity {
                 .setQuery(query, Rental.class)
                 .build();
 
-        adapterRentAdminListRV = new AdapterRentAdminListRV(options, this);
+        adapterAdminRentRV = new AdapterAdminRentRV(options,this);
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, manager.getOrientation());
@@ -72,7 +72,7 @@ public class AdminRentalsActivity extends AppCompatActivity {
         rentalsList.setHasFixedSize(true);
         rentalsList.setLayoutManager(manager);
         rentalsList.addItemDecoration(dividerItemDecoration);
-        rentalsList.setAdapter(adapterRentAdminListRV);
+        rentalsList.setAdapter(adapterAdminRentRV);
 
         rentalsReference.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
             @Override
@@ -94,12 +94,12 @@ public class AdminRentalsActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        adapterRentAdminListRV.startListening();
+        adapterAdminRentRV.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        adapterRentAdminListRV.stopListening();
+        adapterAdminRentRV.stopListening();
     }
 }

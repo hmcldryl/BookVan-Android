@@ -82,7 +82,6 @@ public class AdminGenerateQRActivity extends AppCompatActivity {
                 }
                 if (inputOrdinaryQR.getEditText().getText().toString().isEmpty()) {
                     qrPlaceholder.setImageResource(0);
-                    btnSave.setVisibility(View.GONE);
                 }
             }
 
@@ -95,15 +94,15 @@ public class AdminGenerateQRActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ContextCompat.checkSelfPermission(AdminGenerateQRActivity.this,
+                if (ContextCompat.checkSelfPermission(AdminGenerateQRActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(AdminGenerateQRActivity.this, "You must allow storage permissions for this feature.", Toast.LENGTH_SHORT).show();
-                } else  {
+                } else {
                     String savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() + "/BOOKVAN/";
                     try {
                         RenderResult result = AwesomeQrRenderer.render(renderQR(inputOrdinaryQR.getEditText().getText().toString()));
-                        String qr_filename = "BOOKVAN_QR_" + Timestamp.now().toString();
+                        String qr_filename = "BOOKVAN_QR_" + "test";
                         QRGSaver qrgSaver = new QRGSaver();
                         qrgSaver.save(savePath, qr_filename, result.getBitmap(), QRGContents.ImageType.IMAGE_JPEG);
                         Toast.makeText(AdminGenerateQRActivity.this, "QR code saved in Downloads/BOOKVAN/.", Toast.LENGTH_SHORT).show();

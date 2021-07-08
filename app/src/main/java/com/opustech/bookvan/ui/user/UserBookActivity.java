@@ -150,6 +150,10 @@ public class UserBookActivity extends AppCompatActivity {
         categoryRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                inputVanTransportACT.getText().clear();
+                bookingRouteACT.getText().clear();
+                inputVanTransportACT.clearListSelection();
+                bookingRouteACT.clearListSelection();
                 if (i == R.id.btnRadioNorth) {
                     populateVanTransportList("north");
                 } else if (i == R.id.btnRadioSouth) {
@@ -236,7 +240,8 @@ public class UserBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 disableInput();
-                inputCheck(view);
+                inputCheck();
+                Toast.makeText(UserBookActivity.this, "check1", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -329,11 +334,10 @@ public class UserBookActivity extends AppCompatActivity {
         bookingCountSpecial.setEnabled(true);
     }
 
-    private void inputCheck(View view) {
+    private void inputCheck() {
         String name = bookingCustomerName.getEditText().getText().toString();
         String contact_number = bookingContactNumber.getEditText().getText().toString();
         String transport_name = bookingVanTransport.getEditText().getText().toString();
-        String booking_schedule = schedule_date + " " + schedule_time;
 
         if (name.isEmpty()) {
             enableInput();
@@ -349,17 +353,17 @@ public class UserBookActivity extends AppCompatActivity {
             bookingRoute.getEditText().setError("Please enter your trip route.");
         } else if (schedule_date.isEmpty()) {
             enableInput();
-            Snackbar.make(view, "Please select a valid booking date.", Snackbar.LENGTH_SHORT);
+            Toast.makeText(this, "Please select a valid booking date.", Toast.LENGTH_SHORT).show();
         } else if (schedule_time.isEmpty()) {
             enableInput();
-            Snackbar.make(view, "Please select a time for your booking.", Snackbar.LENGTH_SHORT);
+            Toast.makeText(this, "Please select a time for your booking.", Toast.LENGTH_SHORT).show();
         } else if (countAdult == 0 && countChild == 0 && countSpecial == 0) {
             enableInput();
             bookingCountAdult.getEditText().setText(String.valueOf(1));
-            Snackbar.make(view, "Must have at least 1 passenger.", Snackbar.LENGTH_SHORT);
-        } else if (compareSchedule(booking_schedule)) {
+            Toast.makeText(this, "Must have at least 1 passenger.", Toast.LENGTH_SHORT).show();
+        } else if (compareSchedule(schedule_date + " " + schedule_time)) {
             enableInput();
-            Snackbar.make(view, "Please select a valid booking date.", Snackbar.LENGTH_SHORT);
+            Toast.makeText(this, "Please select a valid booking date.", Toast.LENGTH_SHORT).show();
         } else {
             generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, schedule_date, schedule_time);
         }
@@ -368,16 +372,10 @@ public class UserBookActivity extends AppCompatActivity {
     private boolean compareSchedule(String booking_schedule) {
         Date selectedDate = null;
         Date minDate = null;
-        try {
-            selectedDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(booking_schedule);
-            minDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
         try {
-            Date date_depart = new SimpleDateFormat("hh:mm a", Locale.ENGLISH).parse(schedule_time);
-            schedule_time = new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(date_depart);
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(booking_schedule);
+            minDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -397,8 +395,11 @@ public class UserBookActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
-                            String reference_number = "BV-" + String.format(Locale.ENGLISH, "%06d", num);
+                            String reference_number = "BV-B" + String.format(Locale.ENGLISH, "%06d", num);
                             addNewBooking(dialog, reference_number, uid, name, contact_number, schedule_date, schedule_time);
+                        } else {
+                            dialog.dismiss();
+                            Toast.makeText(UserBookActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -414,6 +415,17 @@ public class UserBookActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
+    private String convertDate12Hr(String time) {
+        SimpleDateFormat format = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return format.format(date);
+    }
+
     private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String schedule_date, String schedule_time) {
         Booking booking = new Booking(reference_number, uid, name, contact_number, route_from, route_to, schedule_date, schedule_time, transportUid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice, totalCommission);
         bookingsReference.add(booking)
@@ -426,6 +438,9 @@ public class UserBookActivity extends AppCompatActivity {
                             Intent intent = new Intent(UserBookActivity.this, UserBookingActivity.class);
                             startActivity(intent);
                             finish();
+                        } else {
+                            dialog.dismiss();
+                            Toast.makeText(UserBookActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -527,8 +542,7 @@ public class UserBookActivity extends AppCompatActivity {
                                         public void onDateSelected(DateTime dateSelected) {
                                             if (dateSelected.isBeforeNow()) {
                                                 Toast.makeText(UserBookActivity.this, "Please select a later booking date.", Toast.LENGTH_SHORT).show();
-                                            }
-                                            else {
+                                            } else {
                                                 schedule_date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate());
                                                 loadScheduleTimeChips(task.getResult().getDocuments().get(position).getReference());
                                             }
@@ -566,13 +580,8 @@ public class UserBookActivity extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     TripSchedule selectedTime = (TripSchedule) parent.getItemAtPosition(position);
-                                    picker.setListener(new DatePickerListener() {
-                                        @Override
-                                        public void onDateSelected(DateTime dateSelected) {
-                                            schedule_time = selectedTime.getTime_depart();
-                                            Toast.makeText(UserBookActivity.this, schedule_time, Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                    schedule_time = convertDate12Hr(selectedTime.getTime_depart());
+                                    bookingTimeACT.setText(schedule_time);
                                 }
                             });
                             dialog.dismiss();

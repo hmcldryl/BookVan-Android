@@ -154,6 +154,11 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                     intent.putExtra("uid", getCompanyUid());
                     startActivity(intent);
                 }
+                if (item.getItemId() == R.id.btnRentals) {
+                    Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportRentConversationActivity.class);
+                    intent.putExtra("uid", getCompanyUid());
+                    startActivity(intent);
+                }
                 if (item.getItemId() == R.id.btnSchedules) {
                     Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminSchedulesActivity.class);
                     intent.putExtra("uid", getCompanyUid());

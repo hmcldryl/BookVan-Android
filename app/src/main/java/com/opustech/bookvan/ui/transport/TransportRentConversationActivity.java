@@ -1,4 +1,7 @@
-package com.opustech.bookvan.ui.user;
+package com.opustech.bookvan.ui.transport;
+
+import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -6,19 +9,17 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.View;
-
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.transport.AdapterTransportRentChatConversationRV;
 import com.opustech.bookvan.adapters.user.AdapterRentChatConversationRV;
 import com.opustech.bookvan.model.Rental;
 
-public class UserRentConversationActivity extends AppCompatActivity {
+public class TransportRentConversationActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -26,12 +27,12 @@ public class UserRentConversationActivity extends AppCompatActivity {
 
     private RecyclerView rentChatList;
 
-    private AdapterRentChatConversationRV adapterRentConversationRV;
+    private AdapterTransportRentChatConversationRV adapterTransportRentChatConversationRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_rent_conversation);
+        setContentView(R.layout.activity_transport_rent_conversation);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -58,32 +59,32 @@ public class UserRentConversationActivity extends AppCompatActivity {
     }
 
     private void initList() {
-        Query query = rentalsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
+        Query query = rentalsReference.whereEqualTo("transport_uid", getIntent().getStringExtra("uid"))
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<Rental> options = new FirestoreRecyclerOptions.Builder<Rental>()
                 .setQuery(query, Rental.class)
                 .build();
 
-        adapterRentConversationRV = new AdapterRentChatConversationRV(options, firebaseAuth.getCurrentUser().getUid(), this);
-        LinearLayoutManager manager = new LinearLayoutManager(UserRentConversationActivity.this);
+        adapterTransportRentChatConversationRV = new AdapterTransportRentChatConversationRV(options, getIntent().getStringExtra("uid"), this);
+        LinearLayoutManager manager = new LinearLayoutManager(TransportRentConversationActivity.this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, manager.getOrientation());
 
         rentChatList.setHasFixedSize(true);
         rentChatList.setLayoutManager(manager);
         rentChatList.addItemDecoration(dividerItemDecoration);
-        rentChatList.setAdapter(adapterRentConversationRV);
+        rentChatList.setAdapter(adapterTransportRentChatConversationRV);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        adapterRentConversationRV.startListening();
+        adapterTransportRentChatConversationRV.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        adapterRentConversationRV.stopListening();
+        adapterTransportRentChatConversationRV.stopListening();
     }
 }

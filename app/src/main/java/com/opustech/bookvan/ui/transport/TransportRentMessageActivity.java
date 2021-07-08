@@ -1,4 +1,4 @@
-package com.opustech.bookvan.ui.user;
+package com.opustech.bookvan.ui.transport;
 
 import android.os.Bundle;
 import android.view.View;
@@ -34,7 +34,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class UserRentMessageActivity extends AppCompatActivity {
+public class TransportRentMessageActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
@@ -51,7 +51,7 @@ public class UserRentMessageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_rent_message);
+        setContentView(R.layout.activity_transport_rent_message);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -68,7 +68,7 @@ public class UserRentMessageActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Rent-a-Van Chat");
-        getSupportActionBar().setSubtitle("Chat with Van Transport Provider");
+        getSupportActionBar().setSubtitle("Chat with Customer");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +89,8 @@ public class UserRentMessageActivity extends AppCompatActivity {
                 .setQuery(query, RentChatMessage.class)
                 .build();
 
-        adapterRentChatMessageRV = new AdapterRentChatMessageRV(options, firebaseAuth.getCurrentUser().getUid());
-        LinearLayoutManager manager = new LinearLayoutManager(UserRentMessageActivity.this);
+        adapterRentChatMessageRV = new AdapterRentChatMessageRV(options, getIntent().getStringExtra("transportId"));
+        LinearLayoutManager manager = new LinearLayoutManager(TransportRentMessageActivity.this);
         manager.setStackFromEnd(true);
 
         chatMessageList.setHasFixedSize(true);
@@ -124,7 +124,7 @@ public class UserRentMessageActivity extends AppCompatActivity {
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                     String timestamp = format.format(Calendar.getInstance().getTime());
                     HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("uid", firebaseAuth.getCurrentUser().getUid());
+                    hashMap.put("uid", getIntent().getStringExtra("transportId"));
                     hashMap.put("message", message);
                     hashMap.put("timestamp", timestamp);
                     rentalsReference.document(getIntent().getStringExtra("rentalId"))

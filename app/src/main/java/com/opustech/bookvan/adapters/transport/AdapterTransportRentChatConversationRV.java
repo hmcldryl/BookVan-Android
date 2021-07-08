@@ -1,4 +1,4 @@
-package com.opustech.bookvan.adapters.user;
+package com.opustech.bookvan.adapters.transport;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,30 +24,24 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Rental;
-import com.opustech.bookvan.ui.user.UserRentConversationActivity;
+import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
 import com.opustech.bookvan.ui.user.UserRentMessageActivity;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rental, AdapterRentChatConversationRV.ChatMessageHolder> {
+public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAdapter<Rental, AdapterTransportRentChatConversationRV.ChatMessageHolder> {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference rentalsReference, partnersReference;
+    private CollectionReference rentalsReference, usersReference;
 
     private String uid;
     private Context context;
@@ -60,7 +53,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
      * @param options
      */
 
-    public AdapterRentChatConversationRV(@NonNull FirestoreRecyclerOptions<Rental> options, String uid, Context context) {
+    public AdapterTransportRentChatConversationRV(@NonNull FirestoreRecyclerOptions<Rental> options, String uid, Context context) {
         super(options);
         this.uid = uid;
         this.context = context;
@@ -70,15 +63,23 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
     protected void onBindViewHolder(@NonNull ChatMessageHolder holder, int position, @NonNull Rental model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
         rentalsReference = firebaseFirestore.collection("rentals");
-        partnersReference = firebaseFirestore.collection("partners");
+        usersReference = firebaseFirestore.collection("users");
 
-        partnersReference.document(model.getTransport_uid())
+        usersReference.document(model.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            holder.rentTransportCompany.setText(task.getResult().getString("name"));
+                            holder.customerName.setText(task.getResult().getString("name"));
+                            holder.customerEmail.setText(task.getResult().getString("email"));
+
+                            String customerPhoto = task.getResult().getString("photo_url");
+                            if (customerPhoto != null) {
+                                Glide.with(context)
+                                        .load(customerPhoto)
+                                        .into(holder.customerPhoto);
+                            }
                         }
                     }
                 });
@@ -98,8 +99,9 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(holder.itemView.getContext(), UserRentMessageActivity.class);
+                    Intent intent = new Intent(holder.itemView.getContext(), TransportRentMessageActivity.class);
                     intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
+                    intent.putExtra("transportId", getSnapshots().get(position).getTransport_uid());
                     holder.itemView.getContext().startActivity(intent);
                 }
             });
@@ -183,13 +185,14 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
     @NonNull
     @Override
     public ChatMessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rent_chat_conversation_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rent_chat_conversation_transport_item_layout, parent, false);
         return new ChatMessageHolder(view);
     }
 
     class ChatMessageHolder extends RecyclerView.ViewHolder {
         LinearLayout item;
-        TextView rentTransportCompany,
+        TextView customerName,
+                customerEmail,
                 rentContactNumber,
                 rentPickUpLocation,
                 rentPickUpDate,
@@ -200,11 +203,14 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
                 rentDropOffTime,
                 rentalReferenceNumber,
                 itemNumber;
+        CircleImageView customerPhoto;
 
         public ChatMessageHolder(View view) {
             super(view);
             item = view.findViewById(R.id.item);
-            rentTransportCompany = view.findViewById(R.id.rentTransportCompany);
+            customerName = view.findViewById(R.id.customerName);
+            customerEmail = view.findViewById(R.id.customerEmail);
+            customerPhoto = view.findViewById(R.id.customerPhoto);
             rentContactNumber = view.findViewById(R.id.rentContactNumber);
             rentPickUpLocation = view.findViewById(R.id.rentPickUpLocation);
             rentPickUpDate = view.findViewById(R.id.rentPickUpDate);

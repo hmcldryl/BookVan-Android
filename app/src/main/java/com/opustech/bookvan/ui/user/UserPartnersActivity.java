@@ -58,13 +58,11 @@ public class UserPartnersActivity extends AppCompatActivity {
 
         adapterTransportPartnerListRV = new AdapterTransportPartnerListRV(options, this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, manager.getOrientation());
 
         partnersList = findViewById(R.id.transportList);
 
         partnersList.setHasFixedSize(true);
         partnersList.setLayoutManager(manager);
-        partnersList.addItemDecoration(dividerItemDecoration);
         partnersList.setAdapter(adapterTransportPartnerListRV);
     }
 

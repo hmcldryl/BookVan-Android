@@ -206,6 +206,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginFacebook.setEnabled(false);
         inputEmail.setEnabled(false);
         inputPassword.setEnabled(false);
+        btnRegister.setEnabled(false);
     }
 
     private void enableInput() {
@@ -214,6 +215,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginFacebook.setEnabled(true);
         inputEmail.setEnabled(true);
         inputPassword.setEnabled(true);
+        btnRegister.setEnabled(true);
     }
 
     private void onLogin(String email, String password) {

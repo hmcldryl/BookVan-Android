@@ -58,7 +58,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="@font/lato"
-                            android:inputType="text"
+                            android:inputType="textPersonName"
                             android:maxLines="1"
                             android:textColor="@color/textColor"
                             android:textCursorDrawable="@null" />
@@ -86,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:fontFamily="@font/lato"
-                            android:inputType="text"
+                            android:inputType="phone"
                             android:maxLines="1"
                             android:textColor="@color/textColor"
                             android:textCursorDrawable="@null" />

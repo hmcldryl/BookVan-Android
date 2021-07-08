@@ -12,6 +12,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTheme">
@@ -58,16 +59,26 @@
         <activity
             android:name=".ui.user.UserRentActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.user.UserRentConversationActivity"
+        <activity
+            android:name=".ui.user.UserRentConversationActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.transport.TransportAdminBookingQRActivity"
+        <activity
+            android:name=".ui.transport.TransportAdminBookingQRActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.user.UserConfirmBookingQRActivity"
+        <activity
+            android:name=".ui.user.UserConfirmBookingQRActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.user.UserConfirmBookingScanActivity"
+        <activity
+            android:name=".ui.user.UserConfirmBookingScanActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.user.UserBookActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.user.UserRentMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.AdminGenerateQRActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin.AdminDashboardActivity"
@@ -115,7 +126,10 @@
             android:name=".ui.transport.TransportAdminBookingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminRentalsActivity"
+            android:name=".ui.transport.TransportRentConversationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.transport.TransportRentMessageActivity"
             android:screenOrientation="portrait" />
     </application>
 

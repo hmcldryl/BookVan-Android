@@ -208,6 +208,10 @@ public class UserRentActivity extends AppCompatActivity {
                             int num = task.getResult().getDocuments().size() + 1;
                             String reference_number = "BV-R" + String.format(Locale.ENGLISH, "%06d", num);
                             submitRentInfo(dialog, reference_number, name, contact_number, transport_uid, pickup_location, pickup_date, pickup_time, destination, dropoff_location, dropoff_date, dropoff_time);
+                        } else {
+                            dialog.dismiss();
+                            enableInput();
+                            Toast.makeText(UserRentActivity.this, "Failed." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -223,6 +227,11 @@ public class UserRentActivity extends AppCompatActivity {
                             dialog.dismiss();
                             enableInput();
                             Toast.makeText(UserRentActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            dialog.dismiss();
+                            enableInput();
+                            Toast.makeText(UserRentActivity.this, "Failed." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
