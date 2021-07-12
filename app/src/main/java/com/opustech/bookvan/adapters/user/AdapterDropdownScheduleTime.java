@@ -44,12 +44,16 @@ public class AdapterDropdownScheduleTime extends ArrayAdapter<TripSchedule> {
         TripSchedule schedule = getItem(position);
         if (schedule != null) {
             String time_depart = schedule.getTime_depart();
-            try {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-                Date date_depart = simpleDateFormat.parse(time_depart);
-                timeDepart.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if (time_depart.equals("12:00 NN") || time_depart.equals("12:00 MN")) {
+                timeDepart.setText(time_depart);
+            } else {
+                try {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+                    Date date_depart = simpleDateFormat.parse(time_depart);
+                    timeDepart.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return convertView;

@@ -200,6 +200,8 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                     String remarks = inputRemarks.getEditText().getText().toString();
 
                     if (remarks.isEmpty()) {
+                        dialog.dismiss();
+                        inputRemarks.setEnabled(true);
                         btnConfirm.setEnabled(true);
                         inputRemarks.getEditText().setError("Please enter reason for cancellation.");
                     } else {

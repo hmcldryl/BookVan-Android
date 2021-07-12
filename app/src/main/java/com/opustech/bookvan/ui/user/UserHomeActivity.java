@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -209,6 +210,7 @@ public class UserHomeActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnLogout) {
+                    LoginManager.getInstance().logOut();
                     firebaseAuth.signOut();
                     Intent intent = new Intent(UserHomeActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

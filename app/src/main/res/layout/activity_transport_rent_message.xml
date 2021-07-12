@@ -18,6 +18,7 @@
         app:navigationIcon="@drawable/ic_btn_back"
         app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
         app:subtitleTextColor="#FFFFFF"
+        app:menu="@menu/toolbar_menu_rent_message"
         app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
         app:titleTextColor="#FFFFFF" />
 

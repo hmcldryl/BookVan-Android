@@ -11,6 +11,12 @@ public class UserAccount {
         this.points = points;
     }
 
+    public UserAccount(String name, String email, int points) {
+        this.name = name;
+        this.email = email;
+        this.points = points;
+    }
+
     public String getName() {
         return name;
     }

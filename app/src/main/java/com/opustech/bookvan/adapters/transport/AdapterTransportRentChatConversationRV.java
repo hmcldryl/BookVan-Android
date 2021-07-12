@@ -33,6 +33,7 @@ import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
 import com.opustech.bookvan.ui.user.UserRentMessageActivity;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -92,22 +93,29 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
         holder.rentDropOffLocation.setText(model.getDropoff_location());
         holder.rentDropOffDate.setText(model.getDropoff_date());
         holder.rentDropOffTime.setText(model.getDropoff_time());
-        holder.rentalReferenceNumber.setText(model.getStatus().equals("cancelled") ? model.getReference_number() + " (Cancelled)" : model.getReference_number());
+        holder.rentalReferenceNumber.setText(model.getReference_number());
+        holder.rentStatus.setText(capitalize(model.getStatus()));
         holder.itemNumber.setText(String.valueOf(position + 1));
 
-        if (!model.getStatus().equals("cancelled")) {
+        if (model.getPrice() > 0.0) {
+            String price = context.getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", model.getPrice());
+            holder.rentPrice.setText(price);
+            holder.rentPrice.setVisibility(View.VISIBLE);
+            holder.rentPriceLabel.setVisibility(View.VISIBLE);
+        }
+
+        if (model.getStatus().equals("pending")) {
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(holder.itemView.getContext(), TransportRentMessageActivity.class);
                     intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
+                    intent.putExtra("referenceId", model.getReference_number());
                     intent.putExtra("transportId", getSnapshots().get(position).getTransport_uid());
                     holder.itemView.getContext().startActivity(intent);
                 }
             });
-        }
 
-        if (!model.getStatus().equals("cancelled")) {
             holder.item.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -182,6 +190,15 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
         }
     }
 
+    private String capitalize(String status) {
+        if (status != null) {
+            if (!status.isEmpty()) {
+                return status.substring(0, 1).toUpperCase() + status.substring(1);
+            }
+        }
+        return status;
+    }
+
     @NonNull
     @Override
     public ChatMessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -202,6 +219,9 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
                 rentDropOffDate,
                 rentDropOffTime,
                 rentalReferenceNumber,
+                rentStatus,
+                rentPrice,
+                rentPriceLabel,
                 itemNumber;
         CircleImageView customerPhoto;
 
@@ -220,6 +240,9 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
             rentDropOffDate = view.findViewById(R.id.rentDropOffDate);
             rentDropOffTime = view.findViewById(R.id.rentDropOffTime);
             rentalReferenceNumber = view.findViewById(R.id.rentalReferenceNumber);
+            rentStatus = view.findViewById(R.id.rentStatus);
+            rentPrice = view.findViewById(R.id.rentPrice);
+            rentPriceLabel = view.findViewById(R.id.rentPrice);
             itemNumber = view.findViewById(R.id.itemNumber);
         }
     }

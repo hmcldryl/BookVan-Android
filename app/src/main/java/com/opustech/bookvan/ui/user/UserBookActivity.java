@@ -241,7 +241,6 @@ public class UserBookActivity extends AppCompatActivity {
             public void onClick(View view) {
                 disableInput();
                 inputCheck();
-                Toast.makeText(UserBookActivity.this, "check1", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -374,8 +373,8 @@ public class UserBookActivity extends AppCompatActivity {
         Date minDate = null;
 
         try {
-            selectedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(booking_schedule);
-            minDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(booking_schedule);
+            minDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -537,6 +536,7 @@ public class UserBookActivity extends AppCompatActivity {
                                     route_to = selectedSchedule.getRoute_to();
                                     computeTotalPrice();
                                     computeCommission();
+                                    loadScheduleTimeChips(task.getResult().getDocuments().get(position).getReference());
                                     picker.setListener(new DatePickerListener() {
                                         @Override
                                         public void onDateSelected(DateTime dateSelected) {
@@ -564,24 +564,32 @@ public class UserBookActivity extends AppCompatActivity {
         dialog.show();
         tripSchedulesTimeList = new ArrayList<>();
         tripScheduleReference.collection("schedules")
+                .orderBy("time_depart", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
-                                tripSchedulesTimeList.add(i, transportCompany);
+                                if (task.getResult().getDocuments().get(i).getString("time_depart").equals("12:00")) {
+                                    TripSchedule transportCompany = new TripSchedule("12:00 NN");
+                                    tripSchedulesTimeList.add(i, transportCompany);
+                                } else if (task.getResult().getDocuments().get(i).getString("time_depart").equals("00:00")) {
+                                    TripSchedule transportCompany = new TripSchedule("12:00 MN");
+                                    tripSchedulesTimeList.add(i, transportCompany);
+                                } else {
+                                    TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
+                                    tripSchedulesTimeList.add(i, transportCompany);
+                                }
                             }
                             adapterDropdownScheduleTime = new AdapterDropdownScheduleTime(UserBookActivity.this, tripSchedulesTimeList);
                             bookingTimeACT.setAdapter(adapterDropdownScheduleTime);
-                            bookingTimeACT.setThreshold(1);
                             bookingTimeACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     TripSchedule selectedTime = (TripSchedule) parent.getItemAtPosition(position);
                                     schedule_time = convertDate12Hr(selectedTime.getTime_depart());
-                                    bookingTimeACT.setText(schedule_time);
+                                    //bookingTimeACT.setText(schedule_time);
                                 }
                             });
                             dialog.dismiss();

@@ -85,6 +85,7 @@ public class AdminChatActivity extends AppCompatActivity {
 
         adapterMessageChatAdminRV = new AdapterMessageChatAdminRV(options);
         LinearLayoutManager manager = new LinearLayoutManager(AdminChatActivity.this);
+        manager.setReverseLayout(true);
         manager.setStackFromEnd(true);
 
         chatStatusNone = findViewById(R.id.chatStatusNone);
@@ -92,6 +93,13 @@ public class AdminChatActivity extends AppCompatActivity {
         chatMessageList.setHasFixedSize(true);
         chatMessageList.setLayoutManager(manager);
         chatMessageList.setAdapter(adapterMessageChatAdminRV);
+
+        adapterMessageChatAdminRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                chatMessageList.smoothScrollToPosition(adapterMessageChatAdminRV.getItemCount());
+            }
+        });
 
         conversationsReference.document(uid)
                 .collection("chat")

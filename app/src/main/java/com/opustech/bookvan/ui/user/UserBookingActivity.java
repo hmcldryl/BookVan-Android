@@ -21,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.BookingPagerAdapter;
+import com.opustech.bookvan.ui.transport.TransportAdminBookingsActivity;
 
 import java.util.Arrays;
 
@@ -98,13 +99,16 @@ public class UserBookingActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(UserBookingActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(3);
                             int size = value.size();
                             if (size > 0) {
-                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
                             }
                         }
                     }
@@ -118,13 +122,16 @@ public class UserBookingActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(UserBookingActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
-                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
                             }
                         }
                     }
@@ -138,13 +145,16 @@ public class UserBookingActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(UserBookingActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
-                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
                             }
                         }
                     }
@@ -158,13 +168,16 @@ public class UserBookingActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(UserBookingActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(2);
                             int size = value.size();
                             if (size > 0) {
-                                BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
-                                badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserBookingActivity.this, R.color.colorBadgeBackground));
-                                badgeDrawable.setMaxCharacterCount(2);
                                 badgeDrawable.setNumber(size);
                                 badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
                             }
                         }
                     }

@@ -70,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:fontFamily="@font/lato"
+                    android:justificationMode="inter_word"
                     android:maxLines="4"
                     android:text=""
                     android:textAlignment="center"

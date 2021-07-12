@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -227,6 +228,10 @@ public class UserRentActivity extends AppCompatActivity {
                             dialog.dismiss();
                             enableInput();
                             Toast.makeText(UserRentActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(UserRentActivity.this, UserRentMessageActivity.class);
+                            intent.putExtra("rentalId", task.getResult().getId());
+                            startActivity(intent);
+                            finish();
                         }
                         else {
                             dialog.dismiss();

@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.transport.BookingsTransportPagerAdapter;
+import com.opustech.bookvan.ui.user.UserBookingActivity;
 
 import java.util.Arrays;
 

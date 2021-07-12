@@ -1,9 +1,16 @@
 package com.opustech.bookvan.ui.transport;
 
+import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -34,6 +43,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
+
 public class TransportRentMessageActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
@@ -45,6 +57,8 @@ public class TransportRentMessageActivity extends AppCompatActivity {
 
     private TextInputLayout inputChat;
     private ImageButton btnSendChat;
+
+    private Chip btnConfirmRent, btnCancelRent;
 
     private AdapterRentChatMessageRV adapterRentChatMessageRV;
 
@@ -58,6 +72,9 @@ public class TransportRentMessageActivity extends AppCompatActivity {
         usersReference = firebaseFirestore.collection("users");
         rentalsReference = firebaseFirestore.collection("rentals");
         partnersReference = firebaseFirestore.collection("partners");
+
+        btnConfirmRent = findViewById(R.id.btnConfirmRent);
+        btnCancelRent = findViewById(R.id.btnCancelRent);
 
         inputChat = findViewById(R.id.inputChat);
         btnSendChat = findViewById(R.id.btnSendChat);
@@ -77,7 +94,129 @@ public class TransportRentMessageActivity extends AppCompatActivity {
             }
         });
 
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.btnConfirmRent) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(TransportRentMessageActivity.this);
+                    final AlertDialog alertDialog = builder.create();
+                    if (!alertDialog.isShowing()) {
+                        final View dialogView = LayoutInflater.from(TransportRentMessageActivity.this).inflate(R.layout.dialog_confirm_rent, null);
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        alertDialog.setCancelable(true);
+                        alertDialog.setView(dialogView);
+                        TextView rentReferenceNo = dialogView.findViewById(R.id.rentalReferenceNumber);
+                        TextInputLayout inputPrice = dialogView.findViewById(R.id.inputPrice);
+
+                        rentReferenceNo.setText(getIntent().getStringExtra("referenceId"));
+
+                        MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final ACProgressFlower dialog = new ACProgressFlower.Builder(TransportRentMessageActivity.this)
+                                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                        .themeColor(TransportRentMessageActivity.this.getResources().getColor(R.color.white))
+                                        .text("Processing...")
+                                        .fadeColor(Color.DKGRAY).build();
+                                dialog.show();
+
+                                inputPrice.setEnabled(false);
+                                btnConfirm.setEnabled(false);
+
+                                if (inputPrice.getEditText().getText().toString().isEmpty()) {
+                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                                    String timestamp = format.format(Calendar.getInstance().getTime());
+                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                    hashMap.put("status", "confirmed");
+                                    hashMap.put("timestamp", timestamp);
+                                    hashMap.put("price", Double.parseDouble(inputPrice.getEditText().getText().toString()));
+                                    hashMap.put("commission", Double.parseDouble(inputPrice.getEditText().getText().toString()) * 0.10);
+                                    rentalsReference.document(getIntent().getStringExtra("rentalId"))
+                                            .update(hashMap)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        alertDialog.dismiss();
+                                                        dialog.dismiss();
+                                                        Toast.makeText(TransportRentMessageActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        dialog.dismiss();
+                                                        Toast.makeText(TransportRentMessageActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                }
+                                else {
+                                    inputPrice.setEnabled(true);
+                                    btnConfirm.setEnabled(true);
+                                    inputPrice.setError("Please enter rental fee.");
+                                }
+                            }
+                        });
+                        alertDialog.show();
+                    }
+                } else if (item.getItemId() == R.id.btnCancelRent) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(TransportRentMessageActivity.this);
+                    final AlertDialog alertDialog = builder.create();
+                    if (!alertDialog.isShowing()) {
+                        final View dialogView = LayoutInflater.from(TransportRentMessageActivity.this).inflate(R.layout.dialog_cancel_rent, null);
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        alertDialog.setCancelable(true);
+                        alertDialog.setView(dialogView);
+                        TextView rentReferenceNo = dialogView.findViewById(R.id.rentReferenceNo);
+
+                        rentReferenceNo.setText(getIntent().getStringExtra("referenceId"));
+
+                        MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final ACProgressFlower dialog = new ACProgressFlower.Builder(TransportRentMessageActivity.this)
+                                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                        .themeColor(TransportRentMessageActivity.this.getResources().getColor(R.color.white))
+                                        .text("Processing...")
+                                        .fadeColor(Color.DKGRAY).build();
+                                dialog.show();
+
+                                btnConfirm.setEnabled(false);
+
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("status", "cancelled");
+                                rentalsReference.document(getIntent().getStringExtra("rentalId"))
+                                        .update(hashMap)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    alertDialog.dismiss();
+                                                    dialog.dismiss();
+                                                    Toast.makeText(TransportRentMessageActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    dialog.dismiss();
+                                                    Toast.makeText(TransportRentMessageActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+                        alertDialog.show();
+                    }
+                }
+                return false;
+            }
+        });
+
         initList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_rent_message, menu);
+        return true;
     }
 
     private void initList() {

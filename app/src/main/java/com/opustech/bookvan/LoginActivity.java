@@ -13,7 +13,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuthProvider;
 import com.opustech.bookvan.model.UserAccount;
 import com.opustech.bookvan.ui.user.UserHomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -59,6 +68,9 @@ public class LoginActivity extends AppCompatActivity {
     private TextView btnRegister, btnForgotPassword;
     private ImageCarousel imageCarousel;
 
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+
     private final int RC_SIGN_IN = 1;
 
     private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
@@ -81,11 +93,33 @@ public class LoginActivity extends AppCompatActivity {
         btnForgotPassword = findViewById(R.id.btnForgotPassword);
 
         btnLogin = findViewById(R.id.btnLogin);
+        loginButton = findViewById(R.id.loginButton);
         btnLoginFacebook = findViewById(R.id.btnLoginFacebook);
         btnLoginGoogle = findViewById(R.id.btnLoginGoogle);
         btnRegister = findViewById(R.id.btnRegister);
 
         updateUi();
+
+        callbackManager = CallbackManager.Factory.create();
+        loginButton.setPermissions("email", "public_profile");
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                facebookLogin(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                enableInput();
+                Toast.makeText(LoginActivity.this, "Facebook sign in cancelled.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                enableInput();
+                Toast.makeText(LoginActivity.this, "Facebook sign in failed. Please check your internet connection and try again. " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -106,7 +140,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "This feature is not yet implemented.", Snackbar.LENGTH_SHORT).show();
+                disableInput();
+                loginButton.performClick();
             }
         });
 
@@ -240,6 +275,59 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private void facebookLogin(AccessToken token) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(LoginActivity.this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .text("Signing in...")
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    firebaseAuth.signInWithCredential(credential)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) {
+                                        usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            if (!task.getResult().exists()) {
+                                                                UserAccount userAccount = new UserAccount(firebaseAuth.getCurrentUser().getDisplayName(), firebaseAuth.getCurrentUser().getEmail(), 0);
+                                                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                        .set(userAccount)
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    checkUserSession(dialog);
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            } else {
+                                                                checkUserSession(dialog);
+                                                            }
+
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }
+                            });
+                } else {
+                    enableInput();
+                    Toast.makeText(LoginActivity.this, "Google sign in failed. Please check your internet connection and try again. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -266,7 +354,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         if (!task.getResult().exists()) {
-                                                            UserAccount userAccount = new UserAccount(account.getGivenName() + " " + account.getFamilyName(), account.getEmail(), account.getPhotoUrl().toString(), 0);
+                                                            UserAccount userAccount = new UserAccount(account.getGivenName() + " " + account.getFamilyName(), account.getEmail(), 0);
                                                             usersReference.document(firebaseAuth.getCurrentUser().getUid())
                                                                     .set(userAccount)
                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -292,6 +380,8 @@ public class LoginActivity extends AppCompatActivity {
                 enableInput();
                 Toast.makeText(this, "Google sign in failed. Please check your internet connection and try again. " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -367,5 +457,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
 }

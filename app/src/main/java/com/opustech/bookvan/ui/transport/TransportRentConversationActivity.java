@@ -68,12 +68,21 @@ public class TransportRentConversationActivity extends AppCompatActivity {
 
         adapterTransportRentChatConversationRV = new AdapterTransportRentChatConversationRV(options, getIntent().getStringExtra("uid"), this);
         LinearLayoutManager manager = new LinearLayoutManager(TransportRentConversationActivity.this);
+        manager.setReverseLayout(true);
+        manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, manager.getOrientation());
 
         rentChatList.setHasFixedSize(true);
         rentChatList.setLayoutManager(manager);
         rentChatList.addItemDecoration(dividerItemDecoration);
         rentChatList.setAdapter(adapterTransportRentChatConversationRV);
+
+        adapterTransportRentChatConversationRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                rentChatList.smoothScrollToPosition(adapterTransportRentChatConversationRV.getItemCount());
+            }
+        });
     }
 
     @Override

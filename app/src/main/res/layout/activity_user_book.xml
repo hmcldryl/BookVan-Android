@@ -213,9 +213,8 @@
                         android:id="@+id/bookingTimeACT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:completionThreshold="1"
                         android:fontFamily="@font/lato"
-                        android:inputType="text"
+                        android:inputType="none"
                         android:singleLine="true"
                         android:textCursorDrawable="@null" />
 

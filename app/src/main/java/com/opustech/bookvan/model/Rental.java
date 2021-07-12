@@ -15,6 +15,7 @@ public class Rental {
             dropoff_time,
             status,
             timestamp;
+    double price, commission;
 
     public Rental() {
     }
@@ -34,6 +35,13 @@ public class Rental {
         this.dropoff_time = dropoff_time;
         this.status = status;
         this.timestamp = timestamp;
+    }
+
+    public Rental(String status, String timestamp, double price, double commission) {
+        this.status = status;
+        this.timestamp = timestamp;
+        this.price = price;
+        this.commission = commission;
     }
 
     public String getUid() {
@@ -146,5 +154,21 @@ public class Rental {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getCommission() {
+        return commission;
+    }
+
+    public void setCommission(double commission) {
+        this.commission = commission;
     }
 }

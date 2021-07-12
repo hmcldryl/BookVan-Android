@@ -5,9 +5,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -67,6 +69,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
+    private NestedScrollView nestedScrollView;
+    private SwipeRefreshLayout refreshLayout;
+
     private static final int TIME_INTERVAL = 2000;
     private long backPressed;
 
@@ -91,6 +96,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         partnersReference = firebaseFirestore.collection("partners");
         bookingsReference = firebaseFirestore.collection("bookings");
 
+        nestedScrollView = findViewById(R.id.nestedScrollView);
+        refreshLayout = findViewById(R.id.refreshLayout);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -105,6 +113,14 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
         today.setText(getToday());
         todayDate.setText(getTodayDate());
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                loadAnalytics();
+            }
+        });
 
         //totalBookingLineChart = findViewById(R.id.totalBookingLineChart);
         //initializeTotalBookingLineChart();
@@ -312,16 +328,10 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     }
 
     private void loadAnalytics() {
-        bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
-                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        todayTotalBooking(getCompanyUid());
-                        todayTotalEarning(getCompanyUid());
-                        allTimeTotalBooking(getCompanyUid());
-                        allTimeTotalEarning(getCompanyUid());
-                    }
-                });
+        todayTotalBooking(getCompanyUid());
+        todayTotalEarning(getCompanyUid());
+        allTimeTotalBooking(getCompanyUid());
+        allTimeTotalEarning(getCompanyUid());
     }
 
     private void todayTotalBooking(String uid) {
@@ -358,6 +368,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                     }
                                 }
                             }
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
                             dashboardEarningsToday.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
                         }
                     }
@@ -373,6 +386,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             dashboardBookingsAllTime.setText(String.valueOf(task.getResult().size()));
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
                         }
                     }
                 });
@@ -393,6 +409,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                         earnings = earnings + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                     }
                                 }
+                            }
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
                             }
                             dashboardEarningsAllTime.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
                         }

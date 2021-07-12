@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -54,6 +56,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
             todayDate;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private NestedScrollView nestedScrollView;
+    private SwipeRefreshLayout refreshLayout;
 
     private String name = "";
     private String email = "";
@@ -82,6 +86,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
         usersReference = firebaseFirestore.collection("users");
         bookingsReference = firebaseFirestore.collection("bookings");
 
+        nestedScrollView = findViewById(R.id.nestedScrollView);
+        refreshLayout = findViewById(R.id.refreshLayout);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -94,6 +101,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         today.setText(getToday());
         todayDate.setText(getTodayDate());
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                loadAnalytics();
+            }
+        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,15 +189,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void loadAnalytics() {
-        bookingsReference.addSnapshotListener(this, new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                todayTotalBooking();
-                todayTotalEarning();
-                allTimeTotalBooking();
-                allTimeTotalEarning();
-            }
-        });
+        todayTotalBooking();
+        todayTotalEarning();
+        allTimeTotalBooking();
+        allTimeTotalEarning();
     }
 
     private void todayTotalBooking() {
@@ -195,6 +205,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             if (!task.getResult().isEmpty()) {
                                 dashboardBookingsToday.setText(String.valueOf(task.getResult().size()));
+                                if (refreshLayout.isRefreshing()) {
+                                    refreshLayout.setRefreshing(false);
+                                }
                             }
                         }
                     }
@@ -217,6 +230,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                     }
                                 }
                             }
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
                             dashboardEarningsToday.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
                         }
                     }
@@ -231,6 +247,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             dashboardBookingsAllTime.setText(String.valueOf(task.getResult().size()));
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
                         }
                     }
                 });
@@ -250,6 +269,9 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                         earnings = earnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
                                     }
                                 }
+                            }
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
                             }
                             dashboardEarningsAllTime.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
                         }

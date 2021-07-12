@@ -32,6 +32,7 @@ import com.opustech.bookvan.model.Rental;
 import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
@@ -95,81 +96,25 @@ public class AdapterAdminRentRV extends FirestoreRecyclerAdapter<Rental, Adapter
         holder.rentDropOffLocation.setText(model.getDropoff_location());
         holder.rentDropOffDate.setText(model.getDropoff_date());
         holder.rentDropOffTime.setText(model.getDropoff_time());
-        holder.rentalReferenceNumber.setText(model.getStatus().equals("cancelled") ? model.getReference_number() + " (Cancelled)" : model.getReference_number());
+        holder.rentalReferenceNumber.setText(model.getReference_number());
+        holder.rentStatus.setText(capitalize(model.getStatus()));
         holder.itemNumber.setText(String.valueOf(position + 1));
 
-        if (!model.getStatus().equals("cancelled")) {
-            holder.item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popup = new PopupMenu(context, view);
-                    MenuInflater inflater = popup.getMenuInflater();
-                    inflater.inflate(R.menu.user_rent_menu, popup.getMenu());
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getItemId() == R.id.btnCancel) {
-                                cancelRent(position, model.getReference_number(), holder.rentalReferenceNumber);
-                            }
-                            return false;
-                        }
-                    });
-                    popup.show();
-                }
-            });
+        if (model.getPrice() > 0.0) {
+            String price = context.getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", model.getPrice());
+            holder.rentPrice.setText(price);
+            holder.rentPrice.setVisibility(View.VISIBLE);
+            holder.rentPriceLabel.setVisibility(View.VISIBLE);
         }
     }
 
-    public void cancelRent(int position, String reference_number, TextView textView) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        final AlertDialog alertDialog = builder.create();
-        if (!alertDialog.isShowing()) {
-            final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_cancel_rent, null);
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            alertDialog.setCancelable(true);
-            alertDialog.setView(dialogView);
-            TextView rentReferenceNo = dialogView.findViewById(R.id.rentReferenceNo);
-
-            rentReferenceNo.setText(reference_number);
-
-            MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
-
-            btnConfirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
-                            .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                            .themeColor(context.getResources().getColor(R.color.white))
-                            .text("Processing...")
-                            .fadeColor(Color.DKGRAY).build();
-                    dialog.show();
-
-                    btnConfirm.setEnabled(false);
-
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("status", "cancelled");
-                    getSnapshots().getSnapshot(position)
-                            .getReference()
-                            .update(hashMap)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        alertDialog.dismiss();
-                                        dialog.dismiss();
-                                        String text = textView.getText().toString() + " (Cancelled)";
-                                        textView.setText(text);
-                                        Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        dialog.dismiss();
-                                        Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                }
-            });
-            alertDialog.show();
+    private String capitalize(String status) {
+        if (status != null) {
+            if (!status.isEmpty()) {
+                return status.substring(0, 1).toUpperCase() + status.substring(1);
+            }
         }
+        return status;
     }
 
     @NonNull
@@ -192,6 +137,9 @@ public class AdapterAdminRentRV extends FirestoreRecyclerAdapter<Rental, Adapter
                 rentDropOffDate,
                 rentDropOffTime,
                 rentalReferenceNumber,
+                rentStatus,
+                rentPrice,
+                rentPriceLabel,
                 itemNumber;
 
         public ChatMessageHolder(View view) {
@@ -208,6 +156,9 @@ public class AdapterAdminRentRV extends FirestoreRecyclerAdapter<Rental, Adapter
             rentDropOffDate = view.findViewById(R.id.rentDropOffDate);
             rentDropOffTime = view.findViewById(R.id.rentDropOffTime);
             rentalReferenceNumber = view.findViewById(R.id.rentalReferenceNumber);
+            rentStatus = view.findViewById(R.id.rentStatus);
+            rentPrice = view.findViewById(R.id.rentPrice);
+            rentPriceLabel = view.findViewById(R.id.rentPriceLabel);
             itemNumber = view.findViewById(R.id.itemNumber);
         }
     }

@@ -91,10 +91,18 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
         holder.rentDropOffLocation.setText(model.getDropoff_location());
         holder.rentDropOffDate.setText(model.getDropoff_date());
         holder.rentDropOffTime.setText(model.getDropoff_time());
-        holder.rentalReferenceNumber.setText(model.getStatus().equals("cancelled") ? model.getReference_number() + " (Cancelled)" : model.getReference_number());
+        holder.rentalReferenceNumber.setText(model.getReference_number());
+        holder.rentStatus.setText(capitalize(model.getStatus()));
         holder.itemNumber.setText(String.valueOf(position + 1));
 
-        if (!model.getStatus().equals("cancelled")) {
+        if (model.getPrice() > 0.0) {
+            String price = context.getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", model.getPrice());
+            holder.rentPrice.setText(price);
+            holder.rentPrice.setVisibility(View.VISIBLE);
+            holder.rentPriceLabel.setVisibility(View.VISIBLE);
+        }
+
+        if (model.getStatus().equals("pending")) {
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -103,9 +111,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
                     holder.itemView.getContext().startActivity(intent);
                 }
             });
-        }
 
-        if (!model.getStatus().equals("cancelled")) {
             holder.item.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -180,6 +186,15 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
         }
     }
 
+    private String capitalize(String status) {
+        if (status != null) {
+            if (!status.isEmpty()) {
+                return status.substring(0, 1).toUpperCase() + status.substring(1);
+            }
+        }
+        return status;
+    }
+
     @NonNull
     @Override
     public ChatMessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -199,6 +214,9 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
                 rentDropOffDate,
                 rentDropOffTime,
                 rentalReferenceNumber,
+                rentStatus,
+                rentPrice,
+                rentPriceLabel,
                 itemNumber;
 
         public ChatMessageHolder(View view) {
@@ -214,6 +232,9 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
             rentDropOffDate = view.findViewById(R.id.rentDropOffDate);
             rentDropOffTime = view.findViewById(R.id.rentDropOffTime);
             rentalReferenceNumber = view.findViewById(R.id.rentalReferenceNumber);
+            rentStatus = view.findViewById(R.id.rentStatus);
+            rentPrice = view.findViewById(R.id.rentPrice);
+            rentPriceLabel = view.findViewById(R.id.rentPriceLabel);
             itemNumber = view.findViewById(R.id.itemNumber);
         }
     }
