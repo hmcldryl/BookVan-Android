@@ -374,7 +374,7 @@ public class UserBookActivity extends AppCompatActivity {
 
         try {
             selectedDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(booking_schedule);
-            minDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+            minDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -589,7 +589,7 @@ public class UserBookActivity extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     TripSchedule selectedTime = (TripSchedule) parent.getItemAtPosition(position);
                                     schedule_time = convertDate12Hr(selectedTime.getTime_depart());
-                                    //bookingTimeACT.setText(schedule_time);
+                                    bookingTimeACT.setText(schedule_time);
                                 }
                             });
                             dialog.dismiss();
