@@ -241,7 +241,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private void todayTotalTransaction() {
         bookingsReference.whereEqualTo("timestamp_date", getCurrentDate())
-                .whereIn("status", Arrays.asList("done", "cancelled", "pending"))
+                .whereIn("status", Arrays.asList("done", "cancelled", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -258,7 +258,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 });
         firebaseFirestore.collection("rentals")
                 .whereEqualTo("timestamp_date", getCurrentDate())
-                .whereIn("status", Arrays.asList("done", "cancelled", "pending"))
+                .whereIn("status", Arrays.asList("done", "cancelled", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -277,7 +277,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private void todayTotalEarning() {
         allEarningsToday = 0.0;
-        bookingsReference.whereEqualTo("status", "done")
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -291,7 +291,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                     }
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("timestamp_date", getCurrentDate())
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -329,7 +329,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void allTimeTotalTransaction() {
-        bookingsReference.whereIn("status", Arrays.asList("done", "cancelled", "pending"))
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -344,7 +344,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 });
 
         firebaseFirestore.collection("rentals")
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -361,7 +361,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private void allTimeTotalEarning() {
         allEarnings = 0.0;
-        bookingsReference.whereEqualTo("status", "done")
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -373,7 +373,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                         allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
                                     }
                                     firebaseFirestore.collection("rentals")
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -438,7 +438,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         transportName.setText(transport_name);
 
         firebaseFirestore.collection("bookings")
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .whereEqualTo("transport_uid", uid)
                 .get()
@@ -458,7 +458,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 });
 
         firebaseFirestore.collection("rentals")
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .whereEqualTo("transport_uid", uid)
                 .get()
@@ -479,6 +479,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         firebaseFirestore.collection("bookings")
                 .whereEqualTo("transport_uid", uid)
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -495,7 +496,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("timestamp_date", getCurrentDate())
                                             .whereEqualTo("transport_uid", uid)
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -520,7 +521,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                     }
                 });
 
-        transportList.addView(view, 0);
+        transportList.addView(view);
     }
 
     @Override
