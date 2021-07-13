@@ -20,6 +20,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -144,6 +148,14 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
         }
 
         holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -171,6 +183,7 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
                 labelCountAdult,
                 labelCountChild,
                 labelCountSpecial,
+                timestamp,
                 itemNumber;
         MaterialCardView bookingCard;
         CircleImageView customerPhoto;
@@ -197,6 +210,7 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
             bookingPrice = view.findViewById(R.id.price);
             bookingRemarks = view.findViewById(R.id.bookingRemarks);
             labelRemarks = view.findViewById(R.id.labelRemarks);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 }

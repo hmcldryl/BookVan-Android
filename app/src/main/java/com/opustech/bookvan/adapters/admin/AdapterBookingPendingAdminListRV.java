@@ -29,6 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -153,6 +156,14 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
         }
 
         holder.bookingPrice.setText(String.valueOf(price));
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -178,6 +189,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                 labelCountChild,
                 labelCountSpecial,
                 bookingPrice,
+                timestamp,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;
@@ -202,6 +214,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
             labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingPrice = view.findViewById(R.id.price);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 }

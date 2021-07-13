@@ -29,6 +29,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -240,6 +244,14 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                 }
             }
         });
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, int position) {
@@ -315,6 +327,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                 labelCountChild,
                 labelCountSpecial,
                 bookingPrice,
+                timestamp,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;

@@ -21,6 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -68,7 +72,7 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
         String remarks = model.getRemarks();
         String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
-        String plate_number = model.getPlate_number();
+        String van_number = model.getVan_number();
         double price = model.getPrice();
 
         usersReference.document(uid)
@@ -115,7 +119,7 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
             holder.bookingPlateNumber.setVisibility(View.GONE);
         } else {
             holder.bookingDriverName.setText(driver_name);
-            holder.bookingPlateNumber.setText(plate_number);
+            holder.bookingPlateNumber.setText(van_number);
         }
 
         if (remarks != null) {
@@ -161,6 +165,14 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
         }
 
         holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -192,6 +204,7 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
                 labelCountAdult,
                 labelCountChild,
                 labelCountSpecial,
+                timestamp,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;
@@ -217,11 +230,12 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
             labelVanDriver = view.findViewById(R.id.labelVanDriver);
-            bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
-            labelPlateNumber = view.findViewById(R.id.labelPlateNumber);
+            bookingPlateNumber = view.findViewById(R.id.bookingVanNumber);
+            labelPlateNumber = view.findViewById(R.id.labelVanNumber);
             bookingPrice = view.findViewById(R.id.price);
             bookingRemarks = view.findViewById(R.id.bookingRemarks);
             labelRemarks = view.findViewById(R.id.labelRemarks);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 }

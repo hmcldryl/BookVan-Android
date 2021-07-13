@@ -4,22 +4,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -33,9 +41,13 @@ import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.ui.user.UserPartnersActivity;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,8 +61,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private CircleImageView headerUserPhoto;
     private TextView headerUserName, headerUserEmail,
             dashboardBookingsToday,
+            dashboardRentalsToday,
             dashboardEarningsToday,
             dashboardBookingsAllTime,
+            dashboardRentalsAllTime,
             dashboardEarningsAllTime,
             today,
             todayDate;
@@ -58,10 +72,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NestedScrollView nestedScrollView;
     private SwipeRefreshLayout refreshLayout;
+    private LinearLayout transportList;
 
     private String name = "";
     private String email = "";
     private String photo_url = "";
+
+    double allEarnings = 0.0;
+    double allEarningsToday = 0.0;
 
     private static final int TIME_INTERVAL = 2000;
     private long backPressed;
@@ -88,6 +106,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         nestedScrollView = findViewById(R.id.nestedScrollView);
         refreshLayout = findViewById(R.id.refreshLayout);
+
+        transportList = findViewById(R.id.transportList);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -137,8 +157,10 @@ public class AdminDashboardActivity extends AppCompatActivity {
         headerUserEmail = navView.findViewById(R.id.headerUserEmail);
 
         dashboardBookingsToday = findViewById(R.id.dashboardBookingsToday);
+        dashboardRentalsToday = findViewById(R.id.dashboardRentalsToday);
         dashboardEarningsToday = findViewById(R.id.dashboardEarningsToday);
         dashboardBookingsAllTime = findViewById(R.id.dashboardBookingsAllTime);
+        dashboardRentalsAllTime = findViewById(R.id.dashboardRentalsAllTime);
         dashboardEarningsAllTime = findViewById(R.id.dashboardEarningsAllTime);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -179,7 +201,29 @@ public class AdminDashboardActivity extends AppCompatActivity {
             }
         });
 
+        showVanTransportStats();
         loadAnalytics();
+    }
+
+    private void showVanTransportStats() {
+        firebaseFirestore.collection("partners")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            transportList.removeAllViews();
+                            int count = task.getResult().getDocuments().size();
+                            if (count > 0) {
+                                for (int i = 0; i < count; i++) {
+                                    loadVanTransportStats(i + 1, task.getResult().getDocuments().get(i).getString("uid"),
+                                            task.getResult().getDocuments().get(i).getString("name"));
+                                }
+                                refreshLayout.setRefreshing(false);
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
@@ -189,13 +233,13 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void loadAnalytics() {
-        todayTotalBooking();
+        todayTotalTransaction();
         todayTotalEarning();
-        allTimeTotalBooking();
+        allTimeTotalTransaction();
         allTimeTotalEarning();
     }
 
-    private void todayTotalBooking() {
+    private void todayTotalTransaction() {
         bookingsReference.whereEqualTo("timestamp_date", getCurrentDate())
                 .whereIn("status", Arrays.asList("done", "cancelled", "pending"))
                 .get()
@@ -212,34 +256,79 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    private void todayTotalEarning() {
-        bookingsReference.whereEqualTo("timestamp_date", getCurrentDate())
-                .whereEqualTo("status", "done")
+        firebaseFirestore.collection("rentals")
+                .whereEqualTo("timestamp_date", getCurrentDate())
+                .whereIn("status", Arrays.asList("done", "cancelled", "pending"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            double earnings = 0.00;
-                            if (task.getResult() != null) {
-                                if (!task.getResult().isEmpty()) {
-                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                        earnings = earnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
-                                    }
+                            if (!task.getResult().isEmpty()) {
+                                dashboardRentalsToday.setText(String.valueOf(task.getResult().size()));
+                                if (refreshLayout.isRefreshing()) {
+                                    refreshLayout.setRefreshing(false);
                                 }
                             }
-                            if (refreshLayout.isRefreshing()) {
-                                refreshLayout.setRefreshing(false);
-                            }
-                            dashboardEarningsToday.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
                         }
                     }
                 });
     }
 
-    private void allTimeTotalBooking() {
+    private void todayTotalEarning() {
+        allEarningsToday = 0.0;
+        bookingsReference.whereEqualTo("status", "done")
+                .whereEqualTo("timestamp_date", getCurrentDate())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                if (!task.getResult().isEmpty()) {
+                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                        allEarningsToday = allEarningsToday + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                    }
+                                    firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("timestamp_date", getCurrentDate())
+                                            .whereEqualTo("status", "done")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().isEmpty()) {
+                                                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                                    allEarningsToday = allEarningsToday + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                }
+                                                            }
+                                                        }
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        dashboardEarningsToday.setText(String.format(Locale.ENGLISH, "%.2f", allEarnings));
+                                                    } else {
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        Toast.makeText(AdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                }
+                            }
+                        } else {
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
+                            Toast.makeText(AdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void allTimeTotalTransaction() {
         bookingsReference.whereIn("status", Arrays.asList("done", "cancelled", "pending"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -253,27 +342,69 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        firebaseFirestore.collection("rentals")
+                .whereEqualTo("status", "done")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            dashboardRentalsAllTime.setText(String.valueOf(task.getResult().size()));
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
+                        }
+                    }
+                });
     }
 
     private void allTimeTotalEarning() {
+        allEarnings = 0.0;
         bookingsReference.whereEqualTo("status", "done")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            double earnings = 0.00;
                             if (task.getResult() != null) {
                                 if (!task.getResult().isEmpty()) {
                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                        earnings = earnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                        allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
                                     }
+                                    firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("status", "done")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().isEmpty()) {
+                                                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                                    allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                }
+                                                            }
+                                                        }
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        dashboardEarningsAllTime.setText(String.format(Locale.ENGLISH, "%.2f", allEarnings));
+                                                    } else {
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        Toast.makeText(AdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
                                 }
                             }
+                        } else {
                             if (refreshLayout.isRefreshing()) {
                                 refreshLayout.setRefreshing(false);
                             }
-                            dashboardEarningsAllTime.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
+                            Toast.makeText(AdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -292,6 +423,104 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private String getToday() {
         SimpleDateFormat format = new SimpleDateFormat("E", Locale.ENGLISH);
         return format.format(Calendar.getInstance().getTime());
+    }
+
+    private void loadVanTransportStats(int num, String uid, String transport_name) {
+        View view = LayoutInflater.from(this).inflate(R.layout.stats_van_transport_admin_dashboard, transportList, false);
+        LinearLayout item = view.findViewById(R.id.item);
+        TextView itemNumber = view.findViewById(R.id.itemNumber);
+        TextView transportName = view.findViewById(R.id.transportName);
+        TextView numBooking = view.findViewById(R.id.numBooking);
+        TextView numRent = view.findViewById(R.id.numRent);
+        TextView totalEarnings = view.findViewById(R.id.totalEarnings);
+
+        itemNumber.setText(String.valueOf(num));
+        transportName.setText(transport_name);
+
+        firebaseFirestore.collection("bookings")
+                .whereEqualTo("status", "done")
+                .whereEqualTo("timestamp_date", getCurrentDate())
+                .whereEqualTo("transport_uid", uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                if (task.getResult().size() > 0) {
+                                    numBooking.setText(String.valueOf(task.getResult().size()));
+                                } else {
+                                    numBooking.setText("0");
+                                }
+                            }
+                        }
+                    }
+                });
+
+        firebaseFirestore.collection("rentals")
+                .whereEqualTo("status", "done")
+                .whereEqualTo("timestamp_date", getCurrentDate())
+                .whereEqualTo("transport_uid", uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                if (task.getResult().size() > 0) {
+                                    numRent.setText(String.valueOf(task.getResult().size()));
+                                } else {
+                                    numRent.setText("0");
+                                }
+                            }
+                        }
+                    }
+                });
+
+        firebaseFirestore.collection("bookings")
+                .whereEqualTo("transport_uid", uid)
+                .whereEqualTo("timestamp_date", getCurrentDate())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        double earningsBookings = 0.0;
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                if (!task.getResult().isEmpty()) {
+                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                        earningsBookings = earningsBookings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                    }
+                                    totalEarnings.setText(String.format(Locale.ENGLISH, "%.2f", earningsBookings));
+                                    firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("timestamp_date", getCurrentDate())
+                                            .whereEqualTo("transport_uid", uid)
+                                            .whereEqualTo("status", "done")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    double earningsRentals = 0.0;
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().isEmpty()) {
+                                                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                                    earningsRentals = earningsRentals + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                }
+                                                            }
+                                                        }
+                                                        double earningsBookings = Double.parseDouble(totalEarnings.getText().toString());
+                                                        totalEarnings.setText(String.format(Locale.ENGLISH, "%.2f", earningsRentals + earningsBookings));
+                                                    }
+                                                }
+                                            });
+                                }
+                            }
+                        }
+                    }
+                });
+
+        transportList.addView(view, 0);
     }
 
     @Override

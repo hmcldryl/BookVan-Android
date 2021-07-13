@@ -11,7 +11,7 @@ public class Booking {
             schedule_time,
             transport_uid,
             driver_name,
-            plate_number,
+            van_number,
             status,
             remarks,
             timestamp_date,
@@ -122,12 +122,12 @@ public class Booking {
         this.driver_name = driver_name;
     }
 
-    public String getPlate_number() {
-        return plate_number;
+    public String getVan_number() {
+        return van_number;
     }
 
-    public void setPlate_number(String plate_number) {
-        this.plate_number = plate_number;
+    public void setVan_number(String van_number) {
+        this.van_number = van_number;
     }
 
     public String getStatus() {

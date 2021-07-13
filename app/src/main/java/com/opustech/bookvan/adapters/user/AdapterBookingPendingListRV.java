@@ -33,6 +33,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -167,6 +171,14 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                 popup.show();
             }
         });
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public void cancelBooking(int position, String reference_number) {
@@ -248,6 +260,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                 bookingCountSpecial,
                 bookingTransportName,
                 bookingPrice,
+                timestamp,
                 itemNumber;
         CircleImageView customerPhoto;
         MaterialCardView bookingCard;
@@ -269,6 +282,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
             bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingPrice = view.findViewById(R.id.price);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 

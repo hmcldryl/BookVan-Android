@@ -420,7 +420,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/bookingPlateNumber"
+                        android:id="@+id/bookingVanNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -460,6 +460,22 @@
                             android:textColor="@color/textColor"
                             android:textSize="16sp" />
                     </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="6dp" />
+
+                    <TextView
+                        android:id="@+id/timestamp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:fontFamily="@font/lato"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textColor="#99121212"
+                        android:textSize="14sp" />
 
                 </LinearLayout>
             </LinearLayout>

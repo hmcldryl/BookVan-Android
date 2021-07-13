@@ -1,15 +1,9 @@
 package com.opustech.bookvan.adapters.admin;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -71,7 +69,7 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
-        String plate_number = model.getPlate_number();
+        String van_number = model.getVan_number();
         double price = model.getPrice();
 
         usersReference.document(uid)
@@ -111,7 +109,7 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
         holder.bookingDriverName.setText(driver_name);
-        holder.bookingPlateNumber.setText(plate_number);
+        holder.bookingVanNumber.setText(van_number);
 
         if (count_adult >= 1) {
             holder.bookingCountAdult.setText(String.valueOf(count_adult));
@@ -135,6 +133,14 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         }
 
         holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -157,11 +163,12 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
                 bookingCountSpecial,
                 bookingTransportName,
                 bookingDriverName,
-                bookingPlateNumber,
+                bookingVanNumber,
                 bookingPrice,
                 labelCountAdult,
                 labelCountChild,
                 labelCountSpecial,
+                timestamp,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;
@@ -186,8 +193,9 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
             labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
-            bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
+            bookingVanNumber = view.findViewById(R.id.bookingVanNumber);
             bookingPrice = view.findViewById(R.id.price);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 }

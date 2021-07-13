@@ -71,13 +71,13 @@ public class UserTripScheduleActivity extends AppCompatActivity {
 
         adapterScheduleListRV = new AdapterScheduleListRV(options, this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, manager.getOrientation());
+        //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, manager.getOrientation());
 
         scheduleList = findViewById(R.id.scheduleList);
 
         scheduleList.setHasFixedSize(true);
         scheduleList.setLayoutManager(manager);
-        scheduleList.addItemDecoration(dividerItemDecoration);
+        //scheduleList.addItemDecoration(dividerItemDecoration);
         scheduleList.setAdapter(adapterScheduleListRV);
     }
 

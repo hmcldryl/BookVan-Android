@@ -1,14 +1,11 @@
 package com.opustech.bookvan.adapters.transport;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,18 +15,18 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 
-import java.util.HashMap;
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingConfirmedTransportListRV.BookingHolder> {
@@ -73,7 +70,7 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
         int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
-        String plate_number = model.getPlate_number();
+        String plate_number = model.getVan_number();
         double price = model.getPrice();
 
         usersReference.document(uid)
@@ -137,6 +134,14 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
         }
 
         holder.bookingPrice.setText(String.format(Locale.ENGLISH, "%.2f", price));
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -164,6 +169,7 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
                 labelCountAdult,
                 labelCountChild,
                 labelCountSpecial,
+                timestamp,
                 itemNumber;
         LinearLayout item;
         CircleImageView customerPhoto;
@@ -188,8 +194,9 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
             labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
-            bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
+            bookingPlateNumber = view.findViewById(R.id.bookingVanNumber);
             bookingPrice = view.findViewById(R.id.price);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 }

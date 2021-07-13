@@ -129,7 +129,7 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
                                         TextView bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
                                         TextView bookingTransportName = view.findViewById(R.id.bookingTransportName);
                                         TextView bookingDriverName = view.findViewById(R.id.bookingDriverName);
-                                        TextView bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
+                                        TextView bookingPlateNumber = view.findViewById(R.id.bookingVanNumber);
                                         TextView bookingPrice = view.findViewById(R.id.bookingPrice);
                                         Button btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
                                         CircleImageView customerPhoto = view.findViewById(R.id.customerPhoto);

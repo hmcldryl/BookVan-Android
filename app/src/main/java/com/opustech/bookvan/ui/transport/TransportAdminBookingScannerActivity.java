@@ -7,8 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -130,7 +128,7 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                                     TextView bookingCountSpecial = view.findViewById(R.id.bookingCountSpecial);
                                     TextView bookingTransportName = view.findViewById(R.id.bookingTransportName);
                                     TextView bookingDriverName = view.findViewById(R.id.bookingDriverName);
-                                    TextView bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
+                                    TextView bookingPlateNumber = view.findViewById(R.id.bookingVanNumber);
                                     TextView bookingPrice = view.findViewById(R.id.bookingPrice);
                                     Button btnConfirmBooking = view.findViewById(R.id.btnConfirmBooking);
                                     Button btnOptions = view.findViewById(R.id.btnOptions);

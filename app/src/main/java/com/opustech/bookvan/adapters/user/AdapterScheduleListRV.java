@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -137,7 +138,7 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
 
 
     class ScheduleHolder extends RecyclerView.ViewHolder {
-        RelativeLayout item;
+        CardView item;
         ImageView vanCompanyPhoto;
         TextView price, routeDescriptionFrom, routeDescriptionTo, vanCompany;
 

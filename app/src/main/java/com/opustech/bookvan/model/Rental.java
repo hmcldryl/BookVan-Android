@@ -14,13 +14,14 @@ public class Rental {
             dropoff_date,
             dropoff_time,
             status,
+            timestamp_date,
             timestamp;
     double price, commission;
 
     public Rental() {
     }
 
-    public Rental(String uid, String reference_number, String name, String contact_number, String transport_uid, String pickup_location, String pickup_date, String pickup_time, String destination, String dropoff_location, String dropoff_date, String dropoff_time, String status, String timestamp) {
+    public Rental(String uid, String reference_number, String name, String contact_number, String transport_uid, String pickup_location, String pickup_date, String pickup_time, String destination, String dropoff_location, String dropoff_date, String dropoff_time, String status, String timestamp_date, String timestamp) {
         this.uid = uid;
         this.reference_number = reference_number;
         this.name = name;
@@ -34,6 +35,7 @@ public class Rental {
         this.dropoff_date = dropoff_date;
         this.dropoff_time = dropoff_time;
         this.status = status;
+        this.timestamp_date = timestamp_date;
         this.timestamp = timestamp;
     }
 

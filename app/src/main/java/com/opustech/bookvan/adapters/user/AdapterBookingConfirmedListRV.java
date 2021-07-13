@@ -28,6 +28,10 @@ import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.ui.user.UserConfirmBookingQRActivity;
 import com.opustech.bookvan.ui.user.UserConfirmBookingScanActivity;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -73,7 +77,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
         int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
         String driver_name = model.getDriver_name();
-        String plate_number = model.getPlate_number();
+        String plate_number = model.getVan_number();
         double price = model.getPrice();
 
         usersReference.document(uid)
@@ -175,6 +179,14 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                 }
             }
         });
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -202,6 +214,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                 labelCountAdult,
                 labelCountChild,
                 labelCountSpecial,
+                timestamp,
                 itemNumber;
         MaterialCardView bookingCard;
         CircleImageView customerPhoto;
@@ -226,8 +239,9 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
             labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingDriverName = view.findViewById(R.id.bookingDriverName);
-            bookingPlateNumber = view.findViewById(R.id.bookingPlateNumber);
+            bookingPlateNumber = view.findViewById(R.id.bookingVanNumber);
             bookingPrice = view.findViewById(R.id.price);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 }

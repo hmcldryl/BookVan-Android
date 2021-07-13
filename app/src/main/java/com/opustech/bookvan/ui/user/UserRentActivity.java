@@ -218,8 +218,13 @@ public class UserRentActivity extends AppCompatActivity {
                 });
     }
 
+    private String getCurrentDate() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
+    }
+
     private void submitRentInfo(ACProgressFlower dialog, String reference_number, String name, String contact_number, String transport_uid, String pickup_location, String pickup_date, String pickup_time, String destination, String dropoff_location, String dropoff_date, String dropoff_time) {
-        Rental rental = new Rental(firebaseAuth.getCurrentUser().getUid(), reference_number, name, contact_number, transport_uid, pickup_location, pickup_date, pickup_time, destination, dropoff_location, dropoff_date, dropoff_time, "pending", generateTimestamp());
+        Rental rental = new Rental(firebaseAuth.getCurrentUser().getUid(), reference_number, name, contact_number, transport_uid, pickup_location, pickup_date, pickup_time, destination, dropoff_location, dropoff_date, dropoff_time, "pending", getCurrentDate(), generateTimestamp());
         rentalsReference.add(rental)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
