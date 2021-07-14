@@ -112,6 +112,7 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
                     intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
                     intent.putExtra("referenceId", model.getReference_number());
                     intent.putExtra("transportId", getSnapshots().get(position).getTransport_uid());
+                    intent.putExtra("status", model.getStatus());
                     holder.itemView.getContext().startActivity(intent);
                 }
             });

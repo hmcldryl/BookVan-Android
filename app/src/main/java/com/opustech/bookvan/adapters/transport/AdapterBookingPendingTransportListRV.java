@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -145,7 +144,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                     alertDialog.setView(dialogView);
                     TextView bookingReferenceNo = dialogView.findViewById(R.id.bookingReferenceNo);
                     TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
-                    TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanPlate);
+                    TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanNumber);
 
                     bookingReferenceNo.setText(reference_number);
 

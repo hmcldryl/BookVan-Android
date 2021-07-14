@@ -108,6 +108,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
                 public void onClick(View view) {
                     Intent intent = new Intent(holder.itemView.getContext(), UserRentMessageActivity.class);
                     intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
+                    intent.putExtra("status", model.getStatus());
                     holder.itemView.getContext().startActivity(intent);
                 }
             });

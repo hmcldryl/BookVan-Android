@@ -1,10 +1,15 @@
 package com.opustech.bookvan.adapters.user;
 
+import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,18 +19,26 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.RentChatMessage;
+import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatMessage, AdapterRentChatMessageRV.ChatMessageHolder> {
@@ -55,58 +68,141 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
 
         String messageUid = model.getUid();
         String message = model.getMessage();
+        String type = model.getType();
         String timestamp = model.getTimestamp();
 
-        if (messageUid.equals(uid)) {
-            holder.sender.setVisibility(View.VISIBLE);
-            holder.senderChatMessage.setText(message);
-            usersReference.document(messageUid)
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        String photo_url = task.getResult().getString("photo_url");
-                        if (photo_url != null) {
-                            if (!photo_url.isEmpty()) {
-                                Glide.with(holder.itemView.getContext())
-                                        .load(photo_url)
-                                        .into(holder.senderPhoto);
+        if (type.equals("user_message")) {
+            if (messageUid.equals(uid)) {
+                holder.sender.setVisibility(View.VISIBLE);
+                holder.senderChatMessage.setText(message);
+                usersReference.document(messageUid)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String photo_url = task.getResult().getString("photo_url");
+                            if (photo_url != null) {
+                                if (!photo_url.isEmpty()) {
+                                    Glide.with(holder.itemView.getContext())
+                                            .load(photo_url)
+                                            .into(holder.senderPhoto);
+                                }
                             }
                         }
                     }
+                });
+            } else {
+                holder.receiver.setVisibility(View.VISIBLE);
+                holder.receiverChatMessage.setText(message);
+                partnersReference.document(messageUid)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String photo_url = task.getResult().getString("photo_url");
+                            if (photo_url != null) {
+                                if (!photo_url.isEmpty()) {
+                                    Glide.with(holder.itemView.getContext())
+                                            .load(photo_url)
+                                            .into(holder.receiverPhoto);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
+                if (messageUid.equals(uid)) {
+                    holder.senderChatTimestamp.setText(outputText);
+                } else {
+                    holder.receiverChatTimestamp.setText(outputText);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        } else if (type.equals("system_message")) {
+            holder.systemMessageItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                    final AlertDialog alertDialog = builder.create();
+                    if (!alertDialog.isShowing()) {
+                        final View dialogView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.dialog_confirm_rent_user, null);
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        alertDialog.setCancelable(true);
+                        alertDialog.setView(dialogView);
+
+                        MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final ACProgressFlower dialog = new ACProgressFlower.Builder(holder.itemView.getContext())
+                                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                        .themeColor(holder.itemView.getContext().getResources().getColor(R.color.white))
+                                        .text("Processing...")
+                                        .fadeColor(Color.DKGRAY).build();
+                                dialog.show();
+
+                                btnConfirm.setEnabled(false);
+
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                                String timestamp = format.format(Calendar.getInstance().getTime());
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("status", "confirmed");
+                                hashMap.put("timestamp", timestamp);
+                                hashMap.put("price", Double.parseDouble(message));
+                                hashMap.put("commission", Double.parseDouble(message) * 0.10);
+
+                                firebaseFirestore.collection("rentals").document(messageUid)
+                                        .update(hashMap)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    alertDialog.dismiss();
+                                                    dialog.dismiss();
+                                                    Toast.makeText(holder.itemView.getContext(), "Success.", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    dialog.dismiss();
+                                                    Toast.makeText(holder.itemView.getContext(), "Failed.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+                        alertDialog.show();
+                    }
                 }
             });
-        } else {
-            holder.receiver.setVisibility(View.VISIBLE);
-            holder.receiverChatMessage.setText(message);
+
             partnersReference.document(messageUid)
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
-                        String photo_url = task.getResult().getString("photo_url");
-                        if (photo_url != null) {
-                            if (!photo_url.isEmpty()) {
-                                Glide.with(holder.itemView.getContext())
-                                        .load(photo_url)
-                                        .into(holder.receiverPhoto);
+                        String name = task.getResult().getString("name");
+                        if (name != null) {
+                            if (!name.isEmpty()) {
+                                String displayMessage = name + " set the rent fee to " + holder.itemView.getContext().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(message)) + ".";
+                                holder.systemMessage.setText(displayMessage);
                             }
                         }
                     }
                 }
             });
-        }
 
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-            String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
-            if (messageUid.equals(uid)) {
-                holder.senderChatTimestamp.setText(outputText);
-            } else {
-                holder.receiverChatTimestamp.setText(outputText);
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
+                holder.systemMessageTimestamp.setText(outputText);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
 
 
@@ -120,12 +216,17 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
     }
 
     class ChatMessageHolder extends RecyclerView.ViewHolder {
+        LinearLayout systemMessageItem;
         RelativeLayout sender, receiver;
         CircleImageView senderPhoto, receiverPhoto;
-        TextView senderChatMessage, receiverChatMessage, senderChatTimestamp, receiverChatTimestamp;
+        TextView senderChatMessage, receiverChatMessage, senderChatTimestamp, receiverChatTimestamp, systemMessage, systemMessageTimestamp;
 
         public ChatMessageHolder(View view) {
             super(view);
+
+            systemMessageItem = view.findViewById(R.id.systemMessageItem);
+            systemMessage = view.findViewById(R.id.systemMessage);
+            systemMessageTimestamp = view.findViewById(R.id.systemMessageTimestamp);
 
             receiver = view.findViewById(R.id.chatReceiverItem);
             receiverPhoto = view.findViewById(R.id.receiverPhoto);

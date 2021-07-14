@@ -27,12 +27,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_black"
-                    android:text="Set Rental Price"
+                    android:text="Set As Done"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="#FFFFFF" />
 
                 <TextView
-                    android:id="@+id/rentalReferenceNumber"
+                    android:id="@+id/rentReferenceNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato"
@@ -53,28 +53,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/inputPrice"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:hint="Rental Fee"
-                        app:hintEnabled="true"
-                        app:startIconDrawable="@drawable/ic_input_price"
-                        app:startIconTint="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/lato"
-                            android:inputType="number|numberDecimal"
-                            android:maxLines="1"
-                            android:textColor="@color/textColor"
-                            android:textCursorDrawable="@null" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:fontFamily="@font/lato"
+                        android:text="Are you sure?"
+                        android:textAppearance="?attr/textAppearanceHeadline6"
+                        android:textColor="@color/textColor" />
 
                 </LinearLayout>
 
@@ -94,10 +79,6 @@
                 android:paddingTop="8dp"
                 android:paddingEnd="16sp"
                 android:paddingBottom="8dp">
-
-                <Space
-                    android:layout_width="6dp"
-                    android:layout_height="match_parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnConfirm"

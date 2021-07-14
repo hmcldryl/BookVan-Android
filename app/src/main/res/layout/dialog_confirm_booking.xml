@@ -81,12 +81,12 @@
                         android:layout_height="6dp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/inputVanPlate"
+                        android:id="@+id/inputVanNumber"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:hint="@string/input_van_plate"
+                        android:hint="Van Number"
                         app:hintEnabled="true"
                         app:startIconDrawable="@drawable/ic_input_plate"
                         app:startIconTint="@color/colorPrimary">

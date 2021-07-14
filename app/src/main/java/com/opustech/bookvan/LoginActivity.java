@@ -269,7 +269,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             dialog.dismiss();
                             enableInput();
-                            Toast.makeText(LoginActivity.this, "Sign in failed. Please check your sign in info and try again.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Sign in failed. Please check your sign in info and try again. ", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

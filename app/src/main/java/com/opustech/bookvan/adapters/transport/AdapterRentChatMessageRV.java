@@ -3,6 +3,7 @@ package com.opustech.bookvan.adapters.transport;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,61 +56,86 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
 
         String messageUid = model.getUid();
         String message = model.getMessage();
+        String type = model.getType();
         String timestamp = model.getTimestamp();
 
-        if (!messageUid.equals(uid)) {
-            holder.sender.setVisibility(View.VISIBLE);
-            holder.senderChatMessage.setText(message);
-            usersReference.document(messageUid)
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        String photo_url = task.getResult().getString("photo_url");
-                        if (photo_url != null) {
-                            if (!photo_url.isEmpty()) {
-                                Glide.with(holder.itemView.getContext())
-                                        .load(photo_url)
-                                        .into(holder.senderPhoto);
+        if (type.equals("user_message")) {
+            if (!messageUid.equals(uid)) {
+                holder.sender.setVisibility(View.VISIBLE);
+                holder.senderChatMessage.setText(message);
+                usersReference.document(messageUid)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String photo_url = task.getResult().getString("photo_url");
+                            if (photo_url != null) {
+                                if (!photo_url.isEmpty()) {
+                                    Glide.with(holder.itemView.getContext())
+                                            .load(photo_url)
+                                            .into(holder.senderPhoto);
+                                }
                             }
                         }
                     }
+                });
+            } else {
+                holder.receiver.setVisibility(View.VISIBLE);
+                holder.receiverChatMessage.setText(message);
+                partnersReference.document(messageUid)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String photo_url = task.getResult().getString("photo_url");
+                            if (photo_url != null) {
+                                if (!photo_url.isEmpty()) {
+                                    Glide.with(holder.itemView.getContext())
+                                            .load(photo_url)
+                                            .into(holder.receiverPhoto);
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
+                if (!messageUid.equals(uid)) {
+                    holder.senderChatTimestamp.setText(outputText);
+                } else {
+                    holder.receiverChatTimestamp.setText(outputText);
                 }
-            });
-        } else {
-            holder.receiver.setVisibility(View.VISIBLE);
-            holder.receiverChatMessage.setText(message);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else if (type.equals("system_message")) {
             partnersReference.document(messageUid)
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
-                        String photo_url = task.getResult().getString("photo_url");
-                        if (photo_url != null) {
-                            if (!photo_url.isEmpty()) {
-                                Glide.with(holder.itemView.getContext())
-                                        .load(photo_url)
-                                        .into(holder.receiverPhoto);
+                        String name = task.getResult().getString("name");
+                        if (name != null) {
+                            if (!name.isEmpty()) {
+                                String displayMessage = name + " set the rent fee to " + holder.itemView.getContext().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(message)) + ".";
+                                holder.systemMessage.setText(displayMessage);
                             }
                         }
                     }
                 }
             });
-        }
 
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-            String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
-            if (!messageUid.equals(uid)) {
-                holder.senderChatTimestamp.setText(outputText);
-            } else {
-                holder.receiverChatTimestamp.setText(outputText);
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
+                holder.systemMessageTimestamp.setText(outputText);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-
-
     }
 
     @NonNull
@@ -120,12 +146,17 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
     }
 
     class ChatMessageHolder extends RecyclerView.ViewHolder {
+        LinearLayout systemMessageItem;
         RelativeLayout sender, receiver;
         CircleImageView senderPhoto, receiverPhoto;
-        TextView senderChatMessage, receiverChatMessage, senderChatTimestamp, receiverChatTimestamp;
+        TextView senderChatMessage, receiverChatMessage, senderChatTimestamp, receiverChatTimestamp, systemMessage, systemMessageTimestamp;
 
         public ChatMessageHolder(View view) {
             super(view);
+
+            systemMessageItem = view.findViewById(R.id.systemMessageItem);
+            systemMessage = view.findViewById(R.id.systemMessage);
+            systemMessageTimestamp = view.findViewById(R.id.systemMessageTimestamp);
 
             receiver = view.findViewById(R.id.chatReceiverItem);
             receiverPhoto = view.findViewById(R.id.receiverPhoto);

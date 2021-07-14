@@ -107,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void inputCheck() {
-        String name = inputFirstName.getEditText().getText().toString() + " " + inputLastName.getEditText().getText().toString();
+        String name = capitalize(inputFirstName.getEditText().getText().toString()) + " " + capitalize(inputLastName.getEditText().getText().toString());
         String email = inputEmail.getEditText().getText().toString().trim();
         String contact_number = inputContactNumber.getEditText().getText().toString().trim();
         String password = inputPassword.getEditText().getText().toString().trim();
@@ -137,6 +137,15 @@ public class RegisterActivity extends AppCompatActivity {
             // REGISTER NEW USER
             onRegister(name, contact_number, email, password);
         }
+    }
+
+    private String capitalize(String status) {
+        if (status != null) {
+            if (!status.isEmpty()) {
+                return status.substring(0, 1).toUpperCase() + status.substring(1);
+            }
+        }
+        return status;
     }
 
     private void onRegister(String name, String contact_number, String email, String password) {

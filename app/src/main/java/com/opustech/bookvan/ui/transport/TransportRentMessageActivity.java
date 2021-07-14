@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +34,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.user.AdapterRentChatMessageRV;
+import com.opustech.bookvan.adapters.transport.AdapterRentChatMessageRV;
 import com.opustech.bookvan.model.RentChatMessage;
 
 import java.text.SimpleDateFormat;
@@ -73,7 +72,7 @@ public class TransportRentMessageActivity extends AppCompatActivity {
         rentalsReference = firebaseFirestore.collection("rentals");
         partnersReference = firebaseFirestore.collection("partners");
 
-        btnConfirmRent = findViewById(R.id.btnConfirmRent);
+        btnConfirmRent = findViewById(R.id.btnSetPricing);
         btnCancelRent = findViewById(R.id.btnCancelRent);
 
         inputChat = findViewById(R.id.inputChat);
@@ -97,7 +96,7 @@ public class TransportRentMessageActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.btnConfirmRent) {
+                if (item.getItemId() == R.id.btnSetPricing) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(TransportRentMessageActivity.this);
                     final AlertDialog alertDialog = builder.create();
                     if (!alertDialog.isShowing()) {
@@ -129,15 +128,17 @@ public class TransportRentMessageActivity extends AppCompatActivity {
                                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                                     String timestamp = format.format(Calendar.getInstance().getTime());
                                     HashMap<String, Object> hashMap = new HashMap<>();
-                                    hashMap.put("status", "confirmed");
+                                    hashMap.put("uid", getIntent().getStringExtra("transportId"));
+                                    hashMap.put("message", inputPrice.getEditText().getText().toString());
+                                    hashMap.put("type", "system_message");
                                     hashMap.put("timestamp", timestamp);
-                                    hashMap.put("price", Double.parseDouble(inputPrice.getEditText().getText().toString()));
-                                    hashMap.put("commission", Double.parseDouble(inputPrice.getEditText().getText().toString()) * 0.10);
+
                                     rentalsReference.document(getIntent().getStringExtra("rentalId"))
-                                            .update(hashMap)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            .collection("chat")
+                                            .add(hashMap)
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                                 @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
+                                                public void onComplete(@NonNull Task<DocumentReference> task) {
                                                     if (task.isSuccessful()) {
                                                         alertDialog.dismiss();
                                                         dialog.dismiss();
@@ -209,6 +210,11 @@ public class TransportRentMessageActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        if (getIntent().getStringExtra("status").equals("done")) {
+            inputChat.setEnabled(false);
+            btnSendChat.setEnabled(false);
+        }
 
         initList();
     }

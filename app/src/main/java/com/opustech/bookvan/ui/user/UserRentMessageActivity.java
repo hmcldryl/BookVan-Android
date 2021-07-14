@@ -1,9 +1,16 @@
 package com.opustech.bookvan.ui.user;
 
+import android.app.AlertDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -28,11 +36,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterRentChatMessageRV;
 import com.opustech.bookvan.model.RentChatMessage;
+import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
+
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
 
 public class UserRentMessageActivity extends AppCompatActivity {
 
@@ -77,7 +89,68 @@ public class UserRentMessageActivity extends AppCompatActivity {
             }
         });
 
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.btnSetStatus) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(UserRentMessageActivity.this);
+                    final AlertDialog alertDialog = builder.create();
+                    if (!alertDialog.isShowing()) {
+                        final View dialogView = LayoutInflater.from(UserRentMessageActivity.this).inflate(R.layout.dialog_set_rent_status, null);
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        alertDialog.setCancelable(true);
+                        alertDialog.setView(dialogView);
+                        TextView rentReferenceNo = dialogView.findViewById(R.id.rentReferenceNo);
+
+                        rentReferenceNo.setText(getIntent().getStringExtra("referenceId"));
+
+                        MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final ACProgressFlower dialog = new ACProgressFlower.Builder(UserRentMessageActivity.this)
+                                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                        .themeColor(UserRentMessageActivity.this.getResources().getColor(R.color.white))
+                                        .text("Processing...")
+                                        .fadeColor(Color.DKGRAY).build();
+                                dialog.show();
+
+                                btnConfirm.setEnabled(false);
+
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("status", "done");
+                                rentalsReference.document(getIntent().getStringExtra("rentalId"))
+                                        .update(hashMap)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    alertDialog.dismiss();
+                                                    dialog.dismiss();
+                                                    Toast.makeText(UserRentMessageActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    dialog.dismiss();
+                                                    Toast.makeText(UserRentMessageActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+                        alertDialog.show();
+                    }
+                }
+                return false;
+            }
+        });
+
         initList();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu_rent_message_user, menu);
+        return true;
     }
 
     private void initList() {
@@ -157,6 +230,11 @@ public class UserRentMessageActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if (getIntent().getStringExtra("status").equals("done")) {
+            inputChat.setEnabled(false);
+            btnSendChat.setEnabled(false);
+        }
     }
 
     @Override

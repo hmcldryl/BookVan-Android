@@ -16,7 +16,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.transport.AdapterTransportRentChatConversationRV;
-import com.opustech.bookvan.adapters.user.AdapterRentChatConversationRV;
 import com.opustech.bookvan.model.Rental;
 
 public class TransportRentConversationActivity extends AppCompatActivity {

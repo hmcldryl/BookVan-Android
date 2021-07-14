@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/btnConfirmRent"
+        android:id="@+id/btnSetPricing"
         app:showAsAction="never"
         android:icon="@drawable/ic_btn_chat"
-        android:title="Confirm Transaction" />
+        android:title="Set Rental Price" />
 
     <item
         android:id="@+id/btnCancelRent"
         app:showAsAction="never"
         android:icon="@drawable/ic_btn_chat"
-        android:title="Cancel" />
+        android:title="Cancel Transaction" />
 
 </menu>

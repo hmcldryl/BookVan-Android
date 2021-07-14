@@ -55,58 +55,64 @@ public class AdapterTransportRentChatMessageRV extends FirestoreRecyclerAdapter<
 
         String messageUid = model.getUid();
         String message = model.getMessage();
+        String type = model.getType();
         String timestamp = model.getTimestamp();
 
-        if (messageUid.equals(uid)) {
-            holder.sender.setVisibility(View.VISIBLE);
-            holder.senderChatMessage.setText(message);
-            partnersReference.document(messageUid)
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        String photo_url = task.getResult().getString("photo_url");
-                        if (photo_url != null) {
-                            if (!photo_url.isEmpty()) {
-                                Glide.with(holder.itemView.getContext())
-                                        .load(photo_url)
-                                        .into(holder.senderPhoto);
-                            }
-                        }
-                    }
-                }
-            });
-        } else {
-            holder.receiver.setVisibility(View.VISIBLE);
-            holder.receiverChatMessage.setText(message);
-            usersReference.document(messageUid)
-                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        String photo_url = task.getResult().getString("photo_url");
-                        if (photo_url != null) {
-                            if (!photo_url.isEmpty()) {
-                                Glide.with(holder.itemView.getContext())
-                                        .load(photo_url)
-                                        .into(holder.receiverPhoto);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-            String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
+        if (type.equals("user_message")) {
             if (messageUid.equals(uid)) {
-                holder.senderChatTimestamp.setText(outputText);
+                holder.sender.setVisibility(View.VISIBLE);
+                holder.senderChatMessage.setText(message);
+                partnersReference.document(messageUid)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String photo_url = task.getResult().getString("photo_url");
+                            if (photo_url != null) {
+                                if (!photo_url.isEmpty()) {
+                                    Glide.with(holder.itemView.getContext())
+                                            .load(photo_url)
+                                            .into(holder.senderPhoto);
+                                }
+                            }
+                        }
+                    }
+                });
             } else {
-                holder.receiverChatTimestamp.setText(outputText);
+                holder.receiver.setVisibility(View.VISIBLE);
+                holder.receiverChatMessage.setText(message);
+                usersReference.document(messageUid)
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String photo_url = task.getResult().getString("photo_url");
+                            if (photo_url != null) {
+                                if (!photo_url.isEmpty()) {
+                                    Glide.with(holder.itemView.getContext())
+                                            .load(photo_url)
+                                            .into(holder.receiverPhoto);
+                                }
+                            }
+                        }
+                    }
+                });
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
+
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
+                if (messageUid.equals(uid)) {
+                    holder.senderChatTimestamp.setText(outputText);
+                } else {
+                    holder.receiverChatTimestamp.setText(outputText);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+
         }
 
 
