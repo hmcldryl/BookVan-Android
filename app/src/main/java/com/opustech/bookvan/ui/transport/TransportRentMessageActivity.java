@@ -124,7 +124,7 @@ public class TransportRentMessageActivity extends AppCompatActivity {
                                 inputPrice.setEnabled(false);
                                 btnConfirm.setEnabled(false);
 
-                                if (inputPrice.getEditText().getText().toString().isEmpty()) {
+                                if (!inputPrice.getEditText().getText().toString().isEmpty()) {
                                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                                     String timestamp = format.format(Calendar.getInstance().getTime());
                                     HashMap<String, Object> hashMap = new HashMap<>();
@@ -145,12 +145,15 @@ public class TransportRentMessageActivity extends AppCompatActivity {
                                                         Toast.makeText(TransportRentMessageActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                                                     } else {
                                                         dialog.dismiss();
+                                                        inputPrice.setEnabled(true);
+                                                        btnConfirm.setEnabled(true);
                                                         Toast.makeText(TransportRentMessageActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
                                             });
                                 }
                                 else {
+                                    dialog.dismiss();
                                     inputPrice.setEnabled(true);
                                     btnConfirm.setEnabled(true);
                                     inputPrice.setError("Please enter rental fee.");
@@ -271,6 +274,7 @@ public class TransportRentMessageActivity extends AppCompatActivity {
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("uid", getIntent().getStringExtra("transportId"));
                     hashMap.put("message", message);
+                    hashMap.put("type", "user_message");
                     hashMap.put("timestamp", timestamp);
                     rentalsReference.document(getIntent().getStringExtra("rentalId"))
                             .collection("chat")

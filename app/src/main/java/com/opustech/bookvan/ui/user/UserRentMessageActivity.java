@@ -199,6 +199,7 @@ public class UserRentMessageActivity extends AppCompatActivity {
                     HashMap<String, Object> hashMap = new HashMap<>();
                     hashMap.put("uid", firebaseAuth.getCurrentUser().getUid());
                     hashMap.put("message", message);
+                    hashMap.put("type", "user_message");
                     hashMap.put("timestamp", timestamp);
                     rentalsReference.document(getIntent().getStringExtra("rentalId"))
                             .collection("chat")

@@ -135,7 +135,10 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            holder.systemMessageItem.setVisibility(View.VISIBLE);
         }
+
     }
 
     @NonNull

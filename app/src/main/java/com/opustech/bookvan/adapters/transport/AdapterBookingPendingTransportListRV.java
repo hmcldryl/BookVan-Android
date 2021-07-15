@@ -220,7 +220,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                             btnCancelBooking.setEnabled(false);
 
                             String driver_name = inputDriverName.getEditText().getText().toString();
-                            String plate_number = inputVanPlate.getEditText().getText().toString();
+                            String van_number = inputVanPlate.getEditText().getText().toString();
 
                             if (driver_name.isEmpty()) {
                                 btnConfirmBooking.setEnabled(true);
@@ -228,14 +228,14 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
                                 inputDriverName.getEditText().setError("Please enter the name of the van driver.");
-                            } else if (plate_number.isEmpty()) {
+                            } else if (van_number.isEmpty()) {
                                 btnConfirmBooking.setEnabled(true);
                                 btnCancelBooking.setEnabled(true);
                                 inputDriverName.setEnabled(true);
                                 inputVanPlate.setEnabled(true);
                                 inputVanPlate.getEditText().setError("Please enter the van plate number.");
                             } else {
-                                updateBookingInfo(alertDialog, driver_name, plate_number, position);
+                                updateBookingInfo(alertDialog, driver_name, van_number, position);
                             }
                         }
                     });
@@ -253,10 +253,10 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         }
     }
 
-    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String plate_number, int position) {
+    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String van_number, int position) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("driver_name", driver_name);
-        hashMap.put("plate_number", plate_number);
+        hashMap.put("van_number", van_number);
         hashMap.put("status", "confirmed");
         getSnapshots().getSnapshot(position)
                 .getReference()
@@ -349,6 +349,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
             labelCountSpecial = view.findViewById(R.id.labelCountSpecial);
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingPrice = view.findViewById(R.id.price);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 }

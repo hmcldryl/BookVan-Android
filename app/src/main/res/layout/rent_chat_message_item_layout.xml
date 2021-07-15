@@ -80,7 +80,7 @@
             android:fontFamily="@font/lato"
             android:maxLength="255"
             android:text=""
-            android:textColor="#FFFFFF"
+            android:textColor="@color/textColor"
             android:textSize="16sp" />
 
         <TextView
@@ -91,7 +91,7 @@
             android:fontFamily="@font/lato"
             android:maxLines="1"
             android:text=""
-            android:textColor="#99FFFFFF"
+            android:textColor="@color/textColor"
             android:textSize="14sp" />
     </LinearLayout>
 
