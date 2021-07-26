@@ -139,38 +139,82 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="16dp" />
 
-                            <com.google.android.material.card.MaterialCardView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
-                                app:cardCornerRadius="8dp">
+                                android:orientation="horizontal"
+                                android:weightSum="10">
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical"
-                                    android:padding="16dp">
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_weight="5"
+                                    app:cardCornerRadius="8dp">
 
-                                    <TextView
-                                        android:id="@+id/dashboardBookingsToday"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/lato_black"
-                                        android:text="0"
-                                        android:textColor="@color/textColor"
-                                        android:textSize="24sp" />
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="16dp">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/lato_bold"
-                                        android:text="Bookings"
-                                        android:textColor="@color/textColor"
-                                        android:textSize="14sp" />
+                                        <TextView
+                                            android:id="@+id/dashboardBookingsToday"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
 
-                                </LinearLayout>
-                            </com.google.android.material.card.MaterialCardView>
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:text="Bookings"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="14sp" />
+
+                                    </LinearLayout>
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <Space
+                                    android:layout_width="16dp"
+                                    android:layout_height="match_parent" />
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_weight="5"
+                                    app:cardCornerRadius="8dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="16dp">
+
+                                        <TextView
+                                            android:id="@+id/dashboardRentalsToday"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:text="Rentals"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="14sp" />
+
+                                    </LinearLayout>
+                                </com.google.android.material.card.MaterialCardView>
+                            </LinearLayout>
 
                             <Space
                                 android:layout_width="match_parent"
@@ -367,38 +411,82 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <com.google.android.material.card.MaterialCardView
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
-                                app:cardCornerRadius="8dp">
+                                android:orientation="horizontal"
+                                android:weightSum="10">
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical"
-                                    android:padding="16dp">
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_weight="5"
+                                    app:cardCornerRadius="8dp">
 
-                                    <TextView
-                                        android:id="@+id/dashboardBookingsAllTime"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/lato_black"
-                                        android:text="0"
-                                        android:textColor="@color/textColor"
-                                        android:textSize="24sp" />
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="16dp">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:fontFamily="@font/lato_bold"
-                                        android:text="Total Bookings"
-                                        android:textColor="@color/textColor"
-                                        android:textSize="14sp" />
+                                        <TextView
+                                            android:id="@+id/dashboardBookingsAllTime"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
 
-                                </LinearLayout>
-                            </com.google.android.material.card.MaterialCardView>
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:text="Total Bookings"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="14sp" />
+
+                                    </LinearLayout>
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <Space
+                                    android:layout_width="16dp"
+                                    android:layout_height="match_parent" />
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_weight="5"
+                                    app:cardCornerRadius="8dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="16dp">
+
+                                        <TextView
+                                            android:id="@+id/dashboardRentalsAllTime"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:text="Total Rentals"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="14sp" />
+
+                                    </LinearLayout>
+                                </com.google.android.material.card.MaterialCardView>
+                            </LinearLayout>
 
                             <Space
                                 android:layout_width="match_parent"
@@ -460,89 +548,6 @@
                         <Space
                             android:layout_width="match_parent"
                             android:layout_height="16dp" />
-
-
-                        <!--<com.google.android.material.card.MaterialCardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            app:cardCornerRadius="8dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="8dp">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:paddingTop="8dp"
-                                    android:paddingBottom="8dp"
-                                    android:weightSum="10">
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="6.5"
-                                        android:fontFamily="@font/lato_bold"
-                                        android:text="DESTINATIONS"
-                                        android:textAlignment="center"
-                                        android:textColor="@color/textColor"
-                                        android:textSize="14sp" />
-
-                                    <TextView
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="3.5"
-                                        android:fontFamily="@font/lato_bold"
-                                        android:text="BOOKINGS"
-                                        android:textAlignment="center"
-                                        android:textColor="@color/textColor"
-                                        android:textSize="14sp" />
-
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="1dp"
-                                    android:background="#1F121212" />
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="200dp" />
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <Space
-                            android:layout_width="match_parent"
-                            android:layout_height="16dp" />
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginEnd="16dp"
-                            app:cardCornerRadius="8dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:padding="8dp">
-
-                                <com.github.mikephil.charting.charts.LineChart
-                                    android:id="@+id/totalBookingLineChart"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="300dp"
-                                    android:background="#FFFFFF" />
-
-                            </LinearLayout>
-                        </com.google.android.material.card.MaterialCardView>-->
 
                     </LinearLayout>
 

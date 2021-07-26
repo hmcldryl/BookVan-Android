@@ -4,7 +4,6 @@ import java.util.List;
 
 public class TransportCompany {
     String uid, name, description, address, email, website, photo_url, banner_url;
-    List<String> telephone_number, cellphone_number;
 
     public TransportCompany() {
     }
@@ -14,7 +13,7 @@ public class TransportCompany {
         this.name = name;
     }
 
-    public TransportCompany(String uid, String name, String description, String address, String email, String website, String photo_url, String banner_url, List<String> telephone_number, List<String> cellphone_number) {
+    public TransportCompany(String uid, String name, String description, String address, String email, String website, String photo_url, String banner_url) {
         this.uid = uid;
         this.name = name;
         this.description = description;
@@ -23,8 +22,6 @@ public class TransportCompany {
         this.website = website;
         this.photo_url = photo_url;
         this.banner_url = banner_url;
-        this.telephone_number = telephone_number;
-        this.cellphone_number = cellphone_number;
     }
 
     @Override
@@ -94,21 +91,5 @@ public class TransportCompany {
 
     public void setBanner_url(String banner_url) {
         this.banner_url = banner_url;
-    }
-
-    public List<String> getTelephone_number() {
-        return telephone_number;
-    }
-
-    public void setTelephone_number(List<String> telephone_number) {
-        this.telephone_number = telephone_number;
-    }
-
-    public List<String> getCellphone_number() {
-        return cellphone_number;
-    }
-
-    public void setCellphone_number(List<String> cellphone_number) {
-        this.cellphone_number = cellphone_number;
     }
 }

@@ -23,6 +23,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuthProvider;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.model.UserAccount;
 import com.opustech.bookvan.ui.user.UserHomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -83,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
-        systemReference = firebaseFirestore.collection("system").document("data");
+        systemReference = firebaseFirestore.collection("system").document("notificationData");
 
         inputEmail = findViewById(R.id.inputEmail);
         inputPassword = findViewById(R.id.inputPassword);
@@ -299,14 +300,26 @@ public class LoginActivity extends AppCompatActivity {
                                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                         if (task.isSuccessful()) {
                                                             if (!task.getResult().exists()) {
-                                                                UserAccount userAccount = new UserAccount(firebaseAuth.getCurrentUser().getDisplayName(), firebaseAuth.getCurrentUser().getEmail(), 0);
-                                                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                        .set(userAccount)
-                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                FirebaseMessaging.getInstance().getToken()
+                                                                        .addOnCompleteListener(new OnCompleteListener<String>() {
                                                                             @Override
-                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                            public void onComplete(@NonNull Task<String> task) {
                                                                                 if (task.isSuccessful()) {
-                                                                                    checkUserSession(dialog);
+                                                                                    UserAccount userAccount = new UserAccount(firebaseAuth.getCurrentUser().getDisplayName(), firebaseAuth.getCurrentUser().getEmail(), task.getResult(), 0);
+                                                                                    usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                                            .set(userAccount)
+                                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                    if (task.isSuccessful()) {
+                                                                                                        checkUserSession(dialog);
+                                                                                                    } else {
+                                                                                                        dialog.dismiss();
+                                                                                                        enableInput();
+                                                                                                        Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                                                                                    }
+                                                                                                }
+                                                                                            });
                                                                                 }
                                                                             }
                                                                         });
@@ -354,14 +367,22 @@ public class LoginActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         if (!task.getResult().exists()) {
-                                                            UserAccount userAccount = new UserAccount(account.getGivenName() + " " + account.getFamilyName(), account.getEmail(), 0);
-                                                            usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                    .set(userAccount)
-                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            FirebaseMessaging.getInstance().getToken()
+                                                                    .addOnCompleteListener(new OnCompleteListener<String>() {
                                                                         @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                        public void onComplete(@NonNull Task<String> task) {
                                                                             if (task.isSuccessful()) {
-                                                                                checkUserSession(dialog);
+                                                                                UserAccount userAccount = new UserAccount(account.getGivenName() + " " + account.getFamilyName(), account.getEmail(), task.getResult(), 0);
+                                                                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                                        .set(userAccount)
+                                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                if (task.isSuccessful()) {
+                                                                                                    checkUserSession(dialog);
+                                                                                                }
+                                                                                            }
+                                                                                        });
                                                                             }
                                                                         }
                                                                     });

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.model.ChatConversation;
 import com.opustech.bookvan.model.ChatMessage;
 import com.opustech.bookvan.model.UserAccount;
@@ -55,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         conversationsReference = firebaseFirestore.collection("conversations");
-        systemReference = firebaseFirestore.collection("system").document("data");
+        systemReference = firebaseFirestore.collection("system").document("notificationData");
 
         btnRegister = findViewById(R.id.btnRegister);
         btnLogin = findViewById(R.id.btnLogin);
@@ -186,6 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 });
+
     }
 
     private void sendWelcomeMessage(ACProgressFlower dialog) {
@@ -212,9 +214,13 @@ public class RegisterActivity extends AppCompatActivity {
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (task.isSuccessful()) {
                                                                     dialog.dismiss();
-                                                                    btnRegister.setEnabled(true);
+                                                                    enableInput();
                                                                     Toast.makeText(RegisterActivity.this, "You have signed up successfully to BookVan.", Toast.LENGTH_SHORT).show();
                                                                     startMainActivity();
+                                                                } else {
+                                                                    dialog.dismiss();
+                                                                    enableInput();
+                                                                    Toast.makeText(RegisterActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                                                                 }
                                                             }
                                                         });

@@ -241,7 +241,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private void todayTotalTransaction() {
         bookingsReference.whereEqualTo("timestamp_date", getCurrentDate())
-                .whereIn("status", Arrays.asList("done", "cancelled", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -258,7 +257,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 });
         firebaseFirestore.collection("rentals")
                 .whereEqualTo("timestamp_date", getCurrentDate())
-                .whereIn("status", Arrays.asList("done", "cancelled", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -329,7 +327,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void allTimeTotalTransaction() {
-        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
+        bookingsReference
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -344,7 +342,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 });
 
         firebaseFirestore.collection("rentals")
-                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -511,7 +508,8 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                                             }
                                                         }
                                                         double earningsBookings = Double.parseDouble(totalEarnings.getText().toString());
-                                                        totalEarnings.setText(String.format(Locale.ENGLISH, "%.2f", earningsRentals + earningsBookings));
+                                                        String earnings = getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", earningsRentals + earningsBookings);
+                                                        totalEarnings.setText(earnings);
                                                     }
                                                 }
                                             });

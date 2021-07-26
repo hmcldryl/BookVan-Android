@@ -1,7 +1,7 @@
 package com.opustech.bookvan.model;
 
 public class UserAccount {
-    String name, email, contact_number;
+    String name, email, contact_number, token;
     int points;
 
     public UserAccount(String name, String email, String contact_number, int points) {

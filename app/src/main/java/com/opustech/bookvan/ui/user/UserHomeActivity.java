@@ -20,6 +20,7 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
@@ -37,6 +38,7 @@ import org.imaginativeworld.whynotimagecarousel.CarouselItem;
 import org.imaginativeworld.whynotimagecarousel.ImageCarousel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -220,6 +222,8 @@ public class UserHomeActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        updateToken();
     }
 
     private void updateUi() {
@@ -313,5 +317,23 @@ public class UserHomeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    private void updateToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("token", task.getResult());
+                                FirebaseFirestore.getInstance().collection("tokens")
+                                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .set(hashMap);
+                            }
+                        }
+                    }
+                });
     }
 }

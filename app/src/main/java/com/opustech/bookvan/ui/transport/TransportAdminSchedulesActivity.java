@@ -351,7 +351,7 @@ public class TransportAdminSchedulesActivity extends AppCompatActivity {
                             dialog.dismiss();
                         } else {
                             dialog.dismiss();
-                            Toast.makeText(TransportAdminSchedulesActivity.this, "Data loading failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TransportAdminSchedulesActivity.this, "NotificationData loading failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

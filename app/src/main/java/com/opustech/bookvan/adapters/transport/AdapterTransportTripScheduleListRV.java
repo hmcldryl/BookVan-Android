@@ -32,6 +32,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import cc.cloudist.acplibrary.ACProgressConstant;
+import cc.cloudist.acplibrary.ACProgressFlower;
+
 public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter<TripSchedule, AdapterTransportTripScheduleListRV.TripScheduleHolder> {
 
     private FirebaseFirestore firebaseFirestore;
@@ -57,15 +60,34 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
         String time_queue = model.getTime_queue();
         String time_depart = model.getTime_depart();
 
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-            Date date_queue = simpleDateFormat.parse(time_queue);
-            Date date_depart = simpleDateFormat.parse(time_depart);
-            holder.timeQueue.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_queue));
-            holder.timeDepart.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+
+        if (time_queue.equals("00:00")) {
+            holder.timeQueue.setText("12:00 MN");
+        } else if (time_queue.equals("12:00")) {
+            holder.timeQueue.setText("12:00 NN");
+        } else {
+            try {
+                Date date_queue = simpleDateFormat.parse(time_queue);
+                holder.timeQueue.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_queue));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+
+        if (time_depart.equals("00:00")) {
+            holder.timeDepart.setText("12:00 MN");
+        } else if (time_depart.equals("12:00")) {
+            holder.timeDepart.setText("12:00 NN");
+        } else {
+            try {
+                Date date_depart = simpleDateFormat.parse(time_depart);
+                holder.timeDepart.setText(new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(date_depart));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         holder.options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,13 +99,22 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.btnDelete) {
+                            final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
+                                    .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                    .themeColor(context.getResources().getColor(R.color.white))
+                                    .fadeColor(Color.DKGRAY).build();
+                            dialog.show();
                             getSnapshots().getSnapshot(position).getReference()
                                     .delete()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
+                                                dialog.dismiss();
                                                 Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                dialog.dismiss();
+                                                Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });

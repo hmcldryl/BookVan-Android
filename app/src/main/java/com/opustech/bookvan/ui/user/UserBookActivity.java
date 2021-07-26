@@ -1,41 +1,29 @@
 package com.opustech.bookvan.ui.user;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.CompoundButton;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -44,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
 import com.opustech.bookvan.adapters.user.AdapterDropdownScheduleTime;
@@ -51,27 +40,35 @@ import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.TransportCompany;
 import com.opustech.bookvan.model.TripSchedule;
-import com.opustech.bookvan.ui.transport.TransportAdminEditCompanyProfileActivity;
-import com.opustech.bookvan.ui.transport.TransportAdminSchedulesActivity;
+import com.opustech.bookvan.notification.APIService;
+import com.opustech.bookvan.notification.Client;
+import com.opustech.bookvan.notification.NotificationData;
+import com.opustech.bookvan.notification.RequestResponse;
+import com.opustech.bookvan.notification.NotificationSender;
 
 import org.joda.time.DateTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserBookActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, bookingsReference, partnersReference, schedulesReference;
+
+    private APIService apiService;
 
     private TextInputLayout bookingCustomerName,
             bookingContactNumber,
@@ -101,6 +98,7 @@ public class UserBookActivity extends AppCompatActivity {
     private ArrayList<TripSchedule> tripSchedulesTimeList;
 
     private String transportUid = "";
+    private String token = "";
     private String route_from = "";
     private String route_to = "";
     private String schedule_date = "";
@@ -114,7 +112,6 @@ public class UserBookActivity extends AppCompatActivity {
     private double totalPrice = 0.00;
     private double totalCommission = 0.00;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,6 +123,8 @@ public class UserBookActivity extends AppCompatActivity {
         bookingsReference = firebaseFirestore.collection("bookings");
         partnersReference = firebaseFirestore.collection("partners");
         schedulesReference = firebaseFirestore.collection("schedules");
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -155,16 +154,35 @@ public class UserBookActivity extends AppCompatActivity {
                 inputVanTransportACT.clearListSelection();
                 bookingRouteACT.clearListSelection();
                 if (i == R.id.btnRadioNorth) {
+                    inputVanTransportACT.clearListSelection();
+                    bookingVanTransport.getEditText().getText().clear();
+                    bookingTimeACT.clearListSelection();
+                    bookingTime.getEditText().getText().clear();
                     populateVanTransportList("north");
                 } else if (i == R.id.btnRadioSouth) {
+                    inputVanTransportACT.clearListSelection();
+                    bookingVanTransport.getEditText().getText().clear();
+                    bookingTimeACT.clearListSelection();
+                    bookingTime.getEditText().getText().clear();
                     populateVanTransportList("south");
                 }
             }
         });
 
-        picker.showTodayButton(true)
+        picker.showTodayButton(false)
                 .init();
         picker.setDate(new DateTime());
+        schedule_date = getCurrentDate();
+        picker.setListener(new DatePickerListener() {
+            @Override
+            public void onDateSelected(DateTime dateSelected) {
+                if (compareDate(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate()))) {
+                    schedule_date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate());
+                } else {
+                    Toast.makeText(UserBookActivity.this, "Please select a later booking date.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         bookingCountAdult.getEditText().setText((String.valueOf(countAdult)));
         bookingCountChild.getEditText().setText((String.valueOf(countChild)));
@@ -243,6 +261,8 @@ public class UserBookActivity extends AppCompatActivity {
                 inputCheck();
             }
         });
+
+        updateToken();
     }
 
     private boolean passengerCapacityAdd() {
@@ -360,9 +380,6 @@ public class UserBookActivity extends AppCompatActivity {
             enableInput();
             bookingCountAdult.getEditText().setText(String.valueOf(1));
             Toast.makeText(this, "Must have at least 1 passenger.", Toast.LENGTH_SHORT).show();
-        } else if (compareSchedule(schedule_date + " " + schedule_time)) {
-            enableInput();
-            Toast.makeText(this, "Please select a valid booking date.", Toast.LENGTH_SHORT).show();
         } else {
             generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, schedule_date, schedule_time);
         }
@@ -373,13 +390,27 @@ public class UserBookActivity extends AppCompatActivity {
         Date minDate = null;
 
         try {
-            selectedDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(booking_schedule);
-            minDate = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(booking_schedule);
+            minDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return selectedDate.compareTo(minDate) < 0;
+        return minDate.compareTo(selectedDate) <= 0;
+    }
+
+    private boolean compareDate(String date) {
+        Date selectedDate = null;
+        Date minDate = null;
+
+        try {
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
+            minDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return minDate.compareTo(selectedDate) <= 0;
     }
 
     private void generateRefNum(String uid, String name, String contact_number, String schedule_date, String schedule_time) {
@@ -395,9 +426,10 @@ public class UserBookActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             int num = task.getResult().getDocuments().size() + 1;
                             String reference_number = "BV-B" + String.format(Locale.ENGLISH, "%06d", num);
-                            addNewBooking(dialog, reference_number, uid, name, contact_number, schedule_date, schedule_time);
+                            fetchToken(dialog, reference_number, uid, name, contact_number);
                         } else {
                             dialog.dismiss();
+                            enableInput();
                             Toast.makeText(UserBookActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -425,7 +457,7 @@ public class UserBookActivity extends AppCompatActivity {
         return format.format(date);
     }
 
-    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String schedule_date, String schedule_time) {
+    private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String schedule_date, String schedule_time, String token) {
         Booking booking = new Booking(reference_number, uid, name, contact_number, route_from, route_to, schedule_date, schedule_time, transportUid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice, totalCommission);
         bookingsReference.add(booking)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
@@ -434,15 +466,18 @@ public class UserBookActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
                             Toast.makeText(UserBookActivity.this, "Success.", Toast.LENGTH_LONG).show();
+                            sendNotification(token, "New Booking", name + " has booked a trip from " + route_from + " to " + route_to + " on " + schedule_date + " " + schedule_time + ".");
                             Intent intent = new Intent(UserBookActivity.this, UserBookingActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
                             dialog.dismiss();
-                            Toast.makeText(UserBookActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+                            enableInput();
+                            Toast.makeText(UserBookActivity.this, "Failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+        updateToken();
     }
 
     private void populateVanTransportList(String route) {
@@ -469,6 +504,10 @@ public class UserBookActivity extends AppCompatActivity {
                                 inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        bookingRouteACT.clearListSelection();
+                                        bookingRoute.getEditText().getText().clear();
+                                        bookingTimeACT.clearListSelection();
+                                        bookingTime.getEditText().getText().clear();
                                         TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
                                         transportUid = selectedTransport.getUid();
                                         populateRouteList(transportUid);
@@ -495,6 +534,8 @@ public class UserBookActivity extends AppCompatActivity {
                                 inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        bookingRoute.getEditText().getText().clear();
+                                        bookingRouteACT.clearListSelection();
                                         TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
                                         transportUid = selectedTransport.getUid();
                                         populateRouteList(transportUid);
@@ -536,15 +577,21 @@ public class UserBookActivity extends AppCompatActivity {
                                     route_to = selectedSchedule.getRoute_to();
                                     computeTotalPrice();
                                     computeCommission();
+                                    bookingTimeACT.clearListSelection();
+                                    bookingTime.getEditText().getText().clear();
                                     loadScheduleTimeChips(task.getResult().getDocuments().get(position).getReference());
                                     picker.setListener(new DatePickerListener() {
                                         @Override
                                         public void onDateSelected(DateTime dateSelected) {
-                                            if (dateSelected.isBeforeNow()) {
-                                                Toast.makeText(UserBookActivity.this, "Please select a later booking date.", Toast.LENGTH_SHORT).show();
-                                            } else {
+                                            if (compareDate(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate()))) {
                                                 schedule_date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate());
+                                                bookingTimeACT.clearListSelection();
+                                                bookingTime.getEditText().getText().clear();
                                                 loadScheduleTimeChips(task.getResult().getDocuments().get(position).getReference());
+                                            } else {
+                                                bookingTimeACT.clearListSelection();
+                                                bookingTime.getEditText().getText().clear();
+                                                Toast.makeText(UserBookActivity.this, "Please select a later booking date.", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -570,13 +617,15 @@ public class UserBookActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                            for (int i = 0; i < task.getResult().getDocuments().size() && compareSchedule(schedule_date + " " + task.getResult().getDocuments().get(i).getString("time_depart")); i++) {
                                 if (task.getResult().getDocuments().get(i).getString("time_depart").equals("12:00")) {
                                     TripSchedule transportCompany = new TripSchedule("12:00 NN");
                                     tripSchedulesTimeList.add(i, transportCompany);
                                 } else if (task.getResult().getDocuments().get(i).getString("time_depart").equals("00:00")) {
                                     TripSchedule transportCompany = new TripSchedule("12:00 MN");
                                     tripSchedulesTimeList.add(i, transportCompany);
+                                } else if (i > task.getResult().size() && tripSchedulesTimeList.size() == 0) {
+                                    Toast.makeText(UserBookActivity.this, "No more schedule for today.", Toast.LENGTH_SHORT).show();
                                 } else {
                                     TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
                                     tripSchedulesTimeList.add(i, transportCompany);
@@ -617,5 +666,70 @@ public class UserBookActivity extends AppCompatActivity {
                 totalCommission = commissionRate * (tripPrice * (countAdult + countChild));
             }
         }
+    }
+
+    private void fetchToken(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number) {
+        partnersReference.document(transportUid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseFirestore.getInstance().collection("tokens")
+                                    .document(task.getResult().getString("admin_uid"))
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                addNewBooking(dialog, reference_number, uid, name, contact_number, schedule_date, schedule_time, task.getResult().getString("token"));
+                                            } else {
+                                                dialog.dismiss();
+                                                enableInput();
+                                                Toast.makeText(UserBookActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
+
+    private void sendNotification(String token, String title, String message) {
+        NotificationData notificationData = new NotificationData(title, message);
+        NotificationSender sender = new NotificationSender(notificationData, token);
+        apiService.sendNotification(sender).enqueue(new Callback<RequestResponse>() {
+            @Override
+            public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().success != 1) {
+                        Toast.makeText(UserBookActivity.this, "Failed ", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void updateToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("token", task.getResult());
+                                FirebaseFirestore.getInstance().collection("tokens")
+                                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .set(hashMap);
+                            }
+                        }
+                    }
+                });
     }
 }

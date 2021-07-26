@@ -56,7 +56,7 @@ public class AdminSystemSchedulesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_route_schedule);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        systemSchedulesReference = firebaseFirestore.collection("system").document("data").collection("schedules");
+        systemSchedulesReference = firebaseFirestore.collection("system").document("notificationData").collection("schedules");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
