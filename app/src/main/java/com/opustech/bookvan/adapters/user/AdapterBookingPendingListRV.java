@@ -1,10 +1,12 @@
 package com.opustech.bookvan.adapters.user;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,6 +52,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
     private CollectionReference usersReference, partnersReference;
 
     private final Context context;
+    Activity someActivity;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -58,9 +61,10 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
      * @param options
      */
 
-    public AdapterBookingPendingListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context) {
+    public AdapterBookingPendingListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context, Activity someActivity) {
         super(options);
         this.context = context;
+        this.someActivity = someActivity;
     }
 
     @Override
@@ -96,6 +100,9 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && someActivity.isDestroyed()) {
+                                    return;
+                                }
                                 Glide.with(context)
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);

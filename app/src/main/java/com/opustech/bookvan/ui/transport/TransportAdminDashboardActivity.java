@@ -110,6 +110,8 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         today.setText(getToday());
         todayDate.setText(getTodayDate());
 
+        updateToken();
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -202,9 +204,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         btnQRMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminBookingQRActivity.class);
+                Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminBookingQRActivity.class);
                 intent.putExtra("uid", getCompanyUid());
-                startActivity(intent);*/
+                startActivity(intent);
             }
         });
 

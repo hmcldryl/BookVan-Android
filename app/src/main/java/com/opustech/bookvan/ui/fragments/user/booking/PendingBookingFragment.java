@@ -84,7 +84,7 @@ public class PendingBookingFragment extends Fragment {
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingPendingListRV = new AdapterBookingPendingListRV(options, getActivity());
+        adapterBookingPendingListRV = new AdapterBookingPendingListRV(options, getActivity(), getActivity());
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(true);

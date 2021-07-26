@@ -675,21 +675,25 @@ public class UserBookActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            FirebaseFirestore.getInstance().collection("tokens")
-                                    .document(task.getResult().getString("admin_uid"))
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                addNewBooking(dialog, reference_number, uid, name, contact_number, schedule_date, schedule_time, task.getResult().getString("token"));
-                                            } else {
-                                                dialog.dismiss();
-                                                enableInput();
-                                                Toast.makeText(UserBookActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            if (task.getResult() != null) {
+                                String admin_uid = task.getResult().getString("admin_uid");
+                                if (admin_uid != null)
+                                FirebaseFirestore.getInstance().collection("tokens")
+                                        .document(admin_uid)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    addNewBooking(dialog, reference_number, uid, name, contact_number, schedule_date, schedule_time, task.getResult().getString("token"));
+                                                } else {
+                                                    dialog.dismiss();
+                                                    enableInput();
+                                                    Toast.makeText(UserBookActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                            }
                         }
                     }
                 });
