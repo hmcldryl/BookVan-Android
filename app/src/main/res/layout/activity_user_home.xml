@@ -8,7 +8,7 @@
     android:background="@drawable/background_body"
     android:fitsSystemWindows="true"
     tools:context=".ui.user.UserHomeActivity"
-    tools:openDrawer="end">
+    tools:openDrawer="start">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -194,7 +194,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_input_van_driver" />
+                                android:src="@drawable/ic_btn_partners" />
 
                             <TextView
                                 android:layout_width="wrap_content"

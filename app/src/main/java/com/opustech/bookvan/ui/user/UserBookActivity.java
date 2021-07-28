@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -261,8 +262,6 @@ public class UserBookActivity extends AppCompatActivity {
                 inputCheck();
             }
         });
-
-        updateToken();
     }
 
     private boolean passengerCapacityAdd() {
@@ -395,8 +394,7 @@ public class UserBookActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        return minDate.compareTo(selectedDate) <= 0;
+        return minDate.before(selectedDate) /*<= 0*/;
     }
 
     private boolean compareDate(String date) {
@@ -410,8 +408,23 @@ public class UserBookActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        return minDate.compareTo(selectedDate) <= 0;
+        return selectedDate.equals(minDate) || selectedDate.after(minDate);
     }
+
+    private boolean compareTime(String time) {
+        Date selectedDate = null;
+        Date minDate = null;
+
+        try {
+            selectedDate = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(time);
+            minDate = new SimpleDateFormat("HH:mm", Locale.ENGLISH).parse(new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return minDate.compareTo(selectedDate) < 0;
+    }
+
 
     private void generateRefNum(String uid, String name, String contact_number, String schedule_date, String schedule_time) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
@@ -477,7 +490,6 @@ public class UserBookActivity extends AppCompatActivity {
                         }
                     }
                 });
-        updateToken();
     }
 
     private void populateVanTransportList(String route) {
@@ -611,24 +623,40 @@ public class UserBookActivity extends AppCompatActivity {
         dialog.show();
         tripSchedulesTimeList = new ArrayList<>();
         tripScheduleReference.collection("schedules")
-                .orderBy("time_depart", Query.Direction.DESCENDING)
+                .orderBy("time_depart", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (int i = 0; i < task.getResult().getDocuments().size() && compareSchedule(schedule_date + " " + task.getResult().getDocuments().get(i).getString("time_depart")); i++) {
-                                if (task.getResult().getDocuments().get(i).getString("time_depart").equals("12:00")) {
-                                    TripSchedule transportCompany = new TripSchedule("12:00 NN");
-                                    tripSchedulesTimeList.add(i, transportCompany);
-                                } else if (task.getResult().getDocuments().get(i).getString("time_depart").equals("00:00")) {
-                                    TripSchedule transportCompany = new TripSchedule("12:00 MN");
-                                    tripSchedulesTimeList.add(i, transportCompany);
-                                } else if (i > task.getResult().size() && tripSchedulesTimeList.size() == 0) {
-                                    Toast.makeText(UserBookActivity.this, "No more schedule for today.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
-                                    tripSchedulesTimeList.add(i, transportCompany);
+                            if (compareDate(schedule_date)) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    if (compareTime(task.getResult().getDocuments().get(i).getString("time_depart"))) {
+                                        Toast.makeText(UserBookActivity.this, "compare time is true", Toast.LENGTH_SHORT).show();
+                                        if (task.getResult().getDocuments().get(i).getString("time_depart").equals("12:00")) {
+                                            TripSchedule transportCompany = new TripSchedule("12:00 NN");
+                                            tripSchedulesTimeList.add(transportCompany);
+                                        } else if (task.getResult().getDocuments().get(i).getString("time_depart").equals("00:00")) {
+                                            TripSchedule transportCompany = new TripSchedule("12:00 MN");
+                                            tripSchedulesTimeList.add(transportCompany);
+                                        } else {
+                                            TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
+                                            tripSchedulesTimeList.add(transportCompany);
+                                        }
+                                    }
+                                }
+                            } else {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    if (task.getResult().getDocuments().get(i).getString("time_depart").equals("12:00")) {
+                                        TripSchedule transportCompany = new TripSchedule("12:00 NN");
+                                        tripSchedulesTimeList.add(transportCompany);
+                                    } else if (task.getResult().getDocuments().get(i).getString("time_depart").equals("00:00")) {
+                                        TripSchedule transportCompany = new TripSchedule("12:00 MN");
+                                        tripSchedulesTimeList.add(transportCompany);
+                                    } else {
+                                        TripSchedule transportCompany = new TripSchedule(task.getResult().getDocuments().get(i).getString("time_depart"));
+                                        tripSchedulesTimeList.add(transportCompany);
+                                    }
                                 }
                             }
                             adapterDropdownScheduleTime = new AdapterDropdownScheduleTime(UserBookActivity.this, tripSchedulesTimeList);
@@ -717,23 +745,5 @@ public class UserBookActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    private void updateToken() {
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (task.isSuccessful()) {
-                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("token", task.getResult());
-                                FirebaseFirestore.getInstance().collection("tokens")
-                                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .set(hashMap);
-                            }
-                        }
-                    }
-                });
     }
 }

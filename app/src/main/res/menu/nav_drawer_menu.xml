@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group
-        android:id="@+id/main_items">
+    <group android:id="@+id/main_items">
 
         <item
             android:id="@+id/btnProfile"
@@ -28,13 +27,12 @@
 
         <item
             android:id="@+id/btnPartners"
-            android:icon="@drawable/ic_icon_company"
+            android:icon="@drawable/ic_btn_partners"
             android:title="@string/label_partners" />
 
     </group>
 
-    <group
-        android:id="@+id/actionButtons">
+    <group android:id="@+id/actionButtons">
 
         <item
             android:id="@+id/btnAbout"

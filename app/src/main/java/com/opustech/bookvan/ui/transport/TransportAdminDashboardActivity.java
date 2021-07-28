@@ -208,7 +208,6 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         loadAnalytics();
     }
 

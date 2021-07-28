@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.ui.user.UserHomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -17,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.ui.admin.AdminDashboardActivity;
 import com.opustech.bookvan.ui.transport.TransportAdminDashboardActivity;
+
+import java.util.HashMap;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -35,6 +38,22 @@ public class SplashScreen extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("token", task.getResult());
+                                FirebaseFirestore.getInstance().collection("tokens")
+                                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .set(hashMap);
+                            }
+                        }
+                    }
+                });
 
         if (firebaseAuth.getCurrentUser() != null) {
             if (firebaseAuth.getCurrentUser().getUid().equals(admin_uid)) {

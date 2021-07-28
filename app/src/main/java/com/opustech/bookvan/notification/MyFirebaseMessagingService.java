@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -22,6 +24,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.opustech.bookvan.R;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     String title, message;
@@ -29,20 +32,40 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        Map<String, String> data = remoteMessage.getData();
+        if (data != null) {
+            title = data.get("title");
+            message = data.get("message");
+            Log.d("huehue", "data");
+            Log.d("huehue", title + ": " + message);
+            String channelId = "BookVan";
+            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationCompat.Builder notificationBuilder =
+                    new NotificationCompat.Builder(this, channelId)
+                            .setSmallIcon(R.drawable.ic_icon_book)
+                            .setContentTitle(title)
+                            .setContentText(message)
+                            .setSound(defaultSoundUri)
+                            .setAutoCancel(true);
 
-        if (remoteMessage.getNotification() != null) {
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            // Since android Oreo notification channel is needed.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(channelId,
+                        "BookVan",
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
+            }
+
+            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        } else if (remoteMessage.getNotification() != null) {
             title = remoteMessage.getNotification().getTitle();
             message = remoteMessage.getNotification().getBody();
-
-            /*NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(getApplicationContext(), "Booking")
-                        .setSmallIcon(R.drawable.ic_icon_book)
-                        .setContentTitle(title)
-                        .setContentText(message);
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());*/
-
-            String channelId = "Booking";
+            Log.d("huehue", "notification");
+            Log.d("huehue", title + ": " + message);
+            String channelId = "BookVan";
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, channelId)
@@ -66,6 +89,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
         }
     }
+
+
 
     @Override
     public void onNewToken(@NonNull String s) {
