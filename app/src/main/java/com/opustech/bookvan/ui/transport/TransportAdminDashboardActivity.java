@@ -31,6 +31,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.ui.admin.AdminDashboardActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -109,8 +110,6 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
         today.setText(getToday());
         todayDate.setText(getTodayDate());
-
-        updateToken();
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -213,34 +212,6 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         loadAnalytics();
     }
 
-    private void updateToken() {
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (task.isSuccessful()) {
-                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("token", task.getResult());
-                                FirebaseFirestore.getInstance().collection("tokens")
-                                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .set(hashMap);
-                            }
-                        }
-                    }
-                });
-    }
-
-    private float formatDate(String timestamp_date) {
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(timestamp_date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return Float.parseFloat(new SimpleDateFormat("dd", Locale.ENGLISH).format(date));
-    }
-
     private String getCompanyUid() {
         Intent intent = getIntent();
         return intent.getStringExtra("uid");
@@ -302,16 +273,16 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     }
 
     private void loadAnalytics() {
-        todayTotalBooking(getCompanyUid());
+        todayTotalTransaction(getCompanyUid());
         todayTotalEarning(getCompanyUid());
-        allTimeTotalBooking(getCompanyUid());
+        allTimeTotalTransaction(getCompanyUid());
         allTimeTotalEarning(getCompanyUid());
     }
 
-    private void todayTotalBooking(String uid) {
+    private void todayTotalTransaction(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
                 .whereEqualTo("timestamp_date", getCurrentDate())
-                .whereIn("status", Arrays.asList("done", "pending", "confirmed"))
+                .whereEqualTo("status", "done")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -358,8 +329,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                         allEarningsToday = allEarningsToday + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
                                     }
                                     firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("transport_uid", uid)
                                             .whereEqualTo("timestamp_date", getCurrentDate())
-                                            .whereIn("status", Arrays.asList("done", "confirmed"))
+                                            .whereEqualTo("status", "done")
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -396,9 +368,8 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                 });
     }
 
-    private void allTimeTotalBooking(String uid) {
+    private void allTimeTotalTransaction(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
-                .whereIn("status", Arrays.asList("done", "cancelled", "pending", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -411,9 +382,25 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        firebaseFirestore.collection("rentals")
+                .whereEqualTo("transport_uid", uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            dashboardRentalsAllTime.setText(String.valueOf(task.getResult().size()));
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
+                        }
+                    }
+                });
     }
 
     private void allTimeTotalEarning(String uid) {
+        allEarnings = 0.0;
         bookingsReference.whereEqualTo("transport_uid", uid)
                 .whereEqualTo("status", "done")
                 .get()
@@ -421,18 +408,45 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            double earnings = 0.00;
                             if (task.getResult() != null) {
                                 if (!task.getResult().isEmpty()) {
                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                        earnings = earnings + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
+                                        allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
                                     }
+                                    firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("transport_uid", uid)
+                                            .whereEqualTo("status", "done")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().isEmpty()) {
+                                                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                                    allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                }
+                                                            }
+                                                        }
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        dashboardEarningsAllTime.setText(String.format(Locale.ENGLISH, "%.2f", allEarnings));
+                                                    } else {
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        Toast.makeText(TransportAdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
                                 }
                             }
+                        } else {
                             if (refreshLayout.isRefreshing()) {
                                 refreshLayout.setRefreshing(false);
                             }
-                            dashboardEarningsAllTime.setText(String.format(Locale.ENGLISH, "%.2f", earnings));
+                            Toast.makeText(TransportAdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -707,7 +707,7 @@ public class UserBookActivity extends AppCompatActivity {
             public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {
                 if (response.code() == 200) {
                     if (response.body().success != 1) {
-                        Toast.makeText(UserBookActivity.this, "Failed ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(UserBookActivity.this, "Request failed.", Toast.LENGTH_LONG).show();
                     }
                 }
             }

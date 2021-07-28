@@ -294,6 +294,194 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/background_dashboard_center"
+                            android:orientation="vertical">
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/ic_icon_today" />
+
+                                <Space
+                                    android:layout_width="16dp"
+                                    android:layout_height="match_parent" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="@font/lato_black"
+                                    android:text="This Month"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="24sp" />
+
+                            </LinearLayout>
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_weight="5"
+                                    app:cardCornerRadius="8dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="16dp">
+
+                                        <TextView
+                                            android:id="@+id/dashboardBookingsMonth"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:text="Bookings"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="14sp" />
+
+                                    </LinearLayout>
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <Space
+                                    android:layout_width="16dp"
+                                    android:layout_height="match_parent" />
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_weight="5"
+                                    app:cardCornerRadius="8dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="16dp">
+
+                                        <TextView
+                                            android:id="@+id/dashboardRentalsMonth"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:text="Rentals"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="14sp" />
+
+                                    </LinearLayout>
+                                </com.google.android.material.card.MaterialCardView>
+                            </LinearLayout>
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                app:cardCornerRadius="8dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="@string/peso_sign"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:id="@+id/dashboardEarningsMonth"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0.00"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/lato_bold"
+                                        android:text="Earnings"
+                                        android:textColor="@color/textColor"
+                                        android:textSize="14sp" />
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/background_dashboard_left"
                         android:orientation="vertical">
@@ -482,20 +670,219 @@
                         android:layout_width="match_parent"
                         android:layout_height="16dp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/selectMonth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@drawable/background_dashboard_center"
+                            android:orientation="vertical">
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:background="@drawable/ic_input_calendar" />
+
+                                <Space
+                                    android:layout_width="16dp"
+                                    android:layout_height="match_parent" />
+
+                                <TextView
+                                    android:id="@+id/dateYear"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:fontFamily="@font/lato_black"
+                                    android:text="month_year"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="24sp" />
+
+                            </LinearLayout>
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:weightSum="10">
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_weight="5"
+                                    app:cardCornerRadius="8dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="16dp">
+
+                                        <TextView
+                                            android:id="@+id/dashboardBookingsMonthSelect"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:text="Bookings"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="14sp" />
+
+                                    </LinearLayout>
+                                </com.google.android.material.card.MaterialCardView>
+
+                                <Space
+                                    android:layout_width="16dp"
+                                    android:layout_height="match_parent" />
+
+                                <com.google.android.material.card.MaterialCardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_weight="5"
+                                    app:cardCornerRadius="8dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical"
+                                        android:padding="16dp">
+
+                                        <TextView
+                                            android:id="@+id/dashboardRentalsMonthSelect"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:text="Rentals"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="14sp" />
+
+                                    </LinearLayout>
+                                </com.google.android.material.card.MaterialCardView>
+                            </LinearLayout>
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                app:cardCornerRadius="8dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    android:padding="16dp">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="@string/peso_sign"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+
+                                        <TextView
+                                            android:id="@+id/dashboardEarningsMonthSelect"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_black"
+                                            android:text="0.00"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="24sp" />
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/lato_bold"
+                                        android:text="Earnings"
+                                        android:textColor="@color/textColor"
+                                        android:textSize="14sp" />
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="16dp"
+                        android:drawablePadding="8dp"
                         android:fontFamily="@font/lato_black"
                         android:text="Van Transport Stats"
                         android:textAlignment="center"
                         android:textColor="@color/textColor"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"
+                        app:drawableStartCompat="@drawable/ic_icon_company"
+                        app:drawableTint="@color/colorPrimary" />
 
                     <Space
                         android:layout_width="match_parent"
                         android:layout_height="8dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorAccent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -549,10 +936,11 @@
                                 android:textSize="12sp" />
                         </LinearLayout>
 
-                        <Space
+                        <LinearLayout
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/colorAccent" />
+                            android:background="@color/colorAccent"
+                            android:orientation="vertical" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -574,10 +962,11 @@
                                 android:textSize="12sp" />
                         </LinearLayout>
 
-                        <Space
+                        <LinearLayout
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/colorAccent" />
+                            android:background="@color/colorAccent"
+                            android:orientation="vertical" />
 
                         <LinearLayout
                             android:layout_width="0dp"
@@ -599,10 +988,11 @@
                                 android:textSize="12sp" />
                         </LinearLayout>
 
-                        <Space
+                        <LinearLayout
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="@color/colorAccent" />
+                            android:background="@color/colorAccent"
+                            android:orientation="vertical" />
 
                         <LinearLayout
                             android:layout_width="0dp"

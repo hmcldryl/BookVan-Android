@@ -9,12 +9,14 @@ import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,6 +42,7 @@ import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.ui.user.UserPartnersActivity;
+import com.opustech.bookvan.ui.user.UserRentActivity;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -61,18 +64,25 @@ public class AdminDashboardActivity extends AppCompatActivity {
     private CircleImageView headerUserPhoto;
     private TextView headerUserName, headerUserEmail,
             dashboardBookingsToday,
-            dashboardRentalsToday,
-            dashboardEarningsToday,
+            dashboardBookingsMonth,
             dashboardBookingsAllTime,
+            dashboardBookingsMonthSelect,
+            dashboardRentalsToday,
+            dashboardRentalsMonth,
             dashboardRentalsAllTime,
+            dashboardRentalsMonthSelect,
+            dashboardEarningsToday,
+            dashboardEarningsMonth,
             dashboardEarningsAllTime,
+            dashboardEarningsMonthSelect,
+            dateYear,
             today,
             todayDate;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private NestedScrollView nestedScrollView;
     private SwipeRefreshLayout refreshLayout;
-    private LinearLayout transportList;
+    private LinearLayout transportList, selectMonth;
 
     private String name = "";
     private String email = "";
@@ -80,6 +90,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     double allEarnings = 0.0;
     double allEarningsToday = 0.0;
+    double allEarningsMonth = 0.0;
 
     private static final int TIME_INTERVAL = 2000;
     private long backPressed;
@@ -126,7 +137,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 refreshLayout.setRefreshing(true);
-                loadAnalytics();
+                loadAnalytics(getMonthDates());
             }
         });
 
@@ -159,9 +170,20 @@ public class AdminDashboardActivity extends AppCompatActivity {
         dashboardBookingsToday = findViewById(R.id.dashboardBookingsToday);
         dashboardRentalsToday = findViewById(R.id.dashboardRentalsToday);
         dashboardEarningsToday = findViewById(R.id.dashboardEarningsToday);
+        dashboardBookingsMonth = findViewById(R.id.dashboardBookingsMonth);
+        dashboardRentalsMonth = findViewById(R.id.dashboardRentalsMonth);
+        dashboardEarningsMonth = findViewById(R.id.dashboardEarningsMonth);
         dashboardBookingsAllTime = findViewById(R.id.dashboardBookingsAllTime);
         dashboardRentalsAllTime = findViewById(R.id.dashboardRentalsAllTime);
         dashboardEarningsAllTime = findViewById(R.id.dashboardEarningsAllTime);
+        dashboardBookingsMonthSelect = findViewById(R.id.dashboardBookingsMonthSelect);
+        dashboardRentalsMonthSelect = findViewById(R.id.dashboardRentalsMonthSelect);
+        dashboardEarningsMonthSelect = findViewById(R.id.dashboardEarningsMonthSelect);
+
+        selectMonth = findViewById(R.id.selectMonth);
+        dateYear = findViewById(R.id.dateYear);
+
+        initializeDatePickerPickUp();
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -202,7 +224,32 @@ public class AdminDashboardActivity extends AppCompatActivity {
         });
 
         showVanTransportStats();
-        loadAnalytics();
+        loadAnalytics(getMonthDates());
+    }
+
+    private void initializeDatePickerPickUp() {
+        final Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("MMMM, yyyy", Locale.ENGLISH);
+        dateYear.setText(simpleDateFormat2.format(calendar.getTime()));
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                dateYear.setText(simpleDateFormat2.format(calendar.getTime()));
+            }
+        };
+        selectMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(AdminDashboardActivity.this, date,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
     }
 
     private void showVanTransportStats() {
@@ -232,9 +279,11 @@ public class AdminDashboardActivity extends AppCompatActivity {
         return true;
     }
 
-    private void loadAnalytics() {
+    private void loadAnalytics(List<String> monthDateList) {
         todayTotalTransaction();
         todayTotalEarning();
+        monthTotalTransaction(monthDateList);
+        monthTotalEarning(monthDateList);
         allTimeTotalTransaction();
         allTimeTotalEarning();
     }
@@ -275,7 +324,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private void todayTotalEarning() {
         allEarningsToday = 0.0;
-        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
+        bookingsReference.whereEqualTo("status", "done")
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -289,7 +338,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                     }
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("timestamp_date", getCurrentDate())
-                                            .whereIn("status", Arrays.asList("done", "confirmed"))
+                                            .whereEqualTo("status", "done")
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -306,6 +355,105 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                                             refreshLayout.setRefreshing(false);
                                                         }
                                                         dashboardEarningsToday.setText(String.format(Locale.ENGLISH, "%.2f", allEarnings));
+                                                    } else {
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        Toast.makeText(AdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                }
+                            }
+                        } else {
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
+                            Toast.makeText(AdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void monthTotalTransaction(List<String> monthDateList) {
+        bookingsReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                int bookings = 0;
+                                for (int i = 0; i < task.getResult().size(); i++) {
+                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                        bookings = bookings + 1;
+                                    }
+                                }
+                                dashboardBookingsMonth.setText(String.valueOf(bookings));
+                                if (refreshLayout.isRefreshing()) {
+                                    refreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }
+                    }
+                });
+        firebaseFirestore.collection("rentals")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                int rentals = 0;
+                                for (int i = 0; i < task.getResult().size(); i++) {
+                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                        rentals = rentals + 1;
+                                    }
+                                }
+                                dashboardRentalsMonth.setText(String.valueOf(rentals));
+                                if (refreshLayout.isRefreshing()) {
+                                    refreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void monthTotalEarning(List<String> monthDateList) {
+        allEarningsMonth = 0.0;
+        bookingsReference.whereEqualTo("status", "done")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                if (!task.getResult().isEmpty()) {
+                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                        if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                            allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                        }
+                                    }
+                                    firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("status", "done")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().isEmpty()) {
+                                                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                                                        allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        dashboardEarningsMonth.setText(String.format(Locale.ENGLISH, "%.2f", allEarningsMonth));
                                                     } else {
                                                         if (refreshLayout.isRefreshing()) {
                                                             refreshLayout.setRefreshing(false);
@@ -358,7 +506,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
     private void allTimeTotalEarning() {
         allEarnings = 0.0;
-        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
+        bookingsReference.whereEqualTo("status", "done")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -370,7 +518,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                         allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
                                     }
                                     firebaseFirestore.collection("rentals")
-                                            .whereIn("status", Arrays.asList("done", "confirmed"))
+                                            .whereEqualTo("status", "done")
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -422,6 +570,19 @@ public class AdminDashboardActivity extends AppCompatActivity {
         return format.format(Calendar.getInstance().getTime());
     }
 
+    private List<String> getMonthDates() {
+        List<String> dateList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        for (int i = 0; i < maxDay; i++) {
+            calendar.set(Calendar.DAY_OF_MONTH, i + 1);
+            dateList.add(simpleDateFormat.format(calendar.getTime()));
+        }
+        return dateList;
+    }
+
     private void loadVanTransportStats(int num, String uid, String transport_name) {
         View view = LayoutInflater.from(this).inflate(R.layout.stats_van_transport_admin_dashboard, transportList, false);
         LinearLayout item = view.findViewById(R.id.item);
@@ -435,7 +596,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
         transportName.setText(transport_name);
 
         firebaseFirestore.collection("bookings")
-                .whereIn("status", Arrays.asList("done", "confirmed"))
+                .whereEqualTo("status", "done")
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .whereEqualTo("transport_uid", uid)
                 .get()
@@ -455,7 +616,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                 });
 
         firebaseFirestore.collection("rentals")
-                .whereIn("status", Arrays.asList("done", "confirmed"))
+                .whereEqualTo("status", "done")
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .whereEqualTo("transport_uid", uid)
                 .get()
@@ -476,7 +637,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         firebaseFirestore.collection("bookings")
                 .whereEqualTo("transport_uid", uid)
-                .whereIn("status", Arrays.asList("done", "confirmed"))
+                .whereEqualTo("status", "done")
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -493,7 +654,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("timestamp_date", getCurrentDate())
                                             .whereEqualTo("transport_uid", uid)
-                                            .whereIn("status", Arrays.asList("done", "confirmed"))
+                                            .whereEqualTo("status", "done")
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -518,6 +679,13 @@ public class AdminDashboardActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         transportList.addView(view);
     }
