@@ -249,4 +249,6 @@ public class UserRentMessageActivity extends AppCompatActivity {
         super.onStop();
         adapterRentChatMessageRV.stopListening();
     }
+
+    
 }

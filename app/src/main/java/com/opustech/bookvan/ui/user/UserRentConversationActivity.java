@@ -65,7 +65,7 @@ public class UserRentConversationActivity extends AppCompatActivity {
                 .setQuery(query, Rental.class)
                 .build();
 
-        adapterRentConversationRV = new AdapterRentChatConversationRV(options, firebaseAuth.getCurrentUser().getUid(), this);
+        adapterRentConversationRV = new AdapterRentChatConversationRV(options, firebaseAuth.getCurrentUser().getUid(), getIntent().getStringExtra("name"), this);
         LinearLayoutManager manager = new LinearLayoutManager(UserRentConversationActivity.this);
         manager.setReverseLayout(true);
         manager.setStackFromEnd(true);

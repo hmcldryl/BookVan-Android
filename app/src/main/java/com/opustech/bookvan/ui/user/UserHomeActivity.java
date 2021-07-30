@@ -173,6 +173,7 @@ public class UserHomeActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.btnChat) {
                     Intent intent = new Intent(UserHomeActivity.this, UserChatActivity.class);
+                    intent.putExtra("name", name);
                     startActivity(intent);
                 }
                 return false;
@@ -196,6 +197,7 @@ public class UserHomeActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.btnRentals) {
                     Intent intent = new Intent(UserHomeActivity.this, UserRentConversationActivity.class);
+                    intent.putExtra("name", name);
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnPartners) {

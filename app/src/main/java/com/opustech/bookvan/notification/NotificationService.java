@@ -24,19 +24,23 @@ import com.opustech.bookvan.R;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class NotificationService extends FirebaseMessagingService {
     String title, message;
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Map<String, String> data = remoteMessage.getData();
-        if (data != null) {
+
+        if (data.containsKey("title") && data.containsKey("message")) {
             title = data.get("title");
             message = data.get("message");
-            Log.d("huehue", "data");
-            Log.d("huehue", title + ": " + message);
-            String channelId = "BookVan";
+
+            Log.d("TEST", "TYPE: NOTIFICATION SENT FROM APP");
+            Log.d("TEST", "TITLE: " + title);
+            Log.d("TEST", "MESSAGE: " + message);
+
+            String channelId = "activity_notification";
             Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound);
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, channelId)
@@ -52,19 +56,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // Since android Oreo notification channel is needed.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel(channelId,
-                        "BookVan",
+                        "Activity Notification",
                         NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(channel);
             }
 
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
         } else if (remoteMessage.getNotification() != null) {
             title = remoteMessage.getNotification().getTitle();
             message = remoteMessage.getNotification().getBody();
-            Log.d("huehue", "notification");
-            Log.d("huehue", title + ": " + message);
-            String channelId = "BookVan";
-            Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+            Log.d("TEST", "TYPE: NOTIFICATION SENT FROM FIREBASE CONSOLE");
+            Log.d("TEST", "TITLE: " + title);
+            Log.d("TEST", "MESSAGE: " + message);
+
+            String channelId = "system_notification";
+            Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound);
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, channelId)
                             .setSmallIcon(R.drawable.ic_icon_book)
@@ -79,16 +87,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // Since android Oreo notification channel is needed.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel(channelId,
-                        "BookVan",
+                        "System Notification",
                         NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(channel);
             }
 
             notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+        } else {
+            Log.d("TEST", "TYPE: NOTIFICATION DOES NOT MATCH ANY GIVEN CONDITIONS");
         }
     }
 
-
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                updateToken(task.getResult());
+                            }
+                        }
+                    }
+                });
+    }
 
     @Override
     public void onNewToken(@NonNull String s) {

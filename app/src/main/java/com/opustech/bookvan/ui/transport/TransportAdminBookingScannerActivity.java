@@ -253,7 +253,7 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                                                                             .fadeColor(Color.DKGRAY).build();
                                                                     dialog.show();
                                                                     if (reference_number != null) {
-                                                                        updateBooking(alertDialog, dialog, documentReference);
+                                                                        updateBooking(alertDialog, dialog, documentReference, uid, price);
                                                                     } else {
                                                                         dialog.dismiss();
                                                                         alertDialog.dismiss();
@@ -281,7 +281,7 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                 .build();
     }
 
-    private void updateBooking(AlertDialog alertDialog, ACProgressFlower dialog, DocumentReference documentReference) {
+    private void updateBooking(AlertDialog alertDialog, ACProgressFlower dialog, DocumentReference documentReference, String uid, double price) {
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", "done");
         hashMap.put("timestamp", generateTimestamp());
@@ -293,6 +293,7 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
                             alertDialog.dismiss();
+                            updatePoints(uid, computePoints(price));
                             Toast.makeText(TransportAdminBookingScannerActivity.this, "Success!", Toast.LENGTH_SHORT).show();
                         } else {
                             dialog.dismiss();
@@ -301,6 +302,14 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void updatePoints(String uid, double points) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("points", points);
+        firebaseFirestore.collection("users")
+                .document(uid)
+                .update(hashMap);
     }
 
     @Override
@@ -351,5 +360,9 @@ public class TransportAdminBookingScannerActivity extends AppCompatActivity {
 
                     }
                 }).check();
+    }
+
+    private double computePoints(double totalPrice) {
+        return 0.01 * totalPrice;
     }
 }

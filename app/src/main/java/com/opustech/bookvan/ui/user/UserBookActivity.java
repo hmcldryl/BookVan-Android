@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,7 +32,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
 import com.opustech.bookvan.adapters.user.AdapterDropdownScheduleTime;
@@ -44,8 +42,8 @@ import com.opustech.bookvan.model.TripSchedule;
 import com.opustech.bookvan.notification.APIService;
 import com.opustech.bookvan.notification.Client;
 import com.opustech.bookvan.notification.NotificationData;
-import com.opustech.bookvan.notification.RequestResponse;
 import com.opustech.bookvan.notification.NotificationSender;
+import com.opustech.bookvan.notification.RequestResponse;
 
 import org.joda.time.DateTime;
 
@@ -54,7 +52,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -384,19 +381,6 @@ public class UserBookActivity extends AppCompatActivity {
         }
     }
 
-    private boolean compareSchedule(String booking_schedule) {
-        Date selectedDate = null;
-        Date minDate = null;
-
-        try {
-            selectedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(booking_schedule);
-            minDate = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return minDate.before(selectedDate) /*<= 0*/;
-    }
-
     private boolean compareDate(String date) {
         Date selectedDate = null;
         Date minDate = null;
@@ -632,7 +616,6 @@ public class UserBookActivity extends AppCompatActivity {
                             if (compareDate(schedule_date)) {
                                 for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                                     if (compareTime(task.getResult().getDocuments().get(i).getString("time_depart"))) {
-                                        Toast.makeText(UserBookActivity.this, "compare time is true", Toast.LENGTH_SHORT).show();
                                         if (task.getResult().getDocuments().get(i).getString("time_depart").equals("12:00")) {
                                             TripSchedule transportCompany = new TripSchedule("12:00 NN");
                                             tripSchedulesTimeList.add(transportCompany);

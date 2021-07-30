@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.opustech.bookvan.R;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,17 +29,29 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.model.ChatMessage;
 import com.opustech.bookvan.adapters.chat.AdapterMessageChatRV;
+import com.opustech.bookvan.notification.APIService;
+import com.opustech.bookvan.notification.Client;
+import com.opustech.bookvan.notification.NotificationData;
+import com.opustech.bookvan.notification.NotificationSender;
+import com.opustech.bookvan.notification.RequestResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
+import cc.cloudist.acplibrary.ACProgressFlower;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class UserChatActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference conversationsReference;
+
+    private APIService apiService;
 
     private TextView chatStatusNone;
     private RecyclerView chatMessageList;
@@ -47,6 +61,8 @@ public class UserChatActivity extends AppCompatActivity {
 
     private AdapterMessageChatRV adapterMessageChatRV;
 
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +71,8 @@ public class UserChatActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         conversationsReference = firebaseFirestore.collection("conversations");
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         String currentUserId = firebaseAuth.getCurrentUser().getUid();
 
@@ -138,6 +156,7 @@ public class UserChatActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
+                                                            fetchToken(getIntent().getStringExtra("name"), message);
                                                             chatMessageList.smoothScrollToPosition(adapterMessageChatRV.getItemCount() - 1);
                                                             btnSendChat.setEnabled(true);
                                                         }
@@ -146,10 +165,43 @@ public class UserChatActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                }
-                else {
+                } else {
                     btnSendChat.setEnabled(true);
                 }
+            }
+        });
+    }
+
+    private void fetchToken(String name, String message) {
+        FirebaseFirestore.getInstance().collection("tokens")
+                .document(admin_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            sendNotification(task.getResult().getString("token"), "New Message from " + name, name + ": \"" + message + "\".");
+                        }
+                    }
+                });
+    }
+
+    private void sendNotification(String token, String title, String message) {
+        NotificationData notificationData = new NotificationData(title, message);
+        NotificationSender sender = new NotificationSender(notificationData, token);
+        apiService.sendNotification(sender).enqueue(new Callback<RequestResponse>() {
+            @Override
+            public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().success != 1) {
+                        Toast.makeText(UserChatActivity.this, "Request failed.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestResponse> call, Throwable t) {
+
             }
         });
     }

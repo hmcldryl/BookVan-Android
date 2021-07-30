@@ -271,15 +271,7 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
         hashMap.put("points", points);
         firebaseFirestore.collection("users")
                 .document(uid)
-                .update(hashMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-
-                        }
-                    }
-                });
+                .update(hashMap);
     }
 
     @Override
@@ -333,6 +325,6 @@ public class UserConfirmBookingScanActivity extends AppCompatActivity {
     }
 
     private double computePoints(double totalPrice) {
-        return 0.05 * totalPrice;
+        return 0.01 * totalPrice;
     }
 }

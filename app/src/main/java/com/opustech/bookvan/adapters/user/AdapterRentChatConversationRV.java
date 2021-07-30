@@ -50,7 +50,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference rentalsReference, partnersReference;
 
-    private String uid;
+    private String uid, name;
     private Context context;
 
     /**
@@ -60,9 +60,10 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
      * @param options
      */
 
-    public AdapterRentChatConversationRV(@NonNull FirestoreRecyclerOptions<Rental> options, String uid, Context context) {
+    public AdapterRentChatConversationRV(@NonNull FirestoreRecyclerOptions<Rental> options, String uid, String name, Context context) {
         super(options);
         this.uid = uid;
+        this.name = name;
         this.context = context;
     }
 
@@ -109,6 +110,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
                     Intent intent = new Intent(holder.itemView.getContext(), UserRentMessageActivity.class);
                     intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
                     intent.putExtra("status", model.getStatus());
+                    intent.putExtra("name", name);
                     holder.itemView.getContext().startActivity(intent);
                 }
             });
