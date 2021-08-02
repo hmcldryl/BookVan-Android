@@ -24,11 +24,17 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Rental;
 import com.opustech.bookvan.model.TransportCompany;
+import com.opustech.bookvan.notification.APIService;
+import com.opustech.bookvan.notification.Client;
+import com.opustech.bookvan.notification.Data;
+import com.opustech.bookvan.notification.NotificationSender;
+import com.opustech.bookvan.notification.RequestResponse;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,12 +43,17 @@ import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserRentActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, rentalsReference, partnersReference;
+
+    private APIService apiService;
 
     private TextInputLayout inputName,
             inputContactNumber,
@@ -70,6 +81,8 @@ public class UserRentActivity extends AppCompatActivity {
         usersReference = firebaseFirestore.collection("users");
         rentalsReference = firebaseFirestore.collection("rentals");
         partnersReference = firebaseFirestore.collection("partners");
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -230,6 +243,7 @@ public class UserRentActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
+                            fetchToken(name, name + " wants to rent a van for " + pickup_date + " " + pickup_time + " to " + dropoff_date + " " + dropoff_time);
                             dialog.dismiss();
                             enableInput();
                             Toast.makeText(UserRentActivity.this, "Success.", Toast.LENGTH_SHORT).show();
@@ -237,8 +251,7 @@ public class UserRentActivity extends AppCompatActivity {
                             intent.putExtra("rentalId", task.getResult().getId());
                             startActivity(intent);
                             finish();
-                        }
-                        else {
+                        } else {
                             dialog.dismiss();
                             enableInput();
                             Toast.makeText(UserRentActivity.this, "Failed." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -361,5 +374,51 @@ public class UserRentActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void fetchToken(String name, String message) {
+        partnersReference.document(transport_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                if (task.getResult().getString("admin_uid") != null)
+                                    FirebaseFirestore.getInstance().collection("tokens")
+                                            .document(task.getResult().getString("admin_uid"))
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        sendNotification(task.getResult().getString("token"), "New Rent from " + name, message);
+                                                    }
+                                                }
+                                            });
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void sendNotification(String token, String title, String message) {
+        Data data = new Data(title, message);
+        NotificationSender sender = new NotificationSender(data, token);
+        apiService.sendNotification(sender).enqueue(new Callback<RequestResponse>() {
+            @Override
+            public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().success != 1) {
+                        Toast.makeText(UserRentActivity.this, "Request failed.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

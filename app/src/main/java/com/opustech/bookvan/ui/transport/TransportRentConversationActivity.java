@@ -65,7 +65,7 @@ public class TransportRentConversationActivity extends AppCompatActivity {
                 .setQuery(query, Rental.class)
                 .build();
 
-        adapterTransportRentChatConversationRV = new AdapterTransportRentChatConversationRV(options, getIntent().getStringExtra("uid"), this);
+        adapterTransportRentChatConversationRV = new AdapterTransportRentChatConversationRV(options, getIntent().getStringExtra("uid"), getIntent().getStringExtra("name"), this);
         LinearLayoutManager manager = new LinearLayoutManager(TransportRentConversationActivity.this);
         manager.setReverseLayout(true);
         manager.setStackFromEnd(true);

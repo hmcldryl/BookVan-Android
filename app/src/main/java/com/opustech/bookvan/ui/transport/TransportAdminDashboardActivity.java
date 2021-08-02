@@ -72,6 +72,10 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     double allEarnings = 0.0;
     double allEarningsToday = 0.0;
 
+    String name = "";
+    String address = "";
+    String photo_url = "";
+
     @Override
     public void onBackPressed() {
         if (backPressed + TIME_INTERVAL > System.currentTimeMillis()) {
@@ -169,6 +173,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                 if (item.getItemId() == R.id.btnRentals) {
                     Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportRentConversationActivity.class);
                     intent.putExtra("uid", getCompanyUid());
+                    intent.putExtra("name", name);
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnSchedules) {
@@ -243,9 +248,9 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
                             if (value.exists()) {
-                                String name = value.getString("name");
-                                String address = value.getString("address");
-                                String photo_url = value.getString("photo_url");
+                                name = value.getString("name");
+                                address = value.getString("address");
+                                photo_url = value.getString("photo_url");
 
                                 if (photo_url != null) {
                                     if (!photo_url.isEmpty()) {

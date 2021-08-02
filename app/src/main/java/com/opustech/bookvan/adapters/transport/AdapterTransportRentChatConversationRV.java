@@ -44,7 +44,7 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference rentalsReference, usersReference;
 
-    private String uid;
+    private String uid, name;
     private Context context;
 
     /**
@@ -54,9 +54,10 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
      * @param options
      */
 
-    public AdapterTransportRentChatConversationRV(@NonNull FirestoreRecyclerOptions<Rental> options, String uid, Context context) {
+    public AdapterTransportRentChatConversationRV(@NonNull FirestoreRecyclerOptions<Rental> options, String uid, String name, Context context) {
         super(options);
         this.uid = uid;
+        this.name = name;
         this.context = context;
     }
 
@@ -110,6 +111,8 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
                 public void onClick(View view) {
                     Intent intent = new Intent(holder.itemView.getContext(), TransportRentMessageActivity.class);
                     intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
+                    intent.putExtra("userId", model.getUid());
+                    intent.putExtra("name", name);
                     intent.putExtra("referenceId", model.getReference_number());
                     intent.putExtra("transportId", getSnapshots().get(position).getTransport_uid());
                     intent.putExtra("status", model.getStatus());

@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -36,6 +37,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterRentChatMessageRV;
 import com.opustech.bookvan.model.RentChatMessage;
+import com.opustech.bookvan.notification.APIService;
+import com.opustech.bookvan.notification.Client;
+import com.opustech.bookvan.notification.Data;
+import com.opustech.bookvan.notification.NotificationSender;
+import com.opustech.bookvan.notification.RequestResponse;
 import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
 
 import java.text.SimpleDateFormat;
@@ -45,12 +51,17 @@ import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UserRentMessageActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, rentalsReference, partnersReference;
+
+    private APIService apiService;
 
     private TextView chatStatusNone;
     private RecyclerView chatMessageList;
@@ -70,6 +81,8 @@ public class UserRentMessageActivity extends AppCompatActivity {
         usersReference = firebaseFirestore.collection("users");
         rentalsReference = firebaseFirestore.collection("rentals");
         partnersReference = firebaseFirestore.collection("partners");
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
 
         inputChat = findViewById(R.id.inputChat);
         btnSendChat = findViewById(R.id.btnSendChat);
@@ -208,6 +221,7 @@ public class UserRentMessageActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if (task.isSuccessful()) {
+                                        fetchToken(getIntent().getStringExtra("uid"), getIntent().getStringExtra("name"), message);
                                         HashMap<String, Object> hashMap = new HashMap<>();
                                         hashMap.put("timestamp", timestamp);
                                         rentalsReference.document(getIntent().getStringExtra("rentalId"))
@@ -238,6 +252,40 @@ public class UserRentMessageActivity extends AppCompatActivity {
         }
     }
 
+    private void fetchToken(String uid, String name, String message) {
+        FirebaseFirestore.getInstance().collection("tokens")
+                .document(uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            sendNotification(task.getResult().getString("token"), "New Message from " + name, name + ": \"" + message + "\".");
+                        }
+                    }
+                });
+    }
+
+    private void sendNotification(String token, String title, String message) {
+        Data data = new Data(title, message);
+        NotificationSender sender = new NotificationSender(data, token);
+        apiService.sendNotification(sender).enqueue(new Callback<RequestResponse>() {
+            @Override
+            public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().success != 1) {
+                        Toast.makeText(UserRentMessageActivity.this, "Request failed.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -250,5 +298,5 @@ public class UserRentMessageActivity extends AppCompatActivity {
         adapterRentChatMessageRV.stopListening();
     }
 
-    
+
 }

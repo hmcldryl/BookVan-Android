@@ -146,6 +146,7 @@ public class UserChatActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if (task.isSuccessful()) {
+                                        fetchToken(getIntent().getStringExtra("name"), message);
                                         HashMap<String, Object> hashMap = new HashMap<>();
                                         hashMap.put("uid", currentUserId);
                                         hashMap.put("timestamp", timestamp);
@@ -155,7 +156,6 @@ public class UserChatActivity extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-                                                            fetchToken(getIntent().getStringExtra("name"), message);
                                                             chatMessageList.smoothScrollToPosition(adapterMessageChatRV.getItemCount() - 1);
                                                             btnSendChat.setEnabled(true);
                                                         }

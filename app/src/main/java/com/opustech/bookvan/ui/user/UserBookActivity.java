@@ -110,6 +110,8 @@ public class UserBookActivity extends AppCompatActivity {
     private double totalPrice = 0.00;
     private double totalCommission = 0.00;
 
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +176,7 @@ public class UserBookActivity extends AppCompatActivity {
         picker.setListener(new DatePickerListener() {
             @Override
             public void onDateSelected(DateTime dateSelected) {
-                if (compareDate(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate()))) {
+                if (compareDateInput(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate()))) {
                     schedule_date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate());
                 } else {
                     Toast.makeText(UserBookActivity.this, "Please select a later booking date.", Toast.LENGTH_SHORT).show();
@@ -381,7 +383,7 @@ public class UserBookActivity extends AppCompatActivity {
         }
     }
 
-    private boolean compareDate(String date) {
+    private boolean compareDateInput(String date) {
         Date selectedDate = null;
         Date minDate = null;
 
@@ -393,6 +395,34 @@ public class UserBookActivity extends AppCompatActivity {
         }
 
         return selectedDate.equals(minDate) || selectedDate.after(minDate);
+    }
+
+    private boolean compareDate(String date) {
+        Date selectedDate = null;
+        Date minDate = null;
+
+        try {
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
+            minDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return selectedDate.equals(minDate);
+    }
+
+    private boolean afterDate(String date) {
+        Date selectedDate = null;
+        Date minDate = null;
+
+        try {
+            selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(date);
+            minDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return selectedDate.after(minDate);
     }
 
     private boolean compareTime(String time) {
@@ -463,6 +493,7 @@ public class UserBookActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             dialog.dismiss();
                             Toast.makeText(UserBookActivity.this, "Success.", Toast.LENGTH_LONG).show();
+                            sendNotifToAdmin("New Booking", name + " has booked a trip from " + route_from + " to " + route_to + " on " + schedule_date + " " + schedule_time + ".");
                             sendNotification(token, "New Booking", name + " has booked a trip from " + route_from + " to " + route_to + " on " + schedule_date + " " + schedule_time + ".");
                             Intent intent = new Intent(UserBookActivity.this, UserBookingActivity.class);
                             startActivity(intent);
@@ -579,10 +610,11 @@ public class UserBookActivity extends AppCompatActivity {
                                     picker.setListener(new DatePickerListener() {
                                         @Override
                                         public void onDateSelected(DateTime dateSelected) {
-                                            if (compareDate(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate()))) {
+                                            if (compareDateInput(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate()))) {
                                                 schedule_date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate());
                                                 bookingTimeACT.clearListSelection();
                                                 bookingTime.getEditText().getText().clear();
+                                                Toast.makeText(UserBookActivity.this, schedule_date, Toast.LENGTH_SHORT).show();
                                                 loadScheduleTimeChips(task.getResult().getDocuments().get(position).getReference());
                                             } else {
                                                 bookingTimeACT.clearListSelection();
@@ -679,6 +711,20 @@ public class UserBookActivity extends AppCompatActivity {
         }
     }
 
+    private void sendNotifToAdmin(String name, String message) {
+        FirebaseFirestore.getInstance().collection("tokens")
+                .document(admin_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isComplete()) {
+                            sendNotification(task.getResult().getString("token"), name, message);
+                        }
+                    }
+                });
+    }
+
     private void fetchToken(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number) {
         partnersReference.document(transportUid)
                 .get()
@@ -687,10 +733,9 @@ public class UserBookActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             if (task.getResult() != null) {
-                                String admin_uid = task.getResult().getString("admin_uid");
-                                if (admin_uid != null)
+                                if (task.getResult().getString("admin_uid") != null)
                                     FirebaseFirestore.getInstance().collection("tokens")
-                                            .document(admin_uid)
+                                            .document(task.getResult().getString("admin_uid"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                 @Override
