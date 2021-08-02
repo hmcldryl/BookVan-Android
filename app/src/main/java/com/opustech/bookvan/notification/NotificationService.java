@@ -100,22 +100,6 @@ public class NotificationService extends FirebaseMessagingService {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (task.isSuccessful()) {
-                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                updateToken(task.getResult());
-                            }
-                        }
-                    }
-                });
-    }
-
-    @Override
     public void onNewToken(@NonNull String s) {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {

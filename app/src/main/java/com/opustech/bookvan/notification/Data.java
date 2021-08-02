@@ -1,9 +1,9 @@
 package com.opustech.bookvan.notification;
 
-public class NotificationData {
+public class Data {
     private String title, message;
 
-    public NotificationData(String title, String message) {
+    public Data(String title, String message) {
         this.title = title;
         this.message = message;
     }

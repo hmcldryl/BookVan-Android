@@ -1,11 +1,11 @@
 package com.opustech.bookvan.notification;
 
 public class NotificationSender {
-    public NotificationData notificationData;
+    public Data data;
     public String to;
 
-    public NotificationSender(NotificationData notificationData, String to) {
-        this.notificationData = notificationData;
+    public NotificationSender(Data data, String to) {
+        this.data = data;
         this.to = to;
     }
 

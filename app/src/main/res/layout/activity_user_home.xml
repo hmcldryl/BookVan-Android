@@ -42,13 +42,23 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <org.imaginativeworld.whynotimagecarousel.ImageCarousel
-                    android:id="@+id/carousel"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="275dp"
-                    app:autoPlay="true"
-                    app:autoPlayDelay="5000"
-                    app:showNavigationButtons="false" />
+                    android:layout_height="wrap_content">
+
+                    <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                        android:id="@+id/carousel"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:autoPlay="true"
+                        app:autoPlayDelay="5000"
+                        app:layout_constraintDimensionRatio="H,16:9"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:showNavigationButtons="false" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Space
                     android:layout_width="match_parent"
@@ -102,12 +112,12 @@
                         app:cardElevation="6dp">
 
                         <LinearLayout
-                            android:orientation="vertical"
-                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_margin="8dp"
                             android:background="@drawable/background_home_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:layout_width="50dp"
@@ -117,11 +127,11 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:text="Book"
+                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
+                                android:text="Book"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
-                                android:layout_height="wrap_content"/>
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -143,12 +153,12 @@
                         app:cardElevation="6dp">
 
                         <LinearLayout
-                            android:orientation="vertical"
-                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_margin="8dp"
                             android:background="@drawable/background_home_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:layout_width="50dp"
@@ -158,11 +168,11 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:text="Rent"
+                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
+                                android:text="Rent"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
-                                android:layout_height="wrap_content"/>
+                                android:textSize="16sp" />
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -183,12 +193,12 @@
                         app:cardElevation="6dp">
 
                         <LinearLayout
-                            android:orientation="vertical"
-                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:layout_margin="8dp"
                             android:background="@drawable/background_home_button"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <ImageView
                                 android:layout_width="50dp"
@@ -198,11 +208,11 @@
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:text="Partners"
+                                android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
+                                android:text="Partners"
                                 android:textColor="@color/white"
-                                android:textSize="16sp"
-                                android:layout_height="wrap_content"/>
+                                android:textSize="16sp" />
 
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>

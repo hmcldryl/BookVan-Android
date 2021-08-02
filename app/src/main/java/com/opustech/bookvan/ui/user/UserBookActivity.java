@@ -41,7 +41,7 @@ import com.opustech.bookvan.model.TransportCompany;
 import com.opustech.bookvan.model.TripSchedule;
 import com.opustech.bookvan.notification.APIService;
 import com.opustech.bookvan.notification.Client;
-import com.opustech.bookvan.notification.NotificationData;
+import com.opustech.bookvan.notification.Data;
 import com.opustech.bookvan.notification.NotificationSender;
 import com.opustech.bookvan.notification.RequestResponse;
 
@@ -711,8 +711,8 @@ public class UserBookActivity extends AppCompatActivity {
     }
 
     private void sendNotification(String token, String title, String message) {
-        NotificationData notificationData = new NotificationData(title, message);
-        NotificationSender sender = new NotificationSender(notificationData, token);
+        Data data = new Data(title, message);
+        NotificationSender sender = new NotificationSender(data, token);
         apiService.sendNotification(sender).enqueue(new Callback<RequestResponse>() {
             @Override
             public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {

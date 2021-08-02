@@ -38,6 +38,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
@@ -50,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -225,6 +227,26 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         showVanTransportStats();
         loadAnalytics(getMonthDates());
+
+        updateToken();
+    }
+
+    private void updateToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("token", task.getResult());
+                                FirebaseFirestore.getInstance().collection("tokens")
+                                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .set(hashMap);
+                            }
+                        }
+                    }
+                });
     }
 
     private void initializeDatePickerPickUp() {

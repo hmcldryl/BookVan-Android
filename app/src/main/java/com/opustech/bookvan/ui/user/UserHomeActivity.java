@@ -223,6 +223,26 @@ public class UserHomeActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        updateToken();
+    }
+
+    private void updateToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()) {
+                            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("token", task.getResult());
+                                FirebaseFirestore.getInstance().collection("tokens")
+                                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .set(hashMap);
+                            }
+                        }
+                    }
+                });
     }
 
     private void updateUi() {
