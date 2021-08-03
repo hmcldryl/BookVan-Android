@@ -74,4 +74,5 @@
     <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="android:fontFamily">@font/lato</item>
     </style>
+
 </resources>

@@ -4,9 +4,12 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -26,15 +29,20 @@ import java.util.Map;
 
 public class NotificationService extends FirebaseMessagingService {
     String title, message;
+    SharedPreferences prefs;
+    int count = 0;
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         Map<String, String> data = remoteMessage.getData();
 
         if (data.containsKey("title") && data.containsKey("message")) {
             title = data.get("title");
             message = data.get("message");
+            count = count + 1;
 
             Log.d("TEST", "TYPE: NOTIFICATION SENT FROM APP");
             Log.d("TEST", "TITLE: " + title);
@@ -42,12 +50,18 @@ public class NotificationService extends FirebaseMessagingService {
 
             String channelId = "activity_notification";
             Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound);
+
+            AudioAttributes attributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
+
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, channelId)
                             .setSmallIcon(R.drawable.ic_icon_book)
                             .setContentTitle(title)
                             .setContentText(message)
-                            .setSound(defaultSoundUri)
+                            .setNumber(count)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                             .setAutoCancel(true);
 
             NotificationManager notificationManager =
@@ -57,7 +71,9 @@ public class NotificationService extends FirebaseMessagingService {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel(channelId,
                         "Activity Notification",
-                        NotificationManager.IMPORTANCE_DEFAULT);
+                        NotificationManager.IMPORTANCE_HIGH);
+                channel.setSound(defaultSoundUri, attributes);
+                channel.setShowBadge(true);
                 notificationManager.createNotificationChannel(channel);
             }
 
@@ -73,12 +89,17 @@ public class NotificationService extends FirebaseMessagingService {
 
             String channelId = "system_notification";
             Uri defaultSoundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + getPackageName() + "/" + R.raw.notif_sound);
+
+            AudioAttributes attributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
+
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, channelId)
                             .setSmallIcon(R.drawable.ic_icon_book)
                             .setContentTitle(title)
                             .setContentText(message)
-                            .setSound(defaultSoundUri)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                             .setAutoCancel(true);
 
             NotificationManager notificationManager =
@@ -87,8 +108,9 @@ public class NotificationService extends FirebaseMessagingService {
             // Since android Oreo notification channel is needed.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel(channelId,
-                        "System Notification",
-                        NotificationManager.IMPORTANCE_DEFAULT);
+                        "Activity Notification",
+                        NotificationManager.IMPORTANCE_HIGH);
+                channel.setSound(defaultSoundUri, attributes);
                 notificationManager.createNotificationChannel(channel);
             }
 

@@ -71,6 +71,8 @@ public class UserRentActivity extends AppCompatActivity {
 
     private String transport_uid = "";
 
+    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -243,6 +245,7 @@ public class UserRentActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
                         if (task.isSuccessful()) {
+                            sendNotifToAdmin(name, name + " wants to rent a van for " + pickup_date + " " + pickup_time + " to " + dropoff_date + " " + dropoff_time);
                             fetchToken(name, name + " wants to rent a van for " + pickup_date + " " + pickup_time + " to " + dropoff_date + " " + dropoff_time);
                             dialog.dismiss();
                             enableInput();
@@ -371,6 +374,20 @@ public class UserRentActivity extends AppCompatActivity {
                                     transport_uid = selectedTransport.getUid();
                                 }
                             });
+                        }
+                    }
+                });
+    }
+
+    private void sendNotifToAdmin(String name, String message) {
+        FirebaseFirestore.getInstance().collection("tokens")
+                .document(admin_uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isComplete()) {
+                            sendNotification(task.getResult().getString("token"), name, message);
                         }
                     }
                 });

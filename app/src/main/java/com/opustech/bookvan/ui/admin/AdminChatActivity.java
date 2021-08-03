@@ -85,7 +85,6 @@ public class AdminChatActivity extends AppCompatActivity {
 
         adapterMessageChatAdminRV = new AdapterMessageChatAdminRV(options);
         LinearLayoutManager manager = new LinearLayoutManager(AdminChatActivity.this);
-        manager.setReverseLayout(true);
         manager.setStackFromEnd(true);
 
         chatStatusNone = findViewById(R.id.chatStatusNone);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
+import com.github.dewinjm.monthyearpicker.MonthYearPickerDialog;
+import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -35,10 +38,12 @@ import com.opustech.bookvan.ui.admin.AdminDashboardActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -52,16 +57,24 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     private CircleImageView headerUserPhoto, companyPhoto;
     private TextView headerUserName, headerUserEmail, headerUserAccountType, companyName, companyAddress,
             dashboardBookingsToday,
-            dashboardRentalsToday,
-            dashboardEarningsToday,
+            dashboardBookingsMonth,
             dashboardBookingsAllTime,
+            dashboardBookingsMonthSelect,
+            dashboardRentalsToday,
+            dashboardRentalsMonth,
             dashboardRentalsAllTime,
+            dashboardRentalsMonthSelect,
+            dashboardEarningsToday,
+            dashboardEarningsMonth,
             dashboardEarningsAllTime,
+            dashboardEarningsMonthSelect,
+            dateYear,
             today,
             todayDate;
     private CardView btnScanMode, btnQRMode;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private LinearLayout selectMonth;
 
     private NestedScrollView nestedScrollView;
     private SwipeRefreshLayout refreshLayout;
@@ -71,6 +84,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
 
     double allEarnings = 0.0;
     double allEarningsToday = 0.0;
+    double allEarningsMonth = 0.0;
 
     String name = "";
     String address = "";
@@ -119,7 +133,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 refreshLayout.setRefreshing(true);
-                loadAnalytics();
+                loadAnalytics(getMonthDates());
             }
         });
 
@@ -149,9 +163,18 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         dashboardBookingsToday = findViewById(R.id.dashboardBookingsToday);
         dashboardRentalsToday = findViewById(R.id.dashboardRentalsToday);
         dashboardEarningsToday = findViewById(R.id.dashboardEarningsToday);
+        dashboardBookingsMonth = findViewById(R.id.dashboardBookingsMonth);
+        dashboardRentalsMonth = findViewById(R.id.dashboardRentalsMonth);
+        dashboardEarningsMonth = findViewById(R.id.dashboardEarningsMonth);
         dashboardBookingsAllTime = findViewById(R.id.dashboardBookingsAllTime);
         dashboardRentalsAllTime = findViewById(R.id.dashboardRentalsAllTime);
         dashboardEarningsAllTime = findViewById(R.id.dashboardEarningsAllTime);
+        dashboardBookingsMonthSelect = findViewById(R.id.dashboardBookingsMonthSelect);
+        dashboardRentalsMonthSelect = findViewById(R.id.dashboardRentalsMonthSelect);
+        dashboardEarningsMonthSelect = findViewById(R.id.dashboardEarningsMonthSelect);
+
+        selectMonth = findViewById(R.id.selectMonth);
+        dateYear = findViewById(R.id.dateYear);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -213,9 +236,182 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        loadAnalytics();
+        loadAnalytics(getMonthDates());
 
         updateToken();
+    }
+
+    private List<String> getMonthDates() {
+        List<String> dateList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        for (int i = 0; i < maxDay; i++) {
+            calendar.set(Calendar.DAY_OF_MONTH, i + 1);
+            dateList.add(simpleDateFormat.format(calendar.getTime()));
+        }
+        return dateList;
+    }
+
+    private List<String> getMonthDatesSelect(int month, int year) {
+        List<String> dateList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.YEAR, year);
+        int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        for (int i = 0; i < maxDay; i++) {
+            calendar.set(Calendar.DAY_OF_MONTH, i + 1);
+            dateList.add(simpleDateFormat.format(calendar.getTime()));
+        }
+        return dateList;
+    }
+
+    private String getCurrentMonthYear() {
+        SimpleDateFormat format = new SimpleDateFormat("MMMM, yyyy", Locale.ENGLISH);
+        return format.format(Calendar.getInstance().getTime());
+    }
+
+    private String convertMonths(String monthYear) {
+        SimpleDateFormat format = new SimpleDateFormat("MMMM, yyyy", Locale.ENGLISH);
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("MM, yyyy", Locale.ENGLISH).parse(monthYear);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return format.format(date);
+    }
+
+    private void monthTotalTransactionSelect(List<String> monthDateList) {
+        bookingsReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                int bookings = 0;
+                                for (int i = 0; i < task.getResult().size(); i++) {
+                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                        bookings = bookings + 1;
+                                    }
+                                }
+                                dashboardBookingsMonthSelect.setText(String.valueOf(bookings));
+                                if (refreshLayout.isRefreshing()) {
+                                    refreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }
+                    }
+                });
+        firebaseFirestore.collection("rentals")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                int rentals = 0;
+                                for (int i = 0; i < task.getResult().size(); i++) {
+                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                        rentals = rentals + 1;
+                                    }
+                                }
+                                dashboardRentalsMonthSelect.setText(String.valueOf(rentals));
+                                if (refreshLayout.isRefreshing()) {
+                                    refreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void monthTotalEarningSelect(List<String> monthDateList) {
+        allEarningsMonth = 0.0;
+        bookingsReference.whereEqualTo("status", "done")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                if (!task.getResult().isEmpty()) {
+                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                        if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                            allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                        }
+                                    }
+                                    firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("status", "done")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().isEmpty()) {
+                                                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                                                        allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        dashboardEarningsMonthSelect.setText(String.format(Locale.ENGLISH, "%.2f", allEarningsMonth));
+                                                    } else {
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        Toast.makeText(TransportAdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                }
+                            }
+                        } else {
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
+                            Toast.makeText(TransportAdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void initializeDatePickerPickUp() {
+        dateYear.setText(getCurrentMonthYear());
+
+        selectMonth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int yearSelected;
+                int monthSelected;
+
+                Calendar calendar = Calendar.getInstance();
+                yearSelected = calendar.get(Calendar.YEAR);
+                monthSelected = calendar.get(Calendar.MONTH);
+
+                MonthYearPickerDialogFragment dialogFragment = MonthYearPickerDialogFragment
+                        .getInstance(monthSelected, yearSelected);
+
+                dialogFragment.show(getSupportFragmentManager(), null);
+
+                dialogFragment.setOnDateSetListener(new MonthYearPickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(int year, int monthOfYear) {
+                        dateYear.setText(convertMonths((monthOfYear + 1) + ", " + year));
+                        monthTotalTransactionSelect(getMonthDatesSelect(monthOfYear, year));
+                        monthTotalEarningSelect(getMonthDatesSelect(monthOfYear, year));
+                    }
+                });
+            }
+        });
     }
 
     private void updateToken() {
@@ -296,9 +492,11 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                 });
     }
 
-    private void loadAnalytics() {
+    private void loadAnalytics(List<String> monthDateList) {
         todayTotalTransaction(getCompanyUid());
         todayTotalEarning(getCompanyUid());
+        monthTotalTransaction(monthDateList);
+        monthTotalEarning(monthDateList);
         allTimeTotalTransaction(getCompanyUid());
         allTimeTotalEarning(getCompanyUid());
     }
@@ -372,6 +570,105 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                                             refreshLayout.setRefreshing(false);
                                                         }
                                                         dashboardEarningsToday.setText(String.format(Locale.ENGLISH, "%.2f", allEarnings));
+                                                    } else {
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        Toast.makeText(TransportAdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                }
+                            }
+                        } else {
+                            if (refreshLayout.isRefreshing()) {
+                                refreshLayout.setRefreshing(false);
+                            }
+                            Toast.makeText(TransportAdminDashboardActivity.this, "Update failed. Please retry.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void monthTotalTransaction(List<String> monthDateList) {
+        bookingsReference.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                int bookings = 0;
+                                for (int i = 0; i < task.getResult().size(); i++) {
+                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                        bookings = bookings + 1;
+                                    }
+                                }
+                                dashboardBookingsMonth.setText(String.valueOf(bookings));
+                                if (refreshLayout.isRefreshing()) {
+                                    refreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }
+                    }
+                });
+        firebaseFirestore.collection("rentals")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (!task.getResult().isEmpty()) {
+                                int rentals = 0;
+                                for (int i = 0; i < task.getResult().size(); i++) {
+                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                        rentals = rentals + 1;
+                                    }
+                                }
+                                dashboardRentalsMonth.setText(String.valueOf(rentals));
+                                if (refreshLayout.isRefreshing()) {
+                                    refreshLayout.setRefreshing(false);
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void monthTotalEarning(List<String> monthDateList) {
+        allEarningsMonth = 0.0;
+        bookingsReference.whereEqualTo("status", "done")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult() != null) {
+                                if (!task.getResult().isEmpty()) {
+                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                        if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                            allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                        }
+                                    }
+                                    firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("status", "done")
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult() != null) {
+                                                            if (!task.getResult().isEmpty()) {
+                                                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                                                    if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
+                                                                        allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                        if (refreshLayout.isRefreshing()) {
+                                                            refreshLayout.setRefreshing(false);
+                                                        }
+                                                        dashboardEarningsMonth.setText(String.format(Locale.ENGLISH, "%.2f", allEarningsMonth));
                                                     } else {
                                                         if (refreshLayout.isRefreshing()) {
                                                             refreshLayout.setRefreshing(false);

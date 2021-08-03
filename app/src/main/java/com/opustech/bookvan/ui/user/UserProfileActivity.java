@@ -193,7 +193,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void loadTotalBookings() {
         bookingsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
-                .whereIn("status", Arrays.asList("pending", "done", "cancelled"))
+                //.whereIn("status", Arrays.asList("confirmed", "done", "cancelled"))
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

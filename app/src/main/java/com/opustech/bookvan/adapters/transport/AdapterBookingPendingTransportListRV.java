@@ -27,6 +27,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
+import com.opustech.bookvan.notification.APIService;
+import com.opustech.bookvan.notification.Client;
+import com.opustech.bookvan.notification.Data;
+import com.opustech.bookvan.notification.NotificationSender;
+import com.opustech.bookvan.notification.RequestResponse;
+import com.opustech.bookvan.ui.user.UserBookActivity;
+import com.opustech.bookvan.ui.user.UserRentActivity;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -38,15 +45,22 @@ import java.util.Locale;
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingPendingTransportListRV.BookingHolder> {
 
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
+    private APIService apiService;
+
     private final String uid;
 
     private final Context context;
+
+    String transport_name = "";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -69,6 +83,8 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");
 
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+
         String name = model.getName();
         String reference_number = model.getReference_number();
         String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
@@ -88,7 +104,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
-                            String transport_name = task.getResult().getString("name");
+                            transport_name = task.getResult().getString("name");
                             holder.bookingTransportName.setText(transport_name);
                         }
                     }
@@ -235,7 +251,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                                 inputVanPlate.setEnabled(true);
                                 inputVanPlate.getEditText().setError("Please enter the van plate number.");
                             } else {
-                                updateBookingInfo(alertDialog, driver_name, van_number, position);
+                                updateBookingInfo(alertDialog, model.getUid(), driver_name, van_number, position, transport_name, reference_number);
                             }
                         }
                     });
@@ -253,7 +269,42 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         }
     }
 
-    private void updateBookingInfo(AlertDialog alertDialog, String driver_name, String van_number, int position) {
+    private void sendNotification(String token, String title, String message) {
+        Data data = new Data(title, message);
+        NotificationSender sender = new NotificationSender(data, token);
+        apiService.sendNotification(sender).enqueue(new Callback<RequestResponse>() {
+            @Override
+            public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {
+                if (response.code() == 200) {
+                    if (response.body().success != 1) {
+                        Toast.makeText(context, "Request failed.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void fetchToken(String uid, String transportName, String referenceNumber) {
+        FirebaseFirestore.getInstance().collection("tokens")
+                .document(uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            sendNotification(task.getResult().getString("token"), "Booking Confirmed", "Your booking, " + referenceNumber + ", is confirmed by " + transportName + ".");
+                        }
+                    }
+                });
+    }
+
+    private void updateBookingInfo(AlertDialog alertDialog, String uid, String driver_name, String van_number, int position, String transportName, String referenceNumber) {
+        fetchToken(uid, transportName, referenceNumber);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("driver_name", driver_name);
         hashMap.put("van_number", van_number);

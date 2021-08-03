@@ -258,6 +258,13 @@ public class TransportRentMessageActivity extends AppCompatActivity {
         chatMessageList.setLayoutManager(manager);
         chatMessageList.setAdapter(adapterRentChatMessageRV);
 
+        adapterRentChatMessageRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                chatMessageList.smoothScrollToPosition(adapterRentChatMessageRV.getItemCount());
+            }
+        });
+
         rentalsReference.document(getIntent().getStringExtra("rentalId"))
                 .collection("chat")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {

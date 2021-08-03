@@ -109,6 +109,13 @@ public class UserChatActivity extends AppCompatActivity {
         chatMessageList.setLayoutManager(manager);
         chatMessageList.setAdapter(adapterMessageChatRV);
 
+        adapterMessageChatRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                chatMessageList.smoothScrollToPosition(adapterMessageChatRV.getItemCount());
+            }
+        });
+
         conversationsReference.document(currentUserId)
                 .collection("chat")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
