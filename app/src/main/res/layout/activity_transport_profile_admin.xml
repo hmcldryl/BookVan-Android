@@ -84,8 +84,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato"
+                        android:justificationMode="inter_word"
                         android:text=""
-                        android:textAlignment="center"
                         android:textColor="#CC121212"
                         android:textSize="14sp" />
 
@@ -115,6 +115,7 @@
                         android:fontFamily="@font/lato"
                         android:singleLine="true"
                         android:text=""
+                        android:textAlignment="center"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
 
@@ -126,6 +127,7 @@
                         android:fontFamily="@font/lato"
                         android:singleLine="true"
                         android:text=""
+                        android:textAlignment="center"
                         android:textColor="@color/textColor"
                         android:textSize="14sp" />
                 </LinearLayout>

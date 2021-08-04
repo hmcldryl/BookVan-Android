@@ -270,8 +270,6 @@ public class AdminDashboardActivity extends AppCompatActivity {
     }
 
     private void initializeDatePickerPickUp() {
-        dateYear.setText(getCurrentMonthYear());
-
         selectMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

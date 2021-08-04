@@ -710,7 +710,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:fontFamily="@font/lato_black"
-                                    android:text="month_year"
+                                    android:text="Select Month and Year"
                                     android:textColor="#FFFFFF"
                                     android:textSize="24sp" />
 

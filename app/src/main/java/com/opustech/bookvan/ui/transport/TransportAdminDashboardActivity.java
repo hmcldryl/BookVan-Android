@@ -176,6 +176,8 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
         selectMonth = findViewById(R.id.selectMonth);
         dateYear = findViewById(R.id.dateYear);
 
+        initializeDatePickerPickUp();
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -385,8 +387,6 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
     }
 
     private void initializeDatePickerPickUp() {
-        dateYear.setText(getCurrentMonthYear());
-
         selectMonth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

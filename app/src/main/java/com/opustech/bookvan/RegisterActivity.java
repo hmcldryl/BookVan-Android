@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.model.ChatConversation;
 import com.opustech.bookvan.model.ChatMessage;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.rajat.pdfviewer.PdfViewerActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +45,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private TextInputLayout inputFirstName, inputLastName, inputEmail, inputContactNumber, inputPassword, inputConfirmPassword;
     private MaterialButton btnRegister;
-    private TextView btnLogin;
+    private TextView btnLogin, btnTermsAndConditions, btnPrivacyPolicy;
+    private MaterialCheckBox cbTerms, cbPolicy;
 
     private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
 
@@ -56,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         conversationsReference = firebaseFirestore.collection("conversations");
-        systemReference = firebaseFirestore.collection("system").document("notificationData");
+        systemReference = firebaseFirestore.collection("system").document("data");
 
         btnRegister = findViewById(R.id.btnRegister);
         btnLogin = findViewById(R.id.btnLogin);
@@ -67,6 +70,8 @@ public class RegisterActivity extends AppCompatActivity {
         inputContactNumber = findViewById(R.id.inputContactNumber);
         inputPassword = findViewById(R.id.inputPassword);
         inputConfirmPassword = findViewById(R.id.inputConfirmPassword);
+        btnTermsAndConditions = findViewById(R.id.btnTermsAndConditions);
+        btnPrivacyPolicy = findViewById(R.id.btnPrivacyPolicy);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +90,40 @@ public class RegisterActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        systemReference.get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            btnTermsAndConditions.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startActivity(PdfViewerActivity.Companion.launchPdfFromUrl(
+                                            RegisterActivity.this,
+                                            task.getResult().getString("doc_terms_and_conditions_link"),
+                                            "BookVan Terms and Conditions",
+                                            "",
+                                            false
+                                    ));
+                                }
+                            });
+
+                            btnPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startActivity(PdfViewerActivity.Companion.launchPdfFromUrl(
+                                            RegisterActivity.this,
+                                            task.getResult().getString("doc_privacy_policy_link"),
+                                            "BookVan Privacy Policy",
+                                            "",
+                                            false
+                                    ));
+                                }
+                            });
+                        }
+                    }
+                });
     }
 
     private void enableInput() {
@@ -134,6 +173,10 @@ public class RegisterActivity extends AppCompatActivity {
             enableInput();
             inputPassword.setError("Passwords does not match.");
             inputConfirmPassword.setError("Passwords does not match.");
+        } else if (!cbPolicy.isChecked()) {
+            cbPolicy.setError("You must read our privacy policy before continuing.");
+        } else if (!cbTerms.isChecked()) {
+            cbPolicy.setError("You must read and agree to our terms and conditions before continuing.");
         } else {
             // REGISTER NEW USER
             onRegister(name, contact_number, email, password);
