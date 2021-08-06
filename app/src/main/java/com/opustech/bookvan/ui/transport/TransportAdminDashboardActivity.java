@@ -343,7 +343,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                 if (!task.getResult().isEmpty()) {
                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                                         if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
-                                            allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                            allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                         }
                                     }
                                     firebaseFirestore.collection("rentals")
@@ -357,7 +357,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                                             if (!task.getResult().isEmpty()) {
                                                                 for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                                                                     if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
-                                                                        allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                        allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                                                     }
                                                                 }
                                                             }
@@ -548,7 +548,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                             if (task.getResult() != null) {
                                 if (!task.getResult().isEmpty()) {
                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                        allEarningsToday = allEarningsToday + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                        allEarningsToday = allEarningsToday + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                     }
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("transport_uid", uid)
@@ -562,7 +562,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                                         if (task.getResult() != null) {
                                                             if (!task.getResult().isEmpty()) {
                                                                 for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                                                    allEarningsToday = allEarningsToday + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                    allEarningsToday = allEarningsToday + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                                                 }
                                                             }
                                                         }
@@ -646,7 +646,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                 if (!task.getResult().isEmpty()) {
                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                                         if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
-                                            allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                            allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                         }
                                     }
                                     firebaseFirestore.collection("rentals")
@@ -660,7 +660,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                                             if (!task.getResult().isEmpty()) {
                                                                 for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
                                                                     if (monthDateList.contains(task.getResult().getDocuments().get(i).getString("timestamp_date"))) {
-                                                                        allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                        allEarningsMonth = allEarningsMonth + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                                                     }
                                                                 }
                                                             }
@@ -732,7 +732,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                             if (task.getResult() != null) {
                                 if (!task.getResult().isEmpty()) {
                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                        allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                        allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                     }
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("transport_uid", uid)
@@ -745,7 +745,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                                                         if (task.getResult() != null) {
                                                             if (!task.getResult().isEmpty()) {
                                                                 for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                                                    allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
+                                                                    allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("price").doubleValue();
                                                                 }
                                                             }
                                                         }
