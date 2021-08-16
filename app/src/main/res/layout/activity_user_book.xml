@@ -192,7 +192,7 @@
                 <com.github.jhonnyx2012.horizontalpicker.HorizontalPicker
                     android:id="@+id/bookingDatePicker"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -213,6 +213,7 @@
                         android:id="@+id/bookingTimeACT"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:completionThreshold="1"
                         android:fontFamily="@font/lato"
                         android:inputType="none"
                         android:singleLine="true"

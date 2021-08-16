@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -614,7 +615,6 @@ public class UserBookActivity extends AppCompatActivity {
                                                 schedule_date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate());
                                                 bookingTimeACT.clearListSelection();
                                                 bookingTime.getEditText().getText().clear();
-                                                Toast.makeText(UserBookActivity.this, schedule_date, Toast.LENGTH_SHORT).show();
                                                 loadScheduleTimeChips(task.getResult().getDocuments().get(position).getReference());
                                             } else {
                                                 bookingTimeACT.clearListSelection();
@@ -676,6 +676,17 @@ public class UserBookActivity extends AppCompatActivity {
                             }
                             adapterDropdownScheduleTime = new AdapterDropdownScheduleTime(UserBookActivity.this, tripSchedulesTimeList);
                             bookingTimeACT.setAdapter(adapterDropdownScheduleTime);
+                            bookingTimeACT.setThreshold(1);
+
+                            TripSchedule selectedTime = adapterDropdownScheduleTime.getItem(0);
+                            bookingTimeACT.setText(convertDate12Hr(selectedTime.getTime_depart()));
+
+                            bookingTimeACT.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    bookingTime.getEditText().getText().clear();
+                                }
+                            });
                             bookingTimeACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

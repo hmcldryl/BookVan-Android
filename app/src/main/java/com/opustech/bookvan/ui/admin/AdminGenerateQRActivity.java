@@ -122,7 +122,8 @@ public class AdminGenerateQRActivity extends AppCompatActivity {
 
     private RenderOption renderQR(String content) {
         RenderOption renderOption = new RenderOption();
-        renderOption.setContent(encryptString(content)); // content to encode
+        //renderOption.setContent(encryptString(content)); // content to encode
+        renderOption.setContent(content); // content to encode
         renderOption.setSize(500);
         renderOption.setRoundedPatterns(true);
         renderOption.setClearBorder(true);
