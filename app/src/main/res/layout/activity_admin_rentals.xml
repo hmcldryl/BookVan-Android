@@ -20,28 +20,22 @@
         app:titleTextAppearance="@style/ToolbarTitleTextAppearance"
         app:titleTextColor="#FFFFFF" />
 
-    <RelativeLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        style="@style/Widget.MaterialComponents.TabLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/textColor"
+        app:tabTextAppearance="@style/TabTextAppearance"
+        app:tabTextColor="#99121212" />
 
-        <TextView
-            android:id="@+id/rentalsStatusNone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:drawableTop="@drawable/ic_icon_sad_100"
-            android:fontFamily="@font/lato"
-            android:text="No rentals found."
-            android:textColor="@color/textColor"
-            android:textSize="16sp"
-            android:visibility="visible" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rentalsList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-
-    </RelativeLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_body"
+        android:orientation="horizontal" />
 
 </LinearLayout>

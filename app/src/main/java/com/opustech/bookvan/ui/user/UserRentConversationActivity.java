@@ -1,32 +1,48 @@
 package com.opustech.bookvan.ui.user;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.view.View;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
+import com.opustech.bookvan.adapters.transport.RentalsTransportPagerAdapter;
 import com.opustech.bookvan.adapters.user.AdapterRentChatConversationRV;
+import com.opustech.bookvan.adapters.user.RentalsPagerAdapter;
 import com.opustech.bookvan.model.Rental;
+import com.opustech.bookvan.ui.user.UserRentConversationActivity;
+
+import java.util.Arrays;
 
 public class UserRentConversationActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference usersReference, rentalsReference, partnersReference;
+    private CollectionReference usersReference, partnersReference, rentalsReference;
 
-    private RecyclerView rentChatList;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
 
-    private AdapterRentChatConversationRV adapterRentConversationRV;
+    private RentalsPagerAdapter rentalsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +52,14 @@ public class UserRentConversationActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
-        rentalsReference = firebaseFirestore.collection("rentals");
         partnersReference = firebaseFirestore.collection("partners");
-
-        rentChatList = findViewById(R.id.rentChatList);
+        rentalsReference = firebaseFirestore.collection("rentals");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Rent-a-Van");
-        getSupportActionBar().setSubtitle("View Your Rent Transactions");
+        getSupportActionBar().setTitle("Rentals");
+        getSupportActionBar().setSubtitle("View Rental Transactions");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,45 +68,126 @@ public class UserRentConversationActivity extends AppCompatActivity {
             }
         });
 
-        initList();
-    }
+        viewPager = findViewById(R.id.viewPager);
+        tabLayout = findViewById(R.id.tabLayout);
 
-    private void initList() {
-        Query query = rentalsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
-                .orderBy("timestamp", Query.Direction.ASCENDING);
+        rentalsPagerAdapter = new RentalsPagerAdapter(this);
+        viewPager.setAdapter(rentalsPagerAdapter);
 
-        FirestoreRecyclerOptions<Rental> options = new FirestoreRecyclerOptions.Builder<Rental>()
-                .setQuery(query, Rental.class)
-                .build();
-
-        adapterRentConversationRV = new AdapterRentChatConversationRV(options, firebaseAuth.getCurrentUser().getUid(), getIntent().getStringExtra("name"), this);
-        LinearLayoutManager manager = new LinearLayoutManager(UserRentConversationActivity.this);
-        manager.setReverseLayout(true);
-        manager.setStackFromEnd(true);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, manager.getOrientation());
-
-        rentChatList.setHasFixedSize(true);
-        rentChatList.setLayoutManager(manager);
-        rentChatList.addItemDecoration(dividerItemDecoration);
-        rentChatList.setAdapter(adapterRentConversationRV);
-
-        adapterRentConversationRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
-            public void onItemRangeInserted(int positionStart, int itemCount) {
-                rentChatList.smoothScrollToPosition(adapterRentConversationRV.getItemCount());
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 0:
+                        tab.setText("Pending");
+                        updatePendingListTabBadge(tab);
+                        break;
+                    case 1:
+                        tab.setText("Confirmed");
+                        updateConfirmedListTabBadge(tab);
+                        break;
+                    case 2:
+                        tab.setText("Cancelled");
+                        updateCancelledListTabBadge(tab);
+                        break;
+                    case 3:
+                        tab.setText("History");
+                        updateHistoryListTabBadge(tab);
+                        break;
+                }
             }
-        });
+        }).attach();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapterRentConversationRV.startListening();
+    private void updateConfirmedListTabBadge(TabLayout.Tab tab) {
+        rentalsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
+                .whereEqualTo("status", "confirmed")
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserRentConversationActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(UserRentConversationActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(2);
+                            int size = value.size();
+                            if (size > 0) {
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
+                            }
+                        }
+                    }
+                });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapterRentConversationRV.stopListening();
+    private void updatePendingListTabBadge(TabLayout.Tab tab) {
+        rentalsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
+                .whereEqualTo("status", "pending")
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserRentConversationActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(UserRentConversationActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(2);
+                            int size = value.size();
+                            if (size > 0) {
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void updateCancelledListTabBadge(TabLayout.Tab tab) {
+        rentalsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
+                .whereEqualTo("status", "cancelled")
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserRentConversationActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(UserRentConversationActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(3);
+                            int size = value.size();
+                            if (size > 0) {
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void updateHistoryListTabBadge(TabLayout.Tab tab) {
+        rentalsReference.whereEqualTo("uid", firebaseAuth.getCurrentUser().getUid())
+                .whereIn("status", Arrays.asList("cancelled", "done"))
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (value != null) {
+                            BadgeDrawable badgeDrawable = tab.getOrCreateBadge();
+                            badgeDrawable.setBackgroundColor(ContextCompat.getColor(UserRentConversationActivity.this, R.color.colorBadgeBackground));
+                            badgeDrawable.setBadgeTextColor(ContextCompat.getColor(UserRentConversationActivity.this, R.color.white));
+                            badgeDrawable.setMaxCharacterCount(3);
+                            int size = value.size();
+                            if (size > 0) {
+                                badgeDrawable.setNumber(size);
+                                badgeDrawable.setVisible(true);
+                            } else if (size == 0) {
+                                badgeDrawable.setVisible(false);
+                            }
+                        }
+                    }
+                });
     }
 }

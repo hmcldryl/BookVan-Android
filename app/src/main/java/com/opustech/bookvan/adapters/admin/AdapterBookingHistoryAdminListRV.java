@@ -85,7 +85,7 @@ public class AdapterBookingHistoryAdminListRV extends FirestoreRecyclerAdapter<B
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(context)
+                                Glide.with(context.getApplicationContext())
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }

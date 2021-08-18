@@ -46,7 +46,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private String uid;
+    private final String uid;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -188,8 +188,8 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                         String name = task.getResult().getString("name");
                         if (name != null) {
                             if (!name.isEmpty()) {
-                                String displayMessage = name + " set the rent fee to " + holder.itemView.getContext().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(message)) + ".";
-                                holder.systemMessage.setText(displayMessage);
+                                //String displayMessage = name + " set the rent fee to " + holder.itemView.getContext().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(message)) + ".";
+                                holder.systemMessage.setText(message);
                             }
                         }
                     }

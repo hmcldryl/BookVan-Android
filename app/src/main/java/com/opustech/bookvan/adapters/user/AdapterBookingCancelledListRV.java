@@ -78,7 +78,7 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(holder.itemView.getContext())
+                                Glide.with(holder.itemView.getContext().getApplicationContext())
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }

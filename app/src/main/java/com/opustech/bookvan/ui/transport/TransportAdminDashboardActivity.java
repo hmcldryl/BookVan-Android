@@ -34,12 +34,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.AboutActivity;
 import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.ui.admin.AdminDashboardActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -196,7 +194,7 @@ public class TransportAdminDashboardActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnRentals) {
-                    Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportRentConversationActivity.class);
+                    Intent intent = new Intent(TransportAdminDashboardActivity.this, TransportAdminRentalsActivity.class);
                     intent.putExtra("uid", getCompanyUid());
                     intent.putExtra("name", name);
                     startActivity(intent);

@@ -60,7 +60,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
         String timestamp = model.getTimestamp();
 
         if (type.equals("user_message")) {
-            if (!messageUid.equals(uid)) {
+            if (messageUid.equals(uid)) {
                 holder.sender.setVisibility(View.VISIBLE);
                 holder.senderChatMessage.setText(message);
                 usersReference.document(messageUid)
@@ -71,7 +71,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                             String photo_url = task.getResult().getString("photo_url");
                             if (photo_url != null) {
                                 if (!photo_url.isEmpty()) {
-                                    Glide.with(holder.itemView.getContext())
+                                    Glide.with(holder.itemView.getContext().getApplicationContext())
                                             .load(photo_url)
                                             .into(holder.senderPhoto);
                                 }
@@ -90,7 +90,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                             String photo_url = task.getResult().getString("photo_url");
                             if (photo_url != null) {
                                 if (!photo_url.isEmpty()) {
-                                    Glide.with(holder.itemView.getContext())
+                                    Glide.with(holder.itemView.getContext().getApplicationContext())
                                             .load(photo_url)
                                             .into(holder.receiverPhoto);
                                 }
@@ -103,7 +103,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
             try {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
                 String outputText = new PrettyTime().format(simpleDateFormat.parse(timestamp));
-                if (!messageUid.equals(uid)) {
+                if (messageUid.equals(uid)) {
                     holder.senderChatTimestamp.setText(outputText);
                 } else {
                     holder.receiverChatTimestamp.setText(outputText);
@@ -120,8 +120,8 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                         String name = task.getResult().getString("name");
                         if (name != null) {
                             if (!name.isEmpty()) {
-                                String displayMessage = name + " set the rent fee to " + holder.itemView.getContext().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(message)) + ".";
-                                holder.systemMessage.setText(displayMessage);
+                                //String displayMessage = name + " set the rent fee to " + holder.itemView.getContext().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(message)) + ".";
+                                holder.systemMessage.setText(message);
                             }
                         }
                     }

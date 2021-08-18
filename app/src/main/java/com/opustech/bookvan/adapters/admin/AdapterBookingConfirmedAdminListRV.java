@@ -82,7 +82,7 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(context)
+                                Glide.with(context.getApplicationContext())
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }

@@ -42,8 +42,6 @@ public class AdapterMessageListRV extends FirestoreRecyclerAdapter<ChatConversat
     private CollectionReference usersReference;
     private CollectionReference conversationsReference;
 
-    private final String admin_uid = "yEali5UosERXD1wizeJGN87ffff2";
-
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -77,7 +75,7 @@ public class AdapterMessageListRV extends FirestoreRecyclerAdapter<ChatConversat
                         holder.customerName.setText(name);
                         if (photo_url != null) {
                             if (!photo_url.isEmpty()) {
-                                Glide.with(holder.itemView.getContext())
+                                Glide.with(holder.itemView.getContext().getApplicationContext())
                                         .load(photo_url)
                                         .into(holder.customerPhoto);
                             }

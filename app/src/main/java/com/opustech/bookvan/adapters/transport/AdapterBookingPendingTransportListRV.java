@@ -56,9 +56,9 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
 
     private APIService apiService;
 
-    private final String uid;
+    private String uid;
 
-    private final Context context;
+    private Context context;
 
     String transport_name = "";
 
@@ -77,7 +77,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
-        holder.itemNumber.setText(String.valueOf(position + 1));
+        holder.itemNumber.setText(String.valueOf(holder.getAdapterPosition() + 1));
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
@@ -206,7 +206,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                                             HashMap<String, Object> hashMap = new HashMap<>();
                                             hashMap.put("status", "cancelled");
                                             hashMap.put("remarks", remarks);
-                                            getSnapshots().getSnapshot(position)
+                                            getSnapshots().getSnapshot(holder.getAdapterPosition())
                                                     .getReference()
                                                     .update(hashMap)
                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -251,7 +251,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                                 inputVanPlate.setEnabled(true);
                                 inputVanPlate.getEditText().setError("Please enter the van plate number.");
                             } else {
-                                updateBookingInfo(alertDialog, model.getUid(), driver_name, van_number, position, transport_name, reference_number);
+                                updateBookingInfo(alertDialog, model.getUid(), driver_name, van_number, holder.getAdapterPosition(), transport_name, reference_number);
                             }
                         }
                     });

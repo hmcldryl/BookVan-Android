@@ -165,7 +165,7 @@
             android:name=".ui.transport.TransportAdminBookingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportRentConversationActivity"
+            android:name=".ui.transport.TransportAdminRentalsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.transport.TransportRentMessageActivity"

@@ -29,7 +29,7 @@ public class AdapterTransportScheduleListRV extends FirestoreRecyclerAdapter<Sch
 
     private FirebaseFirestore firebaseFirestore;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

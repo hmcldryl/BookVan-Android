@@ -1,16 +1,11 @@
 package com.opustech.bookvan.adapters.admin;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,9 +15,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,12 +25,8 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<Booking, AdapterBookingPendingAdminListRV.BookingHolder> {
@@ -94,7 +82,7 @@ public class AdapterBookingPendingAdminListRV extends FirestoreRecyclerAdapter<B
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
                                 if (!customerPhoto.isEmpty()) {
-                                    Glide.with(context)
+                                    Glide.with(context.getApplicationContext())
                                             .load(customerPhoto)
                                             .into(holder.customerPhoto);
                                 }

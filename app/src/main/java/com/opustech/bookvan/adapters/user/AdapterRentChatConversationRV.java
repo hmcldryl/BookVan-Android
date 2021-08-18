@@ -50,8 +50,9 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference rentalsReference, partnersReference;
 
-    private String uid, name;
-    private Context context;
+    private final String uid;
+    private final String name;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

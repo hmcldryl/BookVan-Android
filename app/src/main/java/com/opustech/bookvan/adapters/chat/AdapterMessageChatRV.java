@@ -72,7 +72,7 @@ public class AdapterMessageChatRV extends FirestoreRecyclerAdapter<ChatMessage, 
                     if (photo_url != null) {
                         if (!photo_url.isEmpty()) {
                             if (!uid.equals(admin_uid)) {
-                                Glide.with(holder.itemView.getContext())
+                                Glide.with(holder.itemView.getContext().getApplicationContext())
                                         .load(photo_url)
                                         .into(holder.senderPhoto);
                             } else {

@@ -197,6 +197,7 @@ public class UserHomeActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.btnRentals) {
                     Intent intent = new Intent(UserHomeActivity.this, UserRentConversationActivity.class);
+                    intent.putExtra("uid", firebaseAuth.getCurrentUser().getUid());
                     intent.putExtra("name", name);
                     startActivity(intent);
                 }

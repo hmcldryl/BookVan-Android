@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_margin="8dp"
+    android:orientation="horizontal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="40dp"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/transportPhoto"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Space
+        android:layout_width="8dp"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/transportName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/lato"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+
+</LinearLayout>

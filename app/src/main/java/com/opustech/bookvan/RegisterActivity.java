@@ -72,6 +72,8 @@ public class RegisterActivity extends AppCompatActivity {
         inputConfirmPassword = findViewById(R.id.inputConfirmPassword);
         btnTermsAndConditions = findViewById(R.id.btnTermsAndConditions);
         btnPrivacyPolicy = findViewById(R.id.btnPrivacyPolicy);
+        cbPolicy = findViewById(R.id.cbPolicy);
+        cbTerms = findViewById(R.id.cbTerms);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override

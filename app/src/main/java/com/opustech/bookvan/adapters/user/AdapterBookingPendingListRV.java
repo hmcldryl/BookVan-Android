@@ -51,8 +51,8 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private final Context context;
-    Activity someActivity;
+    private Context context;
+    private Activity activity;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -61,15 +61,15 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
      * @param options
      */
 
-    public AdapterBookingPendingListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context, Activity someActivity) {
+    public AdapterBookingPendingListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context, Activity activity) {
         super(options);
         this.context = context;
-        this.someActivity = someActivity;
+        this.activity = activity;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
-        holder.itemNumber.setText(String.valueOf(position + 1));
+        holder.itemNumber.setText(String.valueOf(holder.getAdapterPosition() + 1));
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
@@ -100,10 +100,10 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && someActivity.isDestroyed()) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && activity.isDestroyed()) {
                                     return;
                                 }
-                                Glide.with(context)
+                                Glide.with(context.getApplicationContext())
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }
@@ -170,7 +170,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.btnCancelBooking) {
-                            cancelBooking(position, reference_number);
+                            cancelBooking(holder.getAdapterPosition(), reference_number);
                         }
                         return false;
                     }

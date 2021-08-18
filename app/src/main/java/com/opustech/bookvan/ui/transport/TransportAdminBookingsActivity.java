@@ -52,6 +52,7 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Bookings");
+        getSupportActionBar().setSubtitle("View Booking Transactions");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +145,7 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
 
     private void updateCancelledListTabBadge(TabLayout.Tab tab) {
         bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
-                .whereIn("status", Arrays.asList("done", "cancelled"))
+                .whereEqualTo("status", "cancelled")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -167,7 +168,7 @@ public class TransportAdminBookingsActivity extends AppCompatActivity {
 
     private void updateHistoryListTabBadge(TabLayout.Tab tab) {
         bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
-                .whereIn("status", Arrays.asList("done", "done"))
+                .whereIn("status", Arrays.asList("cancelled", "done"))
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

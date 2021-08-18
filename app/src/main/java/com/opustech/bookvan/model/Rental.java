@@ -14,6 +14,7 @@ public class Rental {
             dropoff_date,
             dropoff_time,
             status,
+            remarks,
             timestamp_date,
             timestamp;
     double price, commission;
@@ -140,6 +141,22 @@ public class Rental {
 
     public void setDropoff_time(String dropoff_time) {
         this.dropoff_time = dropoff_time;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getTimestamp_date() {
+        return timestamp_date;
+    }
+
+    public void setTimestamp_date(String timestamp_date) {
+        this.timestamp_date = timestamp_date;
     }
 
     public String getStatus() {

@@ -34,7 +34,7 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private final Context context;
+    private Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -83,7 +83,7 @@ public class AdapterBookingConfirmedTransportListRV extends FirestoreRecyclerAda
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(context)
+                                Glide.with(context.getApplicationContext())
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }

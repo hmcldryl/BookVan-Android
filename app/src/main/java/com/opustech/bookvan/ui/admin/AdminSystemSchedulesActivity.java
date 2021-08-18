@@ -46,7 +46,7 @@ public class AdminSystemSchedulesActivity extends AppCompatActivity {
     private MaterialButton btnAddRoute;
     private RecyclerView systemScheduleList;
 
-    private double price = 0.00;
+    private final double price = 0.00;
 
     private AdapterAdminSystemScheduleListRV adapterAdminSystemScheduleListRV;
 

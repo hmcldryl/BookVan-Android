@@ -1,16 +1,13 @@
 package com.opustech.bookvan.adapters.transport;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +21,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.TripSchedule;
 
 import java.text.ParseException;
@@ -104,7 +100,7 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
                                     .themeColor(context.getResources().getColor(R.color.white))
                                     .fadeColor(Color.DKGRAY).build();
                             dialog.show();
-                            getSnapshots().getSnapshot(position).getReference()
+                            getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference()
                                     .delete()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override

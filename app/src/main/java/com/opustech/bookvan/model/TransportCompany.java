@@ -13,6 +13,12 @@ public class TransportCompany {
         this.name = name;
     }
 
+    public TransportCompany(String uid, String name, String photo_url) {
+        this.uid = uid;
+        this.name = name;
+        this.photo_url = photo_url;
+    }
+
     public TransportCompany(String uid, String name, String description, String address, String email, String website, String photo_url, String banner_url) {
         this.uid = uid;
         this.name = name;

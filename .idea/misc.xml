@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_admin_bookings.xml" value="0.2046875" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_admin_rentals.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_register.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_transport_admin_rentals.xml" value="0.2046875" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_transport_rentals.xml" value="0.17777777777777778" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_user_home.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_user_rent_conversation.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/booking_transport_cancelled_item_layout.xml" value="0.17777777777777778" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_rentals_cancelled_transport.xml" value="0.2046875" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_rentals_confirmed_transport.xml" value="0.2046875" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_rentals_history_transport.xml" value="0.2046875" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_rentals_pending_transport.xml" value="0.2046875" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rent_chat_conversation_transport_item_layout.xml" value="0.17777777777777778" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_admin_cancelled_item_layout.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_admin_confirmed_item_layout.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_admin_history_item_layout.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_admin_pending_item_layout.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_transport_cancelled_item_layout.xml" value="0.22" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_transport_confirmed_item_layout.xml" value="0.17777777777777778" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_transport_history_item_layout.xml" value="0.17777777777777778" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_transport_pending_item_layout.xml" value="0.17777777777777778" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_user_cancelled_item_layout.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_user_confirmed_item_layout.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_user_history_item_layout.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_user_pending_item_layout.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/route_spinner_dropdown_item.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/transport_spinner_dropdown_item.xml" value="0.17314814814814813" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

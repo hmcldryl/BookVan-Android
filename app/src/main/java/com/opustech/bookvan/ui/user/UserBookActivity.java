@@ -36,6 +36,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
 import com.opustech.bookvan.adapters.user.AdapterDropdownScheduleTime;
+import com.opustech.bookvan.adapters.user.AdapterDropdownTransportCompany;
 import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.TransportCompany;
@@ -91,13 +92,14 @@ public class UserBookActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton btnBook;
     private AutoCompleteTextView inputVanTransportACT, bookingRouteACT, bookingTimeACT;
 
+    private AdapterDropdownTransportCompany adapterDropdownTransportCompany;
     private AdapterDropdownSchedule adapterDropdownSchedule;
     private AdapterDropdownScheduleTime adapterDropdownScheduleTime;
     private ArrayList<Schedule> routeArray;
     private ArrayList<TripSchedule> tripSchedulesTimeList;
 
     private String transportUid = "";
-    private String token = "";
+    private final String token = "";
     private String route_from = "";
     private String route_to = "";
     private String schedule_date = "";
@@ -171,6 +173,7 @@ public class UserBookActivity extends AppCompatActivity {
         });
 
         picker.showTodayButton(false)
+                .setOffset(3)
                 .init();
         picker.setDate(new DateTime());
         schedule_date = getCurrentDate();
@@ -180,6 +183,7 @@ public class UserBookActivity extends AppCompatActivity {
                 if (compareDateInput(new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate()))) {
                     schedule_date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(dateSelected.toDate());
                 } else {
+                    picker.setDate(new DateTime());
                     Toast.makeText(UserBookActivity.this, "Please select a later booking date.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -188,6 +192,30 @@ public class UserBookActivity extends AppCompatActivity {
         bookingCountAdult.getEditText().setText((String.valueOf(countAdult)));
         bookingCountChild.getEditText().setText((String.valueOf(countChild)));
         bookingCountSpecial.getEditText().setText((String.valueOf(countSpecial)));
+
+        bookingTimeACT.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!bookingTimeACT.getText().toString().isEmpty()) {
+                    bookingTime.setEndIconOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            bookingTimeACT.getText().clear();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         addAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -508,14 +536,14 @@ public class UserBookActivity extends AppCompatActivity {
                 });
     }
 
-    private void populateVanTransportList(String route) {
+    /*private void populateVanTransportList(String route) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(getResources().getColor(R.color.white))
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
-        if (route.toLowerCase().equals("north")) {
+        if (route.equalsIgnoreCase("north")) {
             partnersReference.whereEqualTo("route_north", true)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -545,7 +573,7 @@ public class UserBookActivity extends AppCompatActivity {
                             }
                         }
                     });
-        } else if (route.toLowerCase().equals("south")) {
+        } else if (route.equalsIgnoreCase("south")) {
             partnersReference.whereEqualTo("route_south", true)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -558,6 +586,74 @@ public class UserBookActivity extends AppCompatActivity {
                                 }
                                 ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(UserBookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
                                 inputVanTransportACT.setAdapter(vanTransportAdapter);
+                                inputVanTransportACT.setThreshold(1);
+                                inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        bookingRoute.getEditText().getText().clear();
+                                        bookingRouteACT.clearListSelection();
+                                        TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
+                                        transportUid = selectedTransport.getUid();
+                                        populateRouteList(transportUid);
+                                    }
+                                });
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+        }
+    }*/
+
+    private void populateVanTransportList(String route) {
+        final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
+                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                .themeColor(getResources().getColor(R.color.white))
+                .fadeColor(Color.DKGRAY).build();
+        dialog.show();
+        ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
+        if (route.equalsIgnoreCase("north")) {
+            partnersReference.whereEqualTo("route_north", true)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"), task.getResult().getDocuments().get(i).getString("photo_url"));
+                                    vanTransportList.add(i, transportCompany);
+                                }
+                                adapterDropdownTransportCompany = new AdapterDropdownTransportCompany(UserBookActivity.this, vanTransportList);
+                                inputVanTransportACT.setAdapter(adapterDropdownTransportCompany);
+                                inputVanTransportACT.setThreshold(1);
+                                inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                        bookingRouteACT.clearListSelection();
+                                        bookingRoute.getEditText().getText().clear();
+                                        bookingTimeACT.clearListSelection();
+                                        bookingTime.getEditText().getText().clear();
+                                        TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
+                                        transportUid = selectedTransport.getUid();
+                                        populateRouteList(transportUid);
+                                    }
+                                });
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+        } else if (route.equalsIgnoreCase("south")) {
+            partnersReference.whereEqualTo("route_south", true)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                    TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"), task.getResult().getDocuments().get(i).getString("photo_url"));
+                                    vanTransportList.add(i, transportCompany);
+                                }
+                                adapterDropdownTransportCompany = new AdapterDropdownTransportCompany(UserBookActivity.this, vanTransportList);
+                                inputVanTransportACT.setAdapter(adapterDropdownTransportCompany);
                                 inputVanTransportACT.setThreshold(1);
                                 inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
@@ -678,8 +774,10 @@ public class UserBookActivity extends AppCompatActivity {
                             bookingTimeACT.setAdapter(adapterDropdownScheduleTime);
                             bookingTimeACT.setThreshold(1);
 
-                            TripSchedule selectedTime = adapterDropdownScheduleTime.getItem(0);
-                            bookingTimeACT.setText(convertDate12Hr(selectedTime.getTime_depart()));
+                            if (adapterDropdownScheduleTime.getCount() > 0) {
+                                TripSchedule selectedTime = adapterDropdownScheduleTime.getItem(0);
+                                bookingTimeACT.setText(convertDate12Hr(selectedTime.getTime_depart()));
+                            }
 
                             bookingTimeACT.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -687,6 +785,7 @@ public class UserBookActivity extends AppCompatActivity {
                                     bookingTime.getEditText().getText().clear();
                                 }
                             });
+
                             bookingTimeACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

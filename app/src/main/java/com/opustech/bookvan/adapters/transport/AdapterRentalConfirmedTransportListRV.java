@@ -30,8 +30,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Rental;
 import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
-import com.opustech.bookvan.ui.user.UserRentMessageActivity;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -39,12 +42,12 @@ import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAdapter<Rental, AdapterTransportRentChatConversationRV.ChatMessageHolder> {
+public class AdapterRentalConfirmedTransportListRV extends FirestoreRecyclerAdapter<Rental, AdapterRentalConfirmedTransportListRV.RentalHolder> {
 
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference rentalsReference, usersReference;
 
-    private String uid, name;
+    private String name;
     private Context context;
 
     /**
@@ -54,15 +57,14 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
      * @param options
      */
 
-    public AdapterTransportRentChatConversationRV(@NonNull FirestoreRecyclerOptions<Rental> options, String uid, String name, Context context) {
+    public AdapterRentalConfirmedTransportListRV(@NonNull FirestoreRecyclerOptions<Rental> options, String name, Context context) {
         super(options);
-        this.uid = uid;
         this.name = name;
         this.context = context;
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ChatMessageHolder holder, int position, @NonNull Rental model) {
+    protected void onBindViewHolder(@NonNull RentalHolder holder, int position, @NonNull Rental model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
         rentalsReference = firebaseFirestore.collection("rentals");
         usersReference = firebaseFirestore.collection("users");
@@ -78,7 +80,7 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
 
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(context)
+                                Glide.with(context.getApplicationContext())
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }
@@ -95,8 +97,7 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
         holder.rentDropOffDate.setText(model.getDropoff_date());
         holder.rentDropOffTime.setText(model.getDropoff_time());
         holder.rentalReferenceNumber.setText(model.getReference_number());
-        holder.rentStatus.setText(capitalize(model.getStatus()));
-        holder.itemNumber.setText(String.valueOf(position + 1));
+        holder.itemNumber.setText(String.valueOf(holder.getAdapterPosition() + 1));
 
         if (model.getPrice() > 0.0) {
             String price = context.getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", model.getPrice());
@@ -105,44 +106,50 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
             holder.rentPriceLabel.setVisibility(View.VISIBLE);
         }
 
-        if (model.getStatus().equals("pending")) {
-            holder.item.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(holder.itemView.getContext(), TransportRentMessageActivity.class);
-                    intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
-                    intent.putExtra("userId", model.getUid());
-                    intent.putExtra("name", name);
-                    intent.putExtra("referenceId", model.getReference_number());
-                    intent.putExtra("transportId", getSnapshots().get(position).getTransport_uid());
-                    intent.putExtra("status", model.getStatus());
-                    holder.itemView.getContext().startActivity(intent);
-                }
-            });
+        holder.item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(holder.itemView.getContext(), TransportRentMessageActivity.class);
+                intent.putExtra("rentalId", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
+                intent.putExtra("userId", model.getUid());
+                intent.putExtra("name", name);
+                intent.putExtra("referenceId", model.getReference_number());
+                intent.putExtra("transportId", getSnapshots().get(holder.getAdapterPosition()).getTransport_uid());
+                intent.putExtra("status", model.getStatus());
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
 
-            holder.item.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    PopupMenu popup = new PopupMenu(context, v);
-                    MenuInflater inflater = popup.getMenuInflater();
-                    inflater.inflate(R.menu.user_rent_menu, popup.getMenu());
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getItemId() == R.id.btnCancel) {
-                                cancelRent(position, model.getReference_number(), holder.rentalReferenceNumber);
-                            }
-                            return false;
+        holder.item.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                PopupMenu popup = new PopupMenu(context, v);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.user_rent_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.btnCancel) {
+                            cancelRent(holder.getAdapterPosition(), model.getReference_number());
                         }
-                    });
-                    popup.show();
-                    return false;
-                }
-            });
+                        return false;
+                    }
+                });
+                popup.show();
+                return false;
+            }
+        });
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
+            holder.timestamp.setText(outputText);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
-    public void cancelRent(int position, String reference_number, TextView textView) {
+    public void cancelRent(int position, String reference_number) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         final AlertDialog alertDialog = builder.create();
         if (!alertDialog.isShowing()) {
@@ -179,8 +186,6 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
                                     if (task.isSuccessful()) {
                                         alertDialog.dismiss();
                                         dialog.dismiss();
-                                        String text = textView.getText().toString() + " (Cancelled)";
-                                        textView.setText(text);
                                         Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
                                     } else {
                                         dialog.dismiss();
@@ -205,12 +210,12 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
 
     @NonNull
     @Override
-    public ChatMessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rent_chat_conversation_transport_item_layout, parent, false);
-        return new ChatMessageHolder(view);
+    public RentalHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rental_transport_confirmed_item_layout, parent, false);
+        return new RentalHolder(view);
     }
 
-    class ChatMessageHolder extends RecyclerView.ViewHolder {
+    class RentalHolder extends RecyclerView.ViewHolder {
         LinearLayout item;
         TextView customerName,
                 customerEmail,
@@ -223,13 +228,13 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
                 rentDropOffDate,
                 rentDropOffTime,
                 rentalReferenceNumber,
-                rentStatus,
                 rentPrice,
                 rentPriceLabel,
+                timestamp,
                 itemNumber;
         CircleImageView customerPhoto;
 
-        public ChatMessageHolder(View view) {
+        public RentalHolder(View view) {
             super(view);
             item = view.findViewById(R.id.item);
             customerName = view.findViewById(R.id.customerName);
@@ -244,10 +249,10 @@ public class AdapterTransportRentChatConversationRV extends FirestoreRecyclerAda
             rentDropOffDate = view.findViewById(R.id.rentDropOffDate);
             rentDropOffTime = view.findViewById(R.id.rentDropOffTime);
             rentalReferenceNumber = view.findViewById(R.id.rentalReferenceNumber);
-            rentStatus = view.findViewById(R.id.rentStatus);
             rentPrice = view.findViewById(R.id.rentPrice);
-            rentPriceLabel = view.findViewById(R.id.rentPrice);
+            rentPriceLabel = view.findViewById(R.id.rentPriceLabel);
             itemNumber = view.findViewById(R.id.itemNumber);
+            timestamp = view.findViewById(R.id.timestamp);
         }
     }
 

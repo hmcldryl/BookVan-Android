@@ -41,7 +41,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private final Context context;
+    private Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -57,7 +57,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
 
     @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
-        holder.itemNumber.setText(String.valueOf(position + 1));
+        holder.itemNumber.setText(String.valueOf(holder.getAdapterPosition() + 1));
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
@@ -90,7 +90,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                             holder.bookingCustomerEmail.setText(customerEmail);
                             String customerPhoto = task.getResult().getString("photo_url");
                             if (customerPhoto != null) {
-                                Glide.with(context)
+                                Glide.with(context.getApplicationContext())
                                         .load(customerPhoto)
                                         .into(holder.customerPhoto);
                             }

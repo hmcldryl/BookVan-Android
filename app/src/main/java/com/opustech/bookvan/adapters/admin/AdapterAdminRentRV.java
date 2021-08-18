@@ -44,7 +44,7 @@ public class AdapterAdminRentRV extends FirestoreRecyclerAdapter<Rental, Adapter
     private CollectionReference rentalsReference, usersReference, partnersReference;
 
     private String uid;
-    private Context context;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

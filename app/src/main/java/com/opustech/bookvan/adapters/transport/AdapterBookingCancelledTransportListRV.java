@@ -34,7 +34,7 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private final Context context;
+    private Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
