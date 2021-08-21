@@ -19,7 +19,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.ui.user.UserTripScheduleActivity;
+import com.opustech.bookvan.ui.user.TripScheduleActivity;
 
 public class SchedulesNorthFragment extends Fragment {
 
@@ -55,7 +55,7 @@ public class SchedulesNorthFragment extends Fragment {
         btnSchedulePortBarton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                Intent intent = new Intent(getActivity(), TripScheduleActivity.class);
                 intent.putExtra("destination", "port barton");
                 intent.putExtra("image_url", port_barton_image_url);
                 startActivity(intent);
@@ -65,7 +65,7 @@ public class SchedulesNorthFragment extends Fragment {
         btnScheduleElnido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                Intent intent = new Intent(getActivity(), TripScheduleActivity.class);
                 intent.putExtra("destination", "el nido");
                 intent.putExtra("image_url", elnido_image_url);
                 startActivity(intent);
@@ -75,7 +75,7 @@ public class SchedulesNorthFragment extends Fragment {
         btnScheduleElnido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                Intent intent = new Intent(getActivity(), TripScheduleActivity.class);
                 intent.putExtra("destination", "el nido");
                 intent.putExtra("image_url", elnido_image_url);
                 startActivity(intent);
@@ -85,7 +85,7 @@ public class SchedulesNorthFragment extends Fragment {
         btnScheduleRoxas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                Intent intent = new Intent(getActivity(), TripScheduleActivity.class);
                 intent.putExtra("destination", "roxas");
                 intent.putExtra("image_url", roxas_image_url);
                 startActivity(intent);
@@ -95,7 +95,7 @@ public class SchedulesNorthFragment extends Fragment {
         btnScheduleSanVicente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                Intent intent = new Intent(getActivity(), TripScheduleActivity.class);
                 intent.putExtra("destination", "san vicente");
                 intent.putExtra("image_url", sanvicente_image_url);
                 startActivity(intent);
@@ -105,7 +105,7 @@ public class SchedulesNorthFragment extends Fragment {
         btnScheduleTaytay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), UserTripScheduleActivity.class);
+                Intent intent = new Intent(getActivity(), TripScheduleActivity.class);
                 intent.putExtra("destination", "taytay");
                 intent.putExtra("image_url", taytay_image_url);
                 startActivity(intent);

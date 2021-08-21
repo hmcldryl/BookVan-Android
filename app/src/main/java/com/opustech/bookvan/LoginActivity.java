@@ -17,15 +17,12 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuthProvider;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.model.UserAccount;
-import com.opustech.bookvan.ui.user.UserHomeActivity;
+import com.opustech.bookvan.ui.user.HomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,14 +40,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.opustech.bookvan.ui.admin.AdminDashboardActivity;
-import com.opustech.bookvan.ui.transport.TransportAdminDashboardActivity;
+import com.opustech.bookvan.ui.transport.DashboardActivity;
 
 import org.imaginativeworld.whynotimagecarousel.CarouselItem;
 import org.imaginativeworld.whynotimagecarousel.ImageCarousel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -450,7 +445,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startTransportAdminActivity(String uid) {
-        Intent intent = new Intent(LoginActivity.this, TransportAdminDashboardActivity.class);
+        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("uid", uid);
         startActivity(intent);
@@ -458,7 +453,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startTransportUserActivity(String uid) {
-        Intent intent = new Intent(LoginActivity.this, TransportAdminDashboardActivity.class);
+        Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("uid", uid);
         startActivity(intent);
@@ -466,14 +461,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void startAdminActivity() {
-        Intent intent = new Intent(LoginActivity.this, AdminDashboardActivity.class);
+        Intent intent = new Intent(LoginActivity.this, com.opustech.bookvan.ui.admin.DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
     private void startUserActivity() {
-        Intent intent = new Intent(LoginActivity.this, UserHomeActivity.class);
+        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

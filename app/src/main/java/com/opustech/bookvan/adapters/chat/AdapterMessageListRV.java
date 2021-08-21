@@ -23,7 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.ui.admin.AdminChatActivity;
+import com.opustech.bookvan.ui.admin.ChatActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.ChatConversation;
 
@@ -85,7 +85,7 @@ public class AdapterMessageListRV extends FirestoreRecyclerAdapter<ChatConversat
                         holder.customerConversation.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(view.getContext(), AdminChatActivity.class);
+                                Intent intent = new Intent(view.getContext(), ChatActivity.class);
                                 intent.putExtra("uid", uid);
                                 intent.putExtra("name", name);
                                 intent.putExtra("email", email);

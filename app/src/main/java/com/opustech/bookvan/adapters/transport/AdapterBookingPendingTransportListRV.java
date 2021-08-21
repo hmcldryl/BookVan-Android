@@ -32,8 +32,6 @@ import com.opustech.bookvan.notification.Client;
 import com.opustech.bookvan.notification.Data;
 import com.opustech.bookvan.notification.NotificationSender;
 import com.opustech.bookvan.notification.RequestResponse;
-import com.opustech.bookvan.ui.user.UserBookActivity;
-import com.opustech.bookvan.ui.user.UserRentActivity;
 
 import org.ocpsoft.prettytime.PrettyTime;
 

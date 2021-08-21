@@ -21,8 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Rental;
-import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
-import com.opustech.bookvan.ui.user.UserRentMessageActivity;
+import com.opustech.bookvan.ui.user.RentMessageActivity;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -121,25 +120,16 @@ public class AdapterRentalCancelledUserListRV extends FirestoreRecyclerAdapter<R
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(holder.itemView.getContext(), UserRentMessageActivity.class);
-                intent.putExtra("rentalId", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
-                intent.putExtra("userId", model.getUid());
+                Intent intent = new Intent(holder.itemView.getContext(), RentMessageActivity.class);
+                intent.putExtra("rental_id", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
+                intent.putExtra("user_id", model.getUid());
                 intent.putExtra("name", name);
-                intent.putExtra("referenceId", model.getReference_number());
-                intent.putExtra("transportId", getSnapshots().get(holder.getAdapterPosition()).getTransport_uid());
+                intent.putExtra("reference_id", model.getReference_number());
+                intent.putExtra("transport_id", getSnapshots().get(holder.getAdapterPosition()).getTransport_uid());
                 intent.putExtra("status", model.getStatus());
                 holder.itemView.getContext().startActivity(intent);
             }
         });
-    }
-
-    private String capitalize(String status) {
-        if (status != null) {
-            if (!status.isEmpty()) {
-                return status.substring(0, 1).toUpperCase() + status.substring(1);
-            }
-        }
-        return status;
     }
 
     @NonNull

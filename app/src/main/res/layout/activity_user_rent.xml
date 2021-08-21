@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_body"
     android:orientation="vertical"
-    tools:context=".ui.user.UserRentActivity">
+    tools:context=".ui.user.RentActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"

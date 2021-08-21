@@ -11,11 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.model.ChatConversation;
 import com.opustech.bookvan.model.ChatMessage;
 import com.opustech.bookvan.model.UserAccount;
-import com.opustech.bookvan.ui.user.UserHomeActivity;
+import com.opustech.bookvan.ui.user.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -30,7 +29,6 @@ import com.rajat.pdfviewer.PdfViewerActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -283,7 +281,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(RegisterActivity.this, UserHomeActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

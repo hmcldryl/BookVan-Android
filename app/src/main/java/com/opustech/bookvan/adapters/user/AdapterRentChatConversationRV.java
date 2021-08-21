@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,31 +18,23 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Rental;
-import com.opustech.bookvan.ui.user.UserRentConversationActivity;
-import com.opustech.bookvan.ui.user.UserRentMessageActivity;
+import com.opustech.bookvan.ui.user.RentMessageActivity;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
 import cc.cloudist.acplibrary.ACProgressFlower;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rental, AdapterRentChatConversationRV.ChatMessageHolder> {
 
@@ -108,7 +99,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(holder.itemView.getContext(), UserRentMessageActivity.class);
+                    Intent intent = new Intent(holder.itemView.getContext(), RentMessageActivity.class);
                     intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
                     intent.putExtra("status", model.getStatus());
                     intent.putExtra("name", name);

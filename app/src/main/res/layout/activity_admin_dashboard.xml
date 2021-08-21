@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_body"
     android:fitsSystemWindows="true"
-    tools:context=".ui.admin.AdminDashboardActivity"
+    tools:context=".ui.admin.DashboardActivity"
     tools:openDrawer="end">
 
     <RelativeLayout

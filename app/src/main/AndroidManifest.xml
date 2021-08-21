@@ -75,67 +75,67 @@
             android:name=".RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserHomeActivity"
+            android:name=".ui.user.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserProfileActivity"
+            android:name=".ui.user.ProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserChatActivity"
+            android:name=".ui.user.ChatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserTripScheduleActivity"
+            android:name=".ui.user.TripScheduleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserSchedulesActivity"
+            android:name=".ui.user.SchedulesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserPartnersActivity"
+            android:name=".ui.user.PartnersActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserBookingActivity"
+            android:name=".ui.user.BookingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserRentActivity"
+            android:name=".ui.user.RentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserRentConversationActivity"
+            android:name=".ui.user.RentalActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminBookingQRActivity"
+            android:name=".ui.transport.ConfirmPaymentQRActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserConfirmBookingQRActivity"
+            android:name=".ui.user.ConfirmPaymentQRActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserConfirmBookingScanActivity"
+            android:name=".ui.user.ConfirmPaymentScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserBookActivity"
+            android:name=".ui.user.BookActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.user.UserRentMessageActivity"
+            android:name=".ui.user.RentMessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminGenerateQRActivity"
+            android:name=".ui.admin.GenerateQRActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminDashboardActivity"
+            android:name=".ui.admin.DashboardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminSystemSchedulesActivity"
+            android:name=".ui.admin.SystemSchedulesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminRentalsActivity"
+            android:name=".ui.admin.RentalsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminBookingsActivity"
+            android:name=".ui.admin.BookingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminChatActivity"
+            android:name=".ui.admin.ChatActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.AdminMessageActivity"
+            android:name=".ui.admin.MessageActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".AboutActivity"
@@ -144,31 +144,31 @@
             android:name=".ui.transport.TransportCompanyProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminCompanyProfileActivity"
+            android:name=".ui.transport.CompanyProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminUserProfileActivity"
+            android:name=".ui.transport.UserProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminEditCompanyProfileActivity"
+            android:name=".ui.transport.EditCompanyProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminDashboardActivity"
+            android:name=".ui.transport.DashboardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminBookingScannerActivity"
+            android:name=".ui.transport.ConfirmPaymentScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminSchedulesActivity"
+            android:name=".ui.transport.SchedulesActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminBookingsActivity"
+            android:name=".ui.transport.BookingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportAdminRentalsActivity"
+            android:name=".ui.transport.RentalsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.transport.TransportRentMessageActivity"
+            android:name=".ui.transport.RentMessageActivity"
             android:screenOrientation="portrait" />
     </application>
 

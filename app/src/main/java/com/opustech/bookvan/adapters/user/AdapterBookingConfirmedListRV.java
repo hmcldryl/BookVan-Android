@@ -25,8 +25,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
-import com.opustech.bookvan.ui.user.UserConfirmBookingQRActivity;
-import com.opustech.bookvan.ui.user.UserConfirmBookingScanActivity;
+import com.opustech.bookvan.ui.user.ConfirmPaymentQRActivity;
+import com.opustech.bookvan.ui.user.ConfirmPaymentScanActivity;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -148,7 +148,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 final AlertDialog alertDialog = builder.create();
                 if (!alertDialog.isShowing()) {
-                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_booking_confirm_payment, null);
+                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_payment, null);
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     alertDialog.setCancelable(true);
                     alertDialog.setView(dialogView);
@@ -159,9 +159,10 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                     btnScanMode.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(context, UserConfirmBookingScanActivity.class);
-                            intent.putExtra("reference_number", reference_number);
+                            Intent intent = new Intent(context, ConfirmPaymentScanActivity.class);
+                            intent.putExtra("booking_id", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
                             intent.putExtra("transport_uid", transport_uid);
+                            intent.putExtra("type", "booking");
                             context.startActivity(intent);
                         }
                     });
@@ -169,8 +170,9 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
                     btnQRMode.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(context, UserConfirmBookingQRActivity.class);
-                            intent.putExtra("reference_number", reference_number);
+                            Intent intent = new Intent(context, ConfirmPaymentQRActivity.class);
+                            intent.putExtra("booking_id", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
+                            intent.putExtra("type", "booking");
                             context.startActivity(intent);
                         }
                     });

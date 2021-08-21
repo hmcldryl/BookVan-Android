@@ -3,15 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/btnSetPricing"
-        app:showAsAction="never"
-        android:icon="@drawable/ic_btn_chat"
-        android:title="Set Rental Price" />
-
-    <item
-        android:id="@+id/btnCancelRent"
-        app:showAsAction="never"
-        android:icon="@drawable/ic_btn_chat"
-        android:title="Cancel Transaction" />
+        android:id="@+id/btnOptions"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_icon_kebab"
+        android:title="Options" />
 
 </menu>

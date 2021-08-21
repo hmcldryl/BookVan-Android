@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_chat"
     android:fitsSystemWindows="true"
-    tools:context=".ui.user.UserRentMessageActivity">
+    tools:context=".ui.user.RentMessageActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -15,6 +15,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/background_toolbar"
         android:elevation="8dp"
+        app:menu="@menu/toolbar_menu_rent_message_user"
         app:navigationIcon="@drawable/ic_btn_back"
         app:subtitleTextAppearance="@style/ToolbarSubtitleTextAppearance"
         app:subtitleTextColor="#FFFFFF"

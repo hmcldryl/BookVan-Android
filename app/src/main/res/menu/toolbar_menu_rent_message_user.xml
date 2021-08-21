@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/btnSetStatus"
-        app:showAsAction="never"
-        android:icon="@drawable/ic_btn_chat"
-        android:title="Set As Done" />
+        android:id="@+id/btnOptions"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_icon_kebab"
+        android:title="Options" />
 
 </menu>

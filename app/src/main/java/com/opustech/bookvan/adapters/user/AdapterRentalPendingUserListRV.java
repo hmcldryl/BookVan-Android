@@ -29,8 +29,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Rental;
-import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
-import com.opustech.bookvan.ui.user.UserRentMessageActivity;
+import com.opustech.bookvan.ui.user.RentMessageActivity;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -110,34 +109,28 @@ public class AdapterRentalPendingUserListRV extends FirestoreRecyclerAdapter<Ren
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(holder.itemView.getContext(), UserRentMessageActivity.class);
-                intent.putExtra("rentalId", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
-                intent.putExtra("userId", model.getUid());
-                intent.putExtra("name", name);
-                intent.putExtra("referenceId", model.getReference_number());
-                intent.putExtra("transportId", getSnapshots().get(holder.getAdapterPosition()).getTransport_uid());
-                intent.putExtra("status", model.getStatus());
-                holder.itemView.getContext().startActivity(intent);
-            }
-        });
-
-        holder.item.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                PopupMenu popup = new PopupMenu(context, v);
+                PopupMenu popup = new PopupMenu(context, view);
                 MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.user_rent_menu, popup.getMenu());
+                inflater.inflate(R.menu.booking_pending_user_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == R.id.btnCancel) {
+                        if (item.getItemId() == R.id.btnChat) {
+                            Intent intent = new Intent(holder.itemView.getContext(), RentMessageActivity.class);
+                            intent.putExtra("rental_id", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
+                            intent.putExtra("user_id", model.getUid());
+                            intent.putExtra("name", name);
+                            intent.putExtra("reference_id", model.getReference_number());
+                            intent.putExtra("transport_id", getSnapshots().get(holder.getAdapterPosition()).getTransport_uid());
+                            intent.putExtra("status", model.getStatus());
+                            holder.itemView.getContext().startActivity(intent);
+                        } else if (item.getItemId() == R.id.btnCancel) {
                             cancelRent(holder.getAdapterPosition(), model.getReference_number());
                         }
                         return false;
                     }
                 });
                 popup.show();
-                return false;
             }
         });
 
@@ -198,15 +191,6 @@ public class AdapterRentalPendingUserListRV extends FirestoreRecyclerAdapter<Ren
             });
             alertDialog.show();
         }
-    }
-
-    private String capitalize(String status) {
-        if (status != null) {
-            if (!status.isEmpty()) {
-                return status.substring(0, 1).toUpperCase() + status.substring(1);
-            }
-        }
-        return status;
     }
 
     @NonNull

@@ -7,10 +7,20 @@
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_admin_rentals.xml" value="0.17314814814814813" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_register.xml" value="0.17314814814814813" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_transport_admin_rentals.xml" value="0.2046875" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_transport_rent_message.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_transport_rentals.xml" value="0.17777777777777778" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_user_home.xml" value="0.17314814814814813" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_user_rent_conversation.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_user_rent_message.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/booking_transport_cancelled_item_layout.xml" value="0.17777777777777778" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_cancel_booking.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_cancel_rent.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_confirm_booking.xml" value="0.18981481481481483" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_rent_options_confirmed_transport.xml" value="0.18981481481481483" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_rent_options_confirmed_user.xml" value="0.18981481481481483" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_rent_options_pending_user.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_scan_layout.xml" value="0.18981481481481483" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_set_rent_status.xml" value="0.18981481481481483" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_rentals_cancelled_transport.xml" value="0.2046875" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_rentals_confirmed_transport.xml" value="0.2046875" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_rentals_history_transport.xml" value="0.2046875" />
@@ -30,6 +40,12 @@
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/rental_user_pending_item_layout.xml" value="0.17314814814814813" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/route_spinner_dropdown_item.xml" value="0.17314814814814813" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/layout/transport_spinner_dropdown_item.xml" value="0.17314814814814813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/menu_rent_pending_user.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/rental_confirmed_user_menu.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/toolbar_menu_rent_form.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/toolbar_menu_rent_message.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/toolbar_menu_rent_message_user.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/user_rent_menu.xml" value="0.1935185185185185" />
       </map>
     </option>
   </component>

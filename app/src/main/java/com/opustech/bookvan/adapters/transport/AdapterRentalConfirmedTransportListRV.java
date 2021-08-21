@@ -1,21 +1,14 @@
 package com.opustech.bookvan.adapters.transport;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,29 +16,25 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Rental;
-import com.opustech.bookvan.ui.transport.TransportRentMessageActivity;
+import com.opustech.bookvan.ui.transport.RentMessageActivity;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Locale;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterRentalConfirmedTransportListRV extends FirestoreRecyclerAdapter<Rental, AdapterRentalConfirmedTransportListRV.RentalHolder> {
 
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference rentalsReference, usersReference;
+    private CollectionReference usersReference;
 
     private String name;
     private Context context;
@@ -66,7 +55,6 @@ public class AdapterRentalConfirmedTransportListRV extends FirestoreRecyclerAdap
     @Override
     protected void onBindViewHolder(@NonNull RentalHolder holder, int position, @NonNull Rental model) {
         firebaseFirestore = FirebaseFirestore.getInstance();
-        rentalsReference = firebaseFirestore.collection("rentals");
         usersReference = firebaseFirestore.collection("users");
 
         usersReference.document(model.getUid())
@@ -109,34 +97,14 @@ public class AdapterRentalConfirmedTransportListRV extends FirestoreRecyclerAdap
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(holder.itemView.getContext(), TransportRentMessageActivity.class);
-                intent.putExtra("rentalId", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
-                intent.putExtra("userId", model.getUid());
+                Intent intent = new Intent(holder.itemView.getContext(), RentMessageActivity.class);
+                intent.putExtra("rental_id", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
+                intent.putExtra("user_id", model.getUid());
                 intent.putExtra("name", name);
-                intent.putExtra("referenceId", model.getReference_number());
-                intent.putExtra("transportId", getSnapshots().get(holder.getAdapterPosition()).getTransport_uid());
+                intent.putExtra("reference_id", model.getReference_number());
+                intent.putExtra("transport_id", getSnapshots().get(holder.getAdapterPosition()).getTransport_uid());
                 intent.putExtra("status", model.getStatus());
                 holder.itemView.getContext().startActivity(intent);
-            }
-        });
-
-        holder.item.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                PopupMenu popup = new PopupMenu(context, v);
-                MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.user_rent_menu, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == R.id.btnCancel) {
-                            cancelRent(holder.getAdapterPosition(), model.getReference_number());
-                        }
-                        return false;
-                    }
-                });
-                popup.show();
-                return false;
             }
         });
 
@@ -147,65 +115,6 @@ public class AdapterRentalConfirmedTransportListRV extends FirestoreRecyclerAdap
         } catch (ParseException e) {
             e.printStackTrace();
         }
-    }
-
-    public void cancelRent(int position, String reference_number) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        final AlertDialog alertDialog = builder.create();
-        if (!alertDialog.isShowing()) {
-            final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_cancel_rent, null);
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            alertDialog.setCancelable(true);
-            alertDialog.setView(dialogView);
-            TextView rentReferenceNo = dialogView.findViewById(R.id.rentReferenceNo);
-
-            rentReferenceNo.setText(reference_number);
-
-            MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
-
-            btnConfirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
-                            .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                            .themeColor(context.getResources().getColor(R.color.white))
-                            .text("Processing...")
-                            .fadeColor(Color.DKGRAY).build();
-                    dialog.show();
-
-                    btnConfirm.setEnabled(false);
-
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("status", "cancelled");
-                    getSnapshots().getSnapshot(position)
-                            .getReference()
-                            .update(hashMap)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        alertDialog.dismiss();
-                                        dialog.dismiss();
-                                        Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        dialog.dismiss();
-                                        Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                }
-            });
-            alertDialog.show();
-        }
-    }
-
-    private String capitalize(String status) {
-        if (status != null) {
-            if (!status.isEmpty()) {
-                return status.substring(0, 1).toUpperCase() + status.substring(1);
-            }
-        }
-        return status;
     }
 
     @NonNull

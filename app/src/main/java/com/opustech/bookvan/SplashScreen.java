@@ -8,16 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.opustech.bookvan.ui.user.UserHomeActivity;
+import com.opustech.bookvan.ui.user.HomeActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.ui.admin.AdminDashboardActivity;
-import com.opustech.bookvan.ui.transport.TransportAdminDashboardActivity;
+import com.opustech.bookvan.ui.transport.DashboardActivity;
 
 import java.util.HashMap;
 
@@ -133,21 +131,21 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void startMainActivity() {
-        Intent intent = new Intent(SplashScreen.this, UserHomeActivity.class);
+        Intent intent = new Intent(SplashScreen.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
     private void startAdminActivity() {
-        Intent intent = new Intent(SplashScreen.this, AdminDashboardActivity.class);
+        Intent intent = new Intent(SplashScreen.this, com.opustech.bookvan.ui.admin.DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
     private void startTransportAdminActivity(String uid, String transport_name) {
-        Intent intent = new Intent(SplashScreen.this, TransportAdminDashboardActivity.class);
+        Intent intent = new Intent(SplashScreen.this, DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("uid", uid);
         intent.putExtra("transport_name", transport_name);
@@ -156,7 +154,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void startTransportUserActivity(String uid, String transport_name) {
-        Intent intent = new Intent(SplashScreen.this, TransportAdminDashboardActivity.class);
+        Intent intent = new Intent(SplashScreen.this, DashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("uid", uid);
         intent.putExtra("transport_name", transport_name);
