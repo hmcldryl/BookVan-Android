@@ -133,7 +133,7 @@ public class RentMessageActivity extends AppCompatActivity {
                                     final AlertDialog.Builder builder = new AlertDialog.Builder(RentMessageActivity.this);
                                     final AlertDialog alertDialog = builder.create();
                                     if (!alertDialog.isShowing()) {
-                                        final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_cancel_booking, null);
+                                        final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_cancel_rent, null);
                                         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                                         alertDialog.setCancelable(true);
                                         alertDialog.setView(dialogView);
