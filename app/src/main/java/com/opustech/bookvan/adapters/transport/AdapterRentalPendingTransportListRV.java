@@ -120,82 +120,12 @@ public class AdapterRentalPendingTransportListRV extends FirestoreRecyclerAdapte
             }
         });
 
-        holder.item.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                PopupMenu popup = new PopupMenu(context, v);
-                MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.user_rent_menu, popup.getMenu());
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId() == R.id.btnCancel) {
-                            cancelRent(holder.getAdapterPosition(), model.getReference_number());
-                        }
-                        return false;
-                    }
-                });
-                popup.show();
-                return false;
-            }
-        });
-
         try {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
             String outputText = new PrettyTime().format(simpleDateFormat.parse(model.getTimestamp()));
             holder.timestamp.setText(outputText);
         } catch (ParseException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void cancelRent(int position, String reference_number) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        final AlertDialog alertDialog = builder.create();
-        if (!alertDialog.isShowing()) {
-            final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_cancel_rent, null);
-            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            alertDialog.setCancelable(true);
-            alertDialog.setView(dialogView);
-            TextView rentReferenceNo = dialogView.findViewById(R.id.rentReferenceNo);
-
-            rentReferenceNo.setText(reference_number);
-
-            MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
-
-            btnConfirm.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final ACProgressFlower dialog = new ACProgressFlower.Builder(context)
-                            .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                            .themeColor(context.getResources().getColor(R.color.white))
-                            .text("Processing...")
-                            .fadeColor(Color.DKGRAY).build();
-                    dialog.show();
-
-                    btnConfirm.setEnabled(false);
-
-                    HashMap<String, Object> hashMap = new HashMap<>();
-                    hashMap.put("status", "cancelled");
-                    getSnapshots().getSnapshot(position)
-                            .getReference()
-                            .update(hashMap)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        alertDialog.dismiss();
-                                        dialog.dismiss();
-                                        Toast.makeText(context, "Success.", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        dialog.dismiss();
-                                        Toast.makeText(context, "Failed.", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                }
-            });
-            alertDialog.show();
         }
     }
 

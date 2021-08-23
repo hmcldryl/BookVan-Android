@@ -192,30 +192,6 @@ public class BookActivity extends AppCompatActivity {
         bookingCountChild.getEditText().setText((String.valueOf(countChild)));
         bookingCountSpecial.getEditText().setText((String.valueOf(countSpecial)));
 
-        bookingTimeACT.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!bookingTimeACT.getText().toString().isEmpty()) {
-                    bookingTime.setEndIconOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            bookingTimeACT.getText().clear();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
         addAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
