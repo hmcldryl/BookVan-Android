@@ -192,30 +192,6 @@ public class BookActivity extends AppCompatActivity {
         bookingCountChild.getEditText().setText((String.valueOf(countChild)));
         bookingCountSpecial.getEditText().setText((String.valueOf(countSpecial)));
 
-        bookingTimeACT.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (!bookingTimeACT.getText().toString().isEmpty()) {
-                    bookingTime.setEndIconOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            bookingTimeACT.getText().clear();
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
         addAdultCount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -534,74 +510,6 @@ public class BookActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    /*private void populateVanTransportList(String route) {
-        final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
-                .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                .themeColor(getResources().getColor(R.color.white))
-                .fadeColor(Color.DKGRAY).build();
-        dialog.show();
-        ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
-        if (route.equalsIgnoreCase("north")) {
-            partnersReference.whereEqualTo("route_north", true)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                    TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"));
-                                    vanTransportList.add(i, transportCompany);
-                                }
-                                ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(BookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
-                                inputVanTransportACT.setAdapter(vanTransportAdapter);
-                                inputVanTransportACT.setThreshold(1);
-                                inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        bookingRouteACT.clearListSelection();
-                                        bookingRoute.getEditText().getText().clear();
-                                        bookingTimeACT.clearListSelection();
-                                        bookingTime.getEditText().getText().clear();
-                                        TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
-                                        transportUid = selectedTransport.getUid();
-                                        populateRouteList(transportUid);
-                                    }
-                                });
-                                dialog.dismiss();
-                            }
-                        }
-                    });
-        } else if (route.equalsIgnoreCase("south")) {
-            partnersReference.whereEqualTo("route_south", true)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                    TransportCompany transportCompany = new TransportCompany(task.getResult().getDocuments().get(i).getString("uid"), task.getResult().getDocuments().get(i).getString("name"));
-                                    vanTransportList.add(i, transportCompany);
-                                }
-                                ArrayAdapter<TransportCompany> vanTransportAdapter = new ArrayAdapter<>(BookActivity.this, R.layout.support_simple_spinner_dropdown_item, vanTransportList);
-                                inputVanTransportACT.setAdapter(vanTransportAdapter);
-                                inputVanTransportACT.setThreshold(1);
-                                inputVanTransportACT.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        bookingRoute.getEditText().getText().clear();
-                                        bookingRouteACT.clearListSelection();
-                                        TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
-                                        transportUid = selectedTransport.getUid();
-                                        populateRouteList(transportUid);
-                                    }
-                                });
-                                dialog.dismiss();
-                            }
-                        }
-                    });
-        }
-    }*/
 
     private void populateVanTransportList(String route) {
         final ACProgressFlower dialog = new ACProgressFlower.Builder(this)
