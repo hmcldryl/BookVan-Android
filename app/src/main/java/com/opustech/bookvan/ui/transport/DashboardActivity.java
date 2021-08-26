@@ -38,6 +38,7 @@ import com.opustech.bookvan.R;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -331,7 +332,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void monthTotalEarningSelect(List<String> monthDateList) {
         allEarningsMonth = 0.0;
-        bookingsReference.whereEqualTo("status", "done")
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -345,7 +346,7 @@ public class DashboardActivity extends AppCompatActivity {
                                         }
                                     }
                                     firebaseFirestore.collection("rentals")
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -493,8 +494,8 @@ public class DashboardActivity extends AppCompatActivity {
     private void loadAnalytics(List<String> monthDateList) {
         todayTotalTransaction(getCompanyUid());
         todayTotalEarning(getCompanyUid());
-        monthTotalTransaction(monthDateList);
-        monthTotalEarning(monthDateList);
+        monthTotalTransaction(monthDateList, getCompanyUid());
+        monthTotalEarning(monthDateList, getCompanyUid());
         allTimeTotalTransaction(getCompanyUid());
         allTimeTotalEarning(getCompanyUid());
     }
@@ -502,7 +503,7 @@ public class DashboardActivity extends AppCompatActivity {
     private void todayTotalTransaction(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
                 .whereEqualTo("timestamp_date", getCurrentDate())
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -537,7 +538,7 @@ public class DashboardActivity extends AppCompatActivity {
         allEarningsToday = 0.0;
         bookingsReference.whereEqualTo("transport_uid", uid)
                 .whereEqualTo("timestamp_date", getCurrentDate())
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -551,7 +552,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("transport_uid", uid)
                                             .whereEqualTo("timestamp_date", getCurrentDate())
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -588,8 +589,10 @@ public class DashboardActivity extends AppCompatActivity {
                 });
     }
 
-    private void monthTotalTransaction(List<String> monthDateList) {
-        bookingsReference.get()
+    private void monthTotalTransaction(List<String> monthDateList, String uid) {
+        bookingsReference.whereEqualTo("transport_uid", uid)
+                .whereIn("status", Arrays.asList("done", "confirmed"))
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -609,7 +612,10 @@ public class DashboardActivity extends AppCompatActivity {
                         }
                     }
                 });
+
         firebaseFirestore.collection("rentals")
+                .whereEqualTo("transport_uid", uid)
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -632,9 +638,10 @@ public class DashboardActivity extends AppCompatActivity {
                 });
     }
 
-    private void monthTotalEarning(List<String> monthDateList) {
+    private void monthTotalEarning(List<String> monthDateList, String uid) {
         allEarningsMonth = 0.0;
-        bookingsReference.whereEqualTo("status", "done")
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
+                .whereEqualTo("transport_uid", uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -648,7 +655,8 @@ public class DashboardActivity extends AppCompatActivity {
                                         }
                                     }
                                     firebaseFirestore.collection("rentals")
-                                            .whereEqualTo("status", "done")
+                                            .whereEqualTo("transport_uid", uid)
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -689,6 +697,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void allTimeTotalTransaction(String uid) {
         bookingsReference.whereEqualTo("transport_uid", uid)
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -704,6 +713,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         firebaseFirestore.collection("rentals")
                 .whereEqualTo("transport_uid", uid)
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -721,7 +731,7 @@ public class DashboardActivity extends AppCompatActivity {
     private void allTimeTotalEarning(String uid) {
         allEarnings = 0.0;
         bookingsReference.whereEqualTo("transport_uid", uid)
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -734,7 +744,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     }
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("transport_uid", uid)
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override

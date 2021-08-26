@@ -41,6 +41,7 @@ import com.opustech.bookvan.ui.user.PartnersActivity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -323,6 +324,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void todayTotalTransaction() {
         bookingsReference.whereEqualTo("timestamp_date", getCurrentDate())
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -338,6 +340,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 });
         firebaseFirestore.collection("rentals")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -357,7 +360,8 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void todayTotalEarning() {
         allEarningsToday = 0.0;
-        bookingsReference.whereEqualTo("status", "done")
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -371,7 +375,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     }
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("timestamp_date", getCurrentDate())
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -454,7 +458,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void monthTotalEarning(List<String> monthDateList) {
         allEarningsMonth = 0.0;
-        bookingsReference.whereEqualTo("status", "done")
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -468,7 +472,7 @@ public class DashboardActivity extends AppCompatActivity {
                                         }
                                     }
                                     firebaseFirestore.collection("rentals")
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -539,7 +543,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void allTimeTotalEarning() {
         allEarnings = 0.0;
-        bookingsReference.whereEqualTo("status", "done")
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -551,7 +555,7 @@ public class DashboardActivity extends AppCompatActivity {
                                         allEarnings = allEarnings + task.getResult().getDocuments().get(i).getLong("commission").doubleValue();
                                     }
                                     firebaseFirestore.collection("rentals")
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -634,7 +638,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void monthTotalEarningSelect(List<String> monthDateList) {
         allEarningsMonth = 0.0;
-        bookingsReference.whereEqualTo("status", "done")
+        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -648,7 +652,7 @@ public class DashboardActivity extends AppCompatActivity {
                                         }
                                     }
                                     firebaseFirestore.collection("rentals")
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
@@ -743,7 +747,7 @@ public class DashboardActivity extends AppCompatActivity {
         transportName.setText(transport_name);
 
         firebaseFirestore.collection("bookings")
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .whereEqualTo("transport_uid", uid)
                 .get()
@@ -763,7 +767,7 @@ public class DashboardActivity extends AppCompatActivity {
                 });
 
         firebaseFirestore.collection("rentals")
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .whereEqualTo("transport_uid", uid)
                 .get()
@@ -784,7 +788,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         firebaseFirestore.collection("bookings")
                 .whereEqualTo("transport_uid", uid)
-                .whereEqualTo("status", "done")
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .whereEqualTo("timestamp_date", getCurrentDate())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -801,7 +805,7 @@ public class DashboardActivity extends AppCompatActivity {
                                     firebaseFirestore.collection("rentals")
                                             .whereEqualTo("timestamp_date", getCurrentDate())
                                             .whereEqualTo("transport_uid", uid)
-                                            .whereEqualTo("status", "done")
+                                            .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
