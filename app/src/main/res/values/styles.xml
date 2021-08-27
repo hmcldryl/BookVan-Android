@@ -81,6 +81,13 @@
         <item name="pdfView_titleTextStyle">@style/ActionBarTitleTextAppearance</item>
     </style>
 
+    <style name="ChipTextAppearance" parent="android:TextAppearance.Material">
+        <item name="android:fontFamily">@font/lato</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <style name="ActionBarTitleTextAppearance" parent="android:TextAppearance.Material.Widget.Toolbar.Title">
         <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:textSize">14sp</item>

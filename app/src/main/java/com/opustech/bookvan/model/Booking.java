@@ -1,5 +1,7 @@
 package com.opustech.bookvan.model;
 
+import java.util.List;
+
 public class Booking {
     String reference_number,
             uid,
@@ -16,13 +18,14 @@ public class Booking {
             remarks,
             timestamp_date,
             timestamp;
+    List<String> seat;
     int count_adult, count_child, count_special;
     double price, commission;
 
     public Booking() {
     }
 
-    public Booking(String reference_number, String uid, String name, String contact_number, String route_from, String route_to, String schedule_date, String schedule_time, String transport_uid, String status, String timestamp_date, String timestamp, int count_adult, int count_child, int count_special, double price, double commission) {
+    public Booking(String reference_number, String uid, String name, String contact_number, String route_from, String route_to, String schedule_date, String schedule_time, String transport_uid, String status, String timestamp_date, String timestamp, int count_adult, int count_child, int count_special, List<String> seat, double price, double commission) {
         this.reference_number = reference_number;
         this.uid = uid;
         this.name = name;
@@ -38,6 +41,7 @@ public class Booking {
         this.count_adult = count_adult;
         this.count_child = count_child;
         this.count_special = count_special;
+        this.seat = seat;
         this.price = price;
         this.commission = commission;
     }
@@ -184,6 +188,14 @@ public class Booking {
 
     public void setCount_special(int count_special) {
         this.count_special = count_special;
+    }
+
+    public List<String> getSeat() {
+        return seat;
+    }
+
+    public void setSeat(List<String> seat) {
+        this.seat = seat;
     }
 
     public double getPrice() {

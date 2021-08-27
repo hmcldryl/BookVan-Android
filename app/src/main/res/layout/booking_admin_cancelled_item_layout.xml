@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -447,9 +448,13 @@
                             android:textSize="16sp" />
                     </LinearLayout>
 
-                    <Space
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/seatChip"
                         android:layout_width="match_parent"
-                        android:layout_height="6dp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:scrollbars="horizontal"
+                        app:singleLine="true" />
 
                     <TextView
                         android:id="@+id/timestamp"

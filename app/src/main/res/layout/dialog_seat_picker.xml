@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -27,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_black"
-                    android:text="Select Seats"
+                    android:text="Select Seat/s"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="#FFFFFF" />
 
@@ -48,281 +49,256 @@
                 android:orientation="vertical"
                 android:padding="8dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center">
-
-                        <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:src="@drawable/ic_van_seats_vector"
-                            app:layout_constraintDimensionRatio="H,16:9"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:layout_width="275dp"
+                        android:layout_height="175dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/background_van"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp">
 
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:orientation="horizontal"
-                            app:layout_constraintDimensionRatio="H,16:9"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
 
-                            <Space
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbE1"
                                 android:layout_width="32dp"
-                                android:layout_height="match_parent" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbE1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbE2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="9dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbE3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="6dp" />
-
-                            </LinearLayout>
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:buttonTint="@color/white" />
 
                             <Space
-                                android:layout_width="10dp"
-                                android:layout_height="match_parent" />
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbD1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbD2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbD3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp" />
-
-                            </LinearLayout>
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbE2"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
 
                             <Space
-                                android:layout_width="12dp"
-                                android:layout_height="match_parent" />
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbC1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbC2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbC3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp" />
-
-                            </LinearLayout>
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbE3"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
 
                             <Space
-                                android:layout_width="12dp"
-                                android:layout_height="match_parent" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbB1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbB2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbB3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="10dp" />
-
-                            </LinearLayout>
-
-                            <Space
-                                android:layout_width="38dp"
-                                android:layout_height="match_parent" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbA1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbA2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="8dp" />
-
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/cbA3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:minWidth="0dp"
-                                    android:minHeight="0dp"
-                                    app:buttonTint="@color/white" />
-
-                                <Space
-                                    android:layout_width="match_parent"
-                                    android:layout_height="6dp" />
-
-                            </LinearLayout>
+                                android:layout_width="match_parent"
+                                android:layout_height="6dp" />
 
                         </LinearLayout>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        <Space
+                            android:layout_width="6dp"
+                            android:layout_height="match_parent" />
 
-                </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbD1"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbD2"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbD3"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp" />
+
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_width="6dp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbC1"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbC2"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbC3"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp" />
+
+                        </LinearLayout>
+
+                        <Space
+                            android:layout_width="6dp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbB1"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbB2"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbB3"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="8dp"
+                            android:layout_height="125dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="4dp"
+                            android:background="@color/colorAccent"
+                            android:orientation="vertical" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/cbA1"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                android:minWidth="0dp"
+                                android:minHeight="0dp"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="8dp" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbA2"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cbA3"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/seat"
+                                app:buttonTint="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="6dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="30dp"
+                            android:layout_height="125dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="-8dp"
+                            android:background="@drawable/dashboard"
+                            android:orientation="vertical" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

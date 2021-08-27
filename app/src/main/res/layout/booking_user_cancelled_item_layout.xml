@@ -458,17 +458,21 @@
                                 android:textSize="16sp" />
                         </LinearLayout>
 
-                        <Space
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/seatChip"
                             android:layout_width="match_parent"
-                            android:layout_height="6dp" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:scrollbars="horizontal"
+                            app:singleLine="true" />
 
                         <TextView
                             android:id="@+id/timestamp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:gravity="end"
                             android:fontFamily="@font/lato"
+                            android:gravity="end"
                             android:maxLines="1"
                             android:text=""
                             android:textColor="#99121212"
@@ -476,6 +480,9 @@
 
                     </LinearLayout>
                 </LinearLayout>
+
+
+
             </LinearLayout>
 
             <Space

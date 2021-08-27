@@ -83,7 +83,7 @@ public class CancelledBookingFragment extends Fragment {
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterBookingCancelledListRV = new AdapterBookingCancelledListRV(options);
+        adapterBookingCancelledListRV = new AdapterBookingCancelledListRV(options, getActivity());
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(true);

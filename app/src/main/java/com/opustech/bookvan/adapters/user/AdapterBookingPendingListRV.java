@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -27,6 +28,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
@@ -39,7 +42,9 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import cc.cloudist.acplibrary.ACProgressConstant;
@@ -89,6 +94,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         int count_special = model.getCount_special();
         String transport_uid = model.getTransport_uid();
         double price = model.getPrice();
+        List<String> seat = model.getSeat();
 
         usersReference.document(uid)
                 .get()
@@ -130,6 +136,15 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
 
+        for (int i = 0; i < seat.size(); i++) {
+            final Chip chip = new Chip(context);
+            chip.setTextAppearance(R.style.ChipTextAppearance);
+            chip.setChipBackgroundColor(ColorStateList.valueOf(context.getResources().getColor(R.color.colorPrimary)));
+            chip.setTextColor(context.getResources().getColor(R.color.white));
+            chip.setChipIcon(context.getResources().getDrawable(R.drawable.ic_van_seat));
+            chip.setText(seat.get(i));
+            holder.seatChip.addView(chip);
+        }
 
         if (count_adult > 1) {
             String outputAdult = count_adult + " adults.";
@@ -271,6 +286,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
                 itemNumber;
         CircleImageView customerPhoto;
         MaterialCardView bookingCard;
+        ChipGroup seatChip;
 
         public BookingHolder(View view) {
             super(view);
@@ -290,6 +306,7 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
             bookingTransportName = view.findViewById(R.id.bookingTransportName);
             bookingPrice = view.findViewById(R.id.price);
             timestamp = view.findViewById(R.id.timestamp);
+            seatChip = view.findViewById(R.id.seatChip);
         }
     }
 

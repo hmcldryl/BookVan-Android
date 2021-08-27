@@ -500,9 +500,13 @@
                                 android:textSize="16sp" />
                         </LinearLayout>
 
-                        <Space
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/seatChip"
                             android:layout_width="match_parent"
-                            android:layout_height="6dp" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:scrollbars="horizontal"
+                            app:singleLine="true" />
 
                         <TextView
                             android:id="@+id/timestamp"
@@ -517,6 +521,8 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
+
+
                 </LinearLayout>
             </LinearLayout>
 

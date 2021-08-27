@@ -430,30 +430,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="6dp" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                     android:id="@+id/bookingSeat"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Select Seat/s"
-                    app:boxStrokeColor="@color/colorPrimary"
-                    app:endIconDrawable="@drawable/ic_btn_login"
-                    app:endIconMode="custom"
-                    app:endIconTint="@color/colorPrimary"
-                    app:startIconDrawable="@drawable/ic_input_van_driver"
-                    app:startIconTint="@color/colorPrimary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="0dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/lato"
-                        android:inputType="none"
-                        android:maxLines="1"
-                        android:textCursorDrawable="@null" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_gravity="end"
+                    android:elevation="0dp"
+                    android:fontFamily="@font/lato_black"
+                    android:text="Select Seat/s"
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_van_seat"
+                    app:iconTint="@color/white" />
 
                 <Space
                     android:layout_width="match_parent"

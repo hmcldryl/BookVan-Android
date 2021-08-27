@@ -1,5 +1,7 @@
 package com.opustech.bookvan.adapters.user;
 
+import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +28,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -33,6 +38,8 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
+    private Context context;
+
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -40,8 +47,9 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
      * @param options
      */
 
-    public AdapterBookingCancelledListRV(@NonNull FirestoreRecyclerOptions<Booking> options) {
+    public AdapterBookingCancelledListRV(@NonNull FirestoreRecyclerOptions<Booking> options, Context context) {
         super(options);
+        this.context = context;
     }
 
     @Override
@@ -67,6 +75,7 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
         String remarks = model.getRemarks();
         String transport_uid = model.getTransport_uid();
         double price = model.getPrice();
+        List<String> seat = model.getSeat();
 
         usersReference.document(uid)
                 .get()
@@ -104,6 +113,16 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
         holder.bookingTripRoute.setText(trip_route);
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
+
+        for (int i = 0; i < seat.size(); i++) {
+            final Chip chip = new Chip(context);
+            chip.setTextAppearance(R.style.ChipTextAppearance);
+            chip.setChipBackgroundColor(ColorStateList.valueOf(context.getResources().getColor(R.color.colorPrimary)));
+            chip.setTextColor(context.getResources().getColor(R.color.white));
+            chip.setChipIcon(context.getResources().getDrawable(R.drawable.ic_van_seat));
+            chip.setText(seat.get(i));
+            holder.seatChip.addView(chip);
+        }
 
         if (remarks != null) {
             if (remarks.isEmpty()) {
@@ -187,6 +206,7 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
                 itemNumber;
         MaterialCardView bookingCard;
         CircleImageView customerPhoto;
+        ChipGroup seatChip;
 
         public BookingHolder(View view) {
             super(view);
@@ -211,6 +231,7 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
             bookingRemarks = view.findViewById(R.id.bookingRemarks);
             labelRemarks = view.findViewById(R.id.labelRemarks);
             timestamp = view.findViewById(R.id.timestamp);
+            seatChip = view.findViewById(R.id.seatChip);
         }
     }
 }

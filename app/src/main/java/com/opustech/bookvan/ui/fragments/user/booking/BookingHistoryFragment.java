@@ -82,7 +82,7 @@ public class BookingHistoryFragment extends Fragment {
                 .setQuery(query, Booking.class)
                 .build();
 
-        adapterHistoryBookingListRV = new AdapterBookingHistoryListRV(options);
+        adapterHistoryBookingListRV = new AdapterBookingHistoryListRV(options, getActivity());
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(true);

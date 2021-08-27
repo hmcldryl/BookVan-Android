@@ -82,8 +82,7 @@ public class BookActivity extends AppCompatActivity {
             bookingTime,
             bookingCountAdult,
             bookingCountChild,
-            bookingCountSpecial,
-            bookingSeat;
+            bookingCountSpecial;
     private HorizontalPicker picker;
     private ImageButton addAdultCount,
             addChildCount,
@@ -95,7 +94,7 @@ public class BookActivity extends AppCompatActivity {
     private RadioGroup categoryRadio;
     private MaterialRadioButton btnRadioNorth,
             btnRadioSouth;
-    private ExtendedFloatingActionButton btnBook;
+    private ExtendedFloatingActionButton btnBook, bookingSeat;
     private AutoCompleteTextView inputVanTransportACT, bookingRouteACT, bookingTimeACT;
 
     private AdapterDropdownTransportCompany adapterDropdownTransportCompany;
@@ -104,6 +103,7 @@ public class BookActivity extends AppCompatActivity {
     private ArrayList<Schedule> routeArray;
     private ArrayList<TripSchedule> tripSchedulesTimeList;
     private ArrayList<String> bookingSeatList;
+    private ArrayList<String> totalTakenSeats;
 
     private String transport_uid = "";
     private final String token = "";
@@ -274,6 +274,8 @@ public class BookActivity extends AppCompatActivity {
                 inputCheck();
             }
         });
+
+        initializeSeatChooser();
     }
 
     private boolean passengerCapacityAdd() {
@@ -392,6 +394,8 @@ public class BookActivity extends AppCompatActivity {
             enableInput();
             bookingCountAdult.getEditText().setText(String.valueOf(1));
             Toast.makeText(this, "Must have at least 1 passenger.", Toast.LENGTH_SHORT).show();
+        } else if (bookingSeatList.size() == 0) {
+            Toast.makeText(this, "Please select seat/s.", Toast.LENGTH_SHORT).show();
         } else {
             generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, schedule_date, schedule_time);
         }
@@ -499,7 +503,7 @@ public class BookActivity extends AppCompatActivity {
     }
 
     private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String schedule_date, String schedule_time, String token) {
-        Booking booking = new Booking(reference_number, uid, name, contact_number, route_from, route_to, schedule_date, schedule_time, transport_uid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice, totalCommission);
+        Booking booking = new Booking(reference_number, uid, name, contact_number, route_from, route_to, schedule_date, schedule_time, transport_uid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, bookingSeatList, totalPrice, totalCommission);
         bookingsReference.add(booking)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
@@ -693,6 +697,7 @@ public class BookActivity extends AppCompatActivity {
 
                             if (adapterDropdownScheduleTime.getCount() > 0) {
                                 TripSchedule selectedTime = adapterDropdownScheduleTime.getItem(0);
+                                schedule_time = convertDate12Hr(selectedTime.getTime_depart());
                                 bookingTimeACT.setText(convertDate12Hr(selectedTime.getTime_depart()));
                             }
 
@@ -803,7 +808,7 @@ public class BookActivity extends AppCompatActivity {
     }
 
     private void initializeSeatChooser() {
-        bookingSeat.setEndIconOnClickListener(new View.OnClickListener() {
+        bookingSeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startSeatPicker();
@@ -818,7 +823,7 @@ public class BookActivity extends AppCompatActivity {
             final LayoutInflater inflater = getLayoutInflater();
             final View dialogView = inflater.inflate(R.layout.dialog_seat_picker, null);
             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            alertDialog.setCancelable(true);
+            alertDialog.setCancelable(false);
             alertDialog.setView(dialogView);
 
             TextView seatCount;
@@ -862,261 +867,656 @@ public class BookActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 bookingSeatList = new ArrayList<>();
                                 if (task.getResult().getDocuments().size() > 0) {
+                                    totalTakenSeats = new ArrayList<>();
                                     for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
-                                        ArrayList<String> takenSeats = (ArrayList<String>) task.getResult().getDocuments().get(i).get("seat");
-                                        if (takenSeats.contains("A2")) {
-                                            cbA2.setVisibility(View.GONE);
-                                        } else {
-                                            cbA2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                        ArrayList<String> list = (ArrayList<String>) task.getResult().getDocuments().get(i).get("seat");
+                                        totalTakenSeats.addAll(list);
+                                    }
+                                    if (totalTakenSeats.contains("A2")) {
+                                        cbA2.setEnabled(false);
+                                    } else {
+                                        cbA2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("A2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbA2.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("A2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("A3")) {
-                                            cbA3.setVisibility(View.GONE);
-                                        } else {
-                                            cbA3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("A3")) {
+                                        cbA3.setEnabled(false);
+                                    } else {
+                                        cbA3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("A3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbA3.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("A3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("B1")) {
-                                            cbB1.setVisibility(View.GONE);
-                                        } else {
-                                            cbB1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("B1")) {
+                                        cbB1.setEnabled(false);
+                                    } else {
+                                        cbB1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("B1");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbB1.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("B1");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("B2")) {
-                                            cbB2.setVisibility(View.GONE);
-                                        } else {
-                                            cbB2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("B2")) {
+                                        cbB2.setEnabled(false);
+                                    } else {
+                                        cbB2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("B2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbB2.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("B2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("B3")) {
-                                            cbB3.setVisibility(View.GONE);
-                                        } else {
-                                            cbB3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("B3")) {
+                                        cbB3.setEnabled(false);
+                                    } else {
+                                        cbB3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("B3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbB3.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("B3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("C1")) {
-                                            cbC1.setVisibility(View.GONE);
-                                        } else {
-                                            cbC1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("C1")) {
+                                        cbC1.setEnabled(false);
+                                    } else {
+                                        cbC1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("C1");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbC1.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("C1");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("C2")) {
-                                            cbC2.setVisibility(View.GONE);
-                                        } else {
-                                            cbC2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("C2")) {
+                                        cbC2.setEnabled(false);
+                                    } else {
+                                        cbC2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("C2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbC2.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("C2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("C3")) {
-                                            cbC3.setVisibility(View.GONE);
-                                        } else {
-                                            cbC3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("C3")) {
+                                        cbC3.setEnabled(false);
+                                    } else {
+                                        cbC3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("C3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbC3.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("C3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("D1")) {
-                                            cbD1.setVisibility(View.GONE);
-                                        } else {
-                                            cbD1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("D1")) {
+                                        cbD1.setEnabled(false);
+                                    } else {
+                                        cbD1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("D1");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbD1.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("D1");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("D2")) {
-                                            cbD2.setVisibility(View.GONE);
-                                        } else {
-                                            cbD2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("D2")) {
+                                        cbD2.setEnabled(false);
+                                    } else {
+                                        cbD2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("D2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbD2.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("D2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("D3")) {
-                                            cbD3.setVisibility(View.GONE);
-                                        } else {
-                                            cbD3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("D3")) {
+                                        cbD3.setEnabled(false);
+                                    } else {
+                                        cbD3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("D3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbD3.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("D3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("E1")) {
-                                            cbE1.setVisibility(View.GONE);
-                                        } else {
-                                            cbE1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("E1")) {
+                                        cbE1.setEnabled(false);
+                                    } else {
+                                        cbE1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("E1");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbE1.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("E1");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("E2")) {
-                                            cbE2.setVisibility(View.GONE);
-                                        } else {
-                                            cbE2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("E2")) {
+                                        cbE2.setEnabled(false);
+                                    } else {
+                                        cbE2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("E2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbE2.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("E2");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
-                                        if (takenSeats.contains("E3")) {
-                                            cbE3.setVisibility(View.GONE);
-                                        } else {
-                                            cbE3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                @Override
-                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                                                    if (b) {
+                                            }
+                                        });
+                                    }
+                                    if (totalTakenSeats.contains("E3")) {
+                                        cbE3.setEnabled(false);
+                                    } else {
+                                        cbE3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    if (bookingSeatList.size() < pax) {
                                                         bookingSeatList.add("E3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     } else {
+                                                        Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                        cbE3.setChecked(false);
+                                                    }
+                                                } else {
+                                                    if (bookingSeatList.size() > 0) {
                                                         bookingSeatList.remove("E3");
                                                         String display = bookingSeatList.size() + "/" + pax;
                                                         seatCount.setText(display);
                                                     }
                                                 }
-                                            });
-                                        }
+                                            }
+                                        });
                                     }
+                                } else {
+                                    cbA2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("A2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbA2.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("A2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbA3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("A3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbA3.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("A3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbB1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("B1");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbB1.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("B1");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbB2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("B2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbB2.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("B2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbB3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("B3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbB3.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("B3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbC1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("C1");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbC1.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("C1");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbC2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("C2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbC2.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("C2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbC3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("C3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbC3.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("C3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbD1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("D1");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbD1.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("D1");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbD2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("D2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbD2.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("D2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbD3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("D3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbD3.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("D3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbE1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("E1");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbE1.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("E1");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbE2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("E2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbE2.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("E2");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
+                                    cbE3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                        @Override
+                                        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                            if (b) {
+                                                if (bookingSeatList.size() < pax) {
+                                                    bookingSeatList.add("E3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                } else {
+                                                    Toast.makeText(BookActivity.this, "You have already selected the maximum number of seats.", Toast.LENGTH_SHORT).show();
+                                                    cbE3.setChecked(false);
+                                                }
+                                            } else {
+                                                if (bookingSeatList.size() > 0) {
+                                                    bookingSeatList.remove("E3");
+                                                    String display = bookingSeatList.size() + "/" + pax;
+                                                    seatCount.setText(display);
+                                                }
+                                            }
+                                        }
+                                    });
                                 }
                             }
                         }
@@ -1125,7 +1525,7 @@ public class BookActivity extends AppCompatActivity {
             btnConfirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // do something
+                    alertDialog.dismiss();
                 }
             });
 
