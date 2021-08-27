@@ -1,13 +1,17 @@
 package com.opustech.bookvan.ui.user;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -21,6 +25,8 @@ import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,6 +37,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
 import com.opustech.bookvan.adapters.user.AdapterDropdownScheduleTime;
@@ -75,7 +82,8 @@ public class BookActivity extends AppCompatActivity {
             bookingTime,
             bookingCountAdult,
             bookingCountChild,
-            bookingCountSpecial;
+            bookingCountSpecial,
+            bookingSeat;
     private HorizontalPicker picker;
     private ImageButton addAdultCount,
             addChildCount,
@@ -95,8 +103,9 @@ public class BookActivity extends AppCompatActivity {
     private AdapterDropdownScheduleTime adapterDropdownScheduleTime;
     private ArrayList<Schedule> routeArray;
     private ArrayList<TripSchedule> tripSchedulesTimeList;
+    private ArrayList<String> bookingSeatList;
 
-    private String transportUid = "";
+    private String transport_uid = "";
     private final String token = "";
     private String route_from = "";
     private String route_to = "";
@@ -312,6 +321,7 @@ public class BookActivity extends AppCompatActivity {
         bookingCountAdult = findViewById(R.id.bookingCountAdult);
         bookingCountChild = findViewById(R.id.bookingCountChild);
         bookingCountSpecial = findViewById(R.id.bookingCountSpecial);
+        bookingSeat = findViewById(R.id.bookingSeat);
 
         categoryRadio = findViewById(R.id.categoryRadio);
         btnRadioNorth = findViewById(R.id.btnRadioNorth);
@@ -489,7 +499,7 @@ public class BookActivity extends AppCompatActivity {
     }
 
     private void addNewBooking(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number, String schedule_date, String schedule_time, String token) {
-        Booking booking = new Booking(reference_number, uid, name, contact_number, route_from, route_to, schedule_date, schedule_time, transportUid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice, totalCommission);
+        Booking booking = new Booking(reference_number, uid, name, contact_number, route_from, route_to, schedule_date, schedule_time, transport_uid, "pending", getCurrentDate(), generateTimestamp(), countAdult, countChild, countSpecial, totalPrice, totalCommission);
         bookingsReference.add(booking)
                 .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
@@ -540,8 +550,8 @@ public class BookActivity extends AppCompatActivity {
                                         bookingTimeACT.clearListSelection();
                                         bookingTime.getEditText().getText().clear();
                                         TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
-                                        transportUid = selectedTransport.getUid();
-                                        populateRouteList(transportUid);
+                                        transport_uid = selectedTransport.getUid();
+                                        populateRouteList(transport_uid);
                                     }
                                 });
                                 dialog.dismiss();
@@ -568,8 +578,8 @@ public class BookActivity extends AppCompatActivity {
                                         bookingRoute.getEditText().getText().clear();
                                         bookingRouteACT.clearListSelection();
                                         TransportCompany selectedTransport = (TransportCompany) adapterView.getItemAtPosition(i);
-                                        transportUid = selectedTransport.getUid();
-                                        populateRouteList(transportUid);
+                                        transport_uid = selectedTransport.getUid();
+                                        populateRouteList(transport_uid);
                                     }
                                 });
                                 dialog.dismiss();
@@ -743,7 +753,7 @@ public class BookActivity extends AppCompatActivity {
     }
 
     private void fetchToken(ACProgressFlower dialog, String reference_number, String uid, String name, String contact_number) {
-        partnersReference.document(transportUid)
+        partnersReference.document(transport_uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -790,5 +800,336 @@ public class BookActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void initializeSeatChooser() {
+        bookingSeat.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startSeatPicker();
+            }
+        });
+    }
+
+    private void startSeatPicker() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog alertDialog = builder.create();
+        if (!alertDialog.isShowing()) {
+            final LayoutInflater inflater = getLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.dialog_seat_picker, null);
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            alertDialog.setCancelable(true);
+            alertDialog.setView(dialogView);
+
+            TextView seatCount;
+            MaterialCheckBox cbA2, cbA3,
+                    cbB1, cbB2, cbB3,
+                    cbC1, cbC2, cbC3,
+                    cbD1, cbD2, cbD3,
+                    cbE1, cbE2, cbE3;
+            MaterialButton btnConfirm;
+
+            seatCount = dialogView.findViewById(R.id.seatCount);
+            cbA2 = dialogView.findViewById(R.id.cbA2);
+            cbA3 = dialogView.findViewById(R.id.cbA3);
+            cbB1 = dialogView.findViewById(R.id.cbB1);
+            cbB2 = dialogView.findViewById(R.id.cbB2);
+            cbB3 = dialogView.findViewById(R.id.cbB3);
+            cbC1 = dialogView.findViewById(R.id.cbC1);
+            cbC2 = dialogView.findViewById(R.id.cbC2);
+            cbC3 = dialogView.findViewById(R.id.cbC3);
+            cbD1 = dialogView.findViewById(R.id.cbD1);
+            cbD2 = dialogView.findViewById(R.id.cbD2);
+            cbD3 = dialogView.findViewById(R.id.cbD3);
+            cbE1 = dialogView.findViewById(R.id.cbE1);
+            cbE2 = dialogView.findViewById(R.id.cbE2);
+            cbE3 = dialogView.findViewById(R.id.cbE3);
+            btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+            int pax = countAdult + countChild + countSpecial;
+            String paxCount = "0/" + pax;
+            seatCount.setText(paxCount);
+
+            bookingsReference.whereEqualTo("transport_uid", transport_uid)
+                    .whereEqualTo("route_from", route_from)
+                    .whereEqualTo("route_to", route_to)
+                    .whereEqualTo("schedule_date", schedule_date)
+                    .whereEqualTo("schedule_time", schedule_time)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                bookingSeatList = new ArrayList<>();
+                                if (task.getResult().getDocuments().size() > 0) {
+                                    for (int i = 0; i < task.getResult().getDocuments().size(); i++) {
+                                        ArrayList<String> takenSeats = (ArrayList<String>) task.getResult().getDocuments().get(i).get("seat");
+                                        if (takenSeats.contains("A2")) {
+                                            cbA2.setVisibility(View.GONE);
+                                        } else {
+                                            cbA2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("A2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("A2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("A3")) {
+                                            cbA3.setVisibility(View.GONE);
+                                        } else {
+                                            cbA3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("A3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("A3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("B1")) {
+                                            cbB1.setVisibility(View.GONE);
+                                        } else {
+                                            cbB1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("B1");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("B1");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("B2")) {
+                                            cbB2.setVisibility(View.GONE);
+                                        } else {
+                                            cbB2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("B2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("B2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("B3")) {
+                                            cbB3.setVisibility(View.GONE);
+                                        } else {
+                                            cbB3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("B3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("B3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("C1")) {
+                                            cbC1.setVisibility(View.GONE);
+                                        } else {
+                                            cbC1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("C1");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("C1");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("C2")) {
+                                            cbC2.setVisibility(View.GONE);
+                                        } else {
+                                            cbC2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("C2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("C2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("C3")) {
+                                            cbC3.setVisibility(View.GONE);
+                                        } else {
+                                            cbC3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("C3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("C3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("D1")) {
+                                            cbD1.setVisibility(View.GONE);
+                                        } else {
+                                            cbD1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("D1");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("D1");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("D2")) {
+                                            cbD2.setVisibility(View.GONE);
+                                        } else {
+                                            cbD2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("D2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("D2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("D3")) {
+                                            cbD3.setVisibility(View.GONE);
+                                        } else {
+                                            cbD3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("D3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("D3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("E1")) {
+                                            cbE1.setVisibility(View.GONE);
+                                        } else {
+                                            cbE1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("E1");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("E1");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("E2")) {
+                                            cbE2.setVisibility(View.GONE);
+                                        } else {
+                                            cbE2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("E2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("E2");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        if (takenSeats.contains("E3")) {
+                                            cbE3.setVisibility(View.GONE);
+                                        } else {
+                                            cbE3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                @Override
+                                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                    if (b) {
+                                                        bookingSeatList.add("E3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    } else {
+                                                        bookingSeatList.remove("E3");
+                                                        String display = bookingSeatList.size() + "/" + pax;
+                                                        seatCount.setText(display);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+            btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // do something
+                }
+            });
+
+            alertDialog.show();
+        }
     }
 }

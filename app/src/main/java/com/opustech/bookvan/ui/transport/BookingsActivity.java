@@ -186,7 +186,7 @@ public class BookingsActivity extends AppCompatActivity {
 
     private void updateHistoryListTabBadge(TabLayout.Tab tab) {
         bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
-                .whereIn("status", Arrays.asList("cancelled", "done"))
+                .whereEqualTo("status", "done")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

@@ -1,7 +1,12 @@
 package com.opustech.bookvan.ui.transport;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -287,7 +292,10 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void monthTotalTransactionSelect(List<String> monthDateList) {
-        bookingsReference.get()
+        bookingsReference
+                .whereEqualTo("transport_uid", getCompanyUid())
+                .whereIn("status", Arrays.asList("done", "confirmed"))
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -308,6 +316,8 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 });
         firebaseFirestore.collection("rentals")
+                .whereEqualTo("transport_uid", getCompanyUid())
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -332,7 +342,8 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void monthTotalEarningSelect(List<String> monthDateList) {
         allEarningsMonth = 0.0;
-        bookingsReference.whereIn("status", Arrays.asList("done", "confirmed"))
+        bookingsReference.whereEqualTo("transport_uid", getCompanyUid())
+                .whereIn("status", Arrays.asList("done", "confirmed"))
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -346,6 +357,7 @@ public class DashboardActivity extends AppCompatActivity {
                                         }
                                     }
                                     firebaseFirestore.collection("rentals")
+                                            .whereEqualTo("transport_uid", getCompanyUid())
                                             .whereIn("status", Arrays.asList("done", "confirmed"))
                                             .get()
                                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -443,6 +455,35 @@ public class DashboardActivity extends AppCompatActivity {
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (value != null) {
                             if (value.exists()) {
+                                if (value.getBoolean("account_disabled") != null) {
+                                    if (value.getBoolean("account_disabled")) {
+                                        if (firebaseAuth.getCurrentUser() != null) {
+                                            firebaseAuth.signOut();
+                                            final AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+                                            final AlertDialog alertDialog = builder.create();
+                                            if (!alertDialog.isShowing()) {
+                                                final LayoutInflater inflater = getLayoutInflater();
+                                                final View dialogView = inflater.inflate(R.layout.dialog_account_disabled, null);
+                                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                                alertDialog.setCancelable(true);
+                                                alertDialog.setView(dialogView);
+
+                                                alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                                    @Override
+                                                    public void onCancel(DialogInterface dialogInterface) {
+                                                        Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                });
+
+                                                alertDialog.show();
+                                            }
+                                        }
+                                    }
+                                }
+
                                 name = value.getString("name");
                                 address = value.getString("address");
                                 photo_url = value.getString("photo_url");

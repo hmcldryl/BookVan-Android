@@ -426,9 +426,38 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             if (task.getResult().getString("account_type") != null) {
                                 if (task.getResult().getString("account_type").equals("administrator")) {
+                                    firebaseFirestore.collection("partners")
+                                            .document(task.getResult().getString("transport_company"))
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        if (task.getResult().getBoolean("account_disabled") != null) {
+                                                            if (!task.getResult().getBoolean("account_disabled")) {
+                                                                startTransportAdminActivity(task.getResult().getString("uid"));
+                                                            } else {
+                                                                if (firebaseAuth.getCurrentUser() != null) {
+                                                                    firebaseAuth.signOut();
+                                                                    final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                                                    final AlertDialog alertDialog = builder.create();
+                                                                    if (!alertDialog.isShowing()) {
+                                                                        final LayoutInflater inflater = getLayoutInflater();
+                                                                        final View dialogView = inflater.inflate(R.layout.dialog_account_disabled, null);
+                                                                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                                                        alertDialog.setCancelable(true);
+                                                                        alertDialog.setView(dialogView);
+
+                                                                        alertDialog.show();
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            });
                                     dialog.dismiss();
                                     enableInput();
-                                    startTransportAdminActivity(task.getResult().getString("transport_company"));
                                 } else if (task.getResult().getString("account_type").equals("staff")) {
                                     dialog.dismiss();
                                     enableInput();
