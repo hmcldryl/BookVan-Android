@@ -2,6 +2,7 @@ package com.opustech.bookvan.ui.user;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.CompoundButtonCompat;
 
 import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
@@ -873,6 +875,7 @@ public class BookActivity extends AppCompatActivity {
                                         totalTakenSeats.addAll(list);
                                     }
                                     if (totalTakenSeats.contains("A2")) {
+                                        CompoundButtonCompat.setButtonTintList(cbA2, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbA2.setEnabled(false);
                                     } else {
                                         cbA2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -898,6 +901,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("A3")) {
+                                        CompoundButtonCompat.setButtonTintList(cbA3, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbA3.setEnabled(false);
                                     } else {
                                         cbA3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -923,6 +927,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("B1")) {
+                                        CompoundButtonCompat.setButtonTintList(cbB1, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbB1.setEnabled(false);
                                     } else {
                                         cbB1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -948,6 +953,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("B2")) {
+                                        CompoundButtonCompat.setButtonTintList(cbB2, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbB2.setEnabled(false);
                                     } else {
                                         cbB2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -973,6 +979,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("B3")) {
+                                        CompoundButtonCompat.setButtonTintList(cbB3, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbB3.setEnabled(false);
                                     } else {
                                         cbB3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -998,6 +1005,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("C1")) {
+                                        CompoundButtonCompat.setButtonTintList(cbC1, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbC1.setEnabled(false);
                                     } else {
                                         cbC1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1023,6 +1031,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("C2")) {
+                                        CompoundButtonCompat.setButtonTintList(cbC2, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbC2.setEnabled(false);
                                     } else {
                                         cbC2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1048,6 +1057,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("C3")) {
+                                        CompoundButtonCompat.setButtonTintList(cbC3, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbC3.setEnabled(false);
                                     } else {
                                         cbC3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1073,6 +1083,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("D1")) {
+                                        CompoundButtonCompat.setButtonTintList(cbD1, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbD1.setEnabled(false);
                                     } else {
                                         cbD1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1098,6 +1109,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("D2")) {
+                                        CompoundButtonCompat.setButtonTintList(cbD2, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbD2.setEnabled(false);
                                     } else {
                                         cbD2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1123,6 +1135,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("D3")) {
+                                        CompoundButtonCompat.setButtonTintList(cbD3, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbD3.setEnabled(false);
                                     } else {
                                         cbD3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1148,6 +1161,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("E1")) {
+                                        CompoundButtonCompat.setButtonTintList(cbE1, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbE1.setEnabled(false);
                                     } else {
                                         cbE1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1173,6 +1187,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("E2")) {
+                                        CompoundButtonCompat.setButtonTintList(cbE2, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbE2.setEnabled(false);
                                     } else {
                                         cbE2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1198,6 +1213,7 @@ public class BookActivity extends AppCompatActivity {
                                         });
                                     }
                                     if (totalTakenSeats.contains("E3")) {
+                                        CompoundButtonCompat.setButtonTintList(cbE3, ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
                                         cbE3.setEnabled(false);
                                     } else {
                                         cbE3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
