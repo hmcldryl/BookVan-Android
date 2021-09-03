@@ -50,8 +50,11 @@
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/toolbar_menu_rent_message.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/toolbar_menu_rent_message_user.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/Asus/Documents/GitHub/BookVan-Android/app/src/main/res/menu/user_rent_menu.xml" value="0.1935185185185185" />
+        <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/drawable/background_card.xml" value="0.5615384615384615" />
+        <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/drawable/background_label.xml" value="0.5615384615384615" />
         <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/drawable/ic_seat.xml" value="0.5615384615384615" />
         <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/drawable/ic_van_seats_vector.xml" value="0.346875" />
+        <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_transport_admin_booking_qr.xml" value="0.5456410256410257" />
         <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/activity_user_book.xml" value="0.5456410256410257" />
         <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/booking_admin_cancelled_item_layout.xml" value="0.3307291666666667" />
         <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/booking_admin_confirmed_item_layout.xml" value="0.3307291666666667" />
@@ -66,6 +69,11 @@
         <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/booking_user_history_item_layout.xml" value="0.3307291666666667" />
         <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/booking_user_pending_item_layout.xml" value="0.5456410256410257" />
         <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/dialog_seat_picker.xml" value="0.5" />
+        <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_booking_cancelled_admin.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_booking_cancelled_user.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_booking_confirmed_user.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_booking_history_user.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/homec/Documents/GitHub/BookVan-Android/app/src/main/res/layout/fragment_bookings_pending_user.xml" value="0.5541666666666667" />
       </map>
     </option>
   </component>

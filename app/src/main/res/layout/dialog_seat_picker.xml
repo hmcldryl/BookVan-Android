@@ -69,6 +69,21 @@
                             android:layout_gravity="center_vertical"
                             android:orientation="vertical">
 
+                            <TextView
+                                android:layout_width="32dp"
+                                android:layout_height="26dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/background_label"
+                                android:fontFamily="@font/lato_black"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="E"
+                                android:textColor="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbE1"
                                 android:layout_width="32dp"
@@ -102,7 +117,7 @@
 
                             <Space
                                 android:layout_width="match_parent"
-                                android:layout_height="6dp" />
+                                android:layout_height="40dp" />
 
                         </LinearLayout>
 
@@ -115,6 +130,21 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="32dp"
+                                android:layout_height="26dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/background_label"
+                                android:fontFamily="@font/lato_black"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="D"
+                                android:textColor="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbD1"
@@ -147,7 +177,7 @@
 
                             <Space
                                 android:layout_width="match_parent"
-                                android:layout_height="10dp" />
+                                android:layout_height="40dp" />
 
                         </LinearLayout>
 
@@ -160,6 +190,21 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="32dp"
+                                android:layout_height="26dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/background_label"
+                                android:fontFamily="@font/lato_black"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="C"
+                                android:textColor="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbC1"
@@ -192,7 +237,7 @@
 
                             <Space
                                 android:layout_width="match_parent"
-                                android:layout_height="10dp" />
+                                android:layout_height="40dp" />
 
                         </LinearLayout>
 
@@ -205,6 +250,21 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="32dp"
+                                android:layout_height="26dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/background_label"
+                                android:fontFamily="@font/lato_black"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="B"
+                                android:textColor="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="4dp" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbB1"
@@ -237,7 +297,7 @@
 
                             <Space
                                 android:layout_width="match_parent"
-                                android:layout_height="10dp" />
+                                android:layout_height="40dp" />
 
                         </LinearLayout>
 
@@ -255,6 +315,21 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="32dp"
+                                android:layout_height="26dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/background_label"
+                                android:fontFamily="@font/lato_black"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="A"
+                                android:textColor="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="6dp" />
 
                             <ImageView
                                 android:id="@+id/cbA1"
@@ -276,6 +351,10 @@
                                 android:background="@drawable/seat"
                                 app:buttonTint="@color/white" />
 
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbA3"
                                 android:layout_width="32dp"
@@ -283,9 +362,10 @@
                                 android:background="@drawable/seat"
                                 app:buttonTint="@color/white" />
 
-                            <Space
-                                android:layout_width="match_parent"
-                                android:layout_height="6dp" />
+                            <View
+                                android:layout_width="32dp"
+                                android:layout_height="38dp"
+                                android:layout_gravity="center" />
 
                         </LinearLayout>
 
@@ -296,6 +376,61 @@
                             android:layout_marginLeft="-8dp"
                             android:background="@drawable/dashboard"
                             android:orientation="vertical" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="6dp" />
+
+                            <TextView
+                                android:layout_width="26dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/background_label"
+                                android:fontFamily="@font/lato_black"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="1"
+                                android:textColor="@color/white" />
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="8dp" />
+
+                            <TextView
+                                android:layout_width="26dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/background_label"
+                                android:fontFamily="@font/lato_black"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="2"
+                                android:textColor="@color/white" />
+
+                            <TextView
+                                android:layout_width="26dp"
+                                android:layout_height="32dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/background_label"
+                                android:fontFamily="@font/lato_black"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:text="3"
+                                android:textColor="@color/white" />
+
+                            <View
+                                android:layout_width="32dp"
+                                android:layout_height="12dp"
+                                android:layout_gravity="center" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>

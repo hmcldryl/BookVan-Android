@@ -313,12 +313,17 @@
 
                     </LinearLayout>
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/seatChip"
+                    <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbars="horizontal"
-                        app:singleLine="true" />
+                        android:scrollbars="none">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/seatChip"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true" />
+                    </HorizontalScrollView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
