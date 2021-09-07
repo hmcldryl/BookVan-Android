@@ -396,7 +396,11 @@ public class BookActivity extends AppCompatActivity {
             enableInput();
             bookingCountAdult.getEditText().setText(String.valueOf(1));
             Toast.makeText(this, "Must have at least 1 passenger.", Toast.LENGTH_SHORT).show();
+        } else if (bookingSeatList == null) {
+            enableInput();
+            Toast.makeText(this, "Please select seat/s.", Toast.LENGTH_SHORT).show();
         } else if (bookingSeatList.size() == 0) {
+            enableInput();
             Toast.makeText(this, "Please select seat/s.", Toast.LENGTH_SHORT).show();
         } else {
             generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, schedule_date, schedule_time);
@@ -797,7 +801,7 @@ public class BookActivity extends AppCompatActivity {
             public void onResponse(Call<RequestResponse> call, Response<RequestResponse> response) {
                 if (response.code() == 200) {
                     if (response.body().success != 1) {
-                        Toast.makeText(BookActivity.this, "Request failed.", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(BookActivity.this, "Request failed.", Toast.LENGTH_LONG).show();
                     }
                 }
             }
