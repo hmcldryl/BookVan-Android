@@ -250,8 +250,8 @@ public class RentActivity extends AppCompatActivity {
                             dialog.dismiss();
                             enableInput();
                             Toast.makeText(RentActivity.this, "Success.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RentActivity.this, RentMessageActivity.class);
-                            intent.putExtra("rentalId", task.getResult().getId());
+                            Intent intent = new Intent(RentActivity.this, RentalActivity.class);
+                            //intent.putExtra("rental_id", task.getResult().getId());
                             startActivity(intent);
                             finish();
                         } else {

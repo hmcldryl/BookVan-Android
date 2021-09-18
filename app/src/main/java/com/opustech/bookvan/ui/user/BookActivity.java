@@ -402,6 +402,9 @@ public class BookActivity extends AppCompatActivity {
         } else if (bookingSeatList.size() == 0) {
             enableInput();
             Toast.makeText(this, "Please select seat/s.", Toast.LENGTH_SHORT).show();
+        } else if (bookingSeatList.size() != (countAdult + countChild + countSpecial)) {
+            enableInput();
+            Toast.makeText(this, "Please select seat/s.", Toast.LENGTH_SHORT).show();
         } else {
             generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, schedule_date, schedule_time);
         }
