@@ -127,6 +127,20 @@ public class RentMessageActivity extends AppCompatActivity {
 
                             rentReferenceNo.setText(getIntent().getStringExtra("reference_id"));
 
+                            btnSetPrice.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(RentMessageActivity.this);
+                                    final AlertDialog alertDialog = builder.create();
+                                    if (!alertDialog.isShowing()) {
+                                        final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_set_price, null);
+                                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        alertDialog.setCancelable(true);
+                                        alertDialog.setView(dialogView);
+                                    }
+                                }
+                            });
+
                             btnCancelRent.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {

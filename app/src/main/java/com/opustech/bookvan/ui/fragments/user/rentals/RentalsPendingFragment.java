@@ -49,8 +49,8 @@ public class RentalsPendingFragment extends Fragment {
         return root;
     }
 
-    private void updateUi(String transport_uid) {
-        rentalsReference.whereEqualTo("transport_uid", transport_uid)
+    private void updateUi(String uid) {
+        rentalsReference.whereEqualTo("uid", uid)
                 .whereEqualTo("status", "pending")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -69,8 +69,8 @@ public class RentalsPendingFragment extends Fragment {
                 });
     }
 
-    private void populateList(View root, String transport_uid) {
-        Query query = rentalsReference.whereEqualTo("transport_uid", transport_uid)
+    private void populateList(View root, String uid) {
+        Query query = rentalsReference.whereEqualTo("uid", uid)
                 .whereEqualTo("status", "pending")
                 .orderBy("timestamp", Query.Direction.ASCENDING);
 

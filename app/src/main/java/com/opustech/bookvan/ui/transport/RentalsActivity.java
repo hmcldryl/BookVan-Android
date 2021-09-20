@@ -110,13 +110,13 @@ public class RentalsActivity extends AppCompatActivity {
         });
     }
 
-    private String getCompanyUid() {
+    private String getTransportUid() {
         Intent intent = getIntent();
         return intent.getStringExtra("uid");
     }
 
     private void updateConfirmedListTabBadge(TabLayout.Tab tab) {
-        rentalsReference.whereEqualTo("transport_uid", getCompanyUid())
+        rentalsReference.whereEqualTo("transport_uid", getTransportUid())
                 .whereEqualTo("status", "confirmed")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
@@ -139,7 +139,7 @@ public class RentalsActivity extends AppCompatActivity {
     }
 
     private void updatePendingListTabBadge(TabLayout.Tab tab) {
-        rentalsReference.whereEqualTo("transport_uid", getCompanyUid())
+        rentalsReference.whereEqualTo("transport_uid", getTransportUid())
                 .whereEqualTo("status", "pending")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
@@ -162,7 +162,7 @@ public class RentalsActivity extends AppCompatActivity {
     }
 
     private void updateCancelledListTabBadge(TabLayout.Tab tab) {
-        rentalsReference.whereEqualTo("transport_uid", getCompanyUid())
+        rentalsReference.whereEqualTo("transport_uid", getTransportUid())
                 .whereEqualTo("status", "cancelled")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
@@ -185,7 +185,7 @@ public class RentalsActivity extends AppCompatActivity {
     }
 
     private void updateHistoryListTabBadge(TabLayout.Tab tab) {
-        rentalsReference.whereEqualTo("transport_uid", getCompanyUid())
+        rentalsReference.whereEqualTo("transport_uid", getTransportUid())
                 .whereEqualTo("status", "done")
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
