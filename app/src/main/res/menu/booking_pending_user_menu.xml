@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/btnChat"
+        android:title="Open Conversation" />
+
+    <item
         android:id="@+id/btnCancelBooking"
         android:title="Cancel Booking" />
 

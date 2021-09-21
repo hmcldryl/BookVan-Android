@@ -65,21 +65,21 @@
         android:id="@+id/systemMessageItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginHorizontal="64dp"
         android:background="@drawable/background_receiver_chat_message"
         android:gravity=""
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/systemMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:fontFamily="@font/lato"
             android:maxLength="255"
             android:text=""
+            android:textAlignment="center"
             android:textColor="@color/textColor"
             android:textSize="16sp" />
 
@@ -91,7 +91,7 @@
             android:fontFamily="@font/lato"
             android:maxLines="1"
             android:text=""
-            android:textColor="@color/textColor"
+            android:textColor="#99121212"
             android:textSize="14sp" />
     </LinearLayout>
 

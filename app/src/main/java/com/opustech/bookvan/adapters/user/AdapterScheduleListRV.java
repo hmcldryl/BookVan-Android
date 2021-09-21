@@ -62,10 +62,6 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
         String route_to = model.getRoute_to();
         double price = model.getPrice();
 
-        holder.routeDescriptionFrom.setText(route_from);
-        holder.routeDescriptionTo.setText(route_to);
-        holder.price.setText(String.valueOf(price));
-
         partnersReference.document(uid)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -76,57 +72,67 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
                                     .load(task.getResult().getString("photo_url"))
                                     .into(holder.vanCompanyPhoto);
                             holder.vanCompany.setText(task.getResult().getString("name"));
+
+                            boolean disabled = task.getResult().getBoolean("account_disabled");
+
+                            if (!disabled) {
+                                holder.routeDescriptionFrom.setText(route_from);
+                                holder.routeDescriptionTo.setText(route_to);
+                                holder.price.setText(String.valueOf(price));
+
+                                holder.item.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                        final AlertDialog alertDialog = builder.create();
+                                        if (!alertDialog.isShowing()) {
+                                            final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                            final View dialogView = inflater.inflate(R.layout.dialog_user_trip_schedule_list, null);
+                                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                            alertDialog.setCancelable(true);
+                                            alertDialog.setView(dialogView);
+
+                                            TextView tripRoute = dialogView.findViewById(R.id.tripRoute);
+                                            RecyclerView tripScheduleListRV = dialogView.findViewById(R.id.tripScheduleListRV);
+
+                                            tripRoute.setText(route);
+
+                                            Query query = getSnapshots().getSnapshot(holder.getAdapterPosition())
+                                                    .getReference()
+                                                    .collection("schedules")
+                                                    .orderBy("time_queue", Query.Direction.ASCENDING)
+                                                    .orderBy("time_depart", Query.Direction.ASCENDING);
+
+                                            FirestoreRecyclerOptions<TripSchedule> options = new FirestoreRecyclerOptions.Builder<TripSchedule>()
+                                                    .setQuery(query, TripSchedule.class)
+                                                    .build();
+
+                                            AdapterUserTripScheduleListRV adapterTransportTripScheduleListRV = new AdapterUserTripScheduleListRV(options, context);
+                                            LinearLayoutManager manager = new LinearLayoutManager(context);
+
+                                            tripScheduleListRV.setHasFixedSize(true);
+                                            tripScheduleListRV.setLayoutManager(manager);
+                                            tripScheduleListRV.setAdapter(adapterTransportTripScheduleListRV);
+
+                                            adapterTransportTripScheduleListRV.startListening();
+
+                                            alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                                @Override
+                                                public void onCancel(DialogInterface dialog) {
+                                                    adapterTransportTripScheduleListRV.stopListening();
+                                                }
+                                            });
+
+                                            alertDialog.show();
+                                        }
+                                    }
+                                });
+                            } else {
+                                holder.layout.setVisibility(View.GONE);
+                            }
                         }
                     }
                 });
-
-        holder.item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                final AlertDialog alertDialog = builder.create();
-                if (!alertDialog.isShowing()) {
-                    final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    final View dialogView = inflater.inflate(R.layout.dialog_user_trip_schedule_list, null);
-                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    alertDialog.setCancelable(true);
-                    alertDialog.setView(dialogView);
-
-                    TextView tripRoute = dialogView.findViewById(R.id.tripRoute);
-                    RecyclerView tripScheduleListRV = dialogView.findViewById(R.id.tripScheduleListRV);
-
-                    tripRoute.setText(route);
-
-                    Query query = getSnapshots().getSnapshot(position)
-                            .getReference()
-                            .collection("schedules")
-                            .orderBy("time_queue", Query.Direction.ASCENDING)
-                            .orderBy("time_depart", Query.Direction.ASCENDING);
-
-                    FirestoreRecyclerOptions<TripSchedule> options = new FirestoreRecyclerOptions.Builder<TripSchedule>()
-                            .setQuery(query, TripSchedule.class)
-                            .build();
-
-                    AdapterUserTripScheduleListRV adapterTransportTripScheduleListRV = new AdapterUserTripScheduleListRV(options, context);
-                    LinearLayoutManager manager = new LinearLayoutManager(context);
-
-                    tripScheduleListRV.setHasFixedSize(true);
-                    tripScheduleListRV.setLayoutManager(manager);
-                    tripScheduleListRV.setAdapter(adapterTransportTripScheduleListRV);
-
-                    adapterTransportTripScheduleListRV.startListening();
-
-                    alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            adapterTransportTripScheduleListRV.stopListening();
-                        }
-                    });
-
-                    alertDialog.show();
-                }
-            }
-        });
     }
 
     @NonNull
@@ -138,12 +144,14 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
 
 
     class ScheduleHolder extends RecyclerView.ViewHolder {
+        RelativeLayout layout;
         CardView item;
         ImageView vanCompanyPhoto;
         TextView price, routeDescriptionFrom, routeDescriptionTo, vanCompany;
 
         public ScheduleHolder(View view) {
             super(view);
+            layout = view.findViewById(R.id.layout);
             item = view.findViewById(R.id.item);
             price = view.findViewById(R.id.price);
             routeDescriptionFrom = view.findViewById(R.id.routeDescriptionFrom);

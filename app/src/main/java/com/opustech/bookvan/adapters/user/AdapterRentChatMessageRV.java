@@ -44,6 +44,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
     private CollectionReference usersReference, partnersReference;
 
     private final String uid;
+    String status = "";
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -52,9 +53,10 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
      * @param options
      */
 
-    public AdapterRentChatMessageRV(@NonNull FirestoreRecyclerOptions<RentChatMessage> options, String uid) {
+    public AdapterRentChatMessageRV(@NonNull FirestoreRecyclerOptions<RentChatMessage> options, String uid, String status) {
         super(options);
         this.uid = uid;
+        this.status = status;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                             String photo_url = task.getResult().getString("photo_url");
                             if (photo_url != null) {
                                 if (!photo_url.isEmpty()) {
-                                    Glide.with(holder.itemView.getContext())
+                                    Glide.with(holder.itemView.getContext().getApplicationContext())
                                             .load(photo_url)
                                             .into(holder.senderPhoto);
                                 }
@@ -99,7 +101,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                             String photo_url = task.getResult().getString("photo_url");
                             if (photo_url != null) {
                                 if (!photo_url.isEmpty()) {
-                                    Glide.with(holder.itemView.getContext())
+                                    Glide.with(holder.itemView.getContext().getApplicationContext())
                                             .load(photo_url)
                                             .into(holder.receiverPhoto);
                                 }
@@ -122,60 +124,60 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
             }
 
         } else if (type.equals("system_message")) {
-            holder.systemMessageItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
-                    final AlertDialog alertDialog = builder.create();
-                    if (!alertDialog.isShowing()) {
-                        final View dialogView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.dialog_confirm_rent_user, null);
-                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        alertDialog.setCancelable(true);
-                        alertDialog.setView(dialogView);
+            if (status.equals("pending")) {
+                holder.systemMessageItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(holder.itemView.getContext());
+                        final AlertDialog alertDialog = builder.create();
+                        if (!alertDialog.isShowing()) {
+                            final View dialogView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.dialog_confirm_rent_user, null);
+                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            alertDialog.setCancelable(true);
+                            alertDialog.setView(dialogView);
 
-                        MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+                            MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
 
-                        btnConfirm.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                final ACProgressFlower dialog = new ACProgressFlower.Builder(holder.itemView.getContext())
-                                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                                        .themeColor(holder.itemView.getContext().getResources().getColor(R.color.white))
-                                        .text("Processing...")
-                                        .fadeColor(Color.DKGRAY).build();
-                                dialog.show();
+                            btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    final ACProgressFlower dialog = new ACProgressFlower.Builder(holder.itemView.getContext())
+                                            .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                            .themeColor(holder.itemView.getContext().getApplicationContext().getResources().getColor(R.color.white))
+                                            .text("Processing...")
+                                            .fadeColor(Color.DKGRAY).build();
+                                    dialog.show();
 
-                                btnConfirm.setEnabled(false);
+                                    btnConfirm.setEnabled(false);
 
-                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-                                String timestamp = format.format(Calendar.getInstance().getTime());
-                                HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("status", "confirmed");
-                                hashMap.put("timestamp", timestamp);
-                                hashMap.put("price", Double.parseDouble(message));
-                                hashMap.put("commission", Double.parseDouble(message) * 0.10);
+                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                                    String timestamp = format.format(Calendar.getInstance().getTime());
+                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                    hashMap.put("status", "confirmed");
+                                    hashMap.put("timestamp", timestamp);
 
-                                firebaseFirestore.collection("rentals").document(messageUid)
-                                        .update(hashMap)
-                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    alertDialog.dismiss();
-                                                    dialog.dismiss();
-                                                    Toast.makeText(holder.itemView.getContext(), "Success.", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    dialog.dismiss();
-                                                    Toast.makeText(holder.itemView.getContext(), "Failed.", Toast.LENGTH_SHORT).show();
+                                    firebaseFirestore.collection("rentals").document(messageUid)
+                                            .update(hashMap)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        alertDialog.dismiss();
+                                                        dialog.dismiss();
+                                                        Toast.makeText(holder.itemView.getContext(), "Success.", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        dialog.dismiss();
+                                                        Toast.makeText(holder.itemView.getContext(), "Failed.", Toast.LENGTH_SHORT).show();
+                                                    }
                                                 }
-                                            }
-                                        });
-                            }
-                        });
-                        alertDialog.show();
+                                            });
+                                }
+                            });
+                            alertDialog.show();
+                        }
                     }
-                }
-            });
+                });
+            }
 
             partnersReference.document(messageUid)
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -185,7 +187,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                         String name = task.getResult().getString("name");
                         if (name != null) {
                             if (!name.isEmpty()) {
-                                //String displayMessage = name + " set the rent fee to " + holder.itemView.getContext().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(message)) + ".";
+                                //String displayMessage = name + " set the rent fee to " + holder.itemView.getContext().getApplicationContext().getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(message)) + ".";
                                 holder.systemMessage.setText(message);
                             }
                         }
@@ -200,6 +202,8 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            holder.systemMessageItem.setVisibility(View.VISIBLE);
         }
 
 

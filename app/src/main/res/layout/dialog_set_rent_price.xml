@@ -32,7 +32,7 @@
                     android:textColor="#FFFFFF" />
 
                 <TextView
-                    android:id="@+id/rentalReferenceNumber"
+                    android:id="@+id/rentReferenceNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato"

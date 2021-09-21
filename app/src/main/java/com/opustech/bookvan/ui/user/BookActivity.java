@@ -543,6 +543,7 @@ public class BookActivity extends AppCompatActivity {
         ArrayList<TransportCompany> vanTransportList = new ArrayList<>();
         if (route.equalsIgnoreCase("north")) {
             partnersReference.whereEqualTo("route_north", true)
+                    .whereEqualTo("account_disabled", false)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -573,6 +574,7 @@ public class BookActivity extends AppCompatActivity {
                     });
         } else if (route.equalsIgnoreCase("south")) {
             partnersReference.whereEqualTo("route_south", true)
+                    .whereEqualTo("account_disabled", false)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

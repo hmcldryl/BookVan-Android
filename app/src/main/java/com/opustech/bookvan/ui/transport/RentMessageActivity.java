@@ -133,10 +133,99 @@ public class RentMessageActivity extends AppCompatActivity {
                                     final AlertDialog.Builder builder = new AlertDialog.Builder(RentMessageActivity.this);
                                     final AlertDialog alertDialog = builder.create();
                                     if (!alertDialog.isShowing()) {
-                                        final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_set_price, null);
+                                        final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_set_rent_price, null);
                                         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                                         alertDialog.setCancelable(true);
                                         alertDialog.setView(dialogView);
+
+                                        TextView rentReferenceNo = dialogView.findViewById(R.id.rentReferenceNo);
+                                        TextInputLayout inputPrice = dialogView.findViewById(R.id.inputPrice);
+                                        rentReferenceNo.setText(getIntent().getStringExtra("reference_id"));
+
+                                        MaterialButton btnConfirm = dialogView.findViewById(R.id.btnConfirm);
+
+                                        btnConfirm.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                final ACProgressFlower dialog = new ACProgressFlower.Builder(RentMessageActivity.this)
+                                                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                                                        .themeColor(getResources().getColor(R.color.white))
+                                                        .text("Processing...")
+                                                        .fadeColor(Color.DKGRAY).build();
+                                                dialog.show();
+
+                                                inputPrice.setEnabled(false);
+                                                btnConfirm.setEnabled(false);
+
+                                                String price = inputPrice.getEditText().getText().toString();
+
+                                                if (price != null && !price.isEmpty()) {
+                                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                                                    String timestamp = format.format(Calendar.getInstance().getTime());
+                                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                                    hashMap.put("price", Double.parseDouble(price));
+                                                    hashMap.put("timestamp", timestamp);
+                                                    hashMap.put("commission", Double.parseDouble(price) * 0.10);
+
+                                                    rentalsReference.document(getIntent().getStringExtra("rental_id"))
+                                                            .update(hashMap)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        Toast.makeText(RentMessageActivity.this, "Success.", Toast.LENGTH_SHORT).show();
+                                                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                                                                        String timestamp = format.format(Calendar.getInstance().getTime());
+                                                                        HashMap<String, Object> hashMap = new HashMap<>();
+                                                                        hashMap.put("uid", getIntent().getStringExtra("transport_id"));
+                                                                        hashMap.put("message", "Set the rental fee to " + getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(price)) + ".");
+                                                                        hashMap.put("type", "system_message");
+                                                                        hashMap.put("timestamp", timestamp);
+                                                                        rentalsReference.document(getIntent().getStringExtra("rental_id"))
+                                                                                .collection("chat")
+                                                                                .add(hashMap)
+                                                                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                                        if (task.isSuccessful()) {
+                                                                                            fetchToken(getIntent().getStringExtra("user_id"), getIntent().getStringExtra("name"), "Set the rental fee to " + getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", Double.parseDouble(price)) + ".");
+                                                                                            HashMap<String, Object> hashMap = new HashMap<>();
+                                                                                            hashMap.put("timestamp", timestamp);
+                                                                                            rentalsReference.document(getIntent().getStringExtra("rental_id"))
+                                                                                                    .update(hashMap)
+                                                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                        @Override
+                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                            if (task.isSuccessful()) {
+                                                                                                                dialog.dismiss();
+                                                                                                                alertDialog.dismiss();
+                                                                                                            } else {
+                                                                                                                dialog.dismiss();
+                                                                                                                inputPrice.setEnabled(true);
+                                                                                                                btnConfirm.setEnabled(true);
+                                                                                                                Toast.makeText(RentMessageActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+                                                                                                            }
+                                                                                                        }
+                                                                                                    });
+                                                                                        }
+                                                                                    }
+                                                                                });
+                                                                    } else {
+                                                                        dialog.dismiss();
+                                                                        inputPrice.setEnabled(true);
+                                                                        btnConfirm.setEnabled(true);
+                                                                        Toast.makeText(RentMessageActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                }
+                                                            });
+                                                } else {
+                                                    inputPrice.setEnabled(true);
+                                                    btnConfirm.setEnabled(true);
+                                                }
+                                            }
+                                        });
+
+                                        alertDialog.show();
                                     }
                                 }
                             });
@@ -151,6 +240,7 @@ public class RentMessageActivity extends AppCompatActivity {
                                         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                                         alertDialog.setCancelable(true);
                                         alertDialog.setView(dialogView);
+
                                         TextView rentReferenceNo = dialogView.findViewById(R.id.rentReferenceNo);
                                         TextInputLayout inputRemarks = dialogView.findViewById(R.id.inputRemarks);
 
@@ -200,13 +290,6 @@ public class RentMessageActivity extends AppCompatActivity {
                                         });
                                         alertDialog.show();
                                     }
-                                }
-                            });
-
-                            btnSetPrice.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
                                 }
                             });
 

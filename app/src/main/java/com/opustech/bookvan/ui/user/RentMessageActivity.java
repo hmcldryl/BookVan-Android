@@ -108,7 +108,7 @@ public class RentMessageActivity extends AppCompatActivity {
                     final AlertDialog alertDialog = builder.create();
                     if (!alertDialog.isShowing()) {
                         if (getIntent().getStringExtra("status").equals("pending")) {
-                            final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_rent_options_pending_transport, null);
+                            final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_rent_options_pending_user, null);
                             alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                             alertDialog.setCancelable(true);
                             alertDialog.setView(dialogView);
@@ -124,7 +124,7 @@ public class RentMessageActivity extends AppCompatActivity {
                                     final AlertDialog.Builder builder = new AlertDialog.Builder(RentMessageActivity.this);
                                     final AlertDialog alertDialog = builder.create();
                                     if (!alertDialog.isShowing()) {
-                                        final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_cancel_booking, null);
+                                        final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_cancel_rent, null);
                                         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                                         alertDialog.setCancelable(true);
                                         alertDialog.setView(dialogView);
@@ -167,6 +167,7 @@ public class RentMessageActivity extends AppCompatActivity {
                                                                     if (task.isSuccessful()) {
                                                                         alertDialog.dismiss();
                                                                         dialog.dismiss();
+                                                                        finish();
                                                                         Toast.makeText(RentMessageActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                                                                     }
                                                                 }
@@ -189,6 +190,11 @@ public class RentMessageActivity extends AppCompatActivity {
             }
         });
 
+        if (getIntent().getStringExtra("status").equals("done") || getIntent().getStringExtra("status").equals("cancelled")) {
+            inputChat.setEnabled(false);
+            btnSendChat.setEnabled(false);
+        }
+
         initList();
     }
 
@@ -207,7 +213,7 @@ public class RentMessageActivity extends AppCompatActivity {
                 .setQuery(query, RentChatMessage.class)
                 .build();
 
-        adapterRentChatMessageRV = new AdapterRentChatMessageRV(options, firebaseAuth.getCurrentUser().getUid());
+        adapterRentChatMessageRV = new AdapterRentChatMessageRV(options, firebaseAuth.getCurrentUser().getUid(), getIntent().getStringExtra("status"));
         LinearLayoutManager manager = new LinearLayoutManager(RentMessageActivity.this);
         manager.setStackFromEnd(true);
 
@@ -253,7 +259,7 @@ public class RentMessageActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentReference> task) {
                                     if (task.isSuccessful()) {
-                                        fetchToken(getIntent().getStringExtra("uid"), getIntent().getStringExtra("name"), message);
+                                        fetchToken(getIntent().getStringExtra("transport_id"), getIntent().getStringExtra("name"), message);
                                         HashMap<String, Object> hashMap = new HashMap<>();
                                         hashMap.put("timestamp", timestamp);
                                         rentalsReference.document(getIntent().getStringExtra("rental_id"))
