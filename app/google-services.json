@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "152068433081-qmq01v7re88qlvno7gu1b3v11t80801q.apps.googleusercontent.com",
+          "client_id": "152068433081-7bcttu17voocttpnuevcic9tl61tt1f9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.opustech.bookvan",
-            "certificate_hash": "1d6bc3848cc6b64b3a581cb01c22bc45d705110c"
+            "certificate_hash": "c9ca19236d8d4727fea1835731e7d855e3b90237"
           }
         },
         {
