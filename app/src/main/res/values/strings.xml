@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name"><b>BookVan</b></string>
-    <string name="app_version">v1.3.13b</string>
+    <string name="app_version">v1.3.17b</string>
 
-    <string name="facebook_app_id">6510615838955963</string>
-    <string name="fb_login_protocol_scheme">fb6510615838955963</string>
+    <string name="facebook_app_id">3052904301652848</string>
+    <string name="fb_login_protocol_scheme">fb3052904301652848</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

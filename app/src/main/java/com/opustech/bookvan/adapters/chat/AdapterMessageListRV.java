@@ -136,10 +136,15 @@ public class AdapterMessageListRV extends FirestoreRecyclerAdapter<ChatConversat
     }
 
 
-    class ChatConversationHolder extends RecyclerView.ViewHolder {
-        LinearLayout customerConversation, lastMessage;
-        CircleImageView customerPhoto;
-        TextView customerName, customerEmail, customerContactNumber, customerLastMessage, customerLastMessageTimestamp;
+    static class ChatConversationHolder extends RecyclerView.ViewHolder {
+        final LinearLayout customerConversation;
+        final LinearLayout lastMessage;
+        final CircleImageView customerPhoto;
+        final TextView customerName;
+        final TextView customerEmail;
+        final TextView customerContactNumber;
+        final TextView customerLastMessage;
+        final TextView customerLastMessageTimestamp;
 
         public ChatConversationHolder(View view) {
             super(view);

@@ -35,7 +35,7 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
 
     private FirebaseFirestore firebaseFirestore;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -130,9 +130,10 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
         return new TripScheduleHolder(view);
     }
 
-    class TripScheduleHolder extends RecyclerView.ViewHolder {
-        ImageButton options;
-        TextView timeQueue, timeDepart;
+    static class TripScheduleHolder extends RecyclerView.ViewHolder {
+        final ImageButton options;
+        final TextView timeQueue;
+        final TextView timeDepart;
 
         public TripScheduleHolder(View view) {
             super(view);

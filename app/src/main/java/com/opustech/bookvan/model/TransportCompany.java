@@ -1,7 +1,5 @@
 package com.opustech.bookvan.model;
 
-import java.util.List;
-
 public class TransportCompany {
     String uid, name, description, address, email, website, photo_url, banner_url;
 

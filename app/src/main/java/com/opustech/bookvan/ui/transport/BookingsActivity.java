@@ -23,8 +23,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.transport.BookingsTransportPagerAdapter;
 
-import java.util.Arrays;
-
 public class BookingsActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;

@@ -39,7 +39,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.opustech.bookvan.LoginActivity;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.user.AdapterDropdownSchedule;
 import com.opustech.bookvan.adapters.user.AdapterDropdownScheduleTime;
@@ -404,7 +403,7 @@ public class BookActivity extends AppCompatActivity {
             Toast.makeText(this, "Please select seat/s.", Toast.LENGTH_SHORT).show();
         } else if (bookingSeatList.size() != (countAdult + countChild + countSpecial)) {
             enableInput();
-            Toast.makeText(this, "Please select seat/s.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please select additional " + (bookingSeatList.size() - (countAdult + countChild + countSpecial)) + " seat/s.", Toast.LENGTH_SHORT).show();
         } else {
             generateRefNum(firebaseAuth.getCurrentUser().getUid(), name, contact_number, schedule_date, schedule_time);
         }

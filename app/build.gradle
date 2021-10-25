@@ -11,7 +11,7 @@ android {
         applicationId "com.opustech.bookvan"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 18
+        versionCode 23
         versionName "@string/app_version"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -47,7 +47,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation platform('com.google.firebase:firebase-bom:26.4.0')
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
-    implementation 'com.google.firebase:firebase-firestore:23.0.3'
+    implementation 'com.google.firebase:firebase-firestore:23.0.4'
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.google.firebase:firebase-analytics'

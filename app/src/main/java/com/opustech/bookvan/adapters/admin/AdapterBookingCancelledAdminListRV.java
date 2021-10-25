@@ -184,29 +184,29 @@ public class AdapterBookingCancelledAdminListRV extends FirestoreRecyclerAdapter
         return new BookingHolder(view);
     }
 
-    class BookingHolder extends RecyclerView.ViewHolder {
-        TextView bookingCustomerName,
-                bookingCustomerEmail,
-                bookingContactNumber,
-                bookingReferenceNumber,
-                bookingTripRoute,
-                bookingScheduleDate,
-                bookingScheduleTime,
-                bookingCountAdult,
-                bookingCountChild,
-                bookingCountSpecial,
-                bookingTransportName,
-                bookingPrice,
-                bookingRemarks,
-                labelRemarks,
-                labelCountAdult,
-                labelCountChild,
-                labelCountSpecial,
-                timestamp,
-                itemNumber;
-        LinearLayout item;
-        CircleImageView customerPhoto;
-        ChipGroup seatChip;
+    static class BookingHolder extends RecyclerView.ViewHolder {
+        final TextView bookingCustomerName;
+        final TextView bookingCustomerEmail;
+        final TextView bookingContactNumber;
+        final TextView bookingReferenceNumber;
+        final TextView bookingTripRoute;
+        final TextView bookingScheduleDate;
+        final TextView bookingScheduleTime;
+        final TextView bookingCountAdult;
+        final TextView bookingCountChild;
+        final TextView bookingCountSpecial;
+        final TextView bookingTransportName;
+        final TextView bookingPrice;
+        final TextView bookingRemarks;
+        final TextView labelRemarks;
+        final TextView labelCountAdult;
+        final TextView labelCountChild;
+        final TextView labelCountSpecial;
+        final TextView timestamp;
+        final TextView itemNumber;
+        final LinearLayout item;
+        final CircleImageView customerPhoto;
+        final ChipGroup seatChip;
 
         public BookingHolder(View view) {
             super(view);

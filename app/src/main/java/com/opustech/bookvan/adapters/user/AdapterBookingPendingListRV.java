@@ -3,7 +3,6 @@ package com.opustech.bookvan.adapters.user;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +28,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,7 +39,6 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -56,8 +52,8 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private Context context;
-    private Activity activity;
+    private final Context context;
+    private final Activity activity;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -269,24 +265,24 @@ public class AdapterBookingPendingListRV extends FirestoreRecyclerAdapter<Bookin
         return new BookingHolder(view);
     }
 
-    class BookingHolder extends RecyclerView.ViewHolder {
-        TextView bookingCustomerName,
-                bookingCustomerEmail,
-                bookingContactNumber,
-                bookingReferenceNumber,
-                bookingTripRoute,
-                bookingScheduleDate,
-                bookingScheduleTime,
-                bookingCountAdult,
-                bookingCountChild,
-                bookingCountSpecial,
-                bookingTransportName,
-                bookingPrice,
-                timestamp,
-                itemNumber;
-        CircleImageView customerPhoto;
-        MaterialCardView bookingCard;
-        ChipGroup seatChip;
+    static class BookingHolder extends RecyclerView.ViewHolder {
+        final TextView bookingCustomerName;
+        final TextView bookingCustomerEmail;
+        final TextView bookingContactNumber;
+        final TextView bookingReferenceNumber;
+        final TextView bookingTripRoute;
+        final TextView bookingScheduleDate;
+        final TextView bookingScheduleTime;
+        final TextView bookingCountAdult;
+        final TextView bookingCountChild;
+        final TextView bookingCountSpecial;
+        final TextView bookingTransportName;
+        final TextView bookingPrice;
+        final TextView timestamp;
+        final TextView itemNumber;
+        final CircleImageView customerPhoto;
+        final MaterialCardView bookingCard;
+        final ChipGroup seatChip;
 
         public BookingHolder(View view) {
             super(view);

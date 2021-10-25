@@ -34,7 +34,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private String uid;
+    private final String uid;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -148,11 +148,18 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
         return new ChatMessageHolder(view);
     }
 
-    class ChatMessageHolder extends RecyclerView.ViewHolder {
-        LinearLayout systemMessageItem;
-        RelativeLayout sender, receiver;
-        CircleImageView senderPhoto, receiverPhoto;
-        TextView senderChatMessage, receiverChatMessage, senderChatTimestamp, receiverChatTimestamp, systemMessage, systemMessageTimestamp;
+    static class ChatMessageHolder extends RecyclerView.ViewHolder {
+        final LinearLayout systemMessageItem;
+        final RelativeLayout sender;
+        final RelativeLayout receiver;
+        final CircleImageView senderPhoto;
+        final CircleImageView receiverPhoto;
+        final TextView senderChatMessage;
+        final TextView receiverChatMessage;
+        final TextView senderChatTimestamp;
+        final TextView receiverChatTimestamp;
+        final TextView systemMessage;
+        final TextView systemMessageTimestamp;
 
         public ChatMessageHolder(View view) {
             super(view);

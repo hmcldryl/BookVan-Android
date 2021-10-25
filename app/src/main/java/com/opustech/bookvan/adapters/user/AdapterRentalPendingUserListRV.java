@@ -47,8 +47,8 @@ public class AdapterRentalPendingUserListRV extends FirestoreRecyclerAdapter<Ren
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference rentalsReference, usersReference;
 
-    private String name;
-    private Context context;
+    private final String name;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -200,24 +200,24 @@ public class AdapterRentalPendingUserListRV extends FirestoreRecyclerAdapter<Ren
         return new RentalHolder(view);
     }
 
-    class RentalHolder extends RecyclerView.ViewHolder {
-        LinearLayout item;
-        TextView customerName,
-                customerEmail,
-                rentContactNumber,
-                rentPickUpLocation,
-                rentPickUpDate,
-                rentPickUpTime,
-                rentDestination,
-                rentDropOffLocation,
-                rentDropOffDate,
-                rentDropOffTime,
-                rentalReferenceNumber,
-                rentPrice,
-                rentPriceLabel,
-                timestamp,
-                itemNumber;
-        CircleImageView customerPhoto;
+    static class RentalHolder extends RecyclerView.ViewHolder {
+        final LinearLayout item;
+        final TextView customerName;
+        final TextView customerEmail;
+        final TextView rentContactNumber;
+        final TextView rentPickUpLocation;
+        final TextView rentPickUpDate;
+        final TextView rentPickUpTime;
+        final TextView rentDestination;
+        final TextView rentDropOffLocation;
+        final TextView rentDropOffDate;
+        final TextView rentDropOffTime;
+        final TextView rentalReferenceNumber;
+        final TextView rentPrice;
+        final TextView rentPriceLabel;
+        final TextView timestamp;
+        final TextView itemNumber;
+        final CircleImageView customerPhoto;
 
         public RentalHolder(View view) {
             super(view);

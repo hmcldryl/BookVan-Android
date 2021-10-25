@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.TripSchedule;
 
 import java.text.ParseException;

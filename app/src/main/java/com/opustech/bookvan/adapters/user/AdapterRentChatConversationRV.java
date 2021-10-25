@@ -197,22 +197,22 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
         return new ChatMessageHolder(view);
     }
 
-    class ChatMessageHolder extends RecyclerView.ViewHolder {
-        LinearLayout item;
-        TextView rentTransportCompany,
-                rentContactNumber,
-                rentPickUpLocation,
-                rentPickUpDate,
-                rentPickUpTime,
-                rentDestination,
-                rentDropOffLocation,
-                rentDropOffDate,
-                rentDropOffTime,
-                rentalReferenceNumber,
-                rentStatus,
-                rentPrice,
-                rentPriceLabel,
-                itemNumber;
+    static class ChatMessageHolder extends RecyclerView.ViewHolder {
+        final LinearLayout item;
+        final TextView rentTransportCompany;
+        final TextView rentContactNumber;
+        final TextView rentPickUpLocation;
+        final TextView rentPickUpDate;
+        final TextView rentPickUpTime;
+        final TextView rentDestination;
+        final TextView rentDropOffLocation;
+        final TextView rentDropOffDate;
+        final TextView rentDropOffTime;
+        final TextView rentalReferenceNumber;
+        final TextView rentStatus;
+        final TextView rentPrice;
+        final TextView rentPriceLabel;
+        final TextView itemNumber;
 
         public ChatMessageHolder(View view) {
             super(view);

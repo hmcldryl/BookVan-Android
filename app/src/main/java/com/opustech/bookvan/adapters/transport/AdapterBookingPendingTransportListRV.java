@@ -58,9 +58,9 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
 
     private APIService apiService;
 
-    private String uid;
+    private final String uid;
 
-    private Context context;
+    private final Context context;
 
     String transport_name = "";
 
@@ -376,25 +376,25 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         return new BookingHolder(view);
     }
 
-    class BookingHolder extends RecyclerView.ViewHolder {
-        TextView bookingCustomerName,
-                bookingReferenceNumber,
-                bookingTripRoute,
-                bookingScheduleDate,
-                bookingScheduleTime,
-                bookingCountAdult,
-                bookingCountChild,
-                bookingCountSpecial,
-                bookingTransportName,
-                labelCountAdult,
-                labelCountChild,
-                labelCountSpecial,
-                bookingPrice,
-                timestamp,
-                itemNumber;
-        LinearLayout item;
-        CircleImageView customerPhoto;
-        ChipGroup seatChip;
+    static class BookingHolder extends RecyclerView.ViewHolder {
+        final TextView bookingCustomerName;
+        final TextView bookingReferenceNumber;
+        final TextView bookingTripRoute;
+        final TextView bookingScheduleDate;
+        final TextView bookingScheduleTime;
+        final TextView bookingCountAdult;
+        final TextView bookingCountChild;
+        final TextView bookingCountSpecial;
+        final TextView bookingTransportName;
+        final TextView labelCountAdult;
+        final TextView labelCountChild;
+        final TextView labelCountSpecial;
+        final TextView bookingPrice;
+        final TextView timestamp;
+        final TextView itemNumber;
+        final LinearLayout item;
+        final CircleImageView customerPhoto;
+        final ChipGroup seatChip;
 
         public BookingHolder(View view) {
             super(view);

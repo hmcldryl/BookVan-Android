@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -20,7 +21,6 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.opustech.bookvan.model.UserAccount;
 import com.opustech.bookvan.ui.user.HomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -279,61 +279,50 @@ public class LoginActivity extends AppCompatActivity {
                 .fadeColor(Color.DKGRAY).build();
         dialog.show();
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    firebaseAuth.signInWithCredential(credential)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) {
-                                        usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            if (!task.getResult().exists()) {
-                                                                FirebaseMessaging.getInstance().getToken()
-                                                                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<String> task) {
-                                                                                if (task.isSuccessful()) {
-                                                                                    UserAccount userAccount = new UserAccount(firebaseAuth.getCurrentUser().getDisplayName(), firebaseAuth.getCurrentUser().getEmail(), task.getResult(), 0);
-                                                                                    usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                                            .set(userAccount)
-                                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                                @Override
-                                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                                    if (task.isSuccessful()) {
-                                                                                                        checkUserSession(dialog);
-                                                                                                    } else {
-                                                                                                        dialog.dismiss();
-                                                                                                        enableInput();
-                                                                                                        Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-                                                                                                    }
-                                                                                                }
-                                                                                            });
-                                                                                }
-                                                                            }
-                                                                        });
-                                                            } else {
-                                                                checkUserSession(dialog);
-                                                            }
-
-                                                        }
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) {
+                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    if (!task.getResult().exists()) {
+                                                        UserAccount userAccount = new UserAccount(firebaseAuth.getCurrentUser().getDisplayName(), firebaseAuth.getCurrentUser().getEmail(), firebaseAuth.getCurrentUser().getPhoneNumber(), 0);
+                                                        usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                .set(userAccount)
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            checkUserSession(dialog);
+                                                                        } else {
+                                                                            dialog.dismiss();
+                                                                            enableInput();
+                                                                            Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                                                                        }
+                                                                    }
+                                                                });
+                                                    } else {
+                                                        checkUserSession(dialog);
                                                     }
-                                                });
-                                    }
-                                }
-                            });
-                } else {
-                    enableInput();
-                    Toast.makeText(LoginActivity.this, "Google sign in failed. Please check your internet connection and try again. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
+                                                }
+                                            }
+                                        });
+                            }
+                        } else {
+                            dialog.dismiss();
+                            enableInput();
+                            Toast.makeText(LoginActivity.this, "Facebook sign in failed. Please check your internet connection and try again. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.d("DEBUG", task.getException().getMessage());
+                        }
+                    }
+                });
     }
 
     @Override
@@ -362,22 +351,14 @@ public class LoginActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                     if (task.isSuccessful()) {
                                                         if (!task.getResult().exists()) {
-                                                            FirebaseMessaging.getInstance().getToken()
-                                                                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                                                            UserAccount userAccount = new UserAccount(account.getGivenName() + " " + account.getFamilyName(), account.getEmail(), 0);
+                                                            usersReference.document(firebaseAuth.getCurrentUser().getUid())
+                                                                    .set(userAccount)
+                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
-                                                                        public void onComplete(@NonNull Task<String> task) {
+                                                                        public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()) {
-                                                                                UserAccount userAccount = new UserAccount(account.getGivenName() + " " + account.getFamilyName(), account.getEmail(), task.getResult(), 0);
-                                                                                usersReference.document(firebaseAuth.getCurrentUser().getUid())
-                                                                                        .set(userAccount)
-                                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                                            @Override
-                                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                                if (task.isSuccessful()) {
-                                                                                                    checkUserSession(dialog);
-                                                                                                }
-                                                                                            }
-                                                                                        });
+                                                                                checkUserSession(dialog);
                                                                             }
                                                                         }
                                                                     });

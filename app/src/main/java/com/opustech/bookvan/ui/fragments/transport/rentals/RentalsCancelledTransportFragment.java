@@ -22,9 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.transport.AdapterBookingCancelledTransportListRV;
 import com.opustech.bookvan.adapters.transport.AdapterRentalCancelledTransportListRV;
-import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.model.Rental;
 
 public class RentalsCancelledTransportFragment extends Fragment {

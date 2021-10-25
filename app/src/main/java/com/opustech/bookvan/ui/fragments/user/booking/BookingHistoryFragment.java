@@ -24,8 +24,6 @@ import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Booking;
 import com.opustech.bookvan.adapters.user.AdapterBookingHistoryListRV;
 
-import java.util.Arrays;
-
 public class BookingHistoryFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;

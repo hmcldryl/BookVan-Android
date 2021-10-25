@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,7 +27,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.transport.AdapterTransportTripScheduleListRV;
 import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.TripSchedule;
 
@@ -143,11 +141,14 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
     }
 
 
-    class ScheduleHolder extends RecyclerView.ViewHolder {
-        RelativeLayout layout;
-        CardView item;
-        ImageView vanCompanyPhoto;
-        TextView price, routeDescriptionFrom, routeDescriptionTo, vanCompany;
+    static class ScheduleHolder extends RecyclerView.ViewHolder {
+        final RelativeLayout layout;
+        final CardView item;
+        final ImageView vanCompanyPhoto;
+        final TextView price;
+        final TextView routeDescriptionFrom;
+        final TextView routeDescriptionTo;
+        final TextView vanCompany;
 
         public ScheduleHolder(View view) {
             super(view);

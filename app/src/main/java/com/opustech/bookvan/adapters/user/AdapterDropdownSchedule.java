@@ -12,12 +12,8 @@ import androidx.annotation.Nullable;
 
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.Schedule;
-import com.opustech.bookvan.model.TripSchedule;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
 public class AdapterDropdownSchedule extends ArrayAdapter<Schedule> {

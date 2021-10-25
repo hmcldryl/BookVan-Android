@@ -45,7 +45,7 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -213,29 +213,29 @@ public class AdapterBookingConfirmedListRV extends FirestoreRecyclerAdapter<Book
         return new BookingHolder(view);
     }
 
-    class BookingHolder extends RecyclerView.ViewHolder {
-        TextView bookingCustomerName,
-                bookingCustomerEmail,
-                bookingContactNumber,
-                bookingReferenceNumber,
-                bookingTripRoute,
-                bookingScheduleDate,
-                bookingScheduleTime,
-                bookingCountAdult,
-                bookingCountChild,
-                bookingCountSpecial,
-                bookingTransportName,
-                bookingDriverName,
-                bookingPlateNumber,
-                bookingPrice,
-                labelCountAdult,
-                labelCountChild,
-                labelCountSpecial,
-                timestamp,
-                itemNumber;
-        MaterialCardView bookingCard;
-        CircleImageView customerPhoto;
-        ChipGroup seatChip;
+    static class BookingHolder extends RecyclerView.ViewHolder {
+        final TextView bookingCustomerName;
+        final TextView bookingCustomerEmail;
+        final TextView bookingContactNumber;
+        final TextView bookingReferenceNumber;
+        final TextView bookingTripRoute;
+        final TextView bookingScheduleDate;
+        final TextView bookingScheduleTime;
+        final TextView bookingCountAdult;
+        final TextView bookingCountChild;
+        final TextView bookingCountSpecial;
+        final TextView bookingTransportName;
+        final TextView bookingDriverName;
+        final TextView bookingPlateNumber;
+        final TextView bookingPrice;
+        final TextView labelCountAdult;
+        final TextView labelCountChild;
+        final TextView labelCountSpecial;
+        final TextView timestamp;
+        final TextView itemNumber;
+        final MaterialCardView bookingCard;
+        final CircleImageView customerPhoto;
+        final ChipGroup seatChip;
 
         public BookingHolder(View view) {
             super(view);

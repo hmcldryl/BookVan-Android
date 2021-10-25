@@ -112,9 +112,12 @@ public class AdapterTransportScheduleListRV extends FirestoreRecyclerAdapter<Sch
         return new ScheduleHolder(view);
     }
 
-    class ScheduleHolder extends RecyclerView.ViewHolder {
-        LinearLayout item;
-        TextView routeDescription, routePrice, timeQueue, timeDepart;
+    static class ScheduleHolder extends RecyclerView.ViewHolder {
+        final LinearLayout item;
+        final TextView routeDescription;
+        final TextView routePrice;
+        final TextView timeQueue;
+        final TextView timeDepart;
 
         public ScheduleHolder(View view) {
             super(view);

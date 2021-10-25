@@ -23,10 +23,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.transport.AdapterBookingCancelledTransportListRV;
-import com.opustech.bookvan.adapters.transport.AdapterBookingHistoryTransportListRV;
 import com.opustech.bookvan.model.Booking;
-
-import java.util.Arrays;
 
 public class BookingsCancelledTransportFragment extends Fragment {
 

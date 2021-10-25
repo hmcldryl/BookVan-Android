@@ -22,10 +22,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.adapters.admin.AdapterBookingCancelledAdminListRV;
-import com.opustech.bookvan.adapters.admin.AdapterBookingHistoryAdminListRV;
 import com.opustech.bookvan.model.Booking;
-
-import java.util.Arrays;
 
 public class BookingsCancelledAdminFragment extends Fragment {
 

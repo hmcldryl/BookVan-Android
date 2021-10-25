@@ -1,21 +1,14 @@
 package com.opustech.bookvan.adapters.transport;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,7 +16,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,11 +27,8 @@ import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Locale;
 
-import cc.cloudist.acplibrary.ACProgressConstant;
-import cc.cloudist.acplibrary.ACProgressFlower;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdapterRentalPendingTransportListRV extends FirestoreRecyclerAdapter<Rental, AdapterRentalPendingTransportListRV.RentalHolder> {
@@ -47,8 +36,8 @@ public class AdapterRentalPendingTransportListRV extends FirestoreRecyclerAdapte
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference rentalsReference, usersReference;
 
-    private String name;
-    private Context context;
+    private final String name;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -136,24 +125,24 @@ public class AdapterRentalPendingTransportListRV extends FirestoreRecyclerAdapte
         return new RentalHolder(view);
     }
 
-    class RentalHolder extends RecyclerView.ViewHolder {
-        LinearLayout item;
-        TextView customerName,
-                customerEmail,
-                rentContactNumber,
-                rentPickUpLocation,
-                rentPickUpDate,
-                rentPickUpTime,
-                rentDestination,
-                rentDropOffLocation,
-                rentDropOffDate,
-                rentDropOffTime,
-                rentalReferenceNumber,
-                rentPrice,
-                rentPriceLabel,
-                timestamp,
-                itemNumber;
-        CircleImageView customerPhoto;
+    static class RentalHolder extends RecyclerView.ViewHolder {
+        final LinearLayout item;
+        final TextView customerName;
+        final TextView customerEmail;
+        final TextView rentContactNumber;
+        final TextView rentPickUpLocation;
+        final TextView rentPickUpDate;
+        final TextView rentPickUpTime;
+        final TextView rentDestination;
+        final TextView rentDropOffLocation;
+        final TextView rentDropOffDate;
+        final TextView rentDropOffTime;
+        final TextView rentalReferenceNumber;
+        final TextView rentPrice;
+        final TextView rentPriceLabel;
+        final TextView timestamp;
+        final TextView itemNumber;
+        final CircleImageView customerPhoto;
 
         public RentalHolder(View view) {
             super(view);

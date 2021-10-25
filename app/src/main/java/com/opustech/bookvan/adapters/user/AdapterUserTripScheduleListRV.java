@@ -2,22 +2,15 @@ package com.opustech.bookvan.adapters.user;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
 import com.opustech.bookvan.model.TripSchedule;
@@ -71,8 +64,9 @@ public class AdapterUserTripScheduleListRV extends FirestoreRecyclerAdapter<Trip
         return new TripScheduleHolder(view);
     }
 
-    class TripScheduleHolder extends RecyclerView.ViewHolder {
-        TextView timeQueue, timeDepart;
+    static class TripScheduleHolder extends RecyclerView.ViewHolder {
+        final TextView timeQueue;
+        final TextView timeDepart;
 
         public TripScheduleHolder(View view) {
             super(view);

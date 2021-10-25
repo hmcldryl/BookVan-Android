@@ -81,12 +81,13 @@ public class AdapterTransportPartnerListRV extends FirestoreRecyclerAdapter<Tran
         return new TransportCompanyHolder(view);
     }
 
-    class TransportCompanyHolder extends RecyclerView.ViewHolder {
+    static class TransportCompanyHolder extends RecyclerView.ViewHolder {
 
-        TextView companyName, companyDescription;
-        ImageView companyBanner;
-        CircleImageView companyPhoto;
-        MaterialCardView item;
+        final TextView companyName;
+        final TextView companyDescription;
+        final ImageView companyBanner;
+        final CircleImageView companyPhoto;
+        final MaterialCardView item;
 
         public TransportCompanyHolder(View view) {
             super(view);

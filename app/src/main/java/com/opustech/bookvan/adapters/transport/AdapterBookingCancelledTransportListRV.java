@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +37,7 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -164,27 +163,27 @@ public class AdapterBookingCancelledTransportListRV extends FirestoreRecyclerAda
         return new BookingHolder(view);
     }
 
-    class BookingHolder extends RecyclerView.ViewHolder {
-        TextView bookingCustomerName,
-                bookingReferenceNumber,
-                bookingTripRoute,
-                bookingScheduleDate,
-                bookingScheduleTime,
-                bookingCountAdult,
-                bookingCountChild,
-                bookingCountSpecial,
-                bookingTransportName,
-                bookingPrice,
-                bookingRemarks,
-                labelRemarks,
-                labelCountAdult,
-                labelCountChild,
-                labelCountSpecial,
-                timestamp,
-                itemNumber;
-        LinearLayout item;
-        CircleImageView customerPhoto;
-        ChipGroup seatChip;
+    static class BookingHolder extends RecyclerView.ViewHolder {
+        final TextView bookingCustomerName;
+        final TextView bookingReferenceNumber;
+        final TextView bookingTripRoute;
+        final TextView bookingScheduleDate;
+        final TextView bookingScheduleTime;
+        final TextView bookingCountAdult;
+        final TextView bookingCountChild;
+        final TextView bookingCountSpecial;
+        final TextView bookingTransportName;
+        final TextView bookingPrice;
+        final TextView bookingRemarks;
+        final TextView labelRemarks;
+        final TextView labelCountAdult;
+        final TextView labelCountChild;
+        final TextView labelCountSpecial;
+        final TextView timestamp;
+        final TextView itemNumber;
+        final LinearLayout item;
+        final CircleImageView customerPhoto;
+        final ChipGroup seatChip;
 
         public BookingHolder(View view) {
             super(view);

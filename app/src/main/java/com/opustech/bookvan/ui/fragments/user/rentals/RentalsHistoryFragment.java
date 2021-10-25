@@ -22,7 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.adapters.transport.AdapterRentalHistoryTransportListRV;
 import com.opustech.bookvan.adapters.user.AdapterRentalHistoryUserListRV;
 import com.opustech.bookvan.model.Rental;
 

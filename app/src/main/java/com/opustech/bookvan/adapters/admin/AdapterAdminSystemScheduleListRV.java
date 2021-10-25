@@ -20,7 +20,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.opustech.bookvan.R;
-import com.opustech.bookvan.model.Schedule;
 import com.opustech.bookvan.model.SystemSchedule;
 
 import java.util.Locale;
@@ -106,9 +105,11 @@ public class AdapterAdminSystemScheduleListRV extends FirestoreRecyclerAdapter<S
         return new SystemScheduleHolder(view);
     }
 
-    class SystemScheduleHolder extends RecyclerView.ViewHolder {
-        TextView routeDescription, routePrice, routeCategory;
-        ImageButton options;
+    static class SystemScheduleHolder extends RecyclerView.ViewHolder {
+        final TextView routeDescription;
+        final TextView routePrice;
+        final TextView routeCategory;
+        final ImageButton options;
 
         public SystemScheduleHolder(View view) {
             super(view);

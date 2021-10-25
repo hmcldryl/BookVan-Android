@@ -34,7 +34,7 @@ public class AdapterRentalHistoryAdminListRV extends FirestoreRecyclerAdapter<Re
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -128,26 +128,26 @@ public class AdapterRentalHistoryAdminListRV extends FirestoreRecyclerAdapter<Re
         return new RentalHolder(view);
     }
 
-    class RentalHolder extends RecyclerView.ViewHolder {
-        LinearLayout item;
-        TextView customerName,
-                customerEmail,
-                rentContactNumber,
-                rentPickUpLocation,
-                rentPickUpDate,
-                rentPickUpTime,
-                rentDestination,
-                rentDropOffLocation,
-                rentDropOffDate,
-                rentDropOffTime,
-                rentalReferenceNumber,
-                rentPrice,
-                rentPriceLabel,
-                rentRemarks,
-                labelRemarks,
-                timestamp,
-                itemNumber;
-        CircleImageView customerPhoto;
+    static class RentalHolder extends RecyclerView.ViewHolder {
+        final LinearLayout item;
+        final TextView customerName;
+        final TextView customerEmail;
+        final TextView rentContactNumber;
+        final TextView rentPickUpLocation;
+        final TextView rentPickUpDate;
+        final TextView rentPickUpTime;
+        final TextView rentDestination;
+        final TextView rentDropOffLocation;
+        final TextView rentDropOffDate;
+        final TextView rentDropOffTime;
+        final TextView rentalReferenceNumber;
+        final TextView rentPrice;
+        final TextView rentPriceLabel;
+        final TextView rentRemarks;
+        final TextView labelRemarks;
+        final TextView timestamp;
+        final TextView itemNumber;
+        final CircleImageView customerPhoto;
 
         public RentalHolder(View view) {
             super(view);
