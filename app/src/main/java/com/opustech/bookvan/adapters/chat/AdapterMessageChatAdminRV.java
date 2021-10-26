@@ -47,7 +47,19 @@ public class AdapterMessageChatAdminRV extends FirestoreRecyclerAdapter<ChatMess
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull ChatMessageHolder holder, int position, @NonNull ChatMessage model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 

@@ -67,6 +67,8 @@ public class MessageActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(MessageActivity.this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(MessageActivity.this, manager.getOrientation());
 
+        adapterMessageListRV.setHasStableIds(true);
+
         chatStatusNone = findViewById(R.id.chatStatusNone);
         chatMessageList = findViewById(R.id.chatMessageList);
 

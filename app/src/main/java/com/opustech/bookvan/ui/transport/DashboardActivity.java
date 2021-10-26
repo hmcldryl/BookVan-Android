@@ -25,6 +25,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialog;
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment;
+import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -228,9 +229,41 @@ public class DashboardActivity extends AppCompatActivity {
         btnScanMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this, ConfirmPaymentScanActivity.class);
-                intent.putExtra("uid", getCompanyUid());
-                startActivity(intent);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(DashboardActivity.this);
+                final AlertDialog alertDialog = builder.create();
+                if (!alertDialog.isShowing()) {
+                    final View dialogView = LayoutInflater.from(DashboardActivity.this).inflate(R.layout.dialog_select_type, null);
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    alertDialog.setCancelable(true);
+                    alertDialog.setView(dialogView);
+
+                    CardView btnScanBooking = dialogView.findViewById(R.id.btnScanBooking);
+                    CardView btnScanRental = dialogView.findViewById(R.id.btnScanRental);
+
+                    btnScanBooking.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(DashboardActivity.this, ConfirmPaymentScanActivity.class);
+                            intent.putExtra("uid", getCompanyUid());
+                            intent.putExtra("type", "booking");
+                            startActivity(intent);
+                        }
+                    });
+
+                    btnScanRental.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(DashboardActivity.this, ConfirmPaymentScanActivity.class);
+                            intent.putExtra("uid", getCompanyUid());
+                            intent.putExtra("type", "rental");
+                            startActivity(intent);
+                        }
+                    });
+
+                    alertDialog.show();
+                }
+
+
             }
         });
 

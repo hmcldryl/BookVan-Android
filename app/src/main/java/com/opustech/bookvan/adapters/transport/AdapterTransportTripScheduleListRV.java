@@ -50,7 +50,19 @@ public class AdapterTransportTripScheduleListRV extends FirestoreRecyclerAdapter
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull TripScheduleHolder holder, int position, @NonNull TripSchedule model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         String time_queue = model.getTime_queue();

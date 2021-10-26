@@ -60,7 +60,19 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull ChatMessageHolder holder, int position, @NonNull Rental model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         rentalsReference = firebaseFirestore.collection("rentals");
         partnersReference = firebaseFirestore.collection("partners");
@@ -86,7 +98,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
         holder.rentDropOffTime.setText(model.getDropoff_time());
         holder.rentalReferenceNumber.setText(model.getReference_number());
         holder.rentStatus.setText(capitalize(model.getStatus()));
-        holder.itemNumber.setText(String.valueOf(position + 1));
+        holder.itemNumber.setText(String.valueOf(holder.getAdapterPosition() + 1));
 
         if (model.getPrice() > 0.0) {
             String price = context.getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", model.getPrice());
@@ -100,7 +112,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(holder.itemView.getContext(), RentMessageActivity.class);
-                    intent.putExtra("rentalId", getSnapshots().getSnapshot(position).getReference().getId());
+                    intent.putExtra("rentalId", getSnapshots().getSnapshot(holder.getAdapterPosition()).getReference().getId());
                     intent.putExtra("status", model.getStatus());
                     intent.putExtra("name", name);
                     holder.itemView.getContext().startActivity(intent);
@@ -117,7 +129,7 @@ public class AdapterRentChatConversationRV extends FirestoreRecyclerAdapter<Rent
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             if (item.getItemId() == R.id.btnCancel) {
-                                cancelRent(position, model.getReference_number(), holder.rentalReferenceNumber);
+                                cancelRent(holder.getAdapterPosition(), model.getReference_number(), holder.rentalReferenceNumber);
                             }
                             return false;
                         }

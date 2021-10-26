@@ -103,6 +103,8 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(ChatActivity.this);
         manager.setStackFromEnd(true);
 
+        adapterMessageChatRV.setHasStableIds(true);
+
         chatStatusNone = findViewById(R.id.chatStatusNone);
         chatMessageList = findViewById(R.id.chatMessageList);
         chatMessageList.setHasFixedSize(true);

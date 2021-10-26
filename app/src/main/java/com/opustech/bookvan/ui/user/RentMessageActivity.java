@@ -1,6 +1,7 @@
 package com.opustech.bookvan.ui.user;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -181,6 +183,38 @@ public class RentMessageActivity extends AppCompatActivity {
                             });
 
                             alertDialog.show();
+                        } else if (getIntent().getStringExtra("status").equals("confirmed")) {
+                            if (!alertDialog.isShowing()) {
+                                final View dialogView = LayoutInflater.from(RentMessageActivity.this).inflate(R.layout.dialog_confirm_payment, null);
+                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                alertDialog.setCancelable(true);
+                                alertDialog.setView(dialogView);
+
+                                CardView btnScanMode = dialogView.findViewById(R.id.btnScanMode);
+                                CardView btnQRMode = dialogView.findViewById(R.id.btnQRMode);
+
+                                btnScanMode.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(RentMessageActivity.this, ConfirmPaymentScanActivity.class);
+                                        intent.putExtra("rental_id", getIntent().getStringExtra("rental_id"));
+                                        intent.putExtra("type", "rental");
+                                        startActivity(intent);
+                                    }
+                                });
+
+                                btnQRMode.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(RentMessageActivity.this, ConfirmPaymentQRActivity.class);
+                                        intent.putExtra("rental_id", getIntent().getStringExtra("rental_id"));
+                                        intent.putExtra("type", "rental");
+                                        startActivity(intent);
+                                    }
+                                });
+
+                                alertDialog.show();
+                            }
                         } else {
                             Toast.makeText(RentMessageActivity.this, "No options available.", Toast.LENGTH_SHORT).show();
                         }
@@ -213,13 +247,22 @@ public class RentMessageActivity extends AppCompatActivity {
                 .setQuery(query, RentChatMessage.class)
                 .build();
 
-        adapterRentChatMessageRV = new AdapterRentChatMessageRV(options, firebaseAuth.getCurrentUser().getUid(), getIntent().getStringExtra("status"));
+        adapterRentChatMessageRV = new AdapterRentChatMessageRV(options, firebaseAuth.getCurrentUser().getUid(), getIntent().getStringExtra("rental_id"), getIntent().getStringExtra("status"));
         LinearLayoutManager manager = new LinearLayoutManager(RentMessageActivity.this);
         manager.setStackFromEnd(true);
+
+        adapterRentChatMessageRV.setHasStableIds(true);
 
         chatMessageList.setHasFixedSize(true);
         chatMessageList.setLayoutManager(manager);
         chatMessageList.setAdapter(adapterRentChatMessageRV);
+
+        adapterRentChatMessageRV.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                chatMessageList.smoothScrollToPosition(adapterRentChatMessageRV.getItemCount());
+            }
+        });
 
         rentalsReference.document(getIntent().getStringExtra("rental_id"))
                 .collection("chat")

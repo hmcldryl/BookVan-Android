@@ -80,6 +80,8 @@ public class BookingsConfirmedAdminFragment extends Fragment {
         manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
+        adapterBookingConfirmedAdminListRV.setHasStableIds(true);
+
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
 

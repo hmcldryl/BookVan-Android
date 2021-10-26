@@ -51,9 +51,19 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
         super(options);
         this.context = context;
     }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+    @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
+        holder.setIsRecyclable(false);
+
         holder.itemNumber.setText(String.valueOf(position + 1));
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -114,6 +124,7 @@ public class AdapterBookingCancelledListRV extends FirestoreRecyclerAdapter<Book
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
 
+        holder.seatChip.removeAllViews();
         for (int i = 0; i < seat.size(); i++) {
             final Chip chip = new Chip(context);
             chip.setTextAppearance(R.style.ChipTextAppearance);

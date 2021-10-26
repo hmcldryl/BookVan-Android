@@ -7,6 +7,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -78,7 +81,19 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
+        holder.setIsRecyclable(false);
+
         holder.itemNumber.setText(String.valueOf(holder.getAdapterPosition() + 1));
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -119,6 +134,7 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         holder.bookingScheduleDate.setText(schedule_date);
         holder.bookingScheduleTime.setText(schedule_time);
 
+        holder.seatChip.removeAllViews();
         for (int i = 0; i < seat.size(); i++) {
             final Chip chip = new Chip(context);
             chip.setTextAppearance(R.style.ChipTextAppearance);
@@ -164,25 +180,67 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
         holder.item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                final AlertDialog alertDialog = builder.create();
-                if (!alertDialog.isShowing()) {
-                    final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_booking, null);
-                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    alertDialog.setCancelable(true);
-                    alertDialog.setView(dialogView);
-                    TextView bookingReferenceNo = dialogView.findViewById(R.id.bookingReferenceNo);
-                    TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
-                    TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanNumber);
+                PopupMenu popup = new PopupMenu(context, v);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.booking_pending_transport_menu, popup.getMenu());
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getItemId() == R.id.btnConfirmBooking) {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            final AlertDialog alertDialog = builder.create();
+                            if (!alertDialog.isShowing()) {
+                                final View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_booking, null);
+                                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                alertDialog.setCancelable(true);
+                                alertDialog.setView(dialogView);
+                                TextView bookingReferenceNo = dialogView.findViewById(R.id.bookingReferenceNo);
+                                TextInputLayout inputDriverName = dialogView.findViewById(R.id.inputDriverName);
+                                TextInputLayout inputVanPlate = dialogView.findViewById(R.id.inputVanNumber);
 
-                    bookingReferenceNo.setText(reference_number);
+                                bookingReferenceNo.setText(reference_number);
 
-                    MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
-                    MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
+                                MaterialButton btnConfirmBooking = dialogView.findViewById(R.id.btnConfirmBooking);
+                                MaterialButton btnCancelBooking = dialogView.findViewById(R.id.btnCancelBooking);
 
-                    btnCancelBooking.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                                btnCancelBooking.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                                btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        inputDriverName.setEnabled(false);
+                                        inputVanPlate.setEnabled(false);
+                                        btnConfirmBooking.setEnabled(false);
+                                        btnCancelBooking.setEnabled(false);
+
+                                        String driver_name = inputDriverName.getEditText().getText().toString();
+                                        String van_number = inputVanPlate.getEditText().getText().toString();
+
+                                        if (driver_name.isEmpty()) {
+                                            btnConfirmBooking.setEnabled(true);
+                                            btnCancelBooking.setEnabled(true);
+                                            inputDriverName.setEnabled(true);
+                                            inputVanPlate.setEnabled(true);
+                                            inputDriverName.getEditText().setError("Please enter the name of the van driver.");
+                                        } else if (van_number.isEmpty()) {
+                                            btnConfirmBooking.setEnabled(true);
+                                            btnCancelBooking.setEnabled(true);
+                                            inputDriverName.setEnabled(true);
+                                            inputVanPlate.setEnabled(true);
+                                            inputVanPlate.getEditText().setError("Please enter the van plate number.");
+                                        } else {
+                                            updateBookingInfo(alertDialog, model.getUid(), driver_name, van_number, holder.getAdapterPosition(), transport_name, reference_number);
+                                        }
+                                    }
+                                });
+                                alertDialog.show();
+                            }
+                        } else if (item.getItemId() == R.id.btnCancelBooking) {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             final AlertDialog alertDialog = builder.create();
                             if (!alertDialog.isShowing()) {
@@ -238,38 +296,10 @@ public class AdapterBookingPendingTransportListRV extends FirestoreRecyclerAdapt
                                 alertDialog.show();
                             }
                         }
-                    });
-
-                    btnConfirmBooking.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            inputDriverName.setEnabled(false);
-                            inputVanPlate.setEnabled(false);
-                            btnConfirmBooking.setEnabled(false);
-                            btnCancelBooking.setEnabled(false);
-
-                            String driver_name = inputDriverName.getEditText().getText().toString();
-                            String van_number = inputVanPlate.getEditText().getText().toString();
-
-                            if (driver_name.isEmpty()) {
-                                btnConfirmBooking.setEnabled(true);
-                                btnCancelBooking.setEnabled(true);
-                                inputDriverName.setEnabled(true);
-                                inputVanPlate.setEnabled(true);
-                                inputDriverName.getEditText().setError("Please enter the name of the van driver.");
-                            } else if (van_number.isEmpty()) {
-                                btnConfirmBooking.setEnabled(true);
-                                btnCancelBooking.setEnabled(true);
-                                inputDriverName.setEnabled(true);
-                                inputVanPlate.setEnabled(true);
-                                inputVanPlate.getEditText().setError("Please enter the van plate number.");
-                            } else {
-                                updateBookingInfo(alertDialog, model.getUid(), driver_name, van_number, holder.getAdapterPosition(), transport_name, reference_number);
-                            }
-                        }
-                    });
-                    alertDialog.show();
-                }
+                        return false;
+                    }
+                });
+                popup.show();
             }
         });
 

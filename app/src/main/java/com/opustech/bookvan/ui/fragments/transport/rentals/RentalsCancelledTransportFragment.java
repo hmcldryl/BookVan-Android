@@ -84,6 +84,8 @@ public class RentalsCancelledTransportFragment extends Fragment {
         manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
+        adapterRentalCancelledTransportListRV.setHasStableIds(true);
+
         rentalStatusNone = root.findViewById(R.id.rentalStatusNone);
         rentalList = root.findViewById(R.id.rentalList);
 

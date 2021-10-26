@@ -89,7 +89,7 @@ public class CancelledBookingFragment extends Fragment {
         manager.setReverseLayout(true);
         manager.setStackFromEnd(true);
 
-        DividerItemDecoration decoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
+        adapterBookingCancelledListRV.setHasStableIds(true);
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);

@@ -86,6 +86,8 @@ public class RentalsHistoryTransportFragment extends Fragment {
         manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
+        adapterRentalHistoryTransportListRV.setHasStableIds(true);
+
         rentalStatusNone = root.findViewById(R.id.rentalStatusNone);
         rentalList = root.findViewById(R.id.rentalList);
 

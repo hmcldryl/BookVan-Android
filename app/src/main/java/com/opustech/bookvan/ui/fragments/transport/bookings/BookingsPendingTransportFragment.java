@@ -84,6 +84,8 @@ public class BookingsPendingTransportFragment extends Fragment {
         manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
+        adapterBookingPendingTransportListRV.setHasStableIds(true);
+
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);
 

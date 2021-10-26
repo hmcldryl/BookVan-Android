@@ -81,6 +81,8 @@ public class RentalsPendingFragment extends Fragment {
         manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), manager.getOrientation());
 
+        adapterRentalPendingAdminListRV.setHasStableIds(true);
+
         rentalStatusNone = root.findViewById(R.id.rentalStatusNone);
         rentalList = root.findViewById(R.id.rentalList);
 

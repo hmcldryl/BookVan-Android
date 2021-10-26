@@ -38,7 +38,19 @@ public class AdapterTransportPartnerListRV extends FirestoreRecyclerAdapter<Tran
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull TransportCompanyHolder holder, int position, @NonNull TransportCompany model) {
+        holder.setIsRecyclable(false);
+
         String uid = model.getUid();
         String photo_url = model.getPhoto_url();
         String banner_url = model.getBanner_url();

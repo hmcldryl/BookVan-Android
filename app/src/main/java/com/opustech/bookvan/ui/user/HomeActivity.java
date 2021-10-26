@@ -193,6 +193,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 if (item.getItemId() == R.id.btnBooking) {
                     Intent intent = new Intent(HomeActivity.this, BookingActivity.class);
+                    intent.putExtra("uid", firebaseAuth.getCurrentUser().getUid());
                     startActivity(intent);
                 }
                 if (item.getItemId() == R.id.btnRentals) {

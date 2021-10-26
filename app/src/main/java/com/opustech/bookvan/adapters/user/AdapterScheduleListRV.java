@@ -50,7 +50,19 @@ public class AdapterScheduleListRV extends FirestoreRecyclerAdapter<Schedule, Ad
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull ScheduleHolder holder, int position, @NonNull Schedule model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         partnersReference = firebaseFirestore.collection("partners");
 

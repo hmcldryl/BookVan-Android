@@ -382,6 +382,8 @@ public class RentMessageActivity extends AppCompatActivity {
         LinearLayoutManager manager = new LinearLayoutManager(RentMessageActivity.this);
         manager.setStackFromEnd(true);
 
+        adapterRentChatMessageRV.setHasStableIds(true);
+
         chatMessageList.setHasFixedSize(true);
         chatMessageList.setLayoutManager(manager);
         chatMessageList.setAdapter(adapterRentChatMessageRV);

@@ -52,7 +52,19 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull BookingHolder holder, int position, @NonNull Booking model) {
+        holder.setIsRecyclable(false);
+
         holder.itemNumber.setText(String.valueOf(position + 1));
 
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -116,6 +128,7 @@ public class AdapterBookingConfirmedAdminListRV extends FirestoreRecyclerAdapter
         holder.bookingDriverName.setText(driver_name);
         holder.bookingVanNumber.setText(van_number);
 
+        holder.seatChip.removeAllViews();
         for (int i = 0; i < seat.size(); i++) {
             final Chip chip = new Chip(context);
             chip.setTextAppearance(R.style.ChipTextAppearance);

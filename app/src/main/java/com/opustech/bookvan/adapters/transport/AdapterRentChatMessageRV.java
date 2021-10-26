@@ -49,7 +49,19 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull ChatMessageHolder holder, int position, @NonNull RentChatMessage model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");

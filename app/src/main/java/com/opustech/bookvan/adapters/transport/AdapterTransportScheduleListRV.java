@@ -44,7 +44,19 @@ public class AdapterTransportScheduleListRV extends FirestoreRecyclerAdapter<Sch
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull ScheduleHolder holder, int position, @NonNull Schedule model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
@@ -71,7 +83,7 @@ public class AdapterTransportScheduleListRV extends FirestoreRecyclerAdapter<Sch
                     TextView tripRoute = view.findViewById(R.id.tripRoute);
                     tripRoute.setText(description);
 
-                    Query query = getSnapshots().getSnapshot(position)
+                    Query query = getSnapshots().getSnapshot(holder.getAdapterPosition())
                             .getReference()
                             .collection("schedules")
                             .orderBy("time_queue", Query.Direction.ASCENDING)

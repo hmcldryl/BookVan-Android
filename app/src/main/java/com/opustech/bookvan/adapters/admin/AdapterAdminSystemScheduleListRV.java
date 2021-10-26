@@ -43,7 +43,19 @@ public class AdapterAdminSystemScheduleListRV extends FirestoreRecyclerAdapter<S
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull SystemScheduleHolder holder, int position, @NonNull SystemSchedule model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         String route_from = model.getRoute_from().equals("Puerto Princesa City") ? "PPC" : model.getRoute_from();
@@ -67,7 +79,7 @@ public class AdapterAdminSystemScheduleListRV extends FirestoreRecyclerAdapter<S
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if (item.getItemId() == R.id.btnDelete) {
-                            getSnapshots().getSnapshot(position)
+                            getSnapshots().getSnapshot(holder.getAdapterPosition())
                                     .getReference()
                                     .delete()
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {

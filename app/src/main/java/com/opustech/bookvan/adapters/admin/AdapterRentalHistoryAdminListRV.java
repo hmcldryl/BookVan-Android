@@ -49,7 +49,19 @@ public class AdapterRentalHistoryAdminListRV extends FirestoreRecyclerAdapter<Re
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull RentalHolder holder, int position, @NonNull Rental model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
 

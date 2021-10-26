@@ -44,10 +44,8 @@ public class BookingHistoryFragment extends Fragment {
         usersReference = firebaseFirestore.collection("users");
         bookingsReference = firebaseFirestore.collection("bookings");
 
-        String currentUserId = firebaseAuth.getCurrentUser().getUid();
-
-        populateList(root, currentUserId);
-        updateUi(currentUserId);
+        populateList(root, getActivity().getIntent().getStringExtra("uid"));
+        updateUi(getActivity().getIntent().getStringExtra("uid"));
 
         return root;
     }
@@ -59,7 +57,6 @@ public class BookingHistoryFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         int size = value.size();
-
                         if (size > 0) {
                             bookingList.setVisibility(View.VISIBLE);
                             bookingStatusNone.setVisibility(View.GONE);
@@ -85,6 +82,8 @@ public class BookingHistoryFragment extends Fragment {
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         manager.setReverseLayout(true);
         manager.setStackFromEnd(true);
+
+        adapterHistoryBookingListRV.setHasStableIds(true);
 
         bookingStatusNone = root.findViewById(R.id.bookingStatusNone);
         bookingList = root.findViewById(R.id.bookingList);

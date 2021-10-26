@@ -2,6 +2,7 @@ package com.opustech.bookvan.ui.user;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,9 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.opustech.bookvan.R;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -109,13 +114,13 @@ public class ConfirmPaymentScanActivity extends AppCompatActivity {
                                 String uid = decryptQR(data);
                                 if (uid.equals(booking_transport_uid)) {
                                     if (!alertDialog.isShowing()) {
-                                        final LayoutInflater inflater = getLayoutInflater();
-                                        final View view = inflater.inflate(R.layout.dialog_user_scan_layout, null);
-                                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                        alertDialog.setCancelable(true);
-                                        alertDialog.setView(view);
-
                                         if (getIntent().getStringExtra("type").equals("booking")) {
+                                            final LayoutInflater inflater = getLayoutInflater();
+                                            final View view = inflater.inflate(R.layout.dialog_user_scan_layout, null);
+                                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                            alertDialog.setCancelable(true);
+                                            alertDialog.setView(view);
+
                                             TextView bookingCustomerName = view.findViewById(R.id.bookingCustomerName);
                                             TextView bookingCustomerEmail = view.findViewById(R.id.bookingCustomerEmail);
                                             TextView bookingContactNumber = view.findViewById(R.id.bookingContactNumber);
@@ -209,7 +214,7 @@ public class ConfirmPaymentScanActivity extends AppCompatActivity {
                                                                                 .text("Processing...")
                                                                                 .fadeColor(Color.DKGRAY).build();
                                                                         dialog.show();
-                                                                        if (reference_number != null) {
+                                                                        if (decryptQR(data) != null) {
                                                                             updateBooking(alertDialog, dialog, getIntent().getStringExtra("booking_id"), uid, price);
                                                                         } else {
                                                                             dialog.dismiss();
@@ -221,8 +226,95 @@ public class ConfirmPaymentScanActivity extends AppCompatActivity {
                                                             }
                                                         }
                                                     });
-                                        }
+                                        } else if (getIntent().getStringExtra("type").equals("rental")) {
+                                            final LayoutInflater inflater = getLayoutInflater();
+                                            final View view = inflater.inflate(R.layout.dialog_user_scan_layout_rental, null);
+                                            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                            alertDialog.setCancelable(true);
+                                            alertDialog.setView(view);
 
+                                            TextView customerName = view.findViewById(R.id.customerName);
+                                            TextView customerEmail = view.findViewById(R.id.customerEmail);
+                                            TextView rentContactNumber = view.findViewById(R.id.rentContactNumber);
+                                            TextView rentPickUpLocation = view.findViewById(R.id.rentPickUpLocation);
+                                            TextView rentPickUpDate = view.findViewById(R.id.rentPickUpDate);
+                                            TextView rentPickUpTime = view.findViewById(R.id.rentPickUpTime);
+                                            TextView rentDestination = view.findViewById(R.id.rentDestination);
+                                            TextView rentDropOffLocation = view.findViewById(R.id.rentDropOffLocation);
+                                            TextView rentDropOffDate = view.findViewById(R.id.rentDropOffDate);
+                                            TextView rentDropOffTime = view.findViewById(R.id.rentDropOffTime);
+                                            TextView rentalReferenceNumber = view.findViewById(R.id.rentalReferenceNumber);
+                                            TextView rentPrice = view.findViewById(R.id.rentPrice);
+                                            TextView rentPriceLabel = view.findViewById(R.id.rentPriceLabel);
+                                            TextView timestamp = view.findViewById(R.id.timestamp);
+                                            CircleImageView customerPhoto = view.findViewById(R.id.customerPhoto);
+
+                                            rentalsReference.document(getIntent().getStringExtra("rental_id"))
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            String uid = task.getResult().getString("uid");
+                                                            String reference_number = task.getResult().getString("reference_number");
+                                                            String name = task.getResult().getString("name");
+                                                            String contact_number = task.getResult().getString("contact_number");
+                                                            String pickup_location = task.getResult().getString("pickup_location");
+                                                            String pickup_date = task.getResult().getString("pickup_date");
+                                                            String pickup_time = task.getResult().getString("pickup_time");
+                                                            String destination = task.getResult().getString("destination");
+                                                            String dropoff_location = task.getResult().getString("dropoff_location");
+                                                            String dropoff_date = task.getResult().getString("dropoff_date");
+                                                            String dropoff_time = task.getResult().getString("dropoff_time");
+                                                            String timestampText = task.getResult().getString("timestamp");
+                                                            double price = task.getResult().getLong("price").doubleValue();
+
+                                                            rentContactNumber.setText(contact_number);
+                                                            rentPickUpLocation.setText(pickup_location);
+                                                            rentPickUpDate.setText(pickup_date);
+                                                            rentPickUpTime.setText(pickup_time);
+                                                            rentDestination.setText(destination);
+                                                            rentDropOffLocation.setText(dropoff_location);
+                                                            rentDropOffDate.setText(dropoff_date);
+                                                            rentDropOffTime.setText(dropoff_time);
+                                                            rentalReferenceNumber.setText(reference_number);
+
+                                                            if (price > 0.0) {
+                                                                String priceText = getString(R.string.peso_sign) + String.format(Locale.ENGLISH, "%.2f", rentPrice);
+                                                                rentPrice.setText(priceText);
+                                                                rentPrice.setVisibility(View.VISIBLE);
+                                                                rentPriceLabel.setVisibility(View.VISIBLE);
+                                                            }
+
+                                                            try {
+                                                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+                                                                String outputText = new PrettyTime().format(simpleDateFormat.parse(timestampText));
+                                                                timestamp.setText(outputText);
+                                                            } catch (ParseException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    });
+
+                                            usersReference.document(uid)
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                customerName.setText(task.getResult().getString("name"));
+                                                                customerEmail.setText(task.getResult().getString("email"));
+                                                                String customerPhotoUrl = task.getResult().getString("photo_url");
+
+                                                                if (customerPhotoUrl != null) {
+                                                                    Glide.with(ConfirmPaymentScanActivity.this)
+                                                                            .load(customerPhotoUrl)
+                                                                            .into(customerPhoto);
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+
+                                        }
                                         alertDialog.show();
                                     }
                                 }

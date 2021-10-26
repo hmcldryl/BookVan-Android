@@ -43,7 +43,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
     private FirebaseFirestore firebaseFirestore;
     private CollectionReference usersReference, partnersReference;
 
-    private final String uid;
+    private final String uid, rental_id;
     String status = "";
 
     /**
@@ -53,14 +53,27 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
      * @param options
      */
 
-    public AdapterRentChatMessageRV(@NonNull FirestoreRecyclerOptions<RentChatMessage> options, String uid, String status) {
+    public AdapterRentChatMessageRV(@NonNull FirestoreRecyclerOptions<RentChatMessage> options, String uid, String rental_id, String status) {
         super(options);
         this.uid = uid;
+        this.rental_id = rental_id;
         this.status = status;
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull ChatMessageHolder holder, int position, @NonNull RentChatMessage model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         usersReference = firebaseFirestore.collection("users");
         partnersReference = firebaseFirestore.collection("partners");
@@ -156,7 +169,8 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                                     hashMap.put("status", "confirmed");
                                     hashMap.put("timestamp", timestamp);
 
-                                    firebaseFirestore.collection("rentals").document(messageUid)
+                                    firebaseFirestore.collection("rentals")
+                                            .document(rental_id)
                                             .update(hashMap)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
@@ -167,6 +181,7 @@ public class AdapterRentChatMessageRV extends FirestoreRecyclerAdapter<RentChatM
                                                         Toast.makeText(holder.itemView.getContext(), "Success.", Toast.LENGTH_SHORT).show();
                                                     } else {
                                                         dialog.dismiss();
+                                                        btnConfirm.setEnabled(true);
                                                         Toast.makeText(holder.itemView.getContext(), "Failed.", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }

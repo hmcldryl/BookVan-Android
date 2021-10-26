@@ -105,6 +105,8 @@ public class SchedulesActivity extends AppCompatActivity {
         adapterScheduleListRV = new AdapterTransportScheduleListRV(options, this);
         LinearLayoutManager manager = new LinearLayoutManager(this);
 
+        adapterScheduleListRV.setHasStableIds(true);
+
         systemScheduleList = findViewById(R.id.systemScheduleList);
 
         systemScheduleList.setHasFixedSize(true);

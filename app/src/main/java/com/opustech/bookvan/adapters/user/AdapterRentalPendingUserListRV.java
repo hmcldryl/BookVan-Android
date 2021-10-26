@@ -64,7 +64,19 @@ public class AdapterRentalPendingUserListRV extends FirestoreRecyclerAdapter<Ren
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     protected void onBindViewHolder(@NonNull RentalHolder holder, int position, @NonNull Rental model) {
+        holder.setIsRecyclable(false);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         rentalsReference = firebaseFirestore.collection("rentals");
         usersReference = firebaseFirestore.collection("users");
@@ -111,7 +123,7 @@ public class AdapterRentalPendingUserListRV extends FirestoreRecyclerAdapter<Ren
             public void onClick(View view) {
                 PopupMenu popup = new PopupMenu(context, view);
                 MenuInflater inflater = popup.getMenuInflater();
-                inflater.inflate(R.menu.booking_pending_user_menu, popup.getMenu());
+                inflater.inflate(R.menu.rental_pending_user_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
