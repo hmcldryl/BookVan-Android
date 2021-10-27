@@ -62,7 +62,7 @@ public class ConfirmPaymentQRActivity extends AppCompatActivity {
 
     private RenderOption renderQR() {
         RenderOption renderOption = new RenderOption();
-        renderOption.setContent(encryptString(getIntent().getStringExtra("uid"))); // content to encode
+        renderOption.setContent(encryptString(getIntent().getStringExtra("transport_uid"))); // content to encode
         renderOption.setSize(500);
         renderOption.setRoundedPatterns(true);
         renderOption.setClearBorder(true);

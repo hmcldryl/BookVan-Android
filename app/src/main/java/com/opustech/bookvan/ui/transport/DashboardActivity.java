@@ -244,7 +244,7 @@ public class DashboardActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(DashboardActivity.this, ConfirmPaymentScanActivity.class);
-                            intent.putExtra("uid", getCompanyUid());
+                            intent.putExtra("transport_id", getCompanyUid());
                             intent.putExtra("type", "booking");
                             startActivity(intent);
                         }
@@ -253,9 +253,9 @@ public class DashboardActivity extends AppCompatActivity {
                     btnScanRental.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(DashboardActivity.this, ConfirmPaymentScanActivity.class);
-                            intent.putExtra("uid", getCompanyUid());
-                            intent.putExtra("type", "rental");
+                            Intent intent = new Intent(DashboardActivity.this, RentalsActivity.class);
+                            intent.putExtra("transport_id", getCompanyUid());
+                            intent.putExtra("name", name);
                             startActivity(intent);
                         }
                     });

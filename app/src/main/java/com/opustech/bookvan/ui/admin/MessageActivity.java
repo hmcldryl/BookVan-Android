@@ -57,7 +57,7 @@ public class MessageActivity extends AppCompatActivity {
         });
 
         Query query = conversationsReference
-                .orderBy("timestamp", Query.Direction.DESCENDING);
+                .orderBy("timestamp", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<ChatConversation> options = new FirestoreRecyclerOptions.Builder<ChatConversation>()
                 .setQuery(query, ChatConversation.class)
@@ -65,6 +65,7 @@ public class MessageActivity extends AppCompatActivity {
 
         adapterMessageListRV = new AdapterMessageListRV(options);
         LinearLayoutManager manager = new LinearLayoutManager(MessageActivity.this);
+        manager.setStackFromEnd(true);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(MessageActivity.this, manager.getOrientation());
 
         adapterMessageListRV.setHasStableIds(true);
@@ -78,20 +79,20 @@ public class MessageActivity extends AppCompatActivity {
         chatMessageList.setAdapter(adapterMessageListRV);
 
         conversationsReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (value != null) {
-                            int size = value.size();
-                                if (size > 0) {
-                                    chatMessageList.setVisibility(View.VISIBLE);
-                                    chatStatusNone.setVisibility(View.GONE);
-                                } else {
-                                    chatStatusNone.setVisibility(View.VISIBLE);
-                                    chatMessageList.setVisibility(View.GONE);
-                                }
-                        }
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null) {
+                    int size = value.size();
+                    if (size > 0) {
+                        chatMessageList.setVisibility(View.VISIBLE);
+                        chatStatusNone.setVisibility(View.GONE);
+                    } else {
+                        chatStatusNone.setVisibility(View.VISIBLE);
+                        chatMessageList.setVisibility(View.GONE);
                     }
-                });
+                }
+            }
+        });
     }
 
     @Override

@@ -43,8 +43,8 @@ import com.opustech.bookvan.notification.Client;
 import com.opustech.bookvan.notification.Data;
 import com.opustech.bookvan.notification.NotificationSender;
 import com.opustech.bookvan.notification.RequestResponse;
-import com.opustech.bookvan.ui.user.ConfirmPaymentQRActivity;
-import com.opustech.bookvan.ui.user.ConfirmPaymentScanActivity;
+import com.opustech.bookvan.ui.transport.ConfirmPaymentQRActivity;
+import com.opustech.bookvan.ui.transport.ConfirmPaymentScanActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -335,6 +335,7 @@ public class RentMessageActivity extends AppCompatActivity {
                                             public void onClick(View view) {
                                                 Intent intent = new Intent(RentMessageActivity.this, ConfirmPaymentQRActivity.class);
                                                 intent.putExtra("rental_id", getIntent().getStringExtra("rental_id"));
+                                                intent.putExtra("transport_uid", getIntent().getStringExtra("transport_id"));
                                                 intent.putExtra("type", "rental");
                                                 startActivity(intent);
                                             }

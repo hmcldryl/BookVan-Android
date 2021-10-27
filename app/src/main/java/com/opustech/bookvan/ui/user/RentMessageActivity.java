@@ -198,6 +198,7 @@ public class RentMessageActivity extends AppCompatActivity {
                                     public void onClick(View view) {
                                         Intent intent = new Intent(RentMessageActivity.this, ConfirmPaymentScanActivity.class);
                                         intent.putExtra("rental_id", getIntent().getStringExtra("rental_id"));
+                                        intent.putExtra("transport_id", getIntent().getStringExtra("transport_id"));
                                         intent.putExtra("type", "rental");
                                         startActivity(intent);
                                     }
