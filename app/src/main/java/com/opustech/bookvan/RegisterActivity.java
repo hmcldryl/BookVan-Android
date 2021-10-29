@@ -174,8 +174,10 @@ public class RegisterActivity extends AppCompatActivity {
             inputPassword.setError("Passwords does not match.");
             inputConfirmPassword.setError("Passwords does not match.");
         } else if (!cbPolicy.isChecked()) {
+            enableInput();
             cbPolicy.setError("You must read our privacy policy before continuing.");
         } else if (!cbTerms.isChecked()) {
+            enableInput();
             cbPolicy.setError("You must read and agree to our terms and conditions before continuing.");
         } else {
             // REGISTER NEW USER
