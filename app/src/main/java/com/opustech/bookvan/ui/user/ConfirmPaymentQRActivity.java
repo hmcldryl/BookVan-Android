@@ -64,7 +64,7 @@ public class ConfirmPaymentQRActivity extends AppCompatActivity {
         RenderOption renderOption = new RenderOption();
         if (getIntent().getStringExtra("type").equals("booking")) {
             renderOption.setContent(encryptString(getIntent().getStringExtra("booking_id"))); // content to encode
-        } else if (getIntent().getStringExtra("type").equals("rental")) {
+        } else {
             renderOption.setContent(encryptString(getIntent().getStringExtra("rental_id"))); // content to encode
         }
         renderOption.setSize(500);

@@ -251,6 +251,8 @@ public class RentActivity extends AppCompatActivity {
                             enableInput();
                             Toast.makeText(RentActivity.this, "Success.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(RentActivity.this, RentalActivity.class);
+                            intent.putExtra("uid", firebaseAuth.getCurrentUser().getUid());
+                            intent.putExtra("name", name);
                             //intent.putExtra("rental_id", task.getResult().getId());
                             startActivity(intent);
                             finish();

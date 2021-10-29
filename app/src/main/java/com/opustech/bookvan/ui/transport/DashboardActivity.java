@@ -255,7 +255,7 @@ public class DashboardActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             Intent intent = new Intent(DashboardActivity.this, RentalsActivity.class);
                             intent.putExtra("transport_id", getCompanyUid());
-                            intent.putExtra("name", name);
+                            intent.putExtra("type", "rental");
                             startActivity(intent);
                         }
                     });
@@ -271,7 +271,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, ConfirmPaymentQRActivity.class);
-                intent.putExtra("uid", getCompanyUid());
+                intent.putExtra("transport_uid", getCompanyUid());
                 startActivity(intent);
             }
         });
